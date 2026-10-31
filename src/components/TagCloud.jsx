@@ -31,12 +31,12 @@ const TagCloud = ({ selectedTag, onTagClick }) => {
 
   return (
     <div style={{
-      background: 'var(--glass-bg)',
-      backdropFilter: 'var(--glass-backdrop)',
+      background: 'var(--card)',
       borderRadius: 'var(--radius-md)',
       padding: '14px 18px',
       marginBottom: '24px',
-      border: '1px solid var(--glass-border)'
+      border: '1px solid var(--border)',
+      boxShadow: 'var(--card-shadow)'
     }}>
       <div style={{
         fontSize: '11px',
@@ -70,27 +70,27 @@ const TagCloud = ({ selectedTag, onTagClick }) => {
               }}
               style={{
                 display: 'inline-block',
-                padding: '3px 11px',
-                borderRadius: 'var(--radius-xs)',
-                background: isSelected ? 'var(--primary)' : 'transparent',
-                color: isSelected ? '#fff' : 'var(--text-secondary)',
+                padding: '5px 14px',
+                borderRadius: 'var(--radius-sm)',
+                background: isSelected ? 'var(--primary)' : 'var(--muted)',
+                color: isSelected ? '#fff' : 'var(--text-light)',
                 fontSize: `${getFontSize(tag.count)}px`,
                 cursor: 'pointer',
                 transition: 'background 0.2s, color 0.2s',
-                border: '1px solid ' + (isSelected ? 'transparent' : 'var(--border)'),
+                border: 'none',
                 fontWeight: isSelected ? 600 : 500,
                 userSelect: 'none'
               }}
               onMouseEnter={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.background = 'var(--hover-bg)';
-                  e.currentTarget.style.color = 'var(--foreground)';
+                  e.currentTarget.style.background = 'var(--primary-bg)';
+                  e.currentTarget.style.color = 'var(--primary)';
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = 'var(--text-secondary)';
+                  e.currentTarget.style.background = 'var(--muted)';
+                  e.currentTarget.style.color = 'var(--text-light)';
                 }
               }}
             >
@@ -111,24 +111,22 @@ const TagCloud = ({ selectedTag, onTagClick }) => {
             }}
             style={{
               display: 'inline-block',
-              padding: '3px 11px',
-              borderRadius: 'var(--radius-xs)',
-              background: 'var(--hover-bg)',
+              padding: '5px 14px',
+              borderRadius: 'var(--radius-sm)',
+              background: 'var(--muted)',
               color: 'var(--text-secondary)',
               fontSize: '12.5px',
               cursor: 'pointer',
-              transition: 'color 0.2s, border-color 0.2s',
-              border: '1px solid var(--border)',
+              transition: 'color 0.2s',
+              border: 'none',
               fontWeight: 500,
               userSelect: 'none'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.color = 'var(--destructive)';
-              e.currentTarget.style.borderColor = 'var(--destructive-border)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.color = 'var(--text-secondary)';
-              e.currentTarget.style.borderColor = 'var(--border)';
             }}
           >
             ✕ {t('common.cancel')}

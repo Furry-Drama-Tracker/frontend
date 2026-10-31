@@ -147,7 +147,6 @@ export default {
   home: {
     welcomeTitle: '欢迎来到追剧平台',
     welcomeSubtitle: '发现精彩剧集，追番不迷路',
-    heroKicker: '兽剧聚合 · 剧场档案',
     heroStat: '已收录 {count} 部剧集',
     heroBrowse: '浏览全部剧集',
     category: '分类',

@@ -175,7 +175,7 @@ const ThemeColorPicker = () => {
   // 自定义取色器在未选择主题色时的展示值（跟随当前主题色）。
   const swatchFallback = (typeof document !== 'undefined'
     ? getComputedStyle(document.documentElement).getPropertyValue('--primary').trim()
-    : '') || '#c14a1e';
+    : '') || '#1777ff';
 
   // 顺序：跟随系统第一位（也是默认值），其次浅色 / 深色。
   const appearanceOptions = [

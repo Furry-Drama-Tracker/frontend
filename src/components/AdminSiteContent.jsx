@@ -50,7 +50,7 @@ const AdminSiteContent = () => {
     browserTitleEn: '',
     pwaName: '', pwaShortName: '', pwaDescription: '',
     pwaIcon192: '', pwaIcon512: '', pwaMaskableIcon: '',
-    pwaBackgroundColor: '#111113', pwaThemeColor: '#c14a1e',
+    pwaBackgroundColor: '#111113', pwaThemeColor: '#1777ff',
     backgroundImage: '', backgroundEnabled: false,
     backgroundOpacity: 30, backgroundBlur: 0,
   });
@@ -132,7 +132,7 @@ const AdminSiteContent = () => {
           pwaIcon512: data.pwaIcon512 || '',
           pwaMaskableIcon: data.pwaMaskableIcon || '',
           pwaBackgroundColor: data.pwaBackgroundColor || '#111113',
-          pwaThemeColor: data.pwaThemeColor || '#c14a1e',
+          pwaThemeColor: data.pwaThemeColor || '#1777ff',
           backgroundImage: data.backgroundImage || '',
           backgroundEnabled: !!data.backgroundEnabled,
           backgroundOpacity: data.backgroundOpacity !== undefined ? data.backgroundOpacity : 30,
@@ -149,7 +149,7 @@ const AdminSiteContent = () => {
           browserTitleEn: '',
           pwaName: '', pwaShortName: '', pwaDescription: '',
           pwaIcon192: '', pwaIcon512: '', pwaMaskableIcon: '',
-          pwaBackgroundColor: '#111113', pwaThemeColor: '#c14a1e',
+          pwaBackgroundColor: '#111113', pwaThemeColor: '#1777ff',
         });
       }
     } else {
@@ -450,7 +450,7 @@ const AdminSiteContent = () => {
             <label>🎨 {t('adminContent.pwaThemeColorLabel')}</label>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <input type="color" value={settingsData.pwaThemeColor} onChange={(e) => setSettingsData(prev => ({ ...prev, pwaThemeColor: e.target.value }))} style={{ width: '40px', height: '32px', padding: 0, border: '1px solid var(--border)', borderRadius: '6px', background: 'var(--card)', cursor: 'pointer' }} />
-              <input type="text" value={settingsData.pwaThemeColor} onChange={(e) => setSettingsData(prev => ({ ...prev, pwaThemeColor: e.target.value }))} placeholder="#c14a1e" style={{ flex: 1 }} />
+              <input type="text" value={settingsData.pwaThemeColor} onChange={(e) => setSettingsData(prev => ({ ...prev, pwaThemeColor: e.target.value }))} placeholder="#1777ff" style={{ flex: 1 }} />
             </div>
             <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px' }}>{t('adminContent.pwaThemeColorHint')}</p>
           </div>

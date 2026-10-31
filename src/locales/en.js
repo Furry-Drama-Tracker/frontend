@@ -147,7 +147,6 @@ export default {
   home: {
     welcomeTitle: 'Welcome to Drama tracker',
     welcomeSubtitle: 'Discover great dramas, never miss an update',
-    heroKicker: 'FURRY DRAMA · THEATER ARCHIVE',
     heroStat: '{count} series in the archive',
     heroBrowse: 'Browse all series',
     category: 'Category',

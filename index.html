@@ -19,7 +19,7 @@
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="兽剧聚合平台" />
     <meta name="twitter:description" content="发现和追踪你喜爱的兽剧内容" />
-    <meta name="theme-color" content="#c14a1e" />
+    <meta name="theme-color" content="#1777ff" />
     <!-- 三重语言声明：让浏览器翻译、拼写检查、无障碍服务可靠识别页面语言 -->
     <meta http-equiv="content-language" content="zh-CN" />
     <meta name="language" content="zh-CN" />
@@ -27,7 +27,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="兽剧" />
     <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="msapplication-TileColor" content="#c14a1e" />
+    <meta name="msapplication-TileColor" content="#1777ff" />
     <link rel="alternate" type="application/rss+xml" title="兽剧聚合平台 - 更新订阅" href="/api/rss" />
     <script>
       // 早期语言检测：在 React 挂载前就根据用户偏好设置 <html lang>，
@@ -142,8 +142,8 @@
               '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;' + cardMargin + '">' +
                 '<div style="font-size:13px;font-weight:600;color:#334155;margin-bottom:8px;">' + name + '</div>' +
                 '<div style="display:flex;gap:8px;">' +
-                  '<a href="' + b.cn + '" style="flex:1;text-align:center;padding:7px 10px;border-radius:6px;background:#c14a1e;color:#fff;text-decoration:none;font-size:12px;font-weight:600;">' + L.downloadCN + '</a>' +
-                  '<a href="' + b.global + '" style="flex:1;text-align:center;padding:7px 10px;border-radius:6px;background:#fff;border:1px solid #e7d5cc;color:#c14a1e;text-decoration:none;font-size:12px;font-weight:600;">' + L.downloadGlobal + '</a>' +
+                  '<a href="' + b.cn + '" style="flex:1;text-align:center;padding:7px 10px;border-radius:6px;background:#1777ff;color:#fff;text-decoration:none;font-size:12px;font-weight:600;">' + L.downloadCN + '</a>' +
+                  '<a href="' + b.global + '" style="flex:1;text-align:center;padding:7px 10px;border-radius:6px;background:#fff;border:1px solid #e5e7eb;color:#1777ff;text-decoration:none;font-size:12px;font-weight:600;">' + L.downloadGlobal + '</a>' +
                 '</div>' +
               '</div>';
           }
@@ -159,14 +159,14 @@
 
           return (
             '<div style="position:fixed;top:14px;right:16px;z-index:2147483648;">' +
-              '<button onclick="window.__switchCompatLang()" style="background:#fff;border:1px solid #e7d5cc;color:#c14a1e;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;box-shadow:0 2px 8px rgba(28,26,23,0.1);">' + L.langToggle + '</button>' +
+              '<button onclick="window.__switchCompatLang()" style="background:#fff;border:1px solid #e5e7eb;color:#1777ff;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;box-shadow:0 2px 8px rgba(17,24,39,0.08);">' + L.langToggle + '</button>' +
             '</div>' +
             '<div style="display:table-cell;vertical-align:middle;text-align:center;padding:12px;">' +
-              '<div style="max-width:440px;width:100%;background:#fff;border-radius:12px;padding:24px 20px;box-shadow:0 25px 50px -12px rgba(28,26,23,0.15);border:1px solid #e7e4de;text-align:center;display:inline-block;text-align:left;max-height:calc(100vh - 80px);overflow-y:auto;">' +
+              '<div style="max-width:440px;width:100%;background:#fff;border-radius:12px;padding:24px 20px;box-shadow:0 25px 50px -12px rgba(17,24,39,0.12);border:1px solid #e5e7eb;text-align:center;display:inline-block;text-align:left;max-height:calc(100vh - 80px);overflow-y:auto;">' +
                 '<div style="font-size:40px;margin-bottom:8px;line-height:1;text-align:center;">\uD83D\uDE05</div>' +
                 '<h1 style="font-size:18px;font-weight:700;margin:0 0 10px 0;color:#1e293b;text-align:center;">' + L.title + '</h1>' +
                 '<div style="font-size:13px;line-height:1.6;color:#64748b;margin-bottom:10px;text-align:left;padding:10px 12px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;">' +
-                  '<strong style="color:#c14a1e;display:block;margin-bottom:4px;">' + L.reasonLabel + '</strong>' + reasonText +
+                  '<strong style="color:#1777ff;display:block;margin-bottom:4px;">' + L.reasonLabel + '</strong>' + reasonText +
                 '</div>' +
                 '<div style="font-size:11px;line-height:1.5;color:#94a3b8;margin-bottom:14px;text-align:left;padding:8px 10px;background:#f8fafc;border-radius:6px;border:1px solid #e2e8f0;">' + L.supportedVersions + '</div>' +
                 '<div style="font-size:14px;font-weight:600;color:#475569;margin-bottom:8px;text-align:center;">' + L.solutionTitle + '</div>' +
@@ -179,7 +179,7 @@
         }
 
         var overlay = document.createElement('div');
-        overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:#faf9f7;color:#1e293b;font-family:"Segoe UI","Microsoft YaHei",sans-serif;z-index:2147483647;display:table;width:100%;height:100%;';
+        overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:#f8fafc;color:#1e293b;font-family:"Segoe UI","Microsoft YaHei",sans-serif;z-index:2147483647;display:table;width:100%;height:100%;';
 
         function paint() {
           overlay.innerHTML = render();

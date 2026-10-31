@@ -43,19 +43,26 @@ const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle
   };
 
   if (bannerImages.length === 0) {
+    const statText = typeof totalEpisodes === 'number' && totalEpisodes > 0
+      ? t('home.heroStat', { count: totalEpisodes })
+      : '';
+    const statParts = statText ? statText.split(String(totalEpisodes)) : [];
     return (
       <div className="bc-wrap bc-wrap--hero">
         <div className="bc-hero-deco" aria-hidden="true">
           <i /><i /><i /><i />
         </div>
         <div className="bc-hero-body">
-          <p className="bc-hero-kicker">{t('home.heroKicker')}</p>
           <h2 className="bc-welcome-title">{welcomeTitle}</h2>
           <p className="bc-welcome-sub">{welcomeSubtitle}</p>
           <div className="bc-hero-foot">
-            {typeof totalEpisodes === 'number' && totalEpisodes > 0 && (
-              <span className="bc-hero-stat">{t('home.heroStat', { count: totalEpisodes })}</span>
-            )}
+            {statParts.length === 2 ? (
+              <span className="bc-hero-stat">
+                {statParts[0]}<b>{totalEpisodes}</b>{statParts[1]}
+              </span>
+            ) : statText ? (
+              <span className="bc-hero-stat">{statText}</span>
+            ) : null}
             <button type="button" className="bc-hero-cta" onClick={onBrowseClick}>
               {t('home.heroBrowse')}
               <span aria-hidden="true">→</span>
@@ -79,7 +86,6 @@ const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle
           <i /><i /><i /><i />
         </div>
         <div className="bc-hero-body">
-          <p className="bc-hero-kicker">{t('home.heroKicker')}</p>
           <h2 className="bc-welcome-title">{welcomeTitle}</h2>
           <p className="bc-welcome-sub">{welcomeSubtitle}</p>
         </div>

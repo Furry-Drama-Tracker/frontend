@@ -284,8 +284,8 @@ const IncompatibleOverlay = ({ reason, browser, t, lang, switchLang, onContinue 
     fontSize: '12px',
     fontWeight: 500,
     background: '#eef2ff',
-    color: '#c14a1e',
-    border: '1px solid #e7d5cc',
+    color: '#1777ff',
+    border: '1px solid #e5e7eb',
     marginBottom: '12px',
   };
 
@@ -325,14 +325,14 @@ const IncompatibleOverlay = ({ reason, browser, t, lang, switchLang, onContinue 
     top: '14px',
     right: '14px',
     background: '#fff',
-    border: '1px solid #e7d5cc',
-    color: '#c14a1e',
+    border: '1px solid #e5e7eb',
+    color: '#1777ff',
     padding: '5px 12px',
     borderRadius: '8px',
     cursor: 'pointer',
     fontSize: '12px',
     fontWeight: 600,
-    boxShadow: '0 2px 8px rgba(193,74,30,0.12)',
+    boxShadow: '0 2px 8px rgba(23,119,255,0.12)',
   };
 
   const continueBtnStyle = {
@@ -341,9 +341,9 @@ const IncompatibleOverlay = ({ reason, browser, t, lang, switchLang, onContinue 
     textAlign: 'center',
     padding: '10px',
     borderRadius: '8px',
-    border: '1px solid #e7d5cc',
+    border: '1px solid #e5e7eb',
     background: '#fff',
-    color: '#c14a1e',
+    color: '#1777ff',
     fontSize: '13px',
     fontWeight: 600,
     cursor: 'pointer',
@@ -374,7 +374,7 @@ const IncompatibleOverlay = ({ reason, browser, t, lang, switchLang, onContinue 
             <div style={{ ...browserStyle, textAlign: 'center' }}>{browser}</div>
           )}
           <div style={reasonStyle}>
-            <strong style={{ color: '#c14a1e', display: 'block', marginBottom: '4px' }}>{t('browserCompat.reasonLabel')}</strong>
+            <strong style={{ color: '#1777ff', display: 'block', marginBottom: '4px' }}>{t('browserCompat.reasonLabel')}</strong>
             {getReasonText(reason, t)}
           </div>
           <div style={supportedStyle}>{t('browserCompat.supportedVersions')}</div>
@@ -392,12 +392,12 @@ const IncompatibleOverlay = ({ reason, browser, t, lang, switchLang, onContinue 
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <a href={b.cn} style={{
                     flex: 1, textAlign: 'center', padding: '7px 10px', borderRadius: '6px',
-                    background: '#c14a1e', color: '#fff', textDecoration: 'none',
+                    background: '#1777ff', color: '#fff', textDecoration: 'none',
                     fontSize: '12px', fontWeight: 600,
                   }}>{t('browserCompat.downloadCN')}</a>
                   <a href={b.global} style={{
                     flex: 1, textAlign: 'center', padding: '7px 10px', borderRadius: '6px',
-                    background: '#fff', border: '1px solid #e7d5cc', color: '#c14a1e',
+                    background: '#fff', border: '1px solid #e5e7eb', color: '#1777ff',
                     textDecoration: 'none', fontSize: '12px', fontWeight: 600,
                   }}>{t('browserCompat.downloadGlobal')}</a>
                 </div>
@@ -480,11 +480,11 @@ const FeedbackDialog = ({ onNormal, onProblem, t }) => {
         <div style={{ display: 'flex', gap: '8px' }}>
           <button onClick={onNormal} style={{
             flex: 1, padding: '10px', borderRadius: '8px', border: 'none',
-            background: '#c14a1e', color: '#fff', fontSize: '14px', fontWeight: 600, cursor: 'pointer',
+            background: '#1777ff', color: '#fff', fontSize: '14px', fontWeight: 600, cursor: 'pointer',
           }}>{t('browserCompat.feedbackNormal')}</button>
           <button onClick={onProblem} style={{
-            flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid #e7d5cc',
-            background: '#fff', color: '#c14a1e', fontSize: '14px', fontWeight: 600, cursor: 'pointer',
+            flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid #e5e7eb',
+            background: '#fff', color: '#1777ff', fontSize: '14px', fontWeight: 600, cursor: 'pointer',
           }}>{t('browserCompat.feedbackProblem')}</button>
         </div>
       </div>

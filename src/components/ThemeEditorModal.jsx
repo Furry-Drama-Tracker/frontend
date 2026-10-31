@@ -58,7 +58,7 @@ const ThemeEditorModal = ({ isOpen, onClose, initial, onSave, saving = false, ti
   const [icons, setIcons] = useState({});
   // 主题色（选填）：useAccent 开关 + 颜色值；关闭时保存为空串（不改变用户主题色）。
   const [useAccent, setUseAccent] = useState(false);
-  const [accentColor, setAccentColor] = useState('#6366f1');
+  const [accentColor, setAccentColor] = useState('#1777ff');
   // 内容构成开关：包含壁纸 / 包含图标（决定主题为仅背景、仅图标还是全套；
   // 关闭的部分不进保存内容，即便素材已选）。
   const [includeWallpaper, setIncludeWallpaper] = useState(true);
@@ -89,7 +89,7 @@ const ThemeEditorModal = ({ isOpen, onClose, initial, onSave, saving = false, ti
       setIcons({ ...(initial?.icons || {}) });
       const initialAccent = initial?.accentColor || '';
       setUseAccent(!!initialAccent);
-      setAccentColor(initialAccent || '#6366f1');
+      setAccentColor(initialAccent || '#1777ff');
       // 内容构成由初始内容推导（有壁纸则含壁纸，有图标则含图标）；
       // 新建（无内容）时默认两者都开，用户可自由关掉其一做仅壁纸/仅图标主题
       // ——若默认全关，先打开的那个会被"至少一项"约束锁死关不上。
