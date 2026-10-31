@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle, t, getLocalizedTitle, getLocalizedSubtitle }) => {
+const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle, t, getLocalizedTitle, getLocalizedSubtitle, totalEpisodes, onBrowseClick }) => {
   const navigate = useNavigate();
   const [showWelcome, setShowWelcome] = useState(true);
   const [bannerIndex, setBannerIndex] = useState(0);
@@ -45,9 +45,23 @@ const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle
   if (bannerImages.length === 0) {
     return (
       <div className="bc-wrap bc-wrap--hero">
-        <div className="bc-hero-glow" aria-hidden="true" />
-        <h2 className="bc-welcome-title">{welcomeTitle}</h2>
-        <p className="bc-welcome-sub">{welcomeSubtitle}</p>
+        <div className="bc-hero-deco" aria-hidden="true">
+          <i /><i /><i /><i />
+        </div>
+        <div className="bc-hero-body">
+          <p className="bc-hero-kicker">{t('home.heroKicker')}</p>
+          <h2 className="bc-welcome-title">{welcomeTitle}</h2>
+          <p className="bc-welcome-sub">{welcomeSubtitle}</p>
+          <div className="bc-hero-foot">
+            {typeof totalEpisodes === 'number' && totalEpisodes > 0 && (
+              <span className="bc-hero-stat">{t('home.heroStat', { count: totalEpisodes })}</span>
+            )}
+            <button type="button" className="bc-hero-cta" onClick={onBrowseClick}>
+              {t('home.heroBrowse')}
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -61,9 +75,14 @@ const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle
           pointerEvents: showWelcome ? 'auto' : 'none',
         }}
       >
-        <div className="bc-welcome-glow" aria-hidden="true" />
-        <h2 className="bc-welcome-title">{welcomeTitle}</h2>
-        <p className="bc-welcome-sub">{welcomeSubtitle}</p>
+        <div className="bc-hero-deco bc-hero-deco--welcome" aria-hidden="true">
+          <i /><i /><i /><i />
+        </div>
+        <div className="bc-hero-body">
+          <p className="bc-hero-kicker">{t('home.heroKicker')}</p>
+          <h2 className="bc-welcome-title">{welcomeTitle}</h2>
+          <p className="bc-welcome-sub">{welcomeSubtitle}</p>
+        </div>
       </div>
 
       {bannerImages.map((banner, idx) => {

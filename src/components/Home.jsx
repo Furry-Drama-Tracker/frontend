@@ -247,6 +247,8 @@ const Home = () => {
         t={t}
         getLocalizedTitle={getLocalizedTitle}
         getLocalizedSubtitle={getLocalizedSubtitle}
+        totalEpisodes={total}
+        onBrowseClick={() => categoriesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
       />
       </div>
       <div ref={categoriesRef} className={`reveal ${categoriesVisible ? 'visible' : ''}`}>
@@ -279,7 +281,7 @@ const Home = () => {
               alignItems: 'center',
               gap: '8px',
             }}>
-              <Icon name="action.play" fallback="▶️" size={18} /> {t('home.continueWatching')}
+              <Icon name="action.play" fallback={null} size={18} /> {t('home.continueWatching')}
             </h2>
           </div>
           <div style={{
@@ -403,7 +405,7 @@ const Home = () => {
               alignItems: 'center',
               gap: '8px',
             }}>
-              <Icon name="tab.recommended" fallback="🎯" size={18} /> {t('home.guessYouLike')}
+              <Icon name="tab.recommended" fallback={null} size={18} /> {t('home.guessYouLike')}
             </h2>
           </div>
           {recLoading ? (
@@ -504,7 +506,7 @@ const Home = () => {
                         marginTop: '4px',
                         padding: '1px 8px',
                         borderRadius: '10px',
-                        background: 'var(--primary-bg, rgba(99, 102, 241, 0.15))',
+                        background: 'var(--primary-bg)',
                         color: 'var(--primary)',
                         fontSize: '10px',
                         fontWeight: 500,
@@ -544,15 +546,15 @@ const Home = () => {
           marginBottom: '24px',
           textAlign: 'center',
           padding: '20px',
-          background: 'var(--primary-bg, rgba(99, 102, 241, 0.1))',
+          background: 'var(--primary-bg)',
           borderRadius: '8px',
-          border: '1px solid var(--primary-border, rgba(99, 102, 241, 0.2))',
+          border: '1px solid var(--primary-border)',
           cursor: 'pointer',
         }}
         onClick={() => navigate('/login')}
         >
           <span style={{ color: 'var(--primary)', fontSize: '14px', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-            <Icon name="tab.recommended" fallback="🎯" size={14} /> {t('home.loginForRecommendations')}
+            {t('home.loginForRecommendations')}
           </span>
         </div>
       )}

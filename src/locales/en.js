@@ -147,6 +147,9 @@ export default {
   home: {
     welcomeTitle: 'Welcome to Drama tracker',
     welcomeSubtitle: 'Discover great dramas, never miss an update',
+    heroKicker: 'FURRY DRAMA · THEATER ARCHIVE',
+    heroStat: '{count} series in the archive',
+    heroBrowse: 'Browse all series',
     category: 'Category',
     status: 'Status',
     rating: 'Rating',
@@ -1821,6 +1824,7 @@ export default {
   // ===== Bottom-left appearance panel =====
   colorPicker: {
     tabColor: 'Color',
+    defaultColor: 'Default',
     tabAppearance: 'Look',
     tabTheme: 'Themes',
     needLogin: 'Log in to use themes',

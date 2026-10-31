@@ -32,213 +32,220 @@ export const generateColorShades = (hex) => {
   };
 };
 
+/* 预设强调色：低饱和、有性格的编辑向色板（避开默认靛蓝/紫） */
 export const PRESET_COLORS = [
-  '#4f46e5', '#7c3aed', '#be185d', '#dc2626', '#ea580c',
-  '#ca8a04', '#15803d', '#0e7490', '#1d4ed8'
+  '#c14a1e', '#a83a32', '#946b2d', '#2f6b4f', '#22677a',
+  '#34558b', '#6b5b9e', '#8d5573', '#4a4a45'
 ];
 
+/* 设计方向：剧场黑 / 纸面白
+ * - 表面中性近消色，让海报成为页面唯一的色彩主角
+ * - 单一强调色（焰橙），只用于行动点与激活态
+ * - 无玻璃拟态、无 mesh 渐变、无发光：历史 token 名全部保留，
+ *   但映射为纯色 / none，保证既有组件样式不失效
+ */
 export const themes = {
   dark: {
-    '--primary': '#6366f1',
-    '--primary-dark': '#4f46e5',
-    '--primary-light': '#818cf8',
-    '--primary-bg': 'rgba(99, 102, 241, 0.16)',
-    '--primary-bg-subtle': 'rgba(99, 102, 241, 0.08)',
-    '--primary-bg-strong': 'rgba(99, 102, 241, 0.22)',
-    '--primary-border': 'rgba(99, 102, 241, 0.35)',
-    '--primary-border-subtle': 'rgba(99, 102, 241, 0.22)',
-    '--primary-hover': '#4f46e5',
-    '--secondary': '#10b981',
-    '--secondary-dark': '#059669',
-    '--accent': '#f59e0b',
-    '--background': '#070b18',
-    '--background-rgb': '7,11,24',
-    '--bg-secondary': '#0f1629',
-    '--bg-tertiary': '#1a2440',
-    '--foreground': '#f1f5f9',
-    '--text-secondary': '#94a3b8',
-    '--text-tertiary': '#64748b',
-    '--text-light': '#e2e8f0',
-    '--text-lighter': '#cbd5e1',
-    '--card': 'rgba(15, 22, 41, 0.72)',
-    '--card-foreground': '#f1f5f9',
-    '--popover': 'rgba(15, 22, 41, 0.92)',
-    '--popover-foreground': '#f1f5f9',
+    '--primary': '#f0703a',
+    '--primary-dark': '#d95d27',
+    '--primary-light': '#f68b5b',
+    '--primary-bg': 'rgba(240, 112, 58, 0.14)',
+    '--primary-bg-subtle': 'rgba(240, 112, 58, 0.07)',
+    '--primary-bg-strong': 'rgba(240, 112, 58, 0.2)',
+    '--primary-border': 'rgba(240, 112, 58, 0.32)',
+    '--primary-border-subtle': 'rgba(240, 112, 58, 0.2)',
+    '--primary-hover': '#d95d27',
+    '--secondary': '#4a9e7f',
+    '--secondary-dark': '#3d8a6d',
+    '--accent': '#d9a441',
+    '--background': '#111113',
+    '--background-rgb': '17,17,19',
+    '--bg-secondary': '#18181b',
+    '--bg-tertiary': '#212124',
+    '--foreground': '#f4f3f1',
+    '--text-secondary': '#a8a5a0',
+    '--text-tertiary': '#78756f',
+    '--text-light': '#e8e6e2',
+    '--text-lighter': '#cfccc6',
+    '--card': '#18181b',
+    '--card-foreground': '#f4f3f1',
+    '--popover': '#1d1d20',
+    '--popover-foreground': '#f4f3f1',
     '--border': 'rgba(255, 255, 255, 0.08)',
     '--input': 'rgba(255, 255, 255, 0.04)',
-    '--ring': '#818cf8',
-    '--muted': 'rgba(148, 163, 184, 0.1)',
-    '--muted-foreground': '#94a3b8',
-    '--destructive': '#ef4444',
-    '--destructive-bg': 'rgba(239, 68, 68, 0.16)',
-    '--destructive-bg-subtle': 'rgba(239, 68, 68, 0.08)',
-    '--destructive-bg-strong': 'rgba(239, 68, 68, 0.22)',
-    '--destructive-border': 'rgba(239, 68, 68, 0.35)',
-    '--destructive-border-subtle': 'rgba(239, 68, 68, 0.22)',
-    '--destructive-text': '#f87171',
-    '--destructive-text-light': '#fca5a5',
-    '--success': '#22c55e',
-    '--success-bg': 'rgba(34, 197, 94, 0.16)',
-    '--success-bg-subtle': 'rgba(34, 197, 94, 0.08)',
-    '--success-bg-strong': 'rgba(34, 197, 94, 0.22)',
-    '--success-border': 'rgba(34, 197, 94, 0.35)',
-    '--success-text': '#4ade80',
-    '--warning': '#f59e0b',
-    '--warning-bg': 'rgba(245, 158, 11, 0.16)',
-    '--warning-bg-subtle': 'rgba(245, 158, 11, 0.08)',
-    '--warning-bg-strong': 'rgba(245, 158, 11, 0.22)',
-    '--warning-border': 'rgba(245, 158, 11, 0.35)',
-    '--warning-text': '#fbbf24',
-    '--info': '#3b82f6',
-    '--info-bg': 'rgba(59, 130, 246, 0.16)',
-    '--info-border': 'rgba(59, 130, 246, 0.35)',
-    '--info-text': '#60a5fa',
-    '--purple': '#a855f7',
-    '--purple-bg': 'rgba(168, 85, 247, 0.2)',
-    '--purple-border': 'rgba(168, 85, 247, 0.35)',
-    '--glass-bg': 'rgba(12, 18, 36, 0.62)',
-    '--glass-border': 'rgba(255, 255, 255, 0.09)',
-    '--glass-backdrop': 'blur(18px) saturate(160%)',
-    '--hover-bg': 'rgba(255, 255, 255, 0.045)',
+    '--ring': '#f0703a',
+    '--muted': 'rgba(168, 165, 160, 0.1)',
+    '--muted-foreground': '#a8a5a0',
+    '--destructive': '#e5484d',
+    '--destructive-bg': 'rgba(229, 72, 77, 0.14)',
+    '--destructive-bg-subtle': 'rgba(229, 72, 77, 0.07)',
+    '--destructive-bg-strong': 'rgba(229, 72, 77, 0.2)',
+    '--destructive-border': 'rgba(229, 72, 77, 0.3)',
+    '--destructive-border-subtle': 'rgba(229, 72, 77, 0.2)',
+    '--destructive-text': '#f16a6e',
+    '--destructive-text-light': '#f88b8e',
+    '--success': '#46a758',
+    '--success-bg': 'rgba(70, 167, 88, 0.14)',
+    '--success-bg-subtle': 'rgba(70, 167, 88, 0.07)',
+    '--success-bg-strong': 'rgba(70, 167, 88, 0.2)',
+    '--success-border': 'rgba(70, 167, 88, 0.3)',
+    '--success-text': '#63b96f',
+    '--warning': '#d9a441',
+    '--warning-bg': 'rgba(217, 164, 65, 0.14)',
+    '--warning-bg-subtle': 'rgba(217, 164, 65, 0.07)',
+    '--warning-bg-strong': 'rgba(217, 164, 65, 0.2)',
+    '--warning-border': 'rgba(217, 164, 65, 0.3)',
+    '--warning-text': '#e5b558',
+    '--info': '#4f93c9',
+    '--info-bg': 'rgba(79, 147, 201, 0.14)',
+    '--info-border': 'rgba(79, 147, 201, 0.3)',
+    '--info-text': '#74add8',
+    '--purple': '#8d5573',
+    '--purple-bg': 'rgba(141, 85, 115, 0.14)',
+    '--purple-border': 'rgba(141, 85, 115, 0.3)',
+    '--glass-bg': '#18181b',
+    '--glass-border': 'rgba(255, 255, 255, 0.08)',
+    '--glass-backdrop': 'none',
+    '--hover-bg': 'rgba(255, 255, 255, 0.05)',
     '--hover-bg-strong': 'rgba(255, 255, 255, 0.08)',
-    '--hover-bg-stronger': 'rgba(255, 255, 255, 0.14)',
-    '--shadow-color': 'rgba(0, 0, 0, 0.4)',
-    '--shadow-strong': 'rgba(0, 0, 0, 0.6)',
-    '--shadow-modal': 'rgba(0, 0, 0, 0.5)',
-    '--overlay-bg': 'rgba(2, 6, 18, 0.72)',
-    '--overlay-bg-strong': 'rgba(2, 6, 18, 0.85)',
-    '--overlay-bg-light': 'rgba(2, 6, 18, 0.5)',
-    '--overlay-bg-subtle': 'rgba(2, 6, 18, 0.62)',
-    '--gradient-bg1': 'rgba(99, 102, 241, 0.08)',
-    '--gradient-bg2': 'rgba(168, 85, 247, 0.05)',
-    '--scrollbar-track': 'rgba(255, 255, 255, 0.025)',
+    '--hover-bg-stronger': 'rgba(255, 255, 255, 0.12)',
+    '--shadow-color': 'rgba(0, 0, 0, 0.5)',
+    '--shadow-strong': 'rgba(0, 0, 0, 0.65)',
+    '--shadow-modal': 'rgba(0, 0, 0, 0.6)',
+    '--overlay-bg': 'rgba(8, 8, 10, 0.7)',
+    '--overlay-bg-strong': 'rgba(8, 8, 10, 0.85)',
+    '--overlay-bg-light': 'rgba(8, 8, 10, 0.5)',
+    '--overlay-bg-subtle': 'rgba(8, 8, 10, 0.62)',
+    '--gradient-bg1': 'rgba(240, 112, 58, 0.03)',
+    '--gradient-bg2': 'rgba(240, 112, 58, 0.02)',
+    '--scrollbar-track': 'rgba(255, 255, 255, 0.03)',
     '--scrollbar-thumb': 'rgba(255, 255, 255, 0.14)',
-    '--scrollbar-thumb-hover': 'rgba(99, 102, 241, 0.5)',
-    '--selection-bg': 'rgba(99, 102, 241, 0.32)',
-    '--badge-bg': '#ef4444',
+    '--scrollbar-thumb-hover': 'rgba(240, 112, 58, 0.5)',
+    '--selection-bg': 'rgba(240, 112, 58, 0.3)',
+    '--badge-bg': '#e5484d',
     '--badge-text': '#fff',
-    '--btn-gradient': '#6366f1',
-    '--btn-gradient-primary': '#6366f1',
-    '--btn-gradient-success': '#10b981',
-    '--btn-gradient-purple': '#8b5cf6',
+    '--btn-gradient': '#d95d27',
+    '--btn-gradient-primary': '#d95d27',
+    '--btn-gradient-success': '#3d8a6d',
+    '--btn-gradient-purple': '#8d5573',
     '--btn-text': '#fff',
-    '--indicator-active': '#fff',
-    '--indicator-inactive': 'rgba(255, 255, 255, 0.4)',
-    '--banner-overlay': 'rgba(0, 0, 0, 0.7)',
-    '--banner-overlay-hover': 'rgba(0, 0, 0, 0.5)',
+    '--indicator-active': '#f4f3f1',
+    '--indicator-inactive': 'rgba(255, 255, 255, 0.35)',
+    '--banner-overlay': 'rgba(0, 0, 0, 0.68)',
+    '--banner-overlay-hover': 'rgba(0, 0, 0, 0.48)',
     '--banner-text': '#fff',
-    '--banner-text-secondary': 'rgba(255, 255, 255, 0.8)',
+    '--banner-text-secondary': 'rgba(255, 255, 255, 0.82)',
     '--video-bg': '#000',
     '--crop-overlay': 'rgba(0, 0, 0, 0.55)',
     '--crop-border': '#fff',
     '--crop-grid': 'rgba(255, 255, 255, 0.3)',
-    '--hover-bg-subtle': 'rgba(255, 255, 255, 0.025)',
-    /* 2026 现代化增强 token */
-    '--glow-primary': '0 0 32px rgba(99, 102, 241, 0.45)',
-    '--glow-primary-strong': '0 0 48px rgba(99, 102, 241, 0.65)',
-    '--glow-secondary': '0 0 28px rgba(16, 185, 129, 0.4)',
-    '--glow-danger': '0 0 28px rgba(239, 68, 68, 0.4)',
-    '--mesh-color-1': 'rgba(99, 102, 241, 0.18)',
-    '--mesh-color-2': 'rgba(168, 85, 247, 0.14)',
-    '--mesh-color-3': 'rgba(14, 116, 144, 0.12)',
-    '--mesh-color-4': 'rgba(236, 72, 153, 0.1)',
-    '--noise-opacity': '0.035',
-    '--border-gradient': 'linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03))',
-    '--border-gradient-primary': 'linear-gradient(135deg, rgba(99,102,241,0.5), rgba(168,85,247,0.3))',
-    '--card-shadow': '0 8px 32px -8px rgba(0, 0, 0, 0.5), 0 2px 8px -4px rgba(0, 0, 0, 0.4)',
-    '--card-shadow-hover': '0 24px 48px -12px rgba(0, 0, 0, 0.6), 0 8px 16px -8px rgba(99, 102, 241, 0.25)',
-    '--inner-highlight': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.06)',
-    '--text-gradient': 'linear-gradient(135deg, #f1f5f9 0%, #c7d2fe 50%, #a5b4fc 100%)',
-    '--btn-gradient-hover': 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
-    '--btn-sheen': 'linear-gradient(110deg, transparent 25%, rgba(255,255,255,0.25) 50%, transparent 75%)',
-    '--surface-elevated': 'rgba(20, 28, 50, 0.6)',
+    '--hover-bg-subtle': 'rgba(255, 255, 255, 0.03)',
+    /* 历史装饰 token：全部映射为无装饰值 */
+    '--glow-primary': 'none',
+    '--glow-primary-strong': 'none',
+    '--glow-secondary': 'none',
+    '--glow-danger': 'none',
+    '--mesh-color-1': 'transparent',
+    '--mesh-color-2': 'transparent',
+    '--mesh-color-3': 'transparent',
+    '--mesh-color-4': 'transparent',
+    '--noise-opacity': '0',
+    '--border-gradient': 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.1))',
+    '--border-gradient-primary': 'linear-gradient(135deg, rgba(240,112,58,0.35), rgba(240,112,58,0.35))',
+    '--card-shadow': '0 1px 2px rgba(0, 0, 0, 0.35)',
+    '--card-shadow-hover': '0 12px 32px rgba(0, 0, 0, 0.45)',
+    '--inner-highlight': 'none',
+    '--text-gradient': 'linear-gradient(135deg, #f4f3f1, #f4f3f1)',
+    '--btn-gradient-hover': 'linear-gradient(135deg, #c74f1d, #c74f1d)',
+    '--btn-sheen': 'none',
+    '--surface-elevated': '#1d1d20',
   },
   light: {
-    '--primary': '#4f46e5',
-    '--primary-dark': '#4338ca',
-    '--primary-light': '#6366f1',
-    '--primary-bg': 'rgba(79, 70, 229, 0.1)',
-    '--primary-bg-subtle': 'rgba(79, 70, 229, 0.05)',
-    '--primary-bg-strong': 'rgba(79, 70, 229, 0.15)',
-    '--primary-border': 'rgba(79, 70, 229, 0.25)',
-    '--primary-border-subtle': 'rgba(79, 70, 229, 0.15)',
-    '--primary-hover': '#4338ca',
-    '--secondary': '#10b981',
-    '--secondary-dark': '#059669',
-    '--accent': '#f59e0b',
-    '--background': '#f4f6fb',
-    '--background-rgb': '244,246,251',
-    '--bg-secondary': '#e8ecf3',
-    '--bg-tertiary': '#d4dae6',
-    '--foreground': '#0f172a',
-    '--text-secondary': '#5b6779',
-    '--text-tertiary': '#94a3b8',
-    '--text-light': '#334155',
-    '--text-lighter': '#475569',
-    '--card': 'rgba(255, 255, 255, 0.78)',
-    '--card-foreground': '#0f172a',
-    '--popover': 'rgba(255, 255, 255, 0.96)',
-    '--popover-foreground': '#0f172a',
-    '--border': 'rgba(15, 23, 42, 0.08)',
-    '--input': 'rgba(15, 23, 42, 0.03)',
-    '--ring': '#6366f1',
-    '--muted': 'rgba(100, 116, 139, 0.1)',
-    '--muted-foreground': '#64748b',
-    '--destructive': '#ef4444',
-    '--destructive-bg': 'rgba(239, 68, 68, 0.1)',
-    '--destructive-bg-subtle': 'rgba(239, 68, 68, 0.05)',
-    '--destructive-bg-strong': 'rgba(239, 68, 68, 0.15)',
-    '--destructive-border': 'rgba(239, 68, 68, 0.2)',
-    '--destructive-border-subtle': 'rgba(239, 68, 68, 0.15)',
-    '--destructive-text': '#dc2626',
-    '--destructive-text-light': '#ef4444',
-    '--success': '#16a34a',
-    '--success-bg': 'rgba(34, 197, 94, 0.1)',
-    '--success-bg-subtle': 'rgba(34, 197, 94, 0.05)',
-    '--success-bg-strong': 'rgba(34, 197, 94, 0.15)',
-    '--success-border': 'rgba(34, 197, 94, 0.2)',
-    '--success-text': '#16a34a',
-    '--warning': '#d97706',
-    '--warning-bg': 'rgba(245, 158, 11, 0.1)',
-    '--warning-bg-subtle': 'rgba(245, 158, 11, 0.05)',
-    '--warning-bg-strong': 'rgba(245, 158, 11, 0.15)',
-    '--warning-border': 'rgba(245, 158, 11, 0.2)',
-    '--warning-text': '#d97706',
-    '--info': '#3b82f6',
-    '--info-bg': 'rgba(59, 130, 246, 0.1)',
-    '--info-border': 'rgba(59, 130, 246, 0.2)',
-    '--info-text': '#2563eb',
-    '--purple': '#9333ea',
-    '--purple-bg': 'rgba(168, 85, 247, 0.1)',
-    '--purple-border': 'rgba(168, 85, 247, 0.2)',
-    '--glass-bg': 'rgba(255, 255, 255, 0.68)',
-    '--glass-border': 'rgba(255, 255, 255, 0.5)',
-    '--glass-backdrop': 'blur(18px) saturate(160%)',
-    '--hover-bg': 'rgba(15, 23, 42, 0.04)',
-    '--hover-bg-strong': 'rgba(15, 23, 42, 0.06)',
-    '--hover-bg-stronger': 'rgba(15, 23, 42, 0.1)',
-    '--shadow-color': 'rgba(15, 23, 42, 0.1)',
-    '--shadow-strong': 'rgba(15, 23, 42, 0.18)',
-    '--shadow-modal': 'rgba(15, 23, 42, 0.18)',
-    '--overlay-bg': 'rgba(15, 23, 42, 0.5)',
-    '--overlay-bg-strong': 'rgba(15, 23, 42, 0.62)',
-    '--overlay-bg-light': 'rgba(15, 23, 42, 0.3)',
-    '--overlay-bg-subtle': 'rgba(15, 23, 42, 0.42)',
-    '--gradient-bg1': 'rgba(99, 102, 241, 0.06)',
-    '--gradient-bg2': 'rgba(168, 85, 247, 0.04)',
-    '--scrollbar-track': 'rgba(15, 23, 42, 0.03)',
-    '--scrollbar-thumb': 'rgba(15, 23, 42, 0.15)',
-    '--scrollbar-thumb-hover': 'rgba(99, 102, 241, 0.45)',
-    '--selection-bg': 'rgba(99, 102, 241, 0.2)',
-    '--badge-bg': '#ef4444',
+    '--primary': '#c14a1e',
+    '--primary-dark': '#a03d16',
+    '--primary-light': '#e2582a',
+    '--primary-bg': 'rgba(193, 74, 30, 0.08)',
+    '--primary-bg-subtle': 'rgba(193, 74, 30, 0.04)',
+    '--primary-bg-strong': 'rgba(193, 74, 30, 0.12)',
+    '--primary-border': 'rgba(193, 74, 30, 0.22)',
+    '--primary-border-subtle': 'rgba(193, 74, 30, 0.14)',
+    '--primary-hover': '#a03d16',
+    '--secondary': '#2f7d5c',
+    '--secondary-dark': '#276a4d',
+    '--accent': '#b4831f',
+    '--background': '#faf9f7',
+    '--background-rgb': '250,249,247',
+    '--bg-secondary': '#f1efeb',
+    '--bg-tertiary': '#e7e4de',
+    '--foreground': '#1c1a17',
+    '--text-secondary': '#6d6862',
+    '--text-tertiary': '#9c978f',
+    '--text-light': '#3d3a35',
+    '--text-lighter': '#58544e',
+    '--card': '#ffffff',
+    '--card-foreground': '#1c1a17',
+    '--popover': '#ffffff',
+    '--popover-foreground': '#1c1a17',
+    '--border': 'rgba(28, 26, 23, 0.1)',
+    '--input': 'rgba(28, 26, 23, 0.03)',
+    '--ring': '#c14a1e',
+    '--muted': 'rgba(109, 104, 98, 0.08)',
+    '--muted-foreground': '#6d6862',
+    '--destructive': '#d33d43',
+    '--destructive-bg': 'rgba(211, 61, 67, 0.08)',
+    '--destructive-bg-subtle': 'rgba(211, 61, 67, 0.04)',
+    '--destructive-bg-strong': 'rgba(211, 61, 67, 0.12)',
+    '--destructive-border': 'rgba(211, 61, 67, 0.2)',
+    '--destructive-border-subtle': 'rgba(211, 61, 67, 0.14)',
+    '--destructive-text': '#c53035',
+    '--destructive-text-light': '#d33d43',
+    '--success': '#2f7d5c',
+    '--success-bg': 'rgba(47, 125, 92, 0.08)',
+    '--success-bg-subtle': 'rgba(47, 125, 92, 0.04)',
+    '--success-bg-strong': 'rgba(47, 125, 92, 0.12)',
+    '--success-border': 'rgba(47, 125, 92, 0.2)',
+    '--success-text': '#2f7d5c',
+    '--warning': '#a8681c',
+    '--warning-bg': 'rgba(168, 104, 28, 0.08)',
+    '--warning-bg-subtle': 'rgba(168, 104, 28, 0.04)',
+    '--warning-bg-strong': 'rgba(168, 104, 28, 0.12)',
+    '--warning-border': 'rgba(168, 104, 28, 0.2)',
+    '--warning-text': '#a8681c',
+    '--info': '#2f6b9e',
+    '--info-bg': 'rgba(47, 107, 158, 0.08)',
+    '--info-border': 'rgba(47, 107, 158, 0.2)',
+    '--info-text': '#2f6b9e',
+    '--purple': '#8d5573',
+    '--purple-bg': 'rgba(141, 85, 115, 0.08)',
+    '--purple-border': 'rgba(141, 85, 115, 0.2)',
+    '--glass-bg': '#ffffff',
+    '--glass-border': 'rgba(28, 26, 23, 0.08)',
+    '--glass-backdrop': 'none',
+    '--hover-bg': 'rgba(28, 26, 23, 0.045)',
+    '--hover-bg-strong': 'rgba(28, 26, 23, 0.06)',
+    '--hover-bg-stronger': 'rgba(28, 26, 23, 0.1)',
+    '--shadow-color': 'rgba(28, 26, 23, 0.08)',
+    '--shadow-strong': 'rgba(28, 26, 23, 0.16)',
+    '--shadow-modal': 'rgba(28, 26, 23, 0.16)',
+    '--overlay-bg': 'rgba(28, 26, 23, 0.45)',
+    '--overlay-bg-strong': 'rgba(28, 26, 23, 0.6)',
+    '--overlay-bg-light': 'rgba(28, 26, 23, 0.3)',
+    '--overlay-bg-subtle': 'rgba(28, 26, 23, 0.4)',
+    '--gradient-bg1': 'rgba(193, 74, 30, 0.04)',
+    '--gradient-bg2': 'rgba(193, 74, 30, 0.02)',
+    '--scrollbar-track': 'rgba(28, 26, 23, 0.04)',
+    '--scrollbar-thumb': 'rgba(28, 26, 23, 0.18)',
+    '--scrollbar-thumb-hover': 'rgba(193, 74, 30, 0.45)',
+    '--selection-bg': 'rgba(193, 74, 30, 0.18)',
+    '--badge-bg': '#d33d43',
     '--badge-text': '#fff',
-    '--btn-gradient': '#4f46e5',
-    '--btn-gradient-primary': '#4f46e5',
-    '--btn-gradient-success': '#10b981',
-    '--btn-gradient-purple': '#8b5cf6',
+    '--btn-gradient': '#c14a1e',
+    '--btn-gradient-primary': '#c14a1e',
+    '--btn-gradient-success': '#2f7d5c',
+    '--btn-gradient-purple': '#8d5573',
     '--btn-text': '#fff',
-    '--indicator-active': '#4f46e5',
-    '--indicator-inactive': 'rgba(15, 23, 42, 0.2)',
+    '--indicator-active': '#c14a1e',
+    '--indicator-inactive': 'rgba(28, 26, 23, 0.2)',
     '--banner-overlay': 'rgba(0, 0, 0, 0.5)',
     '--banner-overlay-hover': 'rgba(0, 0, 0, 0.3)',
     '--banner-text': '#fff',
@@ -247,26 +254,26 @@ export const themes = {
     '--crop-overlay': 'rgba(0, 0, 0, 0.55)',
     '--crop-border': '#fff',
     '--crop-grid': 'rgba(255, 255, 255, 0.3)',
-    '--hover-bg-subtle': 'rgba(15, 23, 42, 0.02)',
-    /* 2026 现代化增强 token */
-    '--glow-primary': '0 0 28px rgba(99, 102, 241, 0.3)',
-    '--glow-primary-strong': '0 0 44px rgba(99, 102, 241, 0.5)',
-    '--glow-secondary': '0 0 24px rgba(16, 185, 129, 0.3)',
-    '--glow-danger': '0 0 24px rgba(239, 68, 68, 0.3)',
-    '--mesh-color-1': 'rgba(99, 102, 241, 0.14)',
-    '--mesh-color-2': 'rgba(168, 85, 247, 0.1)',
-    '--mesh-color-3': 'rgba(14, 116, 144, 0.1)',
-    '--mesh-color-4': 'rgba(236, 72, 153, 0.08)',
-    '--noise-opacity': '0.025',
-    '--border-gradient': 'linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,255,255,0.2))',
-    '--border-gradient-primary': 'linear-gradient(135deg, rgba(99,102,241,0.4), rgba(168,85,247,0.25))',
-    '--card-shadow': '0 8px 32px -8px rgba(15, 23, 42, 0.14), 0 2px 8px -4px rgba(15, 23, 42, 0.08)',
-    '--card-shadow-hover': '0 24px 48px -12px rgba(15, 23, 42, 0.2), 0 8px 16px -8px rgba(99, 102, 241, 0.18)',
-    '--inner-highlight': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.6)',
-    '--text-gradient': 'linear-gradient(135deg, #0f172a 0%, #4338ca 50%, #7c3aed 100%)',
-    '--btn-gradient-hover': 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
-    '--btn-sheen': 'linear-gradient(110deg, transparent 25%, rgba(255,255,255,0.4) 50%, transparent 75%)',
-    '--surface-elevated': 'rgba(255, 255, 255, 0.65)',
+    '--hover-bg-subtle': 'rgba(28, 26, 23, 0.02)',
+    /* 历史装饰 token：全部映射为无装饰值 */
+    '--glow-primary': 'none',
+    '--glow-primary-strong': 'none',
+    '--glow-secondary': 'none',
+    '--glow-danger': 'none',
+    '--mesh-color-1': 'transparent',
+    '--mesh-color-2': 'transparent',
+    '--mesh-color-3': 'transparent',
+    '--mesh-color-4': 'transparent',
+    '--noise-opacity': '0',
+    '--border-gradient': 'linear-gradient(135deg, rgba(28,26,23,0.12), rgba(28,26,23,0.12))',
+    '--border-gradient-primary': 'linear-gradient(135deg, rgba(193,74,30,0.3), rgba(193,74,30,0.3))',
+    '--card-shadow': '0 1px 2px rgba(28, 26, 23, 0.06)',
+    '--card-shadow-hover': '0 12px 32px rgba(28, 26, 23, 0.12)',
+    '--inner-highlight': 'none',
+    '--text-gradient': 'linear-gradient(135deg, #1c1a17, #1c1a17)',
+    '--btn-gradient-hover': 'linear-gradient(135deg, #a03d16, #a03d16)',
+    '--btn-sheen': 'none',
+    '--surface-elevated': '#ffffff',
   }
 };
 
@@ -277,6 +284,7 @@ const getSystemTheme = () => {
   return 'dark';
 };
 
+/* 自定义强调色：仅覆盖行动色相关 token（无发光 / 无 mesh） */
 const applyAccentColor = (hex, currentTheme) => {
   const shades = generateColorShades(hex);
   if (!shades) return;
@@ -289,26 +297,17 @@ const applyAccentColor = (hex, currentTheme) => {
   root.style.setProperty('--primary-light', shades.primaryLight);
   root.style.setProperty('--primary-dark', shades.primaryHover);
   root.style.setProperty('--primary-hover', shades.primaryHover);
-  root.style.setProperty('--primary-bg', isDark ? shades.primaryBg : `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.1)`);
-  root.style.setProperty('--primary-bg-subtle', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.08 : 0.05})`);
-  root.style.setProperty('--primary-bg-strong', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.2 : 0.15})`);
-  root.style.setProperty('--primary-border', isDark ? shades.primaryBorder : `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.25)`);
-  root.style.setProperty('--primary-border-subtle', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.2 : 0.15})`);
+  root.style.setProperty('--primary-bg', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.14 : 0.08})`);
+  root.style.setProperty('--primary-bg-subtle', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.07 : 0.04})`);
+  root.style.setProperty('--primary-bg-strong', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.2 : 0.12})`);
+  root.style.setProperty('--primary-border', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.32 : 0.22})`);
+  root.style.setProperty('--primary-border-subtle', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.2 : 0.14})`);
   root.style.setProperty('--ring', hex);
-  root.style.setProperty('--selection-bg', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.32 : 0.2})`);
-  root.style.setProperty('--gradient-bg1', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.08 : 0.06})`);
-  root.style.setProperty('--gradient-bg2', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.05 : 0.04})`);
+  root.style.setProperty('--selection-bg', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.3 : 0.18})`);
   root.style.setProperty('--btn-gradient', hex);
   root.style.setProperty('--btn-gradient-primary', hex);
-  root.style.setProperty('--btn-gradient-purple', hex);
-  /* 同步 2026 增强 token 到当前 accent 色 */
-  root.style.setProperty('--glow-primary', `0 0 32px rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.45 : 0.3})`);
-  root.style.setProperty('--glow-primary-strong', `0 0 48px rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.65 : 0.5})`);
-  root.style.setProperty('--mesh-color-1', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.18 : 0.14})`);
-  root.style.setProperty('--mesh-color-2', `rgba(${Math.min(255, rgb.r + 30)}, ${Math.min(255, rgb.g + 20)}, ${Math.max(0, rgb.b - 20)}, ${isDark ? 0.14 : 0.1})`);
-  root.style.setProperty('--border-gradient-primary', `linear-gradient(135deg, rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.5 : 0.4}), rgba(${Math.min(255, rgb.r + 30)}, ${Math.min(255, rgb.g + 20)}, ${Math.max(0, rgb.b - 20)}, ${isDark ? 0.3 : 0.25}))`);
   root.style.setProperty('--scrollbar-thumb-hover', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.5 : 0.45})`);
-  root.style.setProperty('--card-shadow-hover', `0 24px 48px -12px ${isDark ? 'rgba(0, 0, 0, 0.6)' : 'rgba(15, 23, 42, 0.2)'}, 0 8px 16px -8px rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.25 : 0.18})`);
+  root.style.setProperty('--border-gradient-primary', `linear-gradient(135deg, rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.35 : 0.3}), rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.35 : 0.3}))`);
 };
 
 export const ThemeProvider = ({ children }) => {
@@ -326,7 +325,7 @@ export const ThemeProvider = ({ children }) => {
   const [accentColor, setAccentColorState] = useState(() => {
     const saved = localStorage.getItem('accent_color');
     if (saved && /^#[0-9a-fA-F]{6}$/.test(saved)) return saved;
-    return '#6366f1';
+    return '';
   });
 
   useEffect(() => {
@@ -339,7 +338,9 @@ export const ThemeProvider = ({ children }) => {
   }, [theme]);
 
   useEffect(() => {
-    applyAccentColor(accentColor, theme);
+    if (accentColor) {
+      applyAccentColor(accentColor, theme);
+    }
   }, [accentColor, theme]);
 
   useEffect(() => {
@@ -356,6 +357,11 @@ export const ThemeProvider = ({ children }) => {
     localStorage.setItem('accent_color', color);
   };
 
+  const resetAccentColor = () => {
+    setAccentColorState('');
+    localStorage.removeItem('accent_color');
+  };
+
   const setThemeModeTo = (mode) => {
     if (!['dark', 'light', 'system'].includes(mode)) return;
     setThemeMode(mode);
@@ -368,7 +374,7 @@ export const ThemeProvider = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, themeMode, setThemeModeTo, accentColor, setAccentColor, presetColors: PRESET_COLORS }}>
+    <ThemeContext.Provider value={{ theme, themeMode, setThemeModeTo, accentColor, setAccentColor, resetAccentColor, presetColors: PRESET_COLORS }}>
       {children}
     </ThemeContext.Provider>
   );

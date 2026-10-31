@@ -147,6 +147,9 @@ export default {
   home: {
     welcomeTitle: '欢迎来到追剧平台',
     welcomeSubtitle: '发现精彩剧集，追番不迷路',
+    heroKicker: '兽剧聚合 · 剧场档案',
+    heroStat: '已收录 {count} 部剧集',
+    heroBrowse: '浏览全部剧集',
     category: '分类',
     status: '状态',
     rating: '评分',
@@ -1824,6 +1827,7 @@ export default {
   // ===== 左下角外观面板 =====
   colorPicker: {
     tabColor: '主题色',
+    defaultColor: '默认',
     tabAppearance: '外观',
     tabTheme: '主题',
     needLogin: '登录后才能使用主题功能',

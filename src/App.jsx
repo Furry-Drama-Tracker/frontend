@@ -452,7 +452,7 @@ function AppContent() {
     if (!siteSettingsData) return;
     const pwaName = siteSettingsData.pwaName || siteSettingsData.siteName || t('site.defaultName');
     const pwaShortName = siteSettingsData.pwaShortName || (pwaName || '').slice(0, 12);
-    const pwaThemeColor = siteSettingsData.pwaThemeColor || '#6366f1';
+    const pwaThemeColor = siteSettingsData.pwaThemeColor || '#c14a1e';
 
     // 将 manifest 链接指向后端动态端点（同源 HTTP，满足浏览器可安装性要求）
     // 不再使用 blob: URL，因为 blob: URL 会导致浏览器无法验证 manifest，安装提示不弹出
