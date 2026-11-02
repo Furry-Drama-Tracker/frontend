@@ -3888,29 +3888,86 @@ tr:hover,
   box-shadow: var(--card-shadow);
 }
 
-/* 空状态：同色系柔和 hero + 光晕 */
+/* 首屏欢迎层：沿用 daca92b 版本的柔和渐变背景与涂鸦装饰（其余样式保持原版） */
 .bc-wrap--hero {
+  --hero-accent: rgba(99, 102, 241, 0.35);
+  --hero-accent-soft: rgba(99, 102, 241, 0.10);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-  color: var(--btn-text);
+  aspect-ratio: auto;
+  max-height: none;
+  min-height: 280px;
+  background: linear-gradient(to bottom right, #f8fafc, rgba(239, 246, 255, 0.5), rgba(236, 254, 255, 0.3));
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--foreground);
   text-align: center;
-  padding: 0 24px;
-}
-.bc-hero-glow {
-  position: absolute;
-  width: 60%;
-  height: 120%;
-  background: radial-gradient(ellipse, rgba(255,255,255,0.25), transparent 60%);
-  filter: blur(40px);
-  animation: float-slow 6s var(--ease-smooth) infinite;
-  pointer-events: none;
+  padding: 56px 24px;
+  position: relative;
+  overflow: hidden;
 }
 
-/* 欢迎层 */
+[data-theme='dark'] .bc-wrap--hero {
+  --hero-accent: rgba(129, 140, 248, 0.42);
+  --hero-accent-soft: rgba(129, 140, 248, 0.12);
+  background: linear-gradient(to bottom right, #181b21, rgba(31, 58, 96, 0.3), rgba(16, 38, 60, 0.22));
+}
+
+/* 装饰：柔光 + 十字 + 圆环 */
+.bc-hero-deco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.bc-hero-deco i {
+  position: absolute;
+  display: block;
+}
+.bc-hero-deco i:nth-child(1) {
+  top: -90px;
+  right: -70px;
+  width: 340px;
+  height: 340px;
+  background: radial-gradient(circle, var(--hero-accent-soft), transparent 65%);
+}
+.bc-hero-deco i:nth-child(2) {
+  bottom: -110px;
+  left: -50px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, var(--hero-accent-soft), transparent 65%);
+}
+.bc-hero-deco i:nth-child(3) {
+  top: 20%;
+  left: 11%;
+  width: 16px;
+  height: 16px;
+  background:
+    linear-gradient(var(--hero-accent), var(--hero-accent)) center / 100% 2px no-repeat,
+    linear-gradient(var(--hero-accent), var(--hero-accent)) center / 2px 100% no-repeat;
+}
+.bc-hero-deco i:nth-child(4) {
+  top: 26%;
+  right: 15%;
+  width: 13px;
+  height: 13px;
+  border: 2px solid var(--hero-accent);
+  border-radius: 50%;
+}
+
+/* 无横幅时的 hero 保留原光晕元素但不再使用 */
+.bc-hero-glow {
+  display: none;
+}
+
+/* 欢迎层（有横幅时盖在上面）：与 hero 同构的背景 */
 .bc-welcome {
+  --hero-accent: rgba(99, 102, 241, 0.35);
+  --hero-accent-soft: rgba(99, 102, 241, 0.10);
   position: absolute;
   inset: 0;
   z-index: 10;
@@ -3918,37 +3975,48 @@ tr:hover,
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-  color: var(--btn-text);
+  background: linear-gradient(to bottom right, rgba(248, 250, 252, 0.97), rgba(239, 246, 255, 0.9), rgba(236, 254, 255, 0.85));
+  color: var(--foreground);
   text-align: center;
-  padding: 0 24px;
+  padding: 40px 24px;
   transition: opacity 0.8s var(--ease-smooth);
   overflow: hidden;
 }
-.bc-welcome-glow {
-  position: absolute;
-  width: 70%;
-  height: 140%;
-  background: radial-gradient(ellipse, rgba(255,255,255,0.3), transparent 60%);
-  filter: blur(50px);
-  animation: float-slow 7s var(--ease-smooth) infinite;
-  pointer-events: none;
+
+[data-theme='dark'] .bc-welcome {
+  --hero-accent: rgba(129, 140, 248, 0.42);
+  --hero-accent-soft: rgba(129, 140, 248, 0.12);
+  background: linear-gradient(to bottom right, rgba(22, 24, 29, 0.97), rgba(24, 44, 72, 0.9), rgba(13, 30, 48, 0.85));
 }
+
+.bc-hero-deco--welcome {
+  opacity: 0.6;
+}
+
+.bc-welcome-glow {
+  display: none;
+}
+
 .bc-welcome-title {
   position: relative;
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  z-index: 2;
+  font-size: clamp(1.9rem, 4vw, 2.75rem);
   font-weight: 800;
   margin: 0;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  text-wrap: balance;
   animation: fade-in-up 0.8s var(--ease-out) both;
 }
+
 .bc-welcome-sub {
   position: relative;
-  font-size: clamp(0.9rem, 1.5vw, 1.05rem);
-  margin-top: 10px;
-  opacity: 0.92;
-  animation: fade-in-up 0.8s var(--ease-out) 0.15s both;
+  z-index: 2;
+  font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+  margin: 14px auto 0;
+  max-width: 52ch;
+  color: var(--text-secondary);
+  animation: fade-in-up 0.8s var(--ease-out) 0.12s both;
 }
 
 /* 轮播项 */

@@ -124,7 +124,9 @@ const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle
   if (bannerImages.length === 0) {
     return (
       <div className="bc-wrap bc-wrap--hero">
-        <div className="bc-hero-glow" aria-hidden="true" />
+        <div className="bc-hero-deco" aria-hidden="true">
+          <i /><i /><i /><i />
+        </div>
         <h2 className="bc-welcome-title">{welcomeTitle}</h2>
         <p className="bc-welcome-sub">{welcomeSubtitle}</p>
         {statsBlock}
@@ -141,7 +143,9 @@ const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle
           pointerEvents: showWelcome ? 'auto' : 'none',
         }}
       >
-        <div className="bc-welcome-glow" aria-hidden="true" />
+        <div className="bc-hero-deco bc-hero-deco--welcome" aria-hidden="true">
+          <i /><i /><i /><i />
+        </div>
         <h2 className="bc-welcome-title">{welcomeTitle}</h2>
         <p className="bc-welcome-sub">{welcomeSubtitle}</p>
         {statsBlock}
