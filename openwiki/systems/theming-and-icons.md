@@ -3,12 +3,15 @@ type: system
 title: 主题、外观与图标引擎
 description: 前端三层外观机制的实现说明：ThemeContext 的 dark/light 全量 CSS 变量表与 accent 派生（generateColorShades 覆写 --primary 家族及 23 个派生变量）；App 运行时壁纸注入与优先级（用户壁纸 enabled、壁纸槽为空回落站点默认主题、data-custom-bg 属性）；IconContext 的 sanitizeSvg 清洗、全局映射与主题图标覆盖、受保护键 misc.logo；以及主题工坊/编辑器、三档外观设置与后台主题管理 + 主题审核的两槽模型。
 tags: [theming, css-variables, accent-color, wallpaper, svg-icons, icon-mapping, theme-marketplace, admin-review]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-29T12:47:15.545Z
 sources:
+  - id: openwiki-source-f17a4f083b3937123213d031
+    resource: repo://src/admin-kit/admin-scope.css
+  - id: openwiki-source-5f428c1e5bece3d98072e87f
+    resource: repo://src/admin-kit/index.css
   - id: openwiki-source-1fe4306a261748bda5b78973
     resource: repo://src/App.jsx
+  - id: openwiki-source-11c92b2033df029713925335
+    resource: repo://src/components/AdminLayout.jsx
   - id: openwiki-source-09bbd185c4ccfb145398eb16
     resource: repo://src/components/AdminThemeReview.jsx
   - id: openwiki-source-95f0291f29cd95f8dfdca78e
@@ -29,7 +32,10 @@ sources:
     resource: repo://src/contexts/ThemeContext.jsx
   - id: openwiki-source-7c8446b7383bfa65b6d9e1b7
     resource: repo://src/index.css
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+generated: { by: "opencode", at: "2026-11-02T17:44:42.174Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-02T17:44:42.174Z
 ---
 
 # 主题、外观与图标引擎
@@ -86,19 +92,31 @@ flowchart TD
 | `primaryBg` | `rgba(r,g,b,0.15)` | `--primary-bg`（暗色态） |
 | `primaryBorder` | `rgba(r,g,b,0.3)` | `--primary-border`（暗色态） |
 
-输入不是合法 6 位 hex 时函数返回 `null`，`applyAccentColor` 直接返回、一个变量都不写（回落到主题表里的紫色系）。合法输入时会写入 **23 个变量**：primary 家族 9 个 + `--ring`、`--selection-bg`、`--gradient-bg1/2`、`--btn-gradient*`、`--glow-primary*`、`--mesh-color-1/2`、`--border-gradient-primary`、`--scrollbar-thumb-hover`、`--card-shadow-hover`。其中一半按 `isDark` 分叉 alpha（例如 `--primary-bg-strong` 暗 0.2 / 亮 0.15，`--selection-bg` 暗 0.32 / 亮 0.2），所以**切换明暗时必须重算 accent**——这就是 accent 的 effect 依赖 `[accentColor, theme]` 的原因。
+输入不是合法 6 位 hex 时函数返回 `null`，`applyAccentColor` 直接返回、一个变量都不写（回落到主题表里的紫色系）。合法输入时会写入 **27 个变量**：primary 家族 9 个 + `--ring`、`--selection-bg`、`--gradient-bg1/2`、`--btn-gradient*`、`--glow-primary*`、`--mesh-color-1/2`、`--border-gradient-primary`、`--scrollbar-thumb-hover`、`--card-shadow-hover`，以及后加的 `--primary-rgb`（供 CSS 写 `rgba(var(--primary-rgb), a)`）、`--btn-gradient-hover`、`--btn-text`、`--primary-foreground`、`--on-primary`。其中一半按 `isDark` 分叉 alpha（例如 `--primary-bg-strong` 暗 0.2 / 亮 0.15，`--selection-bg` 暗 0.32 / 亮 0.2），所以**切换明暗时必须重算 accent**——这就是 accent 的 effect 依赖 `[accentColor, theme]` 的原因。
+
+`--btn-text` / `--primary-foreground` / `--on-primary` 的值不是固定白色，而是由 `getOnPrimaryColor(hex)` 按 WCAG 相对亮度计算：默认白字，只有当黑字对比度明显更高（> 白字对比度 × 1.15）时才返回 `#0c0d0e`。同一模块还导出 `relativeLuminance`、`contrastRatio`、`getAccentContrastWarning(hex, theme)`，后者在主题色与当前背景对比度低于 3:1 时返回 `light`/`dark` 告警标记，供选色面板提示「不推荐」。这些函数只读不写，不参与持久化。
 
 ```mermaid
 flowchart LR
   MODE["themeMode dark light system"] --> RESOLVE["解析出 theme"]
   RESOLVE --> TABLE["遍历 themes[theme] 整表 setProperty 并写 data-theme"]
   ACC["accentColor 来自 localStorage accent_color"] --> SHADE["generateColorShades"]
-  TABLE --> APPLY["applyAccentColor 覆写 23 个派生变量"]
+  TABLE --> APPLY["applyAccentColor 覆写 27 个派生变量"]
   SHADE --> APPLY
-  APPLY --> CSS["组件读 var(--primary) 等"]
+  SHADE --> ONP["getOnPrimaryColor 决定黑/白字"]
+  ONP --> APPLY
+  APPLY --> CSS["组件读 var(--primary)、var(--btn-text) 等"]
 ```
 
 图注：先铺主题表、再由 accent 覆写，顺序由两个 effect 的声明顺序与依赖数组保证；accent 永远赢。
+
+### 选色面板的可读性反馈
+
+`ThemeColorPicker` 在自定义色区域直接消费上面三个函数：`getAccentContrastWarning(accentColor, theme)` 非空时渲染一条警告条（区分「深色模式下太暗」/「浅色模式下太亮」两类文案），并用 `getOnPrimaryColor(accentColor)` 渲染一个 `示例 Aa` 色块，让用户在选择前就看到主题色上的文字将是黑还是白。这两个判断都不落盘，只影响当前面板的展示。
+
+### 后台源力样式的隔离
+
+前台的主题变量全部写在 `documentElement` 上，而后台从 `src/admin-kit/` 引入另一套「源力」token 与组件样式，二者通过作用域隔离：`AdminLayout` 根节点加 `.yuanli-admin`，`admin-kit` 生成的选择器全部以该前缀开头，`admin-scope.css` 再把源力 token 映射回项目变量。因此后台始终是浅色画布，不跟随用户 `theme`/`accent_color` 切换；前台组件的 CSS 变量也不会泄漏进后台。新增后台样式应继续写在 `src/admin-kit/` 并保持 `.yuanli-admin` 前缀，而不是加到 `src/index.css`。
 
 ### 模式状态与持久化
 

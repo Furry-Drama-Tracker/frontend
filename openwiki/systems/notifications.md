@@ -3,9 +3,6 @@ type: system
 title: 通知投递：SSE、轮询与 Web Push
 description: 前端通知系统的完整链路：先用 axios 换一次性 ticket 再建 EventSource、notification 事件直接采用后端 unreadCount、断线按指数退避重连并以 60 秒轮询兜底、未读数写入 PWA 角标、Web Push 的 VAPID 订阅与退订，以及 NavBar 面板里通知类型到文案的映射与扩展规则。
 tags: [notifications, sse, event-source, web-push, pwa, frontend, i18n]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-29T12:47:15.545Z
 sources:
   - id: openwiki-source-5b54a58d1b51cd490b0e7162
     resource: repo://package.json
@@ -34,6 +31,9 @@ sources:
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
 generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-02T17:44:42.174Z
 ---
 
 # 通知投递：SSE、轮询与 Web Push

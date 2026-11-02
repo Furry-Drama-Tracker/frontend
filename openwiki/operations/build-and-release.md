@@ -3,9 +3,6 @@ type: operations
 title: 构建、配置与部署
 description: 汇总兽剧前端的发布面：npm 脚本与 Node 版本约束、Vite 8 配置要点（git short sha 版本号注入、生产剥离 console/debugger、依赖预打包白名单、开发代理与 no-store、es2019 目标）、构建期与运行时两套 PWA manifest 的分工、环境变量与跨域边界、同域 nginx 部署拓扑、index.html 的 CSP 与元信息，以及 OpenWiki 定时更新的 GitHub Actions 工作流。
 tags: [build, vite, deployment, nginx, pwa-manifest, csp, ci-workflow]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-29T12:47:15.545Z
 sources:
   - id: openwiki-source-6d4b4e707b8d60b6ccfa3425
     resource: repo://.github/workflows/openwiki-update.yml
@@ -23,8 +20,14 @@ sources:
     resource: repo://package.json
   - id: openwiki-source-23775c3de52f3ab95a13cb8b
     resource: repo://README.md
+  - id: openwiki-source-5f428c1e5bece3d98072e87f
+    resource: repo://src/admin-kit/index.css
+  - id: openwiki-source-e6116024b1d530b4f250cc53
+    resource: repo://src/admin-kit/scope-kit.cjs
   - id: openwiki-source-1fe4306a261748bda5b78973
     resource: repo://src/App.jsx
+  - id: openwiki-source-11c92b2033df029713925335
+    resource: repo://src/components/AdminLayout.jsx
   - id: openwiki-source-c4a2ade1820d6e35c826fcde
     resource: repo://src/components/AdminSiteContent.jsx
   - id: openwiki-source-d27eefb45eb714b85112e9ac
@@ -43,7 +46,10 @@ sources:
     resource: repo://src/utils/polyfills.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+generated: { by: "opencode", at: "2026-11-02T17:44:42.174Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-02T17:44:42.174Z
 ---
 
 # 构建、配置与部署
@@ -135,6 +141,17 @@ server: {
 ### 构建产物与语法目标
 
 `build.target: 'es2019'` 是唯一的语法目标来源。`package.json` 里的 `browserslist`（`> 0.5%`、`last 2 versions`、`Firefox ESR`、`not dead`、`not ie 11`）**没有被任何工具消费**——仓库没有 babel、没有 PostCSS/autoprefixer 配置、Vite 也不读 browserslist，所以它目前只是文档性字段，改它不会有任何构建差异。运行时 API 的缺口由 `src/utils/polyfills.js`（ES2019/ES2020：`Object.fromEntries`、`Promise.allSettled`、`Array.prototype.flat/flatMap`、`String.prototype.matchAll`，目标 Safari 13+ / Chrome 80+ / Firefox 80+）在入口副作用里补齐；降低 `build.target` 而不补 polyfill 不会有帮助。
+
+### 后台源力样式（`src/admin-kit/`）
+
+后台的整套视觉来自 `src/admin-kit/`，它不经过任何构建插件，只是普通 CSS 与一个手写 Node 脚本：
+
+- `AdminLayout.jsx` 顶部 `import '../admin-kit/index.css'`，`index.css` 再 `@import` `colors_and_type.css`、`components.css`、`admin-scope.css`。因为 `AdminLayout` 是 `React.lazy` 的 chunk，这段样式只会进入后台产物的 CSS，不增加前台首屏体积。
+- `colors_and_type.css` 与 `components.css` 是**生成物**：`node src/admin-kit/scope-kit.cjs` 读取同目录的 `*.raw.css`，去掉注释并把每一条选择器前缀成 `.yuanli-admin`（`:root`/`html`/`body` 直接改写为该作用域，`@keyframes`/`@font-face` 等保持原样）。仓库没有为它注册 npm 脚本，改 `*.raw.css` 后必须手动重跑，否则线上文件仍是旧的。
+- `admin-scope.css` 是手写的桥接层：把后台固定为浅色、把源力 token 映射到项目既有的 `--primary`/`--text-*` 等变量，并定义 `.yl-*` 外壳布局。
+- `index.css` 里的 `@import` 顺序是契约（token → 组件 → 桥接），调换会让后台组件拿到未映射的变量。
+
+新增后台页面时不需要额外引入样式，只要挂在 `AdminLayout` 的 `Outlet` 下就自动继承 `.yuanli-admin` 作用域；反过来，前台组件若想复用源力样式，必须自己包一层 `.yuanli-admin`，否则所有选择器都不匹配。
 
 ## 从源码到可安装应用：三条拓扑
 
@@ -246,7 +263,7 @@ CSP 以 `<meta http-equiv>` 写在 `index.html` 里，因此**它随构建产物
 |---|---|---|
 | 生成者 | `vite-plugin-pwa`，配置内联在 `vite.config.js` 的 `VitePWA({ manifest })` | 后端 `/api/site-content/pwa-manifest` |
 | 落地形态 | `dist/manifest.webmanifest`，并在构建后的 `index.html` `</head>` 前注入 `<link rel="manifest" href="/manifest.webmanifest">` | 由 `App.jsx` 在站点设置加载后把同一个 link 的 `href` 改指后端端点 |
-| 内容来源 | 源码里写死：名称"兽剧聚合平台"、`start_url: "/"`、`display: standalone`、`background_color: #0f172a`、`theme_color: #6366f1`、192/512/svg 图标、两个 shortcuts、`share_target` | 后台"站点内容"里的 `pwaName`、`pwaShortName`、`pwaThemeColor`、`pwaIcon192`、`pwaIcon512` 等 |
+| 内容来源 | 源码里写死：名称"兽剧聚合平台"、`start_url: "/"`、`display: standalone`、`background_color: #f8fafc`、`theme_color: #1777ff`、192/512/svg 图标、两个 shortcuts、`share_target` | 后台"站点内容"里的 `pwaName`、`pwaShortName`、`pwaThemeColor`、`pwaIcon192`、`pwaIcon512` 等 |
 | 何时生效 | 构建即有；dev 阶段不产出（`devOptions.enabled: false`，既不生成 SW 也不注入 manifest link） | 站点设置请求成功之后；API 不可用或首屏未完成时保持构建期那一套 |
 
 同一段运行时逻辑还会一并更新 `apple-touch-icon`（用 `pwaIcon512 || pwaIcon192`）、`apple-mobile-web-app-title`、`application-name`、`theme-color`、`msapplication-TileColor`。**不随之改变的是** `index.html` 里写死的 `<link rel="icon" href="/icon.svg">`——浏览器标签页图标始终来自 `public/icon.svg`。

@@ -3,9 +3,6 @@ type: quality-gates
 title: 验证与质量门禁（无测试框架）
 description: 本仓库没有测试运行器、也没有 CI 质量门禁，唯一自动化检查是 npm run lint（ESLint 9 flat config，--max-warnings 0）；本页给出 lint 的真实语义与范围、生产构建与 preview 冒烟的能力边界，以及认证/会话刷新、主题与图标覆盖、审核流转、PWA 缓存的可勾选手工回归清单，并记录 playwright 依赖空转的风险。
 tags: [verification, lint, eslint-flat-config, build-smoke, manual-regression, pwa-cache]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-29T12:47:15.545Z
 sources:
   - id: openwiki-source-6d4b4e707b8d60b6ccfa3425
     resource: repo://.github/workflows/openwiki-update.yml
@@ -52,6 +49,9 @@ sources:
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
 generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-02T17:44:42.174Z
 ---
 
 # 验证与质量门禁（无测试框架）

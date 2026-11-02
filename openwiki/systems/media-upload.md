@@ -3,9 +3,6 @@ type: system
 title: 图片上传与裁剪管线
 description: 前端共享媒体管线的实现说明：ImageUploader 的 URL/本地文件双模式与归一化坐标裁剪框、aspectRatio 与 canvas 输出尺寸如何决定上传内容、各调用点实际使用的 uploadEndpoint 与 FormData 字段名、useImageUpload 的 5MB 与图片类型白名单校验，以及上传结果 URL 在剧集封面、头像、站点素材、主题壁纸与图标、系统壁纸库等处的消费位置。
 tags: [media-upload, image-crop, multipart-formdata, upload-endpoints, client-validation, csrf]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-29T12:47:15.545Z
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
@@ -56,6 +53,9 @@ sources:
   - id: openwiki-source-37ca2d167bb7e856d4f1a11c
     resource: repo://src/utils/axiosConfig.js
 generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-02T17:44:42.174Z
 ---
 
 # 图片上传与裁剪管线

@@ -3,9 +3,6 @@ type: architecture
 title: 路由分区与访问守卫
 description: 归纳 App.jsx 中公共与后台两套 Routes 的分区判定、布局骨架、lazy+Suspense 边界、getRoutePageTitleKey 标题映射，以及 Admin 跳板、AdminLayout 与 AdminGuard 组成的 verify 校验链和 forceEmailChange 全局拦截层。
 tags: [routing, access-control, admin, react-router, session, frontend]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-29T12:47:15.545Z
 sources:
   - id: openwiki-source-1fe4306a261748bda5b78973
     resource: repo://src/App.jsx
@@ -33,7 +30,10 @@ sources:
     resource: repo://src/utils/adminApi.js
   - id: openwiki-source-37ca2d167bb7e856d4f1a11c
     resource: repo://src/utils/axiosConfig.js
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+generated: { by: "opencode", at: "2026-11-02T17:44:42.174Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-02T17:44:42.174Z
 ---
 
 # 路由分区与访问守卫
@@ -51,7 +51,7 @@ generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
 | 公共树 | `pathname` 不以 `/admin` 开头 | `skip-link` → `AnnouncementBanner` → `NavBarErrorBoundary`/`NavBar` → `.container#main-content` → `.page-enter`（`key={location.pathname}`）→ `Suspense` → `Routes` | 30 余条扁平路由 | `path="*"` → `NotFound` |
 | 后台树 | `pathname` 以 `/admin` 开头 | 无前台骨架，只有 `Suspense` → 后台 `Routes` | `/admin` 跳板 + `/admin` 布局路由及其 24 个子路径 | **无** `*` 兜底 |
 
-两个分区之前还有一道共同前置：`initializing` 为真时直接返回一个 `common.loading` 占位页，所以后台页面同样要等 `AuthContext` 的 `GET /api/auth/me` 初始化结束（无论用户是否登录）。两棵树都会渲染 `FooterBeian`，但前台独有的一批全局浮层（`FeedbackModal`、`ThemeColorPicker`、`OfflineIndicator`、`InstallPrompt`、`AnnouncementPopup`、`ForceEmailChange`、`apiError` 提示条）只出现在公共分支的返回值里。这个不对称有实际后果，见后文「forceEmailChange 拦截层」。
+两个分区之前还有一道共同前置：`initializing` 为真时直接返回一个 `common.loading` 占位页，所以后台页面同样要等 `AuthContext` 的 `GET /api/auth/me` 初始化结束（无论用户是否登录）。`FooterBeian` 与一批全局浮层（`FeedbackModal`、`ThemeColorPicker`、`OfflineIndicator`、`InstallPrompt`、`AnnouncementPopup`、`ForceEmailChange`、`apiError` 提示条）都只出现在公共分支的返回值里，后台分支一条都不渲染。这个不对称有实际后果，见后文「forceEmailChange 拦截层」。
 
 `.page-enter` 的 `key={location.pathname}` 意味着前台每次换路径都会重新挂载页面组件、重置页面内 state 并重放进入动画；后台分支没有这层包装。
 
@@ -79,12 +79,12 @@ generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
 
 子路径按能力大致分四组，便于定位新增页面的位置：
 
-| 分组 | 典型路径 | 额外前端门槛 |
+| 分组 | 典型路径 | 路由级角色 |
 | --- | --- | --- |
-| 审核与内容 | `/admin/review`、`/admin/episode-trash`、`/admin/theme-review`、`/admin/creator-profiles` | 部分页面自行判定 `superadmin` |
-| 内容与站点配置 | `/admin/episodes`、`/admin/categories`、`/admin/banners`、`/admin/site-content`、`/admin/announcements`、`/admin/friend-links` | 无（创作者可见子集） |
-| 账号与安全运维 | `/admin/users`、`/admin/sessions`、`/admin/audit-logs`、`/admin/backup`、`/admin/email-settings`、`/admin/api-usage` | `superadmin` |
-| 统计与主题 | `/admin/stats`、`/admin/analytics`、`/admin/themes` | 主题管理 `superadmin` |
+| 审核与内容 | `/admin/review`、`/admin/episode-trash`、`/admin/episodes`、`/admin/creator-profile` | `ADMIN_ROLES_ALL` |
+| 内容与站点配置 | `/admin/categories`、`/admin/banners`、`/admin/announcements`、`/admin/site-content`、`/admin/friend-links` | 前两者 `UP`，其余 `SUPER` |
+| 账号与安全运维 | `/admin/users`、`/admin/sessions`、`/admin/audit-logs`、`/admin/backup`、`/admin/email-settings`、`/admin/api-usage` | `SUPER` |
+| 统计与主题 | `/admin/stats`、`/admin/analytics`、`/admin/themes`、`/admin/theme-review` | 统计/分析 `UP`，主题 `SUPER` |
 
 后台树没有 `path="*"`，`NotFound` 只注册在公共树里；因此未声明的 `/admin/...` 路径不会显示 404 页，也不会渲染任何后台内容（`isAdminRoute` 已把公共树挡在门外）。
 
@@ -97,8 +97,9 @@ generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
 | 会话初始化 | `AuthContext` | 任意路由、启动时 | `GET /api/auth/me` | `user=null`，`initializing=false`，页面照常渲染 |
 | 入口跳板 | `Admin` | 精确访问 `/admin` | `GET /api/admin/verify` | `replace` 到 `/login` |
 | 布局校验 | `AdminLayout` | 挂载时一次 | `GET /api/admin/verify`（`adminApi`） | `replace` 到 `/login`，`loading`/无 `admin` 时返回 `null` |
-| 页面守卫 | `AdminGuard` | 每个子路由各包一个，`useEffect` 依赖 `location.pathname` | `GET /api/admin/verify` | `<Navigate to="/login" replace />`，校验期间 `LoadingFallback` |
-| 角色细分 | 各后台页面 | 挂载后 `useEffect` | `admin.role !== 'superadmin'` → `replace` 回 `/admin/dashboard` | 静默改道 |
+| 页面守卫 | `AdminGuard` | 每个子路由各包一个，`useEffect` 依赖 `location.pathname` 与 `roles` | `GET /api/admin/verify`（`skipRedirect: true`） | 未登录/无后台权限 → `<Navigate to="/login" replace />`；角色不足 → `<Navigate to="/admin/dashboard" replace />`；校验期间 `LoadingFallback` |
+| 路由级角色 | `AdminGuard` 的 `roles` 参数 | 与上一步同一次 verify | 路由声明处传入 `ADMIN_ROLES_ALL` / `ADMIN_ROLES_UP` / `ADMIN_ROLES_SUPER` | 命中不足即回仪表盘 |
+| 角色细分 | 各后台页面 | 挂载后 `useEffect` | 页面内再判 `admin.role !== 'superadmin'` | 静默改道 |
 | 真实授权 | 后端 | 每个 `/api/admin/*` | cookie 会话 + 角色 | 401/403 |
 
 因此首次进入 `/admin/dashboard` 会连续发生两次 `verify`（`AdminLayout` 先挂载并返回 `null`，成功后才渲染 `Outlet`，`AdminGuard` 随后才挂载），此后每切换一个后台子页面再由新的 `AdminGuard` 追加一次。守卫请求本身没有取消逻辑，快速连点会叠加多次 `verify`。
@@ -125,17 +126,31 @@ sequenceDiagram
 
 首次进入后台页面的校验顺序：布局先验一次，页面守卫再验一次，全部通过才渲染内容。
 
-`AdminGuard` 的 `catch` 是无差别捕获：网络失败、离线、`/api/admin/verify` 5xx 与 401 走同一条路径，都会把用户送到 `/login`。对离线可用的 PWA 场景，这等于「断网即掉出后台」。
+`AdminGuard` 的 `catch` 是无差别捕获：网络失败、离线、`/api/admin/verify` 5xx 与 401 走同一条路径，都会把用户送到 `/login`。对离线可用的 PWA 场景，这等于「断网即掉出后台」。verify 请求带 `skipRedirect: true`，避免拦截器的 401 整页跳转先于守卫自己的 `Navigate` 生效。
+
+### 路由级角色矩阵
+
+`AdminGuard` 接受 `roles` 数组，`App.jsx` 顶部用三个常量表达角色集合：`ADMIN_ROLES_ALL = ['creator','admin','superadmin']`、`ADMIN_ROLES_UP = ['admin','superadmin']`、`ADMIN_ROLES_SUPER = ['superadmin']`。verify 成功后被验者的 `role` 不在 `roles` 内即进入 `denied` 状态并 `replace` 回 `/admin/dashboard`，因此创作者不会看到用户管理、站点配置等超管页面的空壳。
+
+| 角色集合 | 后台路由 |
+| --- | --- |
+| `ADMIN_ROLES_ALL` | `dashboard`、`episodes`、`review`、`episode-trash`、`creator-profile` |
+| `ADMIN_ROLES_UP` | `categories`、`banners`、`reports`、`stats`、`feedback`、`analytics` |
+| `ADMIN_ROLES_SUPER` | `users`、`creator-profiles`、`announcements`、`site-content`、`email-settings`、`audit-logs`、`backup`、`api-usage`、`friend-links`、`sessions`、`themes`、`theme-review` |
+
+`roles` 以 `roles.join(',')` 的字符串作为 effect 依赖，避免调用方传入的数组字面量导致反复 verify；effect 内用 `cancelled` 标志阻止卸载后的 setState。路由级判定只减少一次无意义的页面挂载，后端仍然是最终授权方。
 
 ### AdminLayout 的额外职责
 
-除布局与守卫，`AdminLayout` 还承担三件事，构成后台页面的隐式契约：
+除布局与守卫，`AdminLayout` 还承担五件事，构成后台页面的隐式契约：
 
 1. 通过 `<Outlet context={{ admin }} />` 把 `verify` 返回的 admin 对象下发给所有子页面。**所有后台页面都用 `useOutletContext()` 读取 `admin`**，因此新页面必须声明为布局路由的子路由，否则解构 `null` 会直接抛错。
 2. 每 5 分钟 `POST /api/user-sessions/heartbeat`，让后台常驻标签页不会因会话闲置被判失效。
 3. 登出：`POST /api/admin/logout` 后清空 `admin` 并 `replace` 到 `/login`。
+4. 角色化侧栏：`NAV_GROUPS` 把入口分成概览、内容管理、审核与治理、用户管理、主题外观、数据与系统六组，每项标注允许角色，渲染前按当前 `admin.role` 过滤掉无权项与空组。
+5. 后台画布：根节点加 `.yuanli-admin` 并导入 `src/admin-kit/index.css`，同时把 `document.body` 的底部内边距临时置 0，避免前台为固定页脚预留的空白在后台露出。
 
-角色差异同时体现在导航层：`NavBar` 的「更多」菜单只在 `user.role` ∈ `{admin, superadmin, creator}` 时给出 `/admin/dashboard` 入口，`AdminDashboard` 再按 `admin.role`（`creator` / 非 `creator`）决定展示哪些卡片。这些是可见性过滤，不是安全边界。
+角色差异同时体现在导航层：`NavBar` 的「更多」菜单只在 `user.role` ∈ `{admin, superadmin, creator}` 时给出 `/admin/dashboard` 入口，`AdminDashboard` 再按 `admin.role` 决定展示哪些卡片，`AdminLayout` 侧栏按同一套角色集合过滤。这些是可见性过滤，不是安全边界。
 
 ## 守卫与后端授权的关系
 
@@ -192,7 +207,7 @@ sequenceDiagram
 | 3. 补 `getRoutePageTitleKey` | `App.jsx` 的映射函数，顺序靠前放更具体的规则 | 标签页标题退化为站点名 |
 | 4. 加入口 | 前台 `NavBar` 菜单或 `AdminDashboard` 卡片 | 页面存在但无人可达 |
 
-受保护的前台页面沿用 `user ? <Page /> : <Navigate to="/login" />`；后台页面如果只对超管开放，需在页面内（不是路由层）加 `admin.role !== 'superadmin'` 的判断并 `replace` 回 `/admin/dashboard`，与现有 `AdminUsers`、`AdminBackup`、`AdminApiUsage`、`AdminThemeReview` 保持一致。新增页面还要在 `src/locales` 中补 `pageTitle.*` 与页面文案 key。
+受保护的前台页面沿用 `user ? <Page /> : <Navigate to="/login" />`；后台页面在路由声明处给 `AdminGuard` 传 `roles`（`ADMIN_ROLES_ALL` / `ADMIN_ROLES_UP` / `ADMIN_ROLES_SUPER`），与后端 handler 的角色要求保持一致，页面内再保留既有的 `admin.role !== 'superadmin'` 兜底（`AdminUsers`、`AdminBackup`、`AdminApiUsage`、`AdminThemeReview`）。新增页面还要在 `src/locales` 中补 `pageTitle.*` 与页面文案 key，并在 `AdminLayout` 的 `NAV_GROUPS` 里登记入口与角色。
 
 ## 已知边界与粗糙处
 

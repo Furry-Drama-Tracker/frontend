@@ -3,9 +3,6 @@ type: architecture
 title: 状态管理与浏览器持久化契约
 description: 五个 React Context（Theme/I18n/SiteSettings/Auth/Icon）的状态所有权与生命周期，localStorage 与 sessionStorage 中各个键的写入、过期与清理时机，以及无全局状态库时依赖 window 自定义事件完成跨组件同步的机制。
 tags: [react-context, client-state, localstorage, persistence, custom-events]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-29T12:47:15.545Z
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
@@ -57,7 +54,10 @@ sources:
     resource: repo://src/utils/offlineQueue.js
   - id: openwiki-source-a40ec8eba1327ab0c96f271f
     resource: repo://src/utils/translationCache.js
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+generated: { by: "opencode", at: "2026-11-02T17:44:42.174Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-02T17:44:42.174Z
 ---
 
 # 状态管理与浏览器持久化契约
@@ -135,7 +135,9 @@ stateDiagram-v2
 
 该图刻画 `themeMode`（用户意图）到 `theme`（解析结果）的映射：只有 `setThemeModeTo` 会同时更新两者并落盘。
 
-**样式写入是两级覆盖。** 第一个 effect 把 `themes[theme]` 里上百个 token 逐条 `setProperty` 到 `documentElement`；第二个 effect 再调用 `applyAccentColor(accentColor, theme)`，用 `generateColorShades()` 派生出的 `primary/primaryLight/primaryHover/primaryBg/...` 覆盖其中十几个 token，并按 dark/light 使用不同透明度，2026 增强 token（`--glow-primary`、`--mesh-color-*`、`--border-gradient-primary` 等）也在这里跟随 accent 重算。所以**改 token 表不会影响 accent 相关变量**，要改必须两处一起改。
+**样式写入是两级覆盖。** 第一个 effect 把 `themes[theme]` 里上百个 token 逐条 `setProperty` 到 `documentElement`；第二个 effect 再调用 `applyAccentColor(accentColor, theme)`，用 `generateColorShades()` 派生出的 `primary/primaryLight/primaryHover/primaryBg/...` 覆盖其中十几个 token，并按 dark/light 使用不同透明度，2026 增强 token（`--glow-primary`、`--mesh-color-*`、`--border-gradient-primary` 等）也在这里跟随 accent 重算。除颜色本身，accent 还派生 `--primary-rgb`（供 CSS 写 `rgba(var(--primary-rgb), a)`）、`--btn-gradient-hover`，以及用 `getOnPrimaryColor()` 按 WCAG 相对亮度自动选出的 `--on-primary` / `--primary-foreground` / `--btn-text`（主题色上放黑字还是白字）。所以**改 token 表不会影响 accent 相关变量**，要改必须两处一起改。
+
+ThemeContext 另外导出三个纯函数供 UI 复用：`relativeLuminance(hex)`、`contrastRatio(a, b)`、`getAccentContrastWarning(hex, theme)`（对比度低于 3:1 时返回 `light`/`dark` 告警标记）。它们不写任何存储，只是读取 accent 与当前主题后返回判定，供 `ThemeColorPicker` 在用户选色时即席提示。
 
 **输入校验与兜底**：`accent_color` 只在匹配 `^#[0-9a-fA-F]{6}$` 时被采用（初值不匹配则回退 `#6366f1`），`setAccentColor` 对非法值直接 return 且不写盘；`setThemeModeTo` 只接受三个白名单值，同样非法即 return。
 

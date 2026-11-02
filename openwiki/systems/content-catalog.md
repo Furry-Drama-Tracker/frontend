@@ -3,14 +3,15 @@ type: system
 title: 内容发现、剧集详情与用户内容库
 description: 用户侧内容消费链路的实现说明：Home 以 URL 查询参数作为筛选/排序状态的复原依据并叠加无限滚动与 sessionStorage 滚动恢复，EpisodeDetail 用三个独立 AbortController 请求装配详情、推荐与登录态并串联 view 计数、历史记录与通知已读；另含更新日历、时间线、创作者页、搜索/标签云，以及 Profile 的收藏夹、分享文件夹、关注与历史管理。
 tags: [content-catalog, home-feed, episode-detail, url-query-state, favorites-folders, update-calendar, timeline]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-29T12:47:15.545Z
 sources:
   - id: openwiki-source-602012ce5f31c1a198602c86
     resource: repo://src/components/AdminEpisodes.jsx
+  - id: openwiki-source-4e37b1e20cb72fa7128c5bba
+    resource: repo://src/components/BannerCarousel.jsx
   - id: openwiki-source-4fe2e5e18ba452cb1c835d8d
     resource: repo://src/components/CreatorPage.jsx
+  - id: openwiki-source-bb06018fa8ffdb66298a53a3
+    resource: repo://src/components/EmptyState.jsx
   - id: openwiki-source-e0d67f9ad17adcfaf65d0aca
     resource: repo://src/components/EpisodeCard.jsx
   - id: openwiki-source-8e2cf47532f4659008db992a
@@ -43,7 +44,10 @@ sources:
     resource: repo://src/hooks/useEpisodes.js
   - id: openwiki-source-091078cd4f585582a9efba7a
     resource: repo://src/utils/offlineQueue.js
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+generated: { by: "opencode", at: "2026-11-02T17:44:42.174Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-02T17:44:42.174Z
 ---
 
 # 内容发现、剧集详情与用户内容库
@@ -113,7 +117,13 @@ flowchart TD
 
 `/api/categories` 与 `/api/banners` 各自独立请求、错误静默（失败即空），因此分类胶囊缺失不会阻塞列表。标签云 `TagCloud` 只在挂载时请求一次 `/api/episodes/popular-tags`，用 `count` 线性映射到字号（12–26px）与透明度；无数据或加载中直接 `return null`。标签点击是"选中/取消"语义：`Home.handleTagClick` 发现点击的是当前 `filters.tag` 就清空，因此标签云与卡片上的 `#标签` 走同一条路径。
 
+**欢迎层统计。** `Home` 还额外请求 `GET /api/site-stats`，把 `{ users, episodes, online }` 转成数字后与 `total`、`onBrowseClick` 一起传给 `BannerCarousel`；失败时回退为三个 0，不会阻塞首屏。`BannerCarousel` 用 `DigitRoll` 把每个数字拆成 0–9 的竖条做 odometer 滚动（位与位错峰 70ms），并在 `matchMedia('(prefers-reduced-motion: reduce)')` 命中时直接落位、不播动画；有统计时欢迎层停留 2.8 秒，无统计时 3 秒。"浏览全部"按钮平滑滚到分类区（`onBrowseClick`）。
+
+**骨架屏与空态。** 列表区用 `.episode-grid-stack` 叠两层：加载中渲染 8 张 `EpisodeCardSkeleton`，数据到达后内容层 `.grid-enter` 淡入、骨架层 `.grid-leaving` 再淡出 190ms 后卸载（`skeletonFading`）。空列表改用统一的 `EmptyState` 组件（线稿 SVG 插画 + 标题 + 说明 + 可选行动按钮），`hasActiveFilter` 为真时提供"清空筛选"按钮（`resetFilters` 同时清空 `filters`、`sortOrder` 与全部 URL 参数），否则提示没有内容。
+
 ## 详情页：EpisodeDetail 的数据装配
+
+`EpisodeDetail` 顶部固定挂载 `ScrollProgress`：一个 2px 的顶部细线，用 `requestAnimationFrame` 节流读取 `documentElement.scrollTop / (scrollHeight - clientHeight)`，以 `scaleX` 反映阅读进度，`pointer-events: none`，不参与交互。单集列表项在鼠标悬停时还会通过 `createPortal` 在 `document.body` 上渲染 `.ep-preview` 卡片（封面、集号/标题、时长、日期、播放量、平台数），位置按视口边界夹取；`matchMedia('(hover: none)')` 的触屏设备直接不显示预览。
 
 `EpisodeDetail` 是全站写操作最密集的页面。它接收 `user` prop（来自路由），同时从 `AuthContext` 取 `getAuthHeaders()`——后者当前返回空对象，认证完全依赖 httpOnly cookie（见 [HTTP 层、CSRF 与双 Token 刷新](../architecture/http-and-session.md)），因此组件里对 `localStorage.getItem('user')` 的检查只是"要不要发这个请求"的开关，不是凭证。
 

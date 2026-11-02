@@ -3,12 +3,13 @@ type: system
 title: 管理后台：布局、角色可见性与待办
 description: 归纳 /admin/* 管理后台的外壳与校验链（AdminLayout 二次 verify、心跳、登出、useOutletContext 传 admin）、仪表盘按 creator/admin/superadmin 分层的入口与 pending-counts 红色徽章、各管理页按职责域的边界，以及 adminApi + 表格 + Modal 的共用模式与新增后台页的同步清单。
 tags: [admin-console, role-visibility, pending-counts, admin-layout, react-router]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-29T12:47:15.545Z
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
+  - id: openwiki-source-f17a4f083b3937123213d031
+    resource: repo://src/admin-kit/admin-scope.css
+  - id: openwiki-source-5f428c1e5bece3d98072e87f
+    resource: repo://src/admin-kit/index.css
   - id: openwiki-source-1fe4306a261748bda5b78973
     resource: repo://src/App.jsx
   - id: openwiki-source-67eb6f205e60105b7305086e
@@ -71,14 +72,17 @@ sources:
     resource: repo://src/utils/apiEndpoints.js
   - id: openwiki-source-37ca2d167bb7e856d4f1a11c
     resource: repo://src/utils/axiosConfig.js
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+generated: { by: "opencode", at: "2026-11-02T17:44:42.174Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-02T17:44:42.174Z
 ---
 
 # 管理后台：布局、角色可见性与待办
 
-管理后台是同一份前端 SPA 内的第二棵路由树：只要 `location.pathname` 以 `/admin` 开头，`AppContent` 就切到后台的 `<Routes>`，不渲染 `NavBar`、`AnnouncementBanner` 等前台组件，只在末尾保留 `FooterBeian`。因此后台没有独立的构建产物、没有第二套登录体系，也没有侧边导航——**页面发现完全依赖仪表盘卡片**。
+管理后台是同一份前端 SPA 内的第二棵路由树：只要 `location.pathname` 以 `/admin` 开头，`AppContent` 就切到后台的 `<Routes>`，不渲染 `NavBar`、`AnnouncementBanner`、`FooterBeian` 等前台组件。它没有独立的构建产物、没有第二套登录体系，视觉上则是一套与前台隔离的「源力」设计系统：`AdminLayout` 根节点加 `.yuanli-admin`、导入 `src/admin-kit/index.css`，页面入口由**按角色过滤的侧边栏**与仪表盘卡片共同提供。
 
-整体结构、`verify` 校验链与标题映射已在 [路由与守卫](../architecture/routing-and-guards.md) 中详述，本文只补齐后台自身的分工：外壳负责"谁是 admin"，仪表盘负责"你该看到什么"，各管理页负责"这件事怎么做"，`adminApi` + 全局 axios 拦截器负责"请求怎么发出去"。
+整体结构、`verify` 校验链与标题映射已在 [路由与守卫](../architecture/routing-and-guards.md) 中详述，本文只补齐后台自身的分工：外壳负责"谁是 admin"与"你能去哪"，仪表盘负责"今天有什么待办"，各管理页负责"这件事怎么做"，`adminApi` + 全局 axios 拦截器负责"请求怎么发出去"。
 
 ## 进入链路：跳板、外壳、守卫的三次 verify
 
@@ -109,22 +113,24 @@ sequenceDiagram
 
 - **`src/components/Admin.jsx`（`/admin` 跳板）**：只做一次 `GET /api/admin/verify`，成功则 `navigate('/admin/dashboard', { replace: true })`，失败跳 `/login`；不渲染任何 UI。它使 `/admin` 成为一个永远不停留的中转页。
 - **`AdminLayout`（布局路由）**：挂载即再校验一次，成功后用 `<Outlet context={{ admin }} />` 把 admin 对象下发给所有子页——这是后台唯一的"当前操作者"来源。注意它在 `loading` 与 `!admin` 两种状态下都 `return null`，所以校验期间后台是**纯白屏**而不是骨架屏。
-- **`AdminGuard`（每个子路由各包一层）**：依赖 `location.pathname` 重新校验，未通过则 `<Navigate to="/login" replace />`。
+- **`AdminGuard`（每个子路由各包一层）**：依赖 `location.pathname` 与 `roles` 重新校验，未登录/无后台权限则 `<Navigate to="/login" replace />`，角色不足则 `<Navigate to="/admin/dashboard" replace />`。
 
 因此冷启动直接打开 `/admin/dashboard` 会连续发生两次 `verify`（Layout + Guard），而经由 `/admin` 跳板进入则是三次。这段重复校验的开销与叠加行为见 [路由与守卫](../architecture/routing-and-guards.md)。
 
-### 外壳提供的四个动作
+### 外壳：顶栏 + 角色化侧栏
 
-`AdminLayout` 的顶栏只有 48px 高的一条 sticky 条，没有侧边栏，动作固定为四个：
+`AdminLayout` 现在是「顶栏 + 可折叠侧栏」两段式布局，顶栏动作固定为四项：
 
 | 动作 | 实现 | 说明 |
 | --- | --- | --- |
-| 控制台首页 | `navigate('/admin/dashboard')` | 后台唯一的"总入口" |
-| 返回 | `navigate(-1)` | 浏览器历史回退，不区分来源页 |
-| 网站首页 | `<a href="/">` | 原生锚点，整页跳出后台路由树 |
+| 折叠侧栏 | `setCollapsed(v => !v)` | 控制 `<aside>` 是否渲染，状态不持久化 |
+| 品牌/网站首页 | `<a className="yl-brand" href="/">` | 原生锚点，整页跳出后台路由树 |
+| 控制台首页 | `navigate('/admin/dashboard')` | 后台的"总入口" |
 | 退出登录 | `POST /api/admin/logout` → `navigate('/login', { replace: true })` | 即使接口失败也会清空本地 `admin` 状态并跳转 |
 
-除校验外，外壳还持有一个 **5 分钟间隔的心跳**：`POST /api/user-sessions/heartbeat`，失败静默吞掉（`.catch(() => {})`）。它刻意不依赖 `AuthContext` 的 `user` 状态——后台只持有 admin 会话 cookie 时也要维持设备会话记录，`AdminSessions`（设备管理）里的在线设备列表才能反映后台操作者。若同一浏览器同时存在登录用户，`AuthContext` 的心跳会并行打同一个端点，二者并不互斥。
+侧栏由 `NAV_GROUPS` 驱动，按「概览 / 内容管理 / 审核与治理 / 用户管理 / 主题外观 / 数据与系统」六组渲染，每个条目自带 `roles` 数组；渲染前用 `admin.role` 过滤掉无权条目与空组，所以创作者只会看到概览、剧集、回收站、审核、创作者主页五个入口。侧栏用 `NavLink` 的 `isActive` 加 `.active`，内容区 `<main className="yl-content" key={location.pathname}>` 在换页时重挂载。
+
+除校验外，外壳还持有一个 **5 分钟间隔的心跳**：`POST /api/user-sessions/heartbeat`，失败静默吞掉（`.catch(() => {})`）。它刻意不依赖 `AuthContext` 的 `user` 状态——后台只持有 admin 会话 cookie 时也要维持设备会话记录，`AdminSessions`（设备管理）里的在线设备列表才能反映后台操作者。若同一浏览器同时存在登录用户，`AuthContext` 的心跳会并行打同一个端点，二者并不互斥。挂载时还会把 `document.body` 的底部内边距临时置 0，卸载时恢复，避免前台为页脚预留的空白在浅色后台画布底部留下一道空带。
 
 ## 仪表盘：角色分层入口与待办徽章
 
@@ -132,11 +138,13 @@ sequenceDiagram
 
 ### 角色分层
 
-三档角色在仪表盘上的可见集合是包含关系，但**并非严格包含**（creator 有独占卡片，admin 反而看不到创作者主页管理）：
+卡片集合由 `cards` 数组 + `isCreator`/`isAdmin`/`isSuper` 三个布尔统一驱动，不再是散落的 `admin.role === ... &&` 分支：
 
-- **creator**：剧集管理（文案切换为"创建和管理我的剧集"）+ 创作者主页。
-- **admin**：剧集管理、分类、轮播图，以及审核管理、剧集回收站、举报、用户反馈、数据分析。
-- **superadmin**：以上全部，外加用户管理、创作者主页管理、公告通知、网站内容、邮件服务、操作日志、数据备份、友链、设备、API 用量、主题、主题审批，并额外获得"⚙️ 自动状态流转"面板。
+- **creator**：剧集管理（文案切换为"创建和管理我的剧集"）+ 创作者主页 + 审核管理 + 剧集回收站。
+- **admin**：剧集管理、分类、轮播图、审核管理、回收站、举报、反馈、数据分析，以及自动状态流转面板。
+- **superadmin**：以上全部，外加用户管理、创作者主页管理、公告通知、网站内容、邮件服务、操作日志、数据备份、友链、设备、API 用量、主题、主题审批。
+
+注意 `/admin/stats` 仍然没有卡片入口，`/admin/feedback` 与 `/admin/theme-review` 则各自补上了卡片与徽章。卡片视觉使用 `.yl-panel`/`.yl-badge` 等源力类名。
 
 自动状态流转面板是仪表盘上唯一的写操作入口，两个按钮分别 `POST /api/auto-status/auto-complete`（自动标记已完结）与 `POST /api/auto-status/check-premieres`（发布到期预告），返回的 `message` 显示在面板下方，并由 `clearStatusMsg` 在 3 秒后清空；失败的文案统一为 `adminDashboard.operationFailed`。
 
@@ -156,58 +164,61 @@ sequenceDiagram
 
 ### 角色 × 功能可见性矩阵
 
-下表合并了三层信息：仪表盘卡片的角色条件、页面内是否存在角色重定向、以及是否带待办徽章。"直连"一列指跳过卡片直接用 URL 访问时的行为。
+下表合并四层信息：路由层 `AdminGuard` 的角色集合（决定直连 URL 是否被送回仪表盘）、仪表盘卡片条件、页面内是否还有二次角色重定向、以及是否带待办徽章。
 
-| 功能（路由） | creator | admin | superadmin | 页面内角色门 | 直连行为 | 徽章 |
-| --- | --- | --- | --- | --- | --- | --- |
-| 剧集管理 `/admin/episodes` | 卡片可见 | 卡片可见 | 卡片可见 | 无重定向，按角色切数据源 | 正常渲染 | `episodes` |
-| 创作者主页 `/admin/creator-profile` | 卡片可见 | **无卡片** | **无卡片** | 仅 creator/admin/superadmin 放行，否则重定向 | 正常渲染 | — |
-| 分类 `/admin/categories` | 隐藏 | 卡片可见 | 卡片可见 | 无 | 仍会渲染并发请求 | — |
-| 轮播图 `/admin/banners` | 隐藏 | 卡片可见 | 卡片可见 | 无 | 仍会渲染并发请求 | — |
-| 审核管理 `/admin/review` | 隐藏 | 卡片可见 | 卡片可见 | 非 admin/superadmin 重定向到仪表盘 | 重定向 | `episodes` |
-| 剧集回收站 `/admin/episode-trash` | 隐藏 | 卡片可见 | 卡片可见 | 无 | 仍会渲染并发请求 | — |
-| 举报 `/admin/reports` | 隐藏 | 卡片可见 | 卡片可见 | 无 | 仍会渲染并发请求 | `reports` |
-| 用户反馈 `/admin/feedback` | 隐藏 | 卡片可见 | 卡片可见 | 无 | 仍会渲染并发请求 | `feedbacks` |
-| 数据分析 `/admin/analytics` | 隐藏 | 卡片可见 | 卡片可见 | 无 | 仍会渲染并发请求 | — |
-| 用户管理 `/admin/users` | 隐藏 | 隐藏 | 卡片可见 | 非 superadmin 重定向 | 重定向 | — |
-| 创作者主页管理 `/admin/creator-profiles` | 隐藏 | 隐藏 | 卡片可见 | 非 superadmin 重定向 | 重定向 | — |
-| 公告通知 `/admin/announcements` | 隐藏 | 隐藏 | 卡片可见 | 无 | 仍会渲染并发请求 | — |
-| 网站内容 `/admin/site-content` | 隐藏 | 隐藏 | 卡片可见 | 非 superadmin 重定向 | 重定向 | — |
-| 邮件服务 `/admin/email-settings` | 隐藏 | 隐藏 | 卡片可见 | 非 superadmin 重定向 | 重定向 | — |
-| 操作日志 `/admin/audit-logs` | 隐藏 | 隐藏 | 卡片可见 | 非 superadmin 重定向 | 重定向 | — |
-| 数据备份 `/admin/backup` | 隐藏 | 隐藏 | 卡片可见 | 非 superadmin 重定向 | 重定向 | — |
-| 友链 `/admin/friend-links` | 隐藏 | 隐藏 | 卡片可见 | 无 | 仍会渲染并发请求 | `friendLinks` |
-| 设备 `/admin/sessions` | 隐藏 | 隐藏 | 卡片可见 | 非 superadmin 重定向 | 重定向 | — |
-| API 用量 `/admin/api-usage` | 隐藏 | 隐藏 | 卡片可见 | 非 superadmin 重定向 | 重定向 | — |
-| 主题 `/admin/themes` | 隐藏 | 隐藏 | 卡片可见 | 软门：`isSuper` 只决定系统级开关，无重定向 | 仍会渲染 | — |
-| 主题审批 `/admin/theme-review` | 隐藏 | 隐藏 | 卡片可见 | 非 superadmin 重定向 | 重定向 | `themes` |
-| 数据统计 `/admin/stats` | **无卡片** | **无卡片** | **无卡片** | 无 | 任何后台角色都能打开 | — |
+| 功能（路由） | 路由角色集合 | 卡片 | 页面内角色门 | 直连越权行为 | 徽章 |
+| --- | --- | --- | --- | --- | --- |
+| 剧集管理 `/admin/episodes` | ALL | creator/admin/super | 按角色切数据源 | 正常渲染 | `episodes` |
+| 创作者主页 `/admin/creator-profile` | ALL | 仅 creator | 页面内允许三种角色 | 正常渲染 | — |
+| 审核管理 `/admin/review` | ALL | 全部 | 页面内要求 admin/super | 重定向到仪表盘 | `episodes` |
+| 剧集回收站 `/admin/episode-trash` | ALL | 全部 | 无 | 正常渲染 | — |
+| 分类 `/admin/categories` | UP | 非 creator | 无 | 被 AdminGuard 送回仪表盘 | — |
+| 轮播图 `/admin/banners` | UP | 非 creator | 无 | 被 AdminGuard 送回仪表盘 | — |
+| 举报 `/admin/reports` | UP | admin/super | 无 | 被 AdminGuard 送回仪表盘 | `reports` |
+| 用户反馈 `/admin/feedback` | UP | admin/super | 无 | 被 AdminGuard 送回仪表盘 | `feedbacks` |
+| 数据分析 `/admin/analytics` | UP | admin/super | 无 | 被 AdminGuard 送回仪表盘 | — |
+| 数据统计 `/admin/stats` | UP | **无卡片** | 无 | 可直达，但无入口 | — |
+| 用户管理 `/admin/users` | SUPER | super | 页面内再判一次 | 被 AdminGuard 送回仪表盘 | — |
+| 创作者主页管理 `/admin/creator-profiles` | SUPER | super | 页面内再判一次 | 被 AdminGuard 送回仪表盘 | — |
+| 公告通知 `/admin/announcements` | SUPER | super | 无 | 被 AdminGuard 送回仪表盘 | — |
+| 网站内容 `/admin/site-content` | SUPER | super | 页面内再判一次 | 被 AdminGuard 送回仪表盘 | — |
+| 邮件服务 `/admin/email-settings` | SUPER | super | 页面内再判一次 | 被 AdminGuard 送回仪表盘 | — |
+| 操作日志 `/admin/audit-logs` | SUPER | super | 页面内再判一次 | 被 AdminGuard 送回仪表盘 | — |
+| 数据备份 `/admin/backup` | SUPER | super | 页面内再判一次 | 被 AdminGuard 送回仪表盘 | — |
+| 友链 `/admin/friend-links` | SUPER | super | 无 | 被 AdminGuard 送回仪表盘 | `friendLinks` |
+| 设备 `/admin/sessions` | SUPER | super | 页面内再判一次 | 被 AdminGuard 送回仪表盘 | — |
+| API 用量 `/admin/api-usage` | SUPER | super | 页面内再判一次 | 被 AdminGuard 送回仪表盘 | — |
+| 主题 `/admin/themes` | SUPER | super | 页面内使用 isSuper 决定系统级开关 | 被 AdminGuard 送回仪表盘 | — |
+| 主题审批 `/admin/theme-review` | SUPER | super | 页面内再判一次 | 被 AdminGuard 送回仪表盘 | `themes` |
+
+`ALL` = `ADMIN_ROLES_ALL`（creator/admin/superadmin），`UP` = `ADMIN_ROLES_UP`（admin/superadmin），`SUPER` = `ADMIN_ROLES_SUPER`。路由层集合与后端 handler 的角色要求一致，因此「直连越权」从以前的"页面照常渲染、数据靠后端兜底"变成"前端先送回仪表盘"——但这仍不是授权，只是少一次注定失败的请求。
 
 ## 两道可见性防线
 
-后台的角色控制是"入口过滤 + 页面重定向"两道**前端体验层**，第三道始终是后端接口授权。下图展示一次直连 URL 的完整判定：
+后台的角色控制是"路由层 `roles` + 入口过滤 + 页面重定向"三道**前端体验层**，第四道始终是后端接口授权。下图展示一次直连 URL 的完整判定：
 
 ```mermaid
 flowchart TD
   A["访问 /admin/xxx"] --> B["AdminGuard 调用 GET /api/admin/verify"]
   B -->|失败| C["整树跳转 /login"]
-  B -->|200| D["AdminLayout 二次 verify 并下发 admin"]
-  D --> E{"仪表盘是否渲染该卡片"}
-  E -->|角色不匹配| F["无入口 但可直连 URL"]
-  E -->|匹配| G["点击进入页面"]
-  F --> H{"页面内 useEffect 角色门"}
-  G --> H
-  H -->|不通过| I["replace 到 /admin/dashboard"]
-  H -->|通过| J["adminApi 发起业务请求"]
+  B -->|角色不在 roles| D["replace 到 /admin/dashboard"]
+  B -->|200 且角色匹配| E["AdminLayout 二次 verify 并下发 admin"]
+  E --> F{"侧栏或卡片是否给出入口"}
+  F -->|无入口| G["仍可直连 URL"]
+  F -->|有入口| H["点击进入页面"]
+  G --> I{"页面内 useEffect 角色门"}
+  H --> I
+  I -->|不通过| D
+  I -->|通过| J["adminApi 发起业务请求"]
   J --> K["后端授权决定数据返回"]
 ```
 
-一次直连 URL 时的完整可见性判定：仪表盘卡片过滤入口，页面内角色门兜底，最终由后端授权决定数据。
+一次直连 URL 时的完整可见性判定：AdminGuard 先按路由角色集合拦截，仪表盘卡片与侧栏过滤入口，页面内角色门兜底，最终由后端授权决定数据。
 
 由此得出两条改动时必须遵守的不变量：
 
-1. **卡片是唯一入口**。新增页面若忘记在 `AdminDashboard` 注册卡片，它就只能靠手输 URL 抵达——`/admin/stats` 正是这种状态：路由、`pageTitle.adminStats`、页面组件都齐全，但仪表盘没有对应卡片，其他组件也没有链接指向它。
-2. **页面内角色门不完整**。目前只有 9 个页面会在 `useEffect` 里主动 `navigate('/admin/dashboard', { replace: true })` 做角色重定向（`AdminUsers`、`AdminSessions`、`AdminApiUsage`、`AdminAuditLogs`、`AdminBackup`、`AdminSiteContent`、`AdminEmailSettings`、`AdminCreatorProfiles`、`AdminThemeReview`），外加两个条件放行（`AdminReview` 要求 admin/superadmin，`AdminCreatorProfile` 允许三种后台角色）。**分类、轮播图、公告、友链、举报、反馈、回收站、数据分析、数据统计、主题**这些页面没有任何组件内角色判断：一个 `admin` 直接输入 `/admin/announcements` 会照常挂载并发出请求，最终能否看到数据完全取决于后端。这不是漏洞（授权在后端），但意味着前端的"超管专属"只是视觉约定，不能当作安全边界。
+1. **入口现在有两处**：`AdminLayout` 的 `NAV_GROUPS` 与 `AdminDashboard` 的 `cards`。新增页面若两处都忘，仍可手输 URL 抵达（`/admin/stats` 就是这种状态：路由、标题、页面组件齐全，但没有侧栏项也没有卡片）。
+2. **页面内角色门只覆盖一部分页面**。仍在 `useEffect` 里主动 `navigate('/admin/dashboard', { replace: true })` 的页面是 `AdminUsers`、`AdminSessions`、`AdminApiUsage`、`AdminAuditLogs`、`AdminBackup`、`AdminSiteContent`、`AdminEmailSettings`、`AdminCreatorProfiles`、`AdminThemeReview`，外加条件放行的 `AdminReview`（admin/super）与 `AdminCreatorProfile`（三种角色）。其余页面依赖路由层 `roles` 兜底；两层都只是体验层，真正的授权始终在后端。
 
 ## 管理页职责边界（按职责域分组）
 
@@ -272,7 +283,8 @@ flowchart TD
 后台页面在实现上高度同构，改动时按这些共同点定位能少走很多弯路：
 
 - **传输层：`adminApi`**。`src/utils/adminApi.js` 只是 `axios` 的五个方法别名，刻意不加任何 `Authorization` 头——认证完全依赖 httpOnly cookie。因此所有后台请求都会经过 `src/utils/axiosConfig.js` 的全局拦截器：请求侧为写操作挂 `X-XSRF-TOKEN`；响应侧遇到 `401` 先尝试 `/api/auth/refresh` 再重试，最终失败时因为路径以 `/admin` 开头会**整页跳转** `/login`；遇到 `419` 走同一套刷新逻辑；遇到 `403` 且带 `forceEmailChange` 则触发强制改邮箱流程。对后台的直接后果是：任何一次权限失效都会导致整页卸载重载，页面上未提交的编辑内容随之丢失。
-- **列表**：主流形态是 `<table className="admin-table">`（`AdminEpisodes`、`AdminEpisodeTrash`、`AdminUsers`、`AdminAuditLogs` 等），反馈与举报则是卡片列表；分页有前端切分（`AdminUsers` 一次性 `limit: 9999`）和后端 `page`/`limit`（`AdminEpisodeTrash` 20、`AdminAuditLogs` 30、`AdminReports` 10）两种。
+- **列表**：主流形态是 `<table className="table">` 套在 `.table-wrapper` 里（`AdminEpisodes`、`AdminEpisodeTrash`、`AdminUsers`、`AdminAuditLogs` 等），行内操作从按钮改为 `.action-link` span（`role="button"` + `tabIndex=0` + `Enter` 键处理），状态用 `.status-tag` 系列类名；反馈与举报则是卡片列表；分页有前端切分（`AdminUsers` 一次性 `limit: 9999`）和后端 `page`/`limit`（`AdminEpisodeTrash` 20、`AdminAuditLogs` 30、`AdminReports` 10）两种。
+- **搜索**：列表页用后台专用的 `AdminSearchInput`（`AdminEpisodes`、`AdminUsers`），它在本地 `data` 上按 `searchKey` 过滤并给出最多 8 条候选，支持上下键与回车选中；公开站的 `SearchInput` 与它完全独立，两者不要混用。空列表用 `EmptyState`（可带插画变体与行动按钮）。
 - **弹窗与确认**：编辑表单统一用 `Modal`，破坏性操作多数再叠一层 `window.confirm(t(...))`（`AdminUsers`、`AdminSessions`、`AdminThemes`），较新的页面改用 `ConfirmModal`（`AdminEpisodeTrash`）。
 - **提示**：没有全局 toast。每个页面自管 `error` / `success`（或 `message`）state，渲染成 `.error-message` / `.success-message` 区块，成功文案多用 3 秒定时器自动清除。
 - **i18n**：所有可见文案走 `useI18n()` 的 `t()`，日期用 `new Date(...).toLocaleDateString(locale)` 适配中英格式。核心命名空间为 `adminDashboard`（卡片标签与描述）、`pageTitle`（浏览器标题）与各页自己的命名空间（`adminEpisodes`、`adminUsers`、`adminThemeReview`…）。
@@ -283,12 +295,13 @@ flowchart TD
 
 后台的"一个功能"分散在五个位置，漏一处就会出现孤立页面或缺失文案。按顺序核对：
 
-1. **`src/App.jsx`**：用 `lazy(() => import('./components/AdminXxx'))` 声明，并在 `/admin` 布局路由下加 `<Route path="xxx" element={<AdminGuard><AdminXxx /></AdminGuard>} />`。
+1. **`src/App.jsx`**：用 `lazy(() => import('./components/AdminXxx'))` 声明，并在 `/admin` 布局路由下加 `<Route path="xxx" element={<AdminGuard roles={ADMIN_ROLES_XXX}><AdminXxx /></AdminGuard>} />`。角色集合必须与后端 handler 的 `Protect` 要求一致（`ALL`/`UP`/`SUPER`）。
 2. **`src/App.jsx` 的 `getRoutePageTitleKey`**：加 `if (pathname.startsWith('/admin/xxx')) return 'pageTitle.adminXxx';`，否则浏览器标题会回落到默认值。注意该函数用 `startsWith`，`/admin/creator-profile` 与 `/admin/creator-profiles` 这类前缀重叠的路径必须把更长的写在前面。
-3. **`src/components/AdminDashboard.jsx`**：加 `<Link className="dashboard-card" to="/admin/xxx">`，并用 `admin.role === 'superadmin'` 或 `(admin.role === 'admin' || admin.role === 'superadmin')` 或 `admin.role !== 'creator'` 决定可见性；有待办队列的再加 `<Badge count={pendingCounts.xxx} />` 且卡片容器需要 `position: 'relative'`。
-4. **页面自身的角色门**：在 `useEffect` 里 `if (admin.role !== 'superadmin') navigate('/admin/dashboard', { replace: true })`，与现有 9 个页面保持一致。
-5. **`src/locales/zh.js` 与 `src/locales/en.js` 同步**：`adminDashboard.*`（卡片标题与描述）、`pageTitle.adminXxx`、以及页面自己的文案命名空间。项目约定新字符串必须同时加到两个语言文件，缺英文键会回退到中文文案。
-6. **（可选）`/api/admin/pending-counts` 消费**：若新页承接一种待办，需要后端在该响应里加字段，并在 `pendingCounts` 初值对象里补上默认 `0`，否则首帧渲染会取到 `undefined`（`Badge` 会静默隐藏）。
+3. **`AdminLayout` 的 `NAV_GROUPS`**：在合适的组里加 `{ to: '/admin/xxx', key: 'pageTitle.adminXxx', roles: [...] }`，否则侧栏没有入口。
+4. **`src/components/AdminDashboard.jsx`**：在 `cards` 数组里加一项，用 `show: isSuper` / `isAdmin` / `isCreator` / `true` 决定可见性，有待办队列的再填 `badge: pendingCounts.xxx`。
+5. **页面自身的角色门（可选）**：若页面还要做二次限制，在 `useEffect` 里 `if (admin.role !== 'superadmin') navigate('/admin/dashboard', { replace: true })`，与现有 9 个页面保持一致。
+6. **`src/locales/zh.js` 与 `src/locales/en.js` 同步**：`adminDashboard.*`（卡片标题与描述）、`pageTitle.adminXxx`、以及页面自己的文案命名空间。项目约定新字符串必须同时加到两个语言文件，缺英文键会回退到中文文案。
+7. **（可选）`/api/admin/pending-counts` 消费**：若新页承接一种待办，需要后端在该响应里加字段，并在 `pendingCounts` 初值对象里补上默认 `0`，否则首帧渲染会取到 `undefined`（徽章条件是 `card.badge > 0`，会静默隐藏）。
 
 ## 已知陷阱
 
@@ -297,7 +310,7 @@ flowchart TD
 | 进入后台白屏一小段 | `AdminLayout` 在 `loading`/`!admin` 时 `return null` | 无 loading 指示，弱网下像卡死 |
 | 一次进入触发 2–3 次 `verify` | 跳板 + Layout + Guard 各校验一次，且都是新请求 | 后端 verify 压力与延迟叠加 |
 | `/admin/stats` 无人可达 | 仪表盘没有对应卡片，其他页面也无链接 | 数据统计页形同隐藏功能 |
-| 超管专属页可被 `admin` 直连渲染 | 分类/轮播/公告/友链/举报/反馈/回收站/分析/统计/主题缺组件内角色门 | 前端"专属"只是视觉约定，安全边界在后端 |
+| 直连 URL 被送回仪表盘 | 路由层 `AdminGuard roles` 已覆盖全部后台页；角色不足即 `replace` 到仪表盘 | 这是体验层拦截，安全边界仍在后端 |
 | 待办徽章不消失 | 徽章只在仪表盘挂载时拉一次，无轮询 | 处理完待办后需离开并回到仪表盘才更新 |
 | 后台单页报错导致整块界面消失 | `AdminErrorBoundary` 已实现但未挂载，实际由通用 `ErrorBoundary` 兜底 | 后台丢失外壳与返回入口 |
 

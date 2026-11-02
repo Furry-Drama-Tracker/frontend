@@ -3,9 +3,6 @@ type: integration
 title: 后端契约地图（API 分组与错误语义）
 description: 以 src/utils/apiEndpoints.js 为索引梳理 SPA 消费的后端表面：端点分组与路径层级、站点内容多路复用与运行时 PWA manifest、SSE ticket、三种部署拓扑，以及前端强依赖的 401/403/409/419/5xx 与登录分支错误语义、内联端点字符串的漂移风险。
 tags: [backend-api, api-contract, error-semantics, deployment-topology, sse]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-29T12:47:15.545Z
 sources:
   - id: openwiki-source-f8d10828394c4129061d5b0e
     resource: repo://index.html
@@ -35,6 +32,8 @@ sources:
     resource: repo://src/components/AdminSiteContent.jsx
   - id: openwiki-source-95f0291f29cd95f8dfdca78e
     resource: repo://src/components/AdminThemes.jsx
+  - id: openwiki-source-4e37b1e20cb72fa7128c5bba
+    resource: repo://src/components/BannerCarousel.jsx
   - id: openwiki-source-8e2cf47532f4659008db992a
     resource: repo://src/components/EpisodeDetail.jsx
   - id: openwiki-source-515cac064a539c5de93abe92
@@ -89,7 +88,10 @@ sources:
     resource: repo://src/utils/offlineQueue.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+generated: { by: "opencode", at: "2026-11-02T17:44:42.174Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-02T17:44:42.174Z
 ---
 
 # 后端契约地图（API 分组与错误语义）
@@ -343,6 +345,7 @@ flowchart LR
 
 | 端点 | 方法 | 说明 |
 | --- | --- | --- |
+| `/api/site-stats` | GET | 首页欢迎层三项站点统计 `{ users, episodes, online }`；请求写在 `Home.jsx` 内部（未注册到 `apiEndpoints`），成功与失败都会给出一组数字（失败回退 0），因此欢迎层不会因统计接口异常而卡住 |
 | `/api/stats/overview`、`/api/stats/overview?period=` | GET | 后台概览，`period` 由分析页传入 |
 | `/api/stats/realtime`、`/api/stats/activity-heatmap`、`/api/stats/episode-lifecycle` | GET | 实时在线、活动热力图、单集生命周期（内联，未注册） |
 | `/api/stats/recommendations/:id` | GET | 详情页相关推荐；首页用魔法值 `personalized` 走同一路径 |
