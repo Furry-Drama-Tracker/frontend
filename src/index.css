@@ -3896,16 +3896,10 @@ tr:hover,
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  aspect-ratio: auto;
-  max-height: none;
-  min-height: 280px;
   background: linear-gradient(to bottom right, #f8fafc, rgba(239, 246, 255, 0.5), rgba(236, 254, 255, 0.3));
-  border-bottom: 1px solid var(--border);
-  border-radius: 0;
-  box-shadow: none;
   color: var(--foreground);
   text-align: center;
-  padding: 56px 24px;
+  padding: 24px;
   position: relative;
   overflow: hidden;
 }
@@ -4580,6 +4574,16 @@ tbody tr:hover {
 }
 
 @media (max-width: 640px) {
+  /* 小屏时放宽固定比例，避免标题+数字被裁切（保持圆角不变） */
+  .bc-wrap--hero {
+    aspect-ratio: auto;
+    min-height: 240px;
+    max-height: none;
+    padding: 20px 16px;
+  }
+  .bc-welcome {
+    padding: 24px 16px;
+  }
   .bc-stats {
     gap: 18px;
     margin: 12px 0 0;
