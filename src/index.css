@@ -1,4 +1,4 @@
-* {
+﻿* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -76,6 +76,9 @@
   --z-popover: 1100;
   --z-toast: 1300;
   --z-overlay: 2000;
+
+  /* 数字 / 编码专用等宽字体：保证 0-9 字宽一致，验证码与统计数字才能对齐 */
+  --font-mono: 'Noto Sans Mono', ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace;
 }
 
 @keyframes spin {
@@ -111,6 +114,53 @@ a {
 ::selection {
   background: var(--selection-bg);
   color: var(--foreground);
+}
+
+
+/* ============================================================
+   验证码 / 数字编码：统一字体与对齐
+   - 站正文字体 + 等宽数字，避免系统 monospace 回退导致字形忽粗忽细
+   - text-indent 抵消末位字距，保证 6 位数字真正视觉居中
+   ============================================================ */
+.code-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 20px;
+  line-height: 1.25;
+  text-align: center;
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--input);
+  color: var(--foreground);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.code-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-bg-subtle);
+}
+
+.code-input::placeholder {
+  color: var(--text-tertiary);
+  opacity: 0.5;
+}
+
+/* 6 位登录码展示（新设备验证页） */
+.code-display {
+  font-size: clamp(26px, 6vw, 34px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
+  color: var(--primary);
 }
 
 html {
@@ -213,7 +263,14 @@ header {
   position: sticky;
   top: 0;
   z-index: 100;
-  transition: background 0.3s ease, border-color 0.3s ease;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.28s ease;
+}
+
+/* 滚动后：加深投影并收紧描边，让导航与内容分层更干净 */
+header.nav-scrolled {
+  border-bottom-color: transparent;
+  box-shadow: 0 6px 24px -12px var(--shadow-strong, rgba(0, 0, 0, 0.55));
+  background: var(--glass-bg);
 }
 
 /* PWA/移动端安全区域适配 */
@@ -455,7 +512,7 @@ nav ul li a[style*="primary"] {
   justify-content: center;
   padding: 10px 20px;
   background: var(--primary);
-  color: white;
+  color: var(--btn-text);
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -783,7 +840,7 @@ textarea[data-errmsg]::after {
   width: 100%;
   padding: 14px;
   background: var(--primary);
-  color: white;
+  color: var(--btn-text);
   border: none;
   border-radius: 8px;
   font-size: 16px;
@@ -2956,7 +3013,7 @@ nav ul li a:focus-visible {
   left: 50%;
   transform: translateX(-50%);
   background: var(--primary);
-  color: white;
+  color: var(--btn-text);
   padding: 12px 24px;
   border-radius: 0 0 8px 8px;
   z-index: 99999;
@@ -4028,6 +4085,181 @@ tr:hover,
   opacity: 0.6;
 }
 
+/* 欢迎层数据看板：注册用户 / 收录剧集 / 当前在线 */
+.bc-stats {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(16px, 4vw, 44px);
+  margin-bottom: 18px;
+  overflow: hidden;
+  padding: 4px 8px;
+}
+
+/* 数字背后的柔光：随滚动一起涨开 */
+.bc-stats::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(360px, 80%);
+  height: 150px;
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.22), transparent 72%);
+  filter: blur(16px);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+  animation: bc-bloom 1.5s cubic-bezier(0.22, 1, 0.36, 1) 0.3s 1 both;
+}
+
+@keyframes bc-bloom {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+  45% { opacity: 0.9; }
+  100% { opacity: 0.35; transform: translate(-50%, -50%) scale(1.12); }
+}
+
+.bc-stat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 78px;
+  animation: bc-stat-in 0.62s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* 三个数字错峰入场 */
+.bc-stat--1 { animation-delay: 0.02s; }
+.bc-stat--2 { animation-delay: 0.12s; }
+.bc-stat--3 { animation-delay: 0.22s; }
+
+@keyframes bc-stat-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.92);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* 数字之间的竖线：从中间向上下展开 */
+.bc-stat-divider {
+  align-self: center;
+  width: 1px;
+  height: 34px;
+  background: var(--foreground);
+  opacity: 0.22;
+  transform-origin: center;
+  animation: bc-divider-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.bc-stat-divider:nth-of-type(1) { animation-delay: 0.28s; }
+.bc-stat-divider:nth-of-type(2) { animation-delay: 0.38s; }
+
+@keyframes bc-divider-in {
+  from { transform: scaleY(0); opacity: 0; }
+  to { transform: scaleY(1); opacity: 0.28; }
+}
+
+.bc-stat-value {
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  animation: bc-num-glow 1.1s ease-out 0.55s 1 both;
+}
+
+/* 数字落定瞬间的微光 + 轻微回弹 */
+@keyframes bc-num-glow {
+  0% { opacity: 0.35; transform: scale(1); }
+  45% { opacity: 1; transform: scale(1.06); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* 机械计数器 */
+.odometer {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.odometer-digit {
+  position: relative;
+  display: inline-block;
+  width: 1ch;
+  height: 1em;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* 上下边缘轻微淡出，滚动时更像机械鼓轮 */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 12%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 12%, #000 88%, transparent 100%);
+}
+
+.odometer-strip {
+  display: flex;
+  flex-direction: column;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.odometer-strip > span {
+  display: block;
+  height: 1em;
+  line-height: 1;
+  text-align: center;
+}
+
+.odometer-sep {
+  display: inline-block;
+  transform: translateY(-0.04em);
+}
+
+.bc-stat-label {
+  margin-top: 6px;
+  font-size: clamp(0.72rem, 1.2vw, 0.85rem);
+  color: var(--foreground);
+  opacity: 0.72;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* 空轮播时的数据看板（深色文字，与浅/深底都兼容） */
+.bc-wrap--hero .bc-stats {
+  margin-top: 18px;
+  margin-bottom: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bc-stat,
+  .bc-stat-divider,
+  .bc-stat-value {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .bc-wrap {
+    aspect-ratio: auto;
+    min-height: 240px;
+    max-height: none;
+  }
+  .bc-stats {
+    gap: 20px;
+    margin-bottom: 12px;
+  }
+  .bc-welcome-sub {
+    font-size: 12px;
+    margin-top: 6px;
+  }
+}
+
 /* 轮播项 */
 .bc-slide {
   position: absolute;
@@ -4217,12 +4449,12 @@ tr:hover,
 /* 激活态：实色填充 */
 .ef-pill--active {
   background: var(--primary);
-  color: #fff;
+  color: var(--btn-text);
   font-weight: 600;
 }
 .ef-pill--active:hover {
   background: var(--primary-hover);
-  color: #fff;
+  color: var(--btn-text);
 }
 
 /* 排序按钮：图标对齐 */
@@ -4406,7 +4638,7 @@ tbody tr:hover {
 .pagination button.active,
 .page-btn.active {
   background: var(--primary);
-  color: #fff;
+  color: var(--btn-text);
   box-shadow: var(--shadow-md);
 }
 
@@ -4467,4 +4699,214 @@ tbody tr:hover {
     width: auto !important;
     max-height: calc(100vh - 72px) !important;
   }
+}
+
+/* ============================================================
+   图片渐进加载 / 网格淡入 / 空状态 / 阅读进度 / 焦点可达性
+   ============================================================ */
+
+/* 图片：加载完成后淡入，避免生硬弹出 */
+.img-fade {
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-out);
+}
+.img-fade.is-loaded {
+  opacity: 1;
+}
+
+/* 图片占位：加载中显示在图片背后 */
+.media-skeleton {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    var(--hover-bg) 25%,
+    var(--hover-bg-strong) 50%,
+    var(--hover-bg) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  transition: opacity 0.3s ease;
+}
+.media-skeleton.is-hidden {
+  opacity: 0;
+}
+
+/* 内容网格淡入（与骨架屏切换时交叉） */
+.grid-enter {
+  animation: grid-in 0.18s ease-out both;
+}
+@keyframes grid-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* 骨架屏淡出 */
+.grid-leaving {
+  opacity: 0;
+  transition: opacity 0.16s ease-out;
+}
+
+/* 空状态：单色线稿 */
+.empty-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 56px 20px;
+  color: var(--text-secondary);
+}
+.empty-block-art {
+  color: var(--text-tertiary);
+  opacity: 0.55;
+  margin-bottom: 14px;
+}
+.empty-block-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+.empty-block-desc {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-tertiary);
+  max-width: 380px;
+}
+.empty-block-action {
+  margin-top: 16px;
+}
+.empty-block--compact {
+  padding: 32px 16px;
+}
+.empty-block--compact .empty-block-art {
+  width: 52px;
+  height: 52px;
+  margin-bottom: 10px;
+}
+
+/* 详情页阅读进度细线 */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 10001;
+  pointer-events: none;
+}
+.scroll-progress-bar {
+  height: 100%;
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light, var(--primary)));
+  box-shadow: 0 0 10px var(--primary-bg-strong);
+  transition: transform 0.08s linear;
+  will-change: transform;
+}
+
+/* 剧集行悬停预览卡 */
+.ep-preview {
+  position: fixed;
+  z-index: 9000;
+  width: 264px;
+  pointer-events: none;
+  background: var(--popover);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--card-shadow-hover);
+  overflow: hidden;
+  animation: ep-preview-in 0.14s ease-out both;
+}
+@keyframes ep-preview-in {
+  from { opacity: 0; transform: translateY(4px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.ep-preview-cover {
+  width: 100%;
+  height: 96px;
+  object-fit: cover;
+  display: block;
+  background: var(--hover-bg);
+}
+.ep-preview-body {
+  padding: 10px 12px 12px;
+}
+.ep-preview-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--foreground);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ep-preview-meta {
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  font-size: 11.5px;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+.ep-preview-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--primary-bg);
+  color: var(--primary-light);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .ep-preview { display: none; }
+}
+
+/* 焦点可见性统一：键盘用户能看清落点 */
+.ef-pill:focus-visible,
+.tc-chip:focus-visible,
+.yl-tab:focus-visible,
+.action-link:focus-visible,
+.bc-dot:focus-visible,
+.bc-nav:focus-visible,
+.episode-card:focus-visible,
+.admin-search-option:focus-visible,
+.sidenav .menu-item:focus-visible,
+.site-footer-link:focus-visible,
+.site-footer-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* 键盘焦点在卡片内时，给出与 hover 一致的高亮反馈 */
+.episode-card:focus-visible .ec-title {
+  color: var(--primary);
+}
+
+/* 骨架屏与内容叠放：同一网格单元内交叉淡入 */
+.episode-grid-stack {
+  display: grid;
+}
+.episode-grid-stack > .stack-layer {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+/* 预览卡封面兜底：图片缺失时用主题色渐变，避免出现破图图标 */
+.ep-preview-cover--fallback,
+.ep-preview-cover {
+  background-image: linear-gradient(135deg, var(--primary-bg-strong), transparent 70%);
+  background-color: var(--bg-secondary);
+}
+
+/* 卡片封面缺失/加载失败时的兜底：主题色柔光渐变，不出现破图图标 */
+.ec-media-fallback {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 20%, var(--primary-bg-strong), transparent 65%),
+    linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary, var(--bg-secondary)));
 }

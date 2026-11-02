@@ -55,7 +55,7 @@ const ForceEmailChange = ({ onUpdate, onLogout }) => {
           <h2 style={{ marginBottom: '12px' }}>{t('auth.changeEmailSuccess')}</h2>
           <button onClick={onLogout} style={{
             marginTop: '20px', padding: '10px 28px', borderRadius: '8px',
-            background: 'var(--primary)', color: '#fff', border: 'none',
+            background: 'var(--primary)', color: 'var(--btn-text)', border: 'none',
             cursor: 'pointer', fontSize: '14px', fontWeight: 600
           }}>{t('auth.logout')}</button>
         </div>

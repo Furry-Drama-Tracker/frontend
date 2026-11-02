@@ -1,0 +1,1045 @@
+/* =============================================================================
+ * 源力设计系统（Yuanli / ByteCloud B2B）— 管理后台作用域桥接层
+ *
+ * 作用：
+ * 1. 把后台整体固定在浅色主题（源力仅提供亮色 Token）；
+ * 2. 将项目原有的深色 Token（--card / --border / --foreground 等）在
+ *    .yuanli-admin 作用域内重映射为源力亮色值，使尚未迁移的旧页面立即呈现
+ *    统一的浅色后台观感；
+ * 3. 提供后台外壳（TopNav / Sidebar / Content）布局类。
+ *
+ * 仅在 .yuanli-admin 内生效，不影响公开站点。
+ * ========================================================================== */
+
+.yuanli-admin {
+  /* ---- 基础容器 ---- */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-7, #f6f8fa);
+  color: var(--text-1, #1d2129);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5715;
+  letter-spacing: normal;
+
+  /* ---- 旧 Token → 源力亮色映射 ---- */
+  --background: #ffffff;
+  --background-rgb: 255, 255, 255;
+  --bg-secondary: #f6f8fa;
+  --bg-tertiary: #eaedf1;
+  --surface-elevated: #ffffff;
+
+  --foreground: #0c0d0e;
+  --text-light: #1d2129;
+  --text-lighter: #4e5969;
+  --text-secondary: #86909c;
+  --text-tertiary: #86909c;
+  --muted-foreground: #86909c;
+
+  --card: #ffffff;
+  --card-foreground: #0c0d0e;
+  --popover: #ffffff;
+  --popover-foreground: #0c0d0e;
+  --border: #e1e4e8;
+  --input: #ffffff;
+  --ring: #1664ff;
+
+  --primary: #1664ff;
+  --primary-dark: #0055ff;
+  --primary-light: #387bff;
+  --primary-hover: #0055ff;
+  --primary-bg: rgba(22, 100, 255, 0.08);
+  --primary-bg-subtle: rgba(22, 100, 255, 0.04);
+  --primary-bg-strong: rgba(22, 100, 255, 0.12);
+  --primary-border: rgba(22, 100, 255, 0.32);
+  --primary-border-subtle: rgba(22, 100, 255, 0.16);
+
+  --btn-gradient: #1664ff;
+  --btn-gradient-primary: #1664ff;
+  --btn-gradient-success: #189959;
+  --btn-gradient-purple: #1664ff;
+  --btn-gradient-hover: linear-gradient(135deg, #0055ff 0%, #387bff 100%);
+  --btn-text: #ffffff;
+  --btn-sheen: none;
+
+  --hover-bg: rgba(0, 0, 0, 0.03);
+  --hover-bg-subtle: rgba(0, 0, 0, 0.015);
+  --hover-bg-strong: rgba(0, 0, 0, 0.05);
+  --hover-bg-stronger: rgba(0, 0, 0, 0.08);
+
+  --glass-bg: #ffffff;
+  --glass-border: #e1e4e8;
+  --glass-backdrop: none;
+  --inner-highlight: none;
+  --glow-primary: none;
+  --glow-primary-strong: none;
+  --mesh-color-1: transparent;
+  --mesh-color-2: transparent;
+  --mesh-color-3: transparent;
+  --mesh-color-4: transparent;
+  --noise-opacity: 0;
+  --text-gradient: none;
+  --border-gradient: #e1e4e8;
+  --border-gradient-primary: #bcd3ff;
+
+  --shadow-sm: 0 1px 2px rgba(12, 13, 14, 0.05);
+  --shadow-md: 0 2px 6px rgba(12, 13, 14, 0.08);
+  --shadow-lg: 0 5px 15px rgba(12, 13, 14, 0.08);
+  --shadow-xl: 0 15px 35px -2px rgba(12, 13, 14, 0.1);
+  --shadow-2xl: 0 24px 48px -4px rgba(12, 13, 14, 0.12);
+  --card-shadow: 0 1px 2px rgba(12, 13, 14, 0.05);
+  --card-shadow-hover: 0 2px 6px rgba(12, 13, 14, 0.08);
+  --shadow-color: rgba(12, 13, 14, 0.08);
+  --shadow-strong: rgba(12, 13, 14, 0.14);
+  --shadow-modal: rgba(12, 13, 14, 0.14);
+  --overlay-bg: rgba(0, 0, 0, 0.45);
+
+  --destructive: #c43138;
+  --destructive-bg: #feeced;
+  --destructive-bg-subtle: #fff5f5;
+  --destructive-bg-strong: #fdd8da;
+  --destructive-border: #f2b3b6;
+  --destructive-border-subtle: #fbd4d6;
+  --destructive-text: #c43138;
+  --destructive-text-light: #d94a51;
+
+  --success: #189959;
+  --success-bg: #e2f5eb;
+  --success-bg-subtle: #f1faf6;
+  --success-bg-strong: #c9ebd9;
+  --success-border: #a5dcc0;
+  --success-text: #189959;
+
+  --warning: #de9400;
+  --warning-bg: #fdf3de;
+  --warning-bg-subtle: #fffaf0;
+  --warning-bg-strong: #fbe8bd;
+  --warning-border: #f5d68f;
+  --warning-text: #b87b00;
+
+  --info: #1664ff;
+  --info-bg: #ebf1ff;
+  --info-border: #bcd3ff;
+  --info-text: #1664ff;
+
+  --purple: #6f4bd8;
+  --purple-bg: #f0ecfd;
+  --purple-border: #cfc2f5;
+
+  --badge-bg: #c43138;
+  --badge-text: #ffffff;
+  --selection-bg: rgba(22, 100, 255, 0.14);
+  --scrollbar-track: #f2f3f5;
+  --scrollbar-thumb: #d1d5da;
+  --scrollbar-thumb-hover: #959da5;
+
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 16px;
+  --radius-full: 9999px;
+}
+
+/* 后台内不显示装饰性噪点/壁纸层 */
+.yuanli-admin,
+.yuanli-admin * {
+  -webkit-backdrop-filter: none;
+}
+
+/* ---- 顶部导航（48px，白底，底部投影） ---- */
+.yl-topnav {
+  flex-shrink: 0;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 16px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px 0 rgba(12, 13, 14, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.yl-topnav-left,
+.yl-topnav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.yl-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #0c0d0e;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.yl-brand-mark {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: #1664ff;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.yl-brand-sub {
+  font-size: 12px;
+  font-weight: 400;
+  color: #86909c;
+  padding-left: 8px;
+  border-left: 1px solid #e1e4e8;
+  margin-left: 4px;
+}
+
+.yl-link {
+  font-size: 13px;
+  color: #4e5969;
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.15s, color 0.15s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.yl-link:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: #1664ff;
+}
+
+.yl-user {
+  font-size: 13px;
+  color: #86909c;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}
+
+.yl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 4px;
+  border: 1px solid #d1d5da;
+  background: #ffffff;
+  color: #1d2129;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.yl-btn:hover {
+  border-color: #1664ff;
+  color: #1664ff;
+}
+
+.yl-btn--primary {
+  background: #1664ff;
+  border-color: #1664ff;
+  color: #ffffff;
+}
+
+.yl-btn--primary:hover {
+  background: #0055ff;
+  border-color: #0055ff;
+  color: #ffffff;
+}
+
+.yl-btn--danger:hover {
+  border-color: #c43138;
+  color: #c43138;
+}
+
+.yl-icon-btn {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #4e5969;
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.yl-icon-btn:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* ---- 主体：侧边栏 + 内容 ---- */
+.yl-body {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  min-height: 0;
+}
+
+.yl-sidenav {
+  height: auto !important;
+  align-self: stretch;
+  position: sticky;
+  top: 48px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  border-right: 1px solid #e1e4e8;
+}
+
+.yl-sidenav-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 0 20px;
+  width: 100%;
+}
+
+.yl-sidenav .menu-section {
+  padding: 0 12px;
+}
+
+.yl-sidenav .group-title {
+  padding: 6px 12px 2px;
+  font-size: 12px;
+  color: #86909c;
+}
+
+.yl-sidenav .menu-item {
+  text-decoration: none;
+  color: #1d2129;
+}
+
+.yl-sidenav .menu-item .menu-text {
+  color: inherit;
+}
+
+.yl-sidenav .menu-item.active {
+  background: rgba(22, 100, 255, 0.06);
+}
+
+.yl-sidenav .menu-item.active .menu-text,
+.yl-sidenav .menu-item.active .menu-icon {
+  color: #1664ff;
+}
+
+.yl-content {
+  flex: 1;
+  min-width: 0;
+  padding: 24px 32px 40px;
+  background: #ffffff;
+  overflow-x: auto;
+}
+
+@media (max-width: 900px) {
+  .yl-content {
+    padding: 16px;
+  }
+  .yl-sidenav {
+    display: none;
+  }
+}
+
+/* ---- 旧页面元素在浅色后台下的微调 ---- */
+.yuanli-admin .admin-panel {
+  background: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 0;
+  margin-bottom: 16px;
+  backdrop-filter: none;
+}
+
+.yuanli-admin .admin-panel::before {
+  display: none;
+}
+
+.yuanli-admin .admin-panel h2 {
+  font-size: 18px;
+  margin-bottom: 16px;
+  letter-spacing: normal;
+}
+
+.yuanli-admin .admin-panel h3 {
+  font-size: 16px;
+  margin-top: 20px;
+  margin-bottom: 12px;
+}
+
+.yuanli-admin .admin-panel h4 {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.yuanli-admin .admin-table {
+  border-collapse: collapse;
+  background: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 4px;
+  margin-top: 12px;
+}
+
+.yuanli-admin .admin-table th {
+  background: #f6f8fa;
+  color: #1d2129;
+  font-weight: 500;
+  font-size: 13px;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+.yuanli-admin .admin-table td {
+  color: #4e5969;
+  font-size: 13px;
+  padding: 10px 12px;
+  border-bottom: 1px solid #eaedf1;
+}
+
+.yuanli-admin .admin-table tr:hover {
+  background: #f6f8fa;
+}
+
+.yuanli-admin .form-container,
+.yuanli-admin .empty-message {
+  background: #f6f8fa;
+  border: 1px solid #e1e4e8;
+  border-radius: 4px;
+}
+
+.yuanli-admin .empty-message {
+  color: #86909c;
+}
+
+/* 旧按钮：去掉扫光与上浮，贴合源力扁平风格 */
+.yuanli-admin .btn::after,
+.yuanli-admin .form-group button::before {
+  display: none;
+}
+
+.yuanli-admin .btn:hover,
+.yuanli-admin .form-group button:hover {
+  transform: none;
+}
+
+/* 旧卡片：浅色描边化 */
+.yuanli-admin .dashboard-card,
+.yuanli-admin .stat-card {
+  background: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.yuanli-admin .dashboard-card::before,
+.yuanli-admin .stat-card::before {
+  display: none;
+}
+
+.yuanli-admin .dashboard-card:hover,
+.yuanli-admin .stat-card:hover {
+  box-shadow: 0 2px 6px rgba(12, 13, 14, 0.08);
+  transform: none;
+}
+
+/* 旧弹窗/抽屉在浅色下的底色 */
+.yuanli-admin .modal-content {
+  background: #ffffff;
+  border: 1px solid #e1e4e8;
+}
+
+/* =============================================================================
+ * 后台页面通用骨架：PageHeader / 卡片网格 / 面板 / 徽标
+ * ========================================================================== */
+
+.yl-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eaedf1;
+}
+
+.yl-page-title {
+  margin: 0;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+  color: #0c0d0e;
+}
+
+.yl-page-desc {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 20px;
+  color: #86909c;
+}
+
+.yl-page-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.yl-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+  gap: 12px;
+}
+
+.yl-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.yl-card:hover {
+  border-color: #1664ff;
+  box-shadow: 0 2px 8px rgba(22, 100, 255, 0.12);
+}
+
+.yl-card-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: #f3f7ff;
+  color: #1664ff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.yl-card-body {
+  min-width: 0;
+  flex: 1;
+}
+
+.yl-card-title {
+  margin: 0 0 4px;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 500;
+  color: #1d2129;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.yl-card-desc {
+  margin: 0;
+  font-size: 12px;
+  line-height: 18px;
+  color: #86909c;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.yl-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: #c43138;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 18px;
+  text-align: center;
+}
+
+.yl-panel {
+  background: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+
+.yl-panel + .yl-panel {
+  margin-top: 12px;
+}
+
+.yl-panel-title {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 600;
+  color: #1d2129;
+}
+
+.yl-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.yl-hint {
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 18px;
+  color: #189959;
+}
+
+.yl-hint--error {
+  color: #c43138;
+}
+
+/* ---- 后台专用搜索框 ---- */
+.admin-search {
+  position: relative;
+  width: 100%;
+}
+
+.admin-search-input {
+  width: 100%;
+  height: 32px;
+  padding: 0 12px 0 32px;
+  border: 1px solid #d1d5da;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #1d2129;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.admin-search-input::placeholder {
+  color: #86909c;
+}
+
+.admin-search-input:hover {
+  border-color: #959da5;
+}
+
+.admin-search-input:focus {
+  border-color: #1664ff;
+  box-shadow: 0 0 0 2px rgba(22, 100, 255, 0.14);
+}
+
+.admin-search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #86909c;
+  display: inline-flex;
+  pointer-events: none;
+}
+
+.admin-search-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 300;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(12, 13, 14, 0.1);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.admin-search-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 7px 10px;
+  border: none;
+  background: transparent;
+  border-radius: 4px;
+  color: #1d2129;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.admin-search-option.is-active,
+.admin-search-option:hover {
+  background: #f3f7ff;
+}
+
+/* ---- 后台分段标签页（源力 Tabs 简化版） ---- */
+.yl-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px solid #e1e4e8;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.yl-tab {
+  position: relative;
+  height: 36px;
+  padding: 0 14px;
+  border: none;
+  background: transparent;
+  color: #4e5969;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  border-radius: 4px 4px 0 0;
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.yl-tab:hover {
+  color: #1664ff;
+  background: rgba(22, 100, 255, 0.04);
+}
+
+.yl-tab.is-active {
+  color: #1664ff;
+  font-weight: 500;
+}
+
+.yl-tab.is-active::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: -1px;
+  height: 2px;
+  background: #1664ff;
+  border-radius: 1px;
+}
+
+/* =============================================================================
+ * 旧后台标记兼容层
+ * 未逐页重写的页面仍使用 .admin-panel / .admin-table / .btn / .form-group 等
+ * 旧标记，这里把它们统一到源力观感（白底、4px 圆角、32px 控件、细描边表格）。
+ * 只做视觉覆盖，不改任何结构或事件。
+ * ========================================================================== */
+
+/* ---- 页面容器：去掉玻璃卡片，变成白底页面 ---- */
+.yuanli-admin .admin-panel {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin: 0 0 16px;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+.yuanli-admin .admin-panel::before {
+  display: none;
+}
+.yuanli-admin .admin-panel h2 {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+  color: #0c0d0e;
+  letter-spacing: normal;
+  margin: 0 0 4px;
+}
+.yuanli-admin .admin-panel h3 {
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 600;
+  color: #1d2129;
+  margin: 20px 0 10px;
+}
+.yuanli-admin .admin-panel h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1d2129;
+  margin: 16px 0 8px;
+}
+
+/* 用 admin-panel 当页头的页面：标题下加一条分隔线 */
+.yuanli-admin .admin-panel > h2:first-child {
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #eaedf1;
+}
+
+/* ---- 旧表格 → 源力表格 ---- */
+.yuanli-admin .admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+.yuanli-admin .admin-table th {
+  background: #f6f8fa;
+  color: #1d2129;
+  font-weight: 500;
+  font-size: 13px;
+  text-transform: none;
+  letter-spacing: normal;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e1e4e8;
+  text-align: left;
+  white-space: nowrap;
+}
+.yuanli-admin .admin-table td {
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #4e5969;
+  border-bottom: 1px solid #eaedf1;
+  background: #ffffff;
+}
+.yuanli-admin .admin-table tbody tr:hover td {
+  background: #f6f8fa;
+}
+.yuanli-admin .admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ---- 按钮：统一 32px / 4px 圆角 / 源力配色 ---- */
+.yuanli-admin .btn,
+.yuanli-admin .btn-small,
+.yuanli-admin .form-group button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1;
+  border-radius: 4px;
+  box-shadow: none;
+  transform: none;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.yuanli-admin .btn:not(.btn-secondary):not(.btn-outline):not(.btn-text):not(.btn-danger) {
+  background: #1664ff;
+  border: 1px solid #1664ff;
+  color: #ffffff;
+}
+.yuanli-admin .btn:not(.btn-secondary):not(.btn-outline):not(.btn-text):not(.btn-danger):hover {
+  background: #0055ff;
+  border-color: #0055ff;
+  color: #ffffff;
+  box-shadow: none;
+}
+.yuanli-admin .btn-secondary,
+.yuanli-admin .btn-outline {
+  background: #ffffff;
+  border: 1px solid #d1d5da;
+  color: #1d2129;
+}
+.yuanli-admin .btn-secondary:hover,
+.yuanli-admin .btn-outline:hover {
+  background: #ffffff;
+  border-color: #1664ff;
+  color: #1664ff;
+  box-shadow: none;
+}
+.yuanli-admin .btn-text {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #1664ff;
+}
+.yuanli-admin .btn-text:hover {
+  background: rgba(22, 100, 255, 0.06);
+  border-color: transparent;
+}
+.yuanli-admin .btn-small {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+.yuanli-admin .btn::after,
+.yuanli-admin .btn::before,
+.yuanli-admin .form-group button::before {
+  display: none !important;
+}
+.yuanli-admin .btn:hover,
+.yuanli-admin .form-group button:hover {
+  transform: none;
+  box-shadow: none;
+}
+.yuanli-admin .action-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ---- 表单控件：32px 高、细描边 ---- */
+.yuanli-admin .form-group input,
+.yuanli-admin .form-group select {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 13px;
+  border-radius: 4px;
+  border: 1px solid #d1d5da;
+  background: #ffffff;
+  color: #1d2129;
+}
+.yuanli-admin .form-group textarea {
+  min-height: 80px;
+  padding: 8px 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  border-radius: 4px;
+  border: 1px solid #d1d5da;
+  background: #ffffff;
+  color: #1d2129;
+}
+.yuanli-admin .form-group input:focus,
+.yuanli-admin .form-group select:focus,
+.yuanli-admin .form-group textarea:focus {
+  border-color: #1664ff;
+  box-shadow: 0 0 0 2px rgba(22, 100, 255, 0.14);
+  background: #ffffff;
+}
+.yuanli-admin .form-group label {
+  font-size: 13px;
+  font-weight: 400;
+  color: #4e5969;
+  margin-bottom: 6px;
+}
+.yuanli-admin input[type="checkbox"],
+.yuanli-admin input[type="radio"] {
+  accent-color: #1664ff;
+}
+
+/* ---- 表单容器 / 空提示 ---- */
+.yuanli-admin .form-container,
+.yuanli-admin .empty-message {
+  background: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 8px;
+  padding: 16px;
+  color: #4e5969;
+}
+.yuanli-admin .form-container h4 {
+  margin-top: 0;
+}
+
+/* ---- 统计卡片（控制台旧版 / 数据页） ---- */
+.yuanli-admin .dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.yuanli-admin .dashboard-card {
+  background: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: none;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s;
+}
+.yuanli-admin .dashboard-card:hover {
+  border-color: #1664ff;
+  box-shadow: none;
+  transform: none;
+}
+.yuanli-admin .dashboard-card h3 {
+  font-size: 13px;
+  font-weight: 400;
+  color: #86909c;
+  margin: 0 0 6px;
+}
+.yuanli-admin .dashboard-card p {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1d2129;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- 状态徽章：统一小圆角 ---- */
+.yuanli-admin .status {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 8px;
+  margin-top: 0;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* ---- 弹窗：源力观感 ---- */
+.yuanli-admin .modal-content {
+  border-radius: 8px;
+  border: 1px solid #e1e4e8;
+  box-shadow: 0 8px 28px rgba(12, 13, 14, 0.16);
+}
+.yuanli-admin .modal-header {
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eaedf1;
+}
+.yuanli-admin .modal-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0c0d0e;
+}
+
+/* ---- 错误 / 成功提示 ---- */
+.yuanli-admin .error-message {
+  background: #fff5f5;
+  border: 1px solid #f2b3b6;
+  border-left: 3px solid #c43138;
+  border-radius: 4px;
+  color: #c43138;
+  padding: 8px 12px;
+  font-size: 13px;
+}
+.yuanli-admin .success-message {
+  background: #f1faf6;
+  border: 1px solid #a5dcc0;
+  border-left: 3px solid #189959;
+  border-radius: 4px;
+  color: #189959;
+  padding: 8px 12px;
+  font-size: 13px;
+}
