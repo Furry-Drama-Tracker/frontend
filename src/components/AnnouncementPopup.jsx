@@ -147,7 +147,7 @@ const AnnouncementPopup = () => {
           <button
             onClick={() => handleDismiss(false)}
             style={{
-              background: 'var(--primary)', border: 'none', color: 'var(--btn-text)',
+              background: 'var(--primary)', border: 'none', color: '#fff',
               padding: '7px 18px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: 600
             }}
           >{t('announcement.gotIt')}</button>

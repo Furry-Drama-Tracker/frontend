@@ -176,7 +176,13 @@ const Register = () => {
                   inputMode="numeric"
                   maxLength="6"
                   autoFocus
-                  className="code-input"
+                  style={{
+                    width: '100%', padding: '10px 12px', fontSize: '20px',
+                    textAlign: 'center', letterSpacing: '6px', fontFamily: 'monospace',
+                    borderRadius: '8px', border: '1px solid var(--border)',
+                    background: 'var(--input)', color: 'var(--foreground)',
+                    outline: 'none', boxSizing: 'border-box',
+                  }}
                 />
                 {verifyCodeError && (
                   <div className="error-message" style={{margin: 0, fontSize: '13px'}}>{verifyCodeError}</div>

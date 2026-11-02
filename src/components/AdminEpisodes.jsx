@@ -3,7 +3,7 @@ import adminApi from '../utils/adminApi';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import Modal from './Modal';
 import CustomSelect from './CustomSelect';
-import AdminSearchInput from './AdminSearchInput';
+import SearchInput from './SearchInput';
 import ImageUploader from './ImageUploader';
 import { useI18n } from '../contexts/I18nContext';
 import EpisodeVersionHistory from './EpisodeVersionHistory';
@@ -945,7 +945,7 @@ const AdminEpisodes = () => {
                   <th>{t('adminEpisodes.duration')}</th>
                   <th>{t('adminEpisodes.videoUrl')}</th>
                   <th>{t('adminEpisodes.views')}</th>
-            <th className="table-actions">{t('adminEpisodes.actions')}</th>
+                  <th>{t('adminEpisodes.actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -1002,21 +1002,19 @@ const AdminEpisodes = () => {
 
   // ===== 剧集列表渲染 =====
   return (
-    <div>
-      <div className="yl-page-header">
-        <div>
-          <h1 className="yl-page-title">{t('adminEpisodes.episodeManagement')}</h1>
-          <p className="yl-page-desc">{t('adminEpisodes.episodeList')}</p>
+    <div className="admin-panel">
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px'}}>
+        <div style={{display: 'flex', alignItems: 'center', gap: '15px'}}>
+          <h2>{t('adminEpisodes.episodeManagement')}</h2>
         </div>
-        <div className="yl-page-actions">
-          <button className="btn btn-md btn-primary" onClick={() => { resetEpisodeForm(); setError(''); setShowAddForm(true); }}>
-            {t('adminEpisodes.addNewEpisode')}
-          </button>
-        </div>
+        <button className="btn" onClick={() => { resetEpisodeForm(); setError(''); setShowAddForm(true); }}>
+          {t('adminEpisodes.addNewEpisode')}
+        </button>
       </div>
 
-      <div className="yl-panel" style={{ marginBottom: '12px', maxWidth: 520 }}>
-        <AdminSearchInput
+      <h3>{t('adminEpisodes.episodeList')}</h3>
+      <div style={{marginBottom: '15px'}}>
+        <SearchInput
           data={episodes}
           searchKey={['title']}
           placeholder={t('adminEpisodes.searchPlaceholder')}
@@ -1030,8 +1028,8 @@ const AdminEpisodes = () => {
           )}
         />
       </div>
-      <div className="table-wrapper">
-      <table className="table">
+      <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+      <table className="admin-table">
           <thead>
             <tr>
             <th>{t('adminEpisodes.titleLabel')}</th>
@@ -1053,11 +1051,11 @@ const AdminEpisodes = () => {
                 <td>
                   {episode.title}
                   {episode.hasPendingChanges && (
-                    <span className="status-tag status-tag-fill status-tag-warning" style={{ marginLeft: 6, verticalAlign: 'middle' }} title={t('adminEpisodes.hasPendingChangesTip')}>{t('adminEpisodes.pendingChangesTag')}</span>
+                    <span style={{ display: 'inline-block', marginLeft: '6px', padding: '2px 6px', borderRadius: '4px', fontSize: '11px', fontWeight: 600, background: 'var(--warning-bg)', color: 'var(--warning-text)', border: '1px solid var(--warning-border)', verticalAlign: 'middle' }} title={t('adminEpisodes.hasPendingChangesTip')}>{t('adminEpisodes.pendingChangesTag')}</span>
                   )}
                 </td>
                 <td>
-                  <span className={`status-tag status-tag-bordered ${episode.status === 'ongoing' ? 'status-tag-processing' : episode.status === 'completed' ? 'status-tag-success' : 'status-tag-warning'}`}>
+                  <span className={`status ${episode.status}`}>
                     {episode.status === 'ongoing' ? t('adminEpisodes.ongoing') : episode.status === 'completed' ? t('adminEpisodes.completed') : t('adminEpisodes.upcoming')}
                   </span>
                 </td>
@@ -1081,15 +1079,17 @@ const AdminEpisodes = () => {
                     )}
                   </td>
                 )}
-                <td className="table-actions">
-                  <span className="action-link" role="button" tabIndex={0} onClick={() => { setError(''); handleEditEpisode(episode); }} onKeyDown={(e) => { if (e.key === 'Enter') { setError(''); handleEditEpisode(episode); } }}>{t('adminEpisodes.editBtn')}</span>
-                  <span className="action-link" role="button" tabIndex={0} onClick={() => setHistoryEpisodeId(episode._id)} onKeyDown={(e) => { if (e.key === 'Enter') setHistoryEpisodeId(episode._id); }}>{t('version.history')}</span>
-                  {admin && admin.role === 'creator' && episode.reviewStatus === 'rejected' && (
-                    <span className="action-link" role="button" tabIndex={0} onClick={() => handleResubmit(episode._id)} onKeyDown={(e) => { if (e.key === 'Enter') handleResubmit(episode._id); }}>{t('adminEpisodes.resubmitBtn')}</span>
-                  )}
-                  {admin && admin.role !== 'creator' && (
-                    <span className="action-link action-danger" role="button" tabIndex={0} onClick={() => handleDeleteEpisode(episode._id)} onKeyDown={(e) => { if (e.key === 'Enter') handleDeleteEpisode(episode._id); }}>{t('adminEpisodes.deleteBtn')}</span>
-                  )}
+                <td>
+                  <div className="action-buttons">
+                    <button className="btn" onClick={() => { setError(''); handleEditEpisode(episode); }}>{t('adminEpisodes.editBtn')}</button>
+                    <button className="btn btn-secondary" onClick={() => setHistoryEpisodeId(episode._id)}>{t('version.history')}</button>
+                    {admin && admin.role === 'creator' && episode.reviewStatus === 'rejected' && (
+                      <button className="btn btn-secondary" onClick={() => handleResubmit(episode._id)}>{t('adminEpisodes.resubmitBtn')}</button>
+                    )}
+                    {admin && admin.role !== 'creator' && (
+                      <button className="btn btn-secondary" onClick={() => handleDeleteEpisode(episode._id)}>{t('adminEpisodes.deleteBtn')}</button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import SearchInput from './SearchInput';
 
 const RATING_OPTIONS = [
@@ -40,11 +40,10 @@ const EpisodeFilters = React.memo(({ filters, onFilterChange, categories, t, onS
         <SearchInput />
       </div>
 
-      <div className="ef-row" role="group">
+      <div className="ef-row">
         <span className="ef-label">{t('home.category')}</span>
         <button
           className={`ef-pill ${filters.category === '' ? 'ef-pill--active' : ''}`}
-          aria-pressed={filters.category === ''}
           onClick={() => onFilterChange('category', '')}
         >
           {t('common.all')}
@@ -55,7 +54,6 @@ const EpisodeFilters = React.memo(({ filters, onFilterChange, categories, t, onS
             <button
               key={c._id || name}
               className={`ef-pill ${filters.category === name ? 'ef-pill--active' : ''}`}
-              aria-pressed={filters.category === name}
               onClick={() => onFilterChange('category', name)}
             >
               {getLocalizedName(c) || name}
@@ -64,13 +62,12 @@ const EpisodeFilters = React.memo(({ filters, onFilterChange, categories, t, onS
         })}
       </div>
 
-      <div className="ef-row" role="group">
+      <div className="ef-row">
         <span className="ef-label">{t('home.status')}</span>
         {STATUS_OPTIONS.map(opt => (
           <button
             key={opt.value}
             className={`ef-pill ${filters.status === opt.value ? 'ef-pill--active' : ''}`}
-            aria-pressed={filters.status === opt.value}
             onClick={() => onFilterChange('status', opt.value)}
           >
             {opt.label}
@@ -78,13 +75,12 @@ const EpisodeFilters = React.memo(({ filters, onFilterChange, categories, t, onS
         ))}
       </div>
 
-      <div className="ef-row" role="group">
+      <div className="ef-row">
         <span className="ef-label">{t('home.rating')}</span>
         {RATING_OPTIONS.map(opt => (
           <button
             key={opt.value}
             className={`ef-pill ${filters.rating === opt.value ? 'ef-pill--active' : ''}`}
-            aria-pressed={filters.rating === opt.value}
             onClick={() => onFilterChange('rating', opt.value)}
           >
             {opt.labelKey ? t(opt.labelKey) : opt.label}
@@ -92,13 +88,12 @@ const EpisodeFilters = React.memo(({ filters, onFilterChange, categories, t, onS
         ))}
       </div>
 
-      <div className="ef-row" role="group">
+      <div className="ef-row">
         <span className="ef-label">{t('home.year')}</span>
         {YEAR_OPTIONS.map(opt => (
           <button
             key={opt.value}
             className={`ef-pill ${filters.year === opt.value ? 'ef-pill--active' : ''}`}
-            aria-pressed={filters.year === opt.value}
             onClick={() => onFilterChange('year', opt.value)}
           >
             {opt.labelKey ? t(opt.labelKey) : opt.label}
@@ -106,7 +101,7 @@ const EpisodeFilters = React.memo(({ filters, onFilterChange, categories, t, onS
         ))}
       </div>
 
-      <div className="ef-row" role="group">
+      <div className="ef-row">
         <span className="ef-label">{t('home.sort')}</span>
         {SORT_OPTIONS.map(opt => {
           const isActive = filters.sort === opt.value;
@@ -114,7 +109,6 @@ const EpisodeFilters = React.memo(({ filters, onFilterChange, categories, t, onS
             <button
               key={opt.value}
               className={`ef-pill ef-pill--sort ${isActive ? 'ef-pill--active' : ''}`}
-              aria-pressed={isActive}
               onClick={() => onSortClick(opt.value)}
             >
               {opt.label}
@@ -133,6 +127,3 @@ const EpisodeFilters = React.memo(({ filters, onFilterChange, categories, t, onS
 });
 
 export default EpisodeFilters;
-
-EpisodeFilters.displayName = 'EpisodeFilters';
-

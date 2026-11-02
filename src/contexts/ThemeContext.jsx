@@ -1,4 +1,4 @@
-﻿import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const ThemeContext = createContext();
 
@@ -32,46 +32,7 @@ export const generateColorShades = (hex) => {
   };
 };
 
-/* ---- 色彩可读性工具：按主题色亮度自动决定其上的文字用黑还是白 ---- */
-const toLinear = (channel) => {
-  const v = channel / 255;
-  return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-};
-
-/** 相对亮度（WCAG 2.x），返回 0~1 */
-export const relativeLuminance = (hex) => {
-  const rgb = hexToRgb(hex);
-  if (!rgb) return 0;
-  return 0.2126 * toLinear(rgb.r) + 0.7152 * toLinear(rgb.g) + 0.0722 * toLinear(rgb.b);
-};
-
-/** 两色对比度，返回 1~21 */
-export const contrastRatio = (hexA, hexB) => {
-  const la = relativeLuminance(hexA);
-  const lb = relativeLuminance(hexB);
-  const hi = Math.max(la, lb);
-  const lo = Math.min(la, lb);
-  return (hi + 0.05) / (lo + 0.05);
-};
-
-/** 主题色表面上的文字色：默认白字，仅当黑字明显更清晰时才切黑字 */
-export const getOnPrimaryColor = (hex) => {
-  const lum = relativeLuminance(hex);
-  const withWhite = 1.05 / (lum + 0.05);
-  const withBlack = (lum + 0.05) / 0.05;
-  return withBlack > withWhite * 1.15 ? '#0c0d0e' : '#ffffff';
-};
-
-/**
- * 主题色与当前主题背景的对比度告警。
- * 返回 'dark' | 'light' | null，供 UI 提示"不推荐使用"。
- */
-export const getAccentContrastWarning = (hex, theme) => {
-  const bg = theme === 'light' ? '#f7f8fa' : '#121316';
-  const ratio = contrastRatio(hex, bg);
-  if (ratio >= 3) return null;
-  return theme === 'light' ? 'light' : 'dark';
-};
+/* 预设强调色：以品牌蓝为首的低饱和实用色板 */
 export const PRESET_COLORS = [
   '#1777ff', '#0e6fd8', '#2f6b4f', '#22677a',
   '#34558b', '#6b5b9e', '#8d5573', '#946b2d', '#4a4a45'
@@ -168,9 +129,6 @@ export const themes = {
     '--btn-gradient-success': '#3d8a6d',
     '--btn-gradient-purple': '#8d5573',
     '--btn-text': '#fff',
-    '--primary-rgb': '23, 119, 255',
-    '--on-primary': '#ffffff',
-    '--primary-foreground': '#ffffff',
     '--indicator-active': '#f4f3f1',
     '--indicator-inactive': 'rgba(255, 255, 255, 0.35)',
     '--banner-overlay': 'rgba(0, 0, 0, 0.68)',
@@ -182,7 +140,7 @@ export const themes = {
     '--crop-border': '#fff',
     '--crop-grid': 'rgba(255, 255, 255, 0.3)',
     '--hover-bg-subtle': 'rgba(255, 255, 255, 0.03)',
-    /* 历史装饰 token：全部映射为浅色/空值，保持扁平观感 */
+    /* 历史装饰 token：全部映射为无装饰值 */
     '--glow-primary': 'none',
     '--glow-primary-strong': 'none',
     '--glow-secondary': 'none',
@@ -286,8 +244,6 @@ export const themes = {
     '--btn-gradient-success': '#2f7d5c',
     '--btn-gradient-purple': '#6b5b9e',
     '--btn-text': '#fff',
-    '--on-primary': '#ffffff',
-    '--primary-foreground': '#ffffff',
     '--indicator-active': '#1777ff',
     '--indicator-inactive': 'rgba(17, 24, 39, 0.2)',
     '--banner-overlay': 'rgba(0, 0, 0, 0.5)',
@@ -299,7 +255,7 @@ export const themes = {
     '--crop-border': '#fff',
     '--crop-grid': 'rgba(255, 255, 255, 0.3)',
     '--hover-bg-subtle': 'rgba(17, 24, 39, 0.02)',
-    /* 历史装饰 token：全部映射为浅色/空值，保持扁平观感 */
+    /* 历史装饰 token：全部映射为无装饰值 */
     '--glow-primary': 'none',
     '--glow-primary-strong': 'none',
     '--glow-secondary': 'none',
@@ -318,9 +274,6 @@ export const themes = {
     '--btn-gradient-hover': 'linear-gradient(135deg, #0958d9, #0958d9)',
     '--btn-sheen': 'none',
     '--surface-elevated': '#ffffff',
-    '--primary-rgb': '23, 119, 255',
-    '--on-primary': '#ffffff',
-    '--primary-foreground': '#ffffff',
   }
 };
 
@@ -353,19 +306,6 @@ const applyAccentColor = (hex, currentTheme) => {
   root.style.setProperty('--selection-bg', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.3 : 0.18})`);
   root.style.setProperty('--btn-gradient', hex);
   root.style.setProperty('--btn-gradient-primary', hex);
-  root.style.setProperty('--btn-gradient-purple', hex);
-  /* 供 CSS 里 rgba(var(--primary-rgb), a) 使用，保证半透明主色跟随主题色 */
-  root.style.setProperty('--primary-rgb', `${rgb.r}, ${rgb.g}, ${rgb.b}`);
-  /* 主题色上的文字：按亮度自动取黑字或白字，避免浅色主色配白字看不清 */
-  const onPrimary = getOnPrimaryColor(hex);
-  root.style.setProperty('--btn-text', onPrimary);
-  root.style.setProperty('--primary-foreground', onPrimary);
-  root.style.setProperty('--on-primary', onPrimary);
-  /* 按钮 hover 渐变跟随主题色，避免残留默认品牌色 */
-  root.style.setProperty(
-    '--btn-gradient-hover',
-    `linear-gradient(135deg, ${shades.primaryHover} 0%, ${shades.primaryLight} 100%)`
-  );
   root.style.setProperty('--scrollbar-thumb-hover', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.5 : 0.45})`);
   root.style.setProperty('--border-gradient-primary', `linear-gradient(135deg, rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.35 : 0.3}), rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.35 : 0.3}))`);
 };
