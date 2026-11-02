@@ -418,7 +418,7 @@ const ThemeWorkshop = () => {
         width: '18px', height: '18px', borderRadius: '50%', flexShrink: 0,
         background: applyPart === value ? 'var(--primary)' : 'var(--input)',
         border: '1px solid var(--border)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-        color: '#fff', fontSize: '12px', fontWeight: 700,
+        color: 'var(--btn-text)', fontSize: '12px', fontWeight: 700,
       }}>{applyPart === value ? '✓' : ''}</span>
       <span style={{ minWidth: 0 }}>
         <span style={{ display: 'block', fontSize: '13px', fontWeight: 600, color: 'var(--foreground)' }}>{label}</span>
