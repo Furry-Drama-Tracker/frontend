@@ -1550,10 +1550,10 @@ export default {
     more: 'More',
   },
   adminLayout: {
-    consoleHome: '🏠 Console',
-    back: '← Back',
+    consoleHome: 'Console',
+    back: 'Back',
     adminBackend: 'Admin Panel',
-    websiteHome: '🌐 Website',
+    websiteHome: 'Website',
     logout: 'Logout',
   },
   adminReports: {

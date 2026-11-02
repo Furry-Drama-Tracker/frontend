@@ -163,24 +163,27 @@ const AdminReview = () => {
   if (!admin) return null;
 
   return (
-    <div className="admin-panel">
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px'}}>
-        <div style={{display: 'flex', alignItems: 'center', gap: '15px'}}>
-          <h2>{t('adminReview.reviewManagement')}</h2>
+    <div>
+      <div className="yl-page-header">
+        <div>
+          <h1 className="yl-page-title">{t('adminReview.reviewManagement')}</h1>
         </div>
       </div>
 
-      <div style={{display: 'flex', gap: '10px', marginBottom: '20px', flexWrap: 'wrap'}}>
+      <div className="yl-tabs" role="tablist">
         <button
-          className={`btn ${activeTab === 'pending' ? '' : 'btn-secondary'}`}
+          type="button"
+          role="tab" aria-selected={activeTab === 'pending'} className={`yl-tab${activeTab === 'pending' ? ' is-active' : ''}`}
           onClick={() => setActiveTab('pending')}
         >{t('adminReview.pendingReview')} ({pendingEpisodes.length})</button>
         <button
-          className={`btn ${activeTab === 'all' ? '' : 'btn-secondary'}`}
+          type="button"
+          role="tab" aria-selected={activeTab === 'all'} className={`yl-tab${activeTab === 'all' ? ' is-active' : ''}`}
           onClick={() => setActiveTab('all')}
         >{t('adminReview.allEpisodes')}</button>
         <button
-          className={`btn ${activeTab === 'assign' ? '' : 'btn-secondary'}`}
+          type="button"
+          role="tab" aria-selected={activeTab === 'assign'} className={`yl-tab${activeTab === 'assign' ? ' is-active' : ''}`}
           onClick={() => setActiveTab('assign')}
         >{t('adminReview.permissionAssignment')}</button>
       </div>
@@ -192,8 +195,8 @@ const AdminReview = () => {
           {pendingEpisodes.length === 0 ? (
             <p style={{color: 'var(--text-secondary)', textAlign: 'center', padding: '40px'}}>{t('adminReview.noPendingEpisodes')}</p>
           ) : (
-            <div style={{ overflowX: 'auto' }}>
-            <table className="admin-table">
+            <div className="table-wrapper">
+            <table className="table">
               <thead>
                 <tr>
                   <th>{t('adminReview.title')}</th>
@@ -250,8 +253,8 @@ const AdminReview = () => {
 
       {activeTab === 'all' && (
         <div>
-          <div style={{ overflowX: 'auto' }}>
-          <table className="admin-table">
+          <div className="table-wrapper">
+          <table className="table">
             <thead>
               <tr>
                 <th>{t('adminReview.title')}</th>
@@ -394,8 +397,8 @@ const AdminReview = () => {
                     <strong>{t('adminReview.changeSummaryLabel')}：</strong>
                     {detailEpisode.pendingChangeSummary || t('adminReview.noChangeSummary')}
                   </p>
-                  <div style={{ overflowX: 'auto' }}>
-                    <table className="admin-table" style={{ fontSize: '13px' }}>
+                  <div className="table-wrapper">
+                    <table className="table">
                       <thead>
                         <tr>
                           <th>{t('adminReview.title')}</th>

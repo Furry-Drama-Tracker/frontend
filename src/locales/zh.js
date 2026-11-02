@@ -1553,10 +1553,10 @@ export default {
     more: '多',
   },
   adminLayout: {
-    consoleHome: '🏠 控制台首页',
-    back: '← 返回',
+    consoleHome: '控制台首页',
+    back: '返回',
     adminBackend: '管理后台',
-    websiteHome: '🌐 网站首页',
+    websiteHome: '网站首页',
     logout: '退出登录',
   },
   adminReports: {
