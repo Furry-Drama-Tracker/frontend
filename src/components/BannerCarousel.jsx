@@ -53,7 +53,7 @@ const DigitRoll = ({ value, delay = 0, duration = 900 }) => {
   );
 };
 
-const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle, siteStats, t, getLocalizedTitle, getLocalizedSubtitle, totalEpisodes, onBrowseClick }) => {
+const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle, siteStats, t, getLocalizedTitle, getLocalizedSubtitle }) => {
   const navigate = useNavigate();
   const [showWelcome, setShowWelcome] = useState(true);
   const [bannerIndex, setBannerIndex] = useState(0);
@@ -64,11 +64,11 @@ const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle
     if (bannerImages.length === 0) return;
     welcomeTimerRef.current = setTimeout(() => {
       setShowWelcome(false);
-    }, 3000);
+    }, siteStats ? 2800 : 3000);
     return () => {
       if (welcomeTimerRef.current) clearTimeout(welcomeTimerRef.current);
     };
-  }, [bannerImages.length]);
+  }, [bannerImages.length, siteStats]);
 
   useEffect(() => {
     if (showWelcome || bannerImages.length <= 1) return;
@@ -120,34 +120,14 @@ const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle
     </div>
   ) : null;
 
+
   if (bannerImages.length === 0) {
-    const statText = typeof totalEpisodes === 'number' && totalEpisodes > 0
-      ? t('home.heroStat', { count: totalEpisodes })
-      : '';
-    const statParts = statText ? statText.split(String(totalEpisodes)) : [];
     return (
       <div className="bc-wrap bc-wrap--hero">
-        <div className="bc-hero-deco" aria-hidden="true">
-          <i /><i /><i /><i />
-        </div>
-        <div className="bc-hero-body">
-          <h2 className="bc-welcome-title">{welcomeTitle}</h2>
-          <p className="bc-welcome-sub">{welcomeSubtitle}</p>
-          {statsBlock}
-          <div className="bc-hero-foot">
-            {!siteStats && statParts.length === 2 ? (
-              <span className="bc-hero-stat">
-                {statParts[0]}<b>{totalEpisodes}</b>{statParts[1]}
-              </span>
-            ) : !siteStats && statText ? (
-              <span className="bc-hero-stat">{statText}</span>
-            ) : null}
-            <button type="button" className="bc-hero-cta" onClick={onBrowseClick}>
-              {t('home.heroBrowse')}
-              <span aria-hidden="true">→</span>
-            </button>
-          </div>
-        </div>
+        <div className="bc-hero-glow" aria-hidden="true" />
+        <h2 className="bc-welcome-title">{welcomeTitle}</h2>
+        <p className="bc-welcome-sub">{welcomeSubtitle}</p>
+        {statsBlock}
       </div>
     );
   }
@@ -161,14 +141,10 @@ const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle
           pointerEvents: showWelcome ? 'auto' : 'none',
         }}
       >
-        <div className="bc-hero-deco bc-hero-deco--welcome" aria-hidden="true">
-          <i /><i /><i /><i />
-        </div>
-        <div className="bc-hero-body">
-          {statsBlock}
-          <h2 className="bc-welcome-title">{welcomeTitle}</h2>
-          <p className="bc-welcome-sub">{welcomeSubtitle}</p>
-        </div>
+        <div className="bc-welcome-glow" aria-hidden="true" />
+        <h2 className="bc-welcome-title">{welcomeTitle}</h2>
+        <p className="bc-welcome-sub">{welcomeSubtitle}</p>
+        {statsBlock}
       </div>
 
       {bannerImages.map((banner, idx) => {

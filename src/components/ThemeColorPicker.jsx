@@ -18,7 +18,7 @@ import { computeThemeType, themeTypeBadge } from './ThemeEditorModal';
 const ThemeColorPicker = () => {
   const { t } = useI18n();
   const { user, updateUser } = useAuth();
-  const { accentColor, setAccentColor, resetAccentColor: resetAccent, presetColors, themeMode, setThemeModeTo } = useTheme();
+  const { accentColor, setAccentColor, presetColors, themeMode, setThemeModeTo } = useTheme();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('appearance'); // appearance / theme
@@ -168,15 +168,6 @@ const ThemeColorPicker = () => {
     { key: 'theme', icon: '🖼️', label: t('colorPicker.tabTheme') },
   ];
 
-  // 恢复默认强调色：清除持久化选择，回落当前深浅主题的内置主题色。
-  const resetAccentColor = () => {
-    resetAccent();
-  };
-  // 自定义取色器在未选择主题色时的展示值（跟随当前主题色）。
-  const swatchFallback = (typeof document !== 'undefined'
-    ? getComputedStyle(document.documentElement).getPropertyValue('--primary').trim()
-    : '') || '#1777ff';
-
   // 顺序：跟随系统第一位（也是默认值），其次浅色 / 深色。
   const appearanceOptions = [
     { mode: 'system', icon: '💻', label: t('settings.themeSystem') },
@@ -240,20 +231,7 @@ const ThemeColorPicker = () => {
               {/* 主题色小节 */}
               <div style={{ borderTop: '1px solid var(--border)', paddingTop: '10px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)' }}>🎨 {t('colorPicker.tabColor')}</div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
-                  <button
-                    onClick={resetAccentColor}
-                    title={t('colorPicker.defaultColor')}
-                    style={{
-                      width: '28px', height: '28px', borderRadius: '50%',
-                      background: 'var(--hover-bg)', border: accentColor ? '1px dashed var(--border)' : '2px solid var(--foreground)',
-                      cursor: 'pointer', transition: 'all 0.2s', outline: 'none', padding: 0,
-                      color: 'var(--text-secondary)', fontSize: '13px', lineHeight: 1,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    }}
-                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.15)'; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
-                  >↺</button>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                   {presetColors.map((color) => (
                     <button
                       key={color}
@@ -273,12 +251,12 @@ const ThemeColorPicker = () => {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <input
                     type="color"
-                    value={accentColor || swatchFallback}
+                    value={accentColor}
                     onChange={(e) => setAccentColor(e.target.value)}
                     style={{ width: '28px', height: '28px', border: 'none', borderRadius: '6px', cursor: 'pointer', padding: 0, background: 'transparent' }}
                   />
                   <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{t('settings.customColor')}</span>
-                  <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: 'monospace', marginLeft: 'auto' }}>{accentColor || t('colorPicker.defaultColor')}</span>
+                  <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: 'monospace', marginLeft: 'auto' }}>{accentColor}</span>
                 </div>
               </div>
             </div>

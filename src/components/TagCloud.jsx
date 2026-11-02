@@ -26,31 +26,36 @@ const TagCloud = ({ selectedTag, onTagClick }) => {
   const getFontSize = (count) => {
     const range = maxCount - minCount || 1;
     const ratio = (count - minCount) / range;
-    return 12.5 + ratio * 3.5;
+    return 12 + ratio * 14;
+  };
+
+  const getOpacity = (count) => {
+    const range = maxCount - minCount || 1;
+    const ratio = (count - minCount) / range;
+    return 0.6 + ratio * 0.4;
   };
 
   return (
     <div style={{
-      background: 'var(--card)',
-      borderRadius: 'var(--radius-md)',
-      padding: '14px 18px',
-      marginBottom: '24px',
-      border: '1px solid var(--border)',
-      boxShadow: 'var(--card-shadow)'
+      background: 'var(--glass-bg)',
+      backdropFilter: 'var(--glass-backdrop)',
+      borderRadius: '12px',
+      padding: '16px 20px',
+      marginBottom: '20px',
+      border: '1px solid var(--border)'
     }}>
       <div style={{
-        fontSize: '11px',
+        fontSize: '14px',
         fontWeight: 600,
-        color: 'var(--text-tertiary)',
-        marginBottom: '10px',
-        letterSpacing: '0.12em'
+        color: 'var(--foreground)',
+        marginBottom: '12px'
       }}>
         {t('search.popularTags')}
       </div>
       <div style={{
         display: 'flex',
         flexWrap: 'wrap',
-        gap: '6px',
+        gap: '8px',
         alignItems: 'center'
       }}>
         {tags.map(tag => {
@@ -60,7 +65,6 @@ const TagCloud = ({ selectedTag, onTagClick }) => {
               key={tag.name}
               role="button"
               tabIndex={0}
-              aria-pressed={isSelected}
               onClick={() => onTagClick && onTagClick(tag.name)}
               onKeyDown={(e) => {
                 if ((e.key === 'Enter' || e.key === ' ') && onTagClick) {
@@ -70,31 +74,34 @@ const TagCloud = ({ selectedTag, onTagClick }) => {
               }}
               style={{
                 display: 'inline-block',
-                padding: '5px 14px',
-                borderRadius: 'var(--radius-sm)',
-                background: isSelected ? 'var(--primary)' : 'var(--muted)',
-                color: isSelected ? '#fff' : 'var(--text-light)',
+                padding: '4px 12px',
+                borderRadius: '999px',
+                background: isSelected ? 'var(--primary)' : 'var(--primary-bg)',
+                color: isSelected ? '#fff' : 'var(--primary)',
                 fontSize: `${getFontSize(tag.count)}px`,
+                opacity: isSelected ? '1' : getOpacity(tag.count),
                 cursor: 'pointer',
-                transition: 'background 0.2s, color 0.2s',
-                border: 'none',
-                fontWeight: isSelected ? 600 : 500,
+                transition: 'all 0.2s',
+                border: '1px solid var(--primary-border)',
+                fontWeight: 500,
                 userSelect: 'none'
               }}
               onMouseEnter={(e) => {
-                if (!isSelected) {
-                  e.currentTarget.style.background = 'var(--primary-bg)';
-                  e.currentTarget.style.color = 'var(--primary)';
-                }
+                e.currentTarget.style.background = 'var(--primary)';
+                e.currentTarget.style.color = '#fff';
+                e.currentTarget.style.opacity = '1';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 4px 12px var(--shadow-modal)';
               }}
               onMouseLeave={(e) => {
-                if (!isSelected) {
-                  e.currentTarget.style.background = 'var(--muted)';
-                  e.currentTarget.style.color = 'var(--text-light)';
-                }
+                e.currentTarget.style.background = isSelected ? 'var(--primary)' : 'var(--primary-bg)';
+                e.currentTarget.style.color = isSelected ? '#fff' : 'var(--primary)';
+                e.currentTarget.style.opacity = String(isSelected ? '1' : getOpacity(tag.count));
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              {tag.name}
+              {isSelected ? '✓ ' : ''}{tag.name}
             </span>
           );
         })}
@@ -111,22 +118,24 @@ const TagCloud = ({ selectedTag, onTagClick }) => {
             }}
             style={{
               display: 'inline-block',
-              padding: '5px 14px',
-              borderRadius: 'var(--radius-sm)',
-              background: 'var(--muted)',
+              padding: '4px 12px',
+              borderRadius: '999px',
+              background: 'var(--hover-bg)',
               color: 'var(--text-secondary)',
-              fontSize: '12.5px',
+              fontSize: '13px',
               cursor: 'pointer',
-              transition: 'color 0.2s',
-              border: 'none',
+              transition: 'all 0.2s',
+              border: '1px solid var(--border)',
               fontWeight: 500,
               userSelect: 'none'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.color = 'var(--destructive)';
+              e.currentTarget.style.borderColor = 'var(--destructive)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.color = 'var(--text-secondary)';
+              e.currentTarget.style.borderColor = 'var(--border)';
             }}
           >
             ✕ {t('common.cancel')}
