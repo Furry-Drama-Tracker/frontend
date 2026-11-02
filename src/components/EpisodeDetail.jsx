@@ -369,7 +369,7 @@ const EpisodeDetail = ({ user }) => {
           <h2>{getLocalizedTitle(episode)}</h2>
           <p>{getLocalizedDescription(episode)}</p>
           <div className="meta-info">
-            <p><strong>{t('episode.status')}</strong><span className={`meta-chip meta-chip--${episode.status === 'ongoing' ? 'ongoing' : episode.status === 'completed' ? 'completed' : 'upcoming'}`}>{episode.status === 'ongoing' ? t('home.statusOngoing') : episode.status === 'completed' ? t('home.statusCompleted') : t('home.statusUpcoming')}</span></p>
+            <p><strong>{t('episode.status')}</strong>{episode.status === 'ongoing' ? t('home.statusOngoing') : episode.status === 'completed' ? t('home.statusCompleted') : t('home.statusUpcoming')}</p>
             {episode.status === 'upcoming' && episode.premiereDate && (
               <p><strong>{t('episode.premiereDate')}</strong><span style={{ color: 'var(--text-secondary)' }}>{new Date(episode.premiereDate).toLocaleDateString(lang === 'en' ? 'en-US' : 'zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}</span></p>
             )}
@@ -391,21 +391,14 @@ const EpisodeDetail = ({ user }) => {
             {episode.tags && episode.tags.length > 0 && (
               <p><strong>{t('episode.tags')}</strong>{episode.tags.map((tag, i) => (
                 <Link key={i} to={`/?tag=${encodeURIComponent(tag)}`} style={{
-                  display: 'inline-block', padding: '2px 10px', marginRight: '4px',
-                  background: 'var(--hover-bg)', color: 'var(--text-secondary)',
-                  borderRadius: 'var(--radius-xs)', fontSize: '12.5px', textDecoration: 'none',
-                  border: '1px solid var(--border)', transition: 'color 0.2s, border-color 0.2s'
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--primary)'; e.currentTarget.style.borderColor = 'var(--primary-border)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-secondary)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
-                >{tag}</Link>
+                  display: 'inline-block', padding: '2px 10px', marginRight: '6px',
+                  background: 'var(--primary-bg)', color: 'var(--primary-light)',
+                  borderRadius: '12px', fontSize: '13px', textDecoration: 'none',
+                  border: '1px solid var(--primary-border)'
+                }}>{tag}</Link>
               ))}</p>
             )}
-            <p><strong>{t('episode.views')}</strong>{(() => {
-              const v = episode.views || 0;
-              const formatted = v >= 10000 ? (v / 10000).toFixed(1) + t('common.tenThousand') : String(v);
-              return `${formatted} ${t('episode.viewCount')}`;
-            })()}</p>
+            <p><strong>{t('episode.views')}</strong>{episode.views} {t('episode.viewCount')}</p>
             {episode.averageRating > 0 && (
               <p><strong>{t('episode.ratingLabel')}</strong>
                 <span style={{color: 'var(--warning-text)', display: 'inline-flex', alignItems: 'center', gap: '4px'}}><Icon name="misc.star" fallback="⭐" size={13} /> {episode.averageRating}</span>

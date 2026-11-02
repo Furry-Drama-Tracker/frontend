@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, Component, Suspense, lazy } from 'react';
+import React, { useState, useEffect, Component, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -466,7 +466,7 @@ function AppContent() {
     if (!siteSettingsData) return;
     const pwaName = siteSettingsData.pwaName || siteSettingsData.siteName || t('site.defaultName');
     const pwaShortName = siteSettingsData.pwaShortName || (pwaName || '').slice(0, 12);
-    const pwaThemeColor = siteSettingsData.pwaThemeColor || '#1777ff';
+    const pwaThemeColor = siteSettingsData.pwaThemeColor || '#6366f1';
 
     // 将 manifest 链接指向后端动态端点（同源 HTTP，满足浏览器可安装性要求）
     // 不再使用 blob: URL，因为 blob: URL 会导致浏览器无法验证 manifest，安装提示不弹出
@@ -525,30 +525,27 @@ function AppContent() {
           <Routes>
             <Route path="/admin" element={<Admin />} />
             <Route path="/admin" element={<AdminLayout />}>
-              {/* CREATOR / ADMIN / SUPER = 创作者、管理员、超级管理员；权限与后端接口保持一致 */}
               <Route path="dashboard" element={<AdminGuard roles={ADMIN_ROLES_ALL}><AdminDashboard /></AdminGuard>} />
               <Route path="episodes" element={<AdminGuard roles={ADMIN_ROLES_ALL}><AdminEpisodes /></AdminGuard>} />
-              <Route path="episode-trash" element={<AdminGuard roles={ADMIN_ROLES_ALL}><AdminEpisodeTrash /></AdminGuard>} />
-              <Route path="review" element={<AdminGuard roles={ADMIN_ROLES_ALL}><AdminReview /></AdminGuard>} />
-              <Route path="creator-profile" element={<AdminGuard roles={ADMIN_ROLES_ALL}><AdminCreatorProfile /></AdminGuard>} />
-
               <Route path="users" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminUsers /></AdminGuard>} />
               <Route path="categories" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminCategories /></AdminGuard>} />
               <Route path="banners" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminBanners /></AdminGuard>} />
+              <Route path="review" element={<AdminGuard roles={ADMIN_ROLES_ALL}><AdminReview /></AdminGuard>} />
+              <Route path="episode-trash" element={<AdminGuard roles={ADMIN_ROLES_ALL}><AdminEpisodeTrash /></AdminGuard>} />
               <Route path="reports" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminReports /></AdminGuard>} />
-              <Route path="feedback" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminFeedback /></AdminGuard>} />
               <Route path="stats" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminStats /></AdminGuard>} />
-              <Route path="analytics" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminAnalytics /></AdminGuard>} />
-
+              <Route path="creator-profile" element={<AdminGuard roles={ADMIN_ROLES_ALL}><AdminCreatorProfile /></AdminGuard>} />
               <Route path="creator-profiles" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminCreatorProfiles /></AdminGuard>} />
               <Route path="announcements" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminAnnouncements /></AdminGuard>} />
               <Route path="site-content" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminSiteContent /></AdminGuard>} />
               <Route path="email-settings" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminEmailSettings /></AdminGuard>} />
               <Route path="audit-logs" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminAuditLogs /></AdminGuard>} />
               <Route path="backup" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminBackup /></AdminGuard>} />
+              <Route path="feedback" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminFeedback /></AdminGuard>} />
               <Route path="api-usage" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminApiUsage /></AdminGuard>} />
               <Route path="friend-links" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminFriendLinks /></AdminGuard>} />
               <Route path="sessions" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminSessions /></AdminGuard>} />
+              <Route path="analytics" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminAnalytics /></AdminGuard>} />
               <Route path="themes" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminThemes /></AdminGuard>} />
               <Route path="theme-review" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminThemeReview /></AdminGuard>} />
             </Route>
