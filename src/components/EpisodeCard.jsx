@@ -1,12 +1,10 @@
-﻿import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Flame, Star } from 'lucide-react';
 import TransitionLink from './TransitionLink';
 
 const EpisodeCard = React.memo(({ episode, highlightQuery, t, getLocalizedTitle, getLocalizedDescription, onTagClick }) => {
   const imgRef = useRef(null);
   const [imgVisible, setImgVisible] = useState(false);
-  const [imgLoaded, setImgLoaded] = useState(false);
-  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     if (!imgRef.current) return;
@@ -78,15 +76,10 @@ const EpisodeCard = React.memo(({ episode, highlightQuery, t, getLocalizedTitle,
   return (
     <TransitionLink to={`/episode/${episode._id}`} className="episode-card card-hover ec" tabIndex={0} style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 200px', containerType: 'inline-size', containerName: 'episode-card' }}>
       <div ref={imgRef} className="ec-media">
-        {!imgLoaded && !imgError && <span className="media-skeleton" aria-hidden="true" />}
-        {imgError ? (
-          <span className="ec-media-fallback" aria-hidden="true" />
-        ) : (
-          <img src={imgVisible ? episode.coverImage : undefined} alt={episode.title} loading="lazy" decoding="async" className="ec-img" onLoad={() => setImgLoaded(true)} onError={() => { setImgError(true); setImgLoaded(true); }} style={{
-            opacity: imgLoaded ? 1 : 0,
-            transition: 'opacity 0.35s var(--ease-out), transform 0.6s var(--ease-out)',
-          }} />
-        )}
+        <img src={imgVisible ? episode.coverImage : ''} alt={episode.title} loading="lazy" decoding="async" className="ec-img" style={{
+          opacity: imgVisible ? 1 : 0,
+          transition: 'opacity 0.5s var(--ease-out), transform 0.6s var(--ease-out)',
+        }} />
         <span className="ec-media-shade" aria-hidden="true" />
         <span className={`status ec-status ${statusInfo.cls}`}>{statusInfo.text}</span>
         {episode.currentEpisodes != null && (
@@ -145,5 +138,3 @@ const EpisodeCard = React.memo(({ episode, highlightQuery, t, getLocalizedTitle,
 });
 
 export default EpisodeCard;
-
-EpisodeCard.displayName = 'EpisodeCard';

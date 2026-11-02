@@ -204,7 +204,7 @@ const UpdateCalendar = () => {
                 }}>
                   <span style={{ fontWeight: 700, fontSize: '16px', color: isCurrentMonth ? 'var(--primary)' : 'var(--foreground)' }}>
                     {monthName}
-                    {isCurrentMonth && <span style={{ fontSize: '11px', marginLeft: '6px', padding: '1px 6px', borderRadius: '10px', background: 'var(--primary)', color: 'var(--btn-text)' }}>{t('calendar.today')}</span>}
+                    {isCurrentMonth && <span style={{ fontSize: '11px', marginLeft: '6px', padding: '1px 6px', borderRadius: '10px', background: 'var(--primary)', color: '#fff' }}>{t('calendar.today')}</span>}
                   </span>
                   {stats.total > 0 && (
                     <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{stats.total}{t('calendar.more').replace('更多', '项')}</span>
@@ -405,7 +405,7 @@ const UpdateCalendar = () => {
             const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
             return (
               <div key={day} style={{ minHeight: '80px', padding: '4px', borderBottom: '1px solid var(--border)', borderRight: ((firstDay + i + 1) % 7 !== 0) ? '1px solid var(--border)' : 'none', background: isToday ? 'var(--primary-bg-subtle)' : 'transparent', position: 'relative' }}>
-                <div style={{ fontSize: '13px', fontWeight: isToday ? 700 : 400, color: isToday ? 'var(--btn-text)' : isWeekend ? 'var(--destructive-text)' : 'var(--foreground)', marginBottom: '2px', padding: '2px 4px', borderRadius: '4px', background: isToday ? 'var(--primary)' : 'transparent', display: 'inline-block', minWidth: '20px', textAlign: 'center' }}>{day}</div>
+                <div style={{ fontSize: '13px', fontWeight: isToday ? 700 : 400, color: isToday ? '#fff' : isWeekend ? 'var(--destructive-text)' : 'var(--foreground)', marginBottom: '2px', padding: '2px 4px', borderRadius: '4px', background: isToday ? 'var(--primary)' : 'transparent', display: 'inline-block', minWidth: '20px', textAlign: 'center' }}>{day}</div>
                 {items && items.slice(0, 3).map((item, idx) => {
                   const isFollowed = followingIds.includes(item._id);
                   const bgMap = { released: 'var(--success-bg-subtle)', scheduled: 'var(--warning-bg-subtle)', premiere: 'var(--primary-bg-subtle)' };

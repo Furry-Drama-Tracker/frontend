@@ -1,96 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const prefersReducedMotion = () =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-/**
- * 机械计数式数字滚动：
- * 每一位数字是一列 0-9 的竖条，滚到目标刻度；位与位从右往左错峰启动。
- */
-const DigitRoll = ({ value, delay = 0, duration = 900 }) => {
-  const target = Number.isFinite(value) ? Math.max(0, Math.round(value)) : 0;
-  const text = target.toLocaleString();
-  const reduced = prefersReducedMotion();
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    if (reduced) return undefined;
-    const id = requestAnimationFrame(() => setReady(true));
-    return () => cancelAnimationFrame(id);
-  }, [reduced, target]);
-
-  const digits = text.split('');
-  const digitPositions = digits
-    .map((ch, i) => (/\d/.test(ch) ? i : -1))
-    .filter((i) => i >= 0);
-  const orderByIndex = new Map(
-    digitPositions.map((charIndex, p) => [charIndex, digitPositions.length - 1 - p])
-  );
-
-  return (
-    <span className="odometer" aria-label={text}>
-      {digits.map((ch, i) => {
-        if (!/\d/.test(ch)) {
-          return <span key={`sep-${i}`} className="odometer-sep" aria-hidden="true">{ch}</span>;
-        }
-        const digit = Number(ch);
-        const order = orderByIndex.get(i) ?? 0;
-        const shift = ready ? -digit * 10 : 0;
-        return (
-          <span key={`d-${i}`} className="odometer-digit" aria-hidden="true">
-            <span
-              className="odometer-strip"
-              style={{
-                transform: `translateY(${shift}%)`,
-                transitionDuration: reduced ? '0ms' : `${duration}ms`,
-                transitionDelay: reduced ? '0ms' : `${delay + order * 70}ms`,
-              }}
-            >
-              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
-                <span key={n}>{n}</span>
-              ))}
-            </span>
-          </span>
-        );
-      })}
-    </span>
-  );
-};
-
-const BannerCarousel = React.memo(({
-  bannerImages,
-  welcomeTitle,
-  welcomeSubtitle,
-  siteStats,
-  t,
-  getLocalizedTitle,
-  getLocalizedSubtitle,
-  totalEpisodes,
-  onBrowseClick,
-}) => {
+const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle, t, getLocalizedTitle, getLocalizedSubtitle, totalEpisodes, onBrowseClick }) => {
   const navigate = useNavigate();
   const [showWelcome, setShowWelcome] = useState(true);
   const [bannerIndex, setBannerIndex] = useState(0);
   const bannerTimerRef = useRef(null);
   const welcomeTimerRef = useRef(null);
 
-  // 欢迎层：等数字滚动动画播完再淡出，随后才出现并轮播横幅
   useEffect(() => {
-    if (bannerImages.length === 0) return undefined;
-    const delay = siteStats ? 2800 : 3000;
+    if (bannerImages.length === 0) return;
     welcomeTimerRef.current = setTimeout(() => {
       setShowWelcome(false);
-    }, delay);
+    }, 3000);
     return () => {
       if (welcomeTimerRef.current) clearTimeout(welcomeTimerRef.current);
     };
-  }, [bannerImages.length, siteStats]);
+  }, [bannerImages.length]);
 
   useEffect(() => {
-    if (showWelcome || bannerImages.length <= 1) return undefined;
+    if (showWelcome || bannerImages.length <= 1) return;
     bannerTimerRef.current = setInterval(() => {
       setBannerIndex(prev => (prev + 1) % bannerImages.length);
     }, 4000);
@@ -113,51 +42,11 @@ const BannerCarousel = React.memo(({
     setBannerIndex(idx);
   };
 
-  // 站点规模：优先用实时统计，缺失时退回剧集总数
-  const stats = siteStats || (typeof totalEpisodes === 'number' && totalEpisodes >= 0
-    ? { users: null, episodes: totalEpisodes, online: null }
-    : null);
-
-  const statItems = stats
-    ? [
-        stats.users != null && { key: 'users', label: t('home.statUsers'), value: stats.users },
-        stats.episodes != null && { key: 'episodes', label: t('home.statEpisodes'), value: stats.episodes },
-        stats.online != null && { key: 'online', label: t('home.statOnline'), value: stats.online },
-      ].filter(Boolean)
-    : [];
-
-  const statsBlock = statItems.length > 0 ? (
-    <div className="bc-stats" role="list">
-      {statItems.map((item, idx) => (
-        <React.Fragment key={item.key}>
-          {idx > 0 && <span className="bc-stat-divider" aria-hidden="true" />}
-          <div className={`bc-stat bc-stat--${idx + 1}`} role="listitem">
-            <div className="bc-stat-value">
-              <DigitRoll value={item.value} delay={120 + idx * 120} />
-            </div>
-            <div className="bc-stat-label">{item.label}</div>
-          </div>
-        </React.Fragment>
-      ))}
-    </div>
-  ) : null;
-
-  const heroFallbackStat = (() => {
-    if (siteStats) return null;
-    if (typeof totalEpisodes !== 'number' || totalEpisodes <= 0) return null;
-    const statText = t('home.heroStat', { count: totalEpisodes });
-    const statParts = statText ? statText.split(String(totalEpisodes)) : [];
-    if (statParts.length === 2) {
-      return (
-        <span className="bc-hero-stat">
-          {statParts[0]}<b>{totalEpisodes}</b>{statParts[1]}
-        </span>
-      );
-    }
-    return statText ? <span className="bc-hero-stat">{statText}</span> : null;
-  })();
-
   if (bannerImages.length === 0) {
+    const statText = typeof totalEpisodes === 'number' && totalEpisodes > 0
+      ? t('home.heroStat', { count: totalEpisodes })
+      : '';
+    const statParts = statText ? statText.split(String(totalEpisodes)) : [];
     return (
       <div className="bc-wrap bc-wrap--hero">
         <div className="bc-hero-deco" aria-hidden="true">
@@ -166,9 +55,14 @@ const BannerCarousel = React.memo(({
         <div className="bc-hero-body">
           <h2 className="bc-welcome-title">{welcomeTitle}</h2>
           <p className="bc-welcome-sub">{welcomeSubtitle}</p>
-          {statsBlock}
           <div className="bc-hero-foot">
-            {heroFallbackStat}
+            {statParts.length === 2 ? (
+              <span className="bc-hero-stat">
+                {statParts[0]}<b>{totalEpisodes}</b>{statParts[1]}
+              </span>
+            ) : statText ? (
+              <span className="bc-hero-stat">{statText}</span>
+            ) : null}
             <button type="button" className="bc-hero-cta" onClick={onBrowseClick}>
               {t('home.heroBrowse')}
               <span aria-hidden="true">→</span>
@@ -187,13 +81,11 @@ const BannerCarousel = React.memo(({
           opacity: showWelcome ? 1 : 0,
           pointerEvents: showWelcome ? 'auto' : 'none',
         }}
-        aria-hidden={showWelcome ? undefined : 'true'}
       >
         <div className="bc-hero-deco bc-hero-deco--welcome" aria-hidden="true">
           <i /><i /><i /><i />
         </div>
         <div className="bc-hero-body">
-          {statsBlock}
           <h2 className="bc-welcome-title">{welcomeTitle}</h2>
           <p className="bc-welcome-sub">{welcomeSubtitle}</p>
         </div>
@@ -268,5 +160,3 @@ const BannerCarousel = React.memo(({
 });
 
 export default BannerCarousel;
-
-BannerCarousel.displayName = 'BannerCarousel';

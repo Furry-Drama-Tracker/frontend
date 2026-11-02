@@ -493,7 +493,7 @@ const Profile = ({ user, setUser, logout }) => {
                   disabled={nicknameLoading}
                   style={{
                     padding: '4px 12px', borderRadius: '6px', fontSize: '13px',
-                    background: 'var(--primary)', color: 'var(--btn-text)', border: 'none',
+                    background: 'var(--primary)', color: '#fff', border: 'none',
                     cursor: 'pointer', fontWeight: 500
                   }}
                 >
@@ -605,7 +605,7 @@ const Profile = ({ user, setUser, logout }) => {
           <button key={tab.key} onClick={() => setActiveTab(tab.key)}
             style={{
               background: activeTab === tab.key ? 'var(--primary)' : 'var(--hover-bg-strong)',
-              color: activeTab === tab.key ? 'var(--btn-text)' : 'var(--foreground)',
+              color: activeTab === tab.key ? '#fff' : 'var(--foreground)',
               border: activeTab === tab.key ? '1px solid var(--primary)' : '1px solid var(--border)',
               padding: '8px 20px', borderRadius: '20px',
               cursor: 'pointer', fontSize: '14px', fontWeight: activeTab === tab.key ? 600 : 500,
@@ -667,7 +667,7 @@ const Profile = ({ user, setUser, logout }) => {
                 <div style={{display: 'flex', gap: '4px'}}>
                   <button onClick={handleCreateFolder} style={{
                     padding: '3px 10px', borderRadius: '4px', fontSize: '12px',
-                    background: 'var(--primary)', color: 'var(--btn-text)', border: 'none', cursor: 'pointer'
+                    background: 'var(--primary)', color: '#fff', border: 'none', cursor: 'pointer'
                   }}>{t('common.confirm')}</button>
                   <button onClick={() => setShowCreateFolder(false)} style={{
                     padding: '3px 10px', borderRadius: '4px', fontSize: '12px',
@@ -734,7 +734,7 @@ const Profile = ({ user, setUser, logout }) => {
                     <div style={{display: 'flex', gap: '4px', marginTop: '4px'}}>
                       <button onClick={() => handleRenameFolder(folder._id)} style={{
                         padding: '2px 8px', borderRadius: '4px', fontSize: '11px',
-                        background: 'var(--primary)', color: 'var(--btn-text)', border: 'none', cursor: 'pointer'
+                        background: 'var(--primary)', color: '#fff', border: 'none', cursor: 'pointer'
                       }}>✓</button>
                       <button onClick={() => setEditingFolderId(null)} style={{
                         padding: '2px 8px', borderRadius: '4px', fontSize: '11px',
@@ -926,7 +926,7 @@ const Profile = ({ user, setUser, logout }) => {
                           <div style={{ display: 'flex', gap: '6px', marginTop: '6px' }}>
                             <button onClick={() => handleSaveFolderDesc(activeFolderId)} style={{
                               padding: '4px 12px', borderRadius: '6px', fontSize: '12px',
-                              background: 'var(--primary)', color: 'var(--btn-text)', border: 'none', cursor: 'pointer'
+                              background: 'var(--primary)', color: '#fff', border: 'none', cursor: 'pointer'
                             }}>{t('common.save')}</button>
                             <button onClick={() => setEditingFolderDescId(null)} style={{
                               padding: '4px 12px', borderRadius: '6px', fontSize: '12px',

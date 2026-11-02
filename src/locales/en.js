@@ -1,4 +1,4 @@
-﻿export default {
+export default {
   common: {
     loading: 'Loading...',
     save: 'Save',
@@ -149,9 +149,6 @@
     welcomeSubtitle: 'Discover great dramas, never miss an update',
     heroStat: '{count} series in the archive',
     heroBrowse: 'Browse all series',
-    statUsers: 'Members',
-    statEpisodes: 'Series',
-    statOnline: 'Online now',
     category: 'Category',
     status: 'Status',
     rating: 'Rating',
@@ -167,9 +164,6 @@
     yearRecent5: 'Recent 5Y',
     yearEarlier: 'Earlier',
     noResults: 'No dramas found',
-    emptyFilterHint: 'Try different filters, or clear them to browse everything',
-    emptyLibraryHint: 'The library is still growing — feel free to submit series you find',
-    clearFilters: 'Clear filters',
     loadMore: 'Load More',
     searchResult: 'Search results for "{query}", {count} found',
     searchPlaceholder: 'Search dramas...',
@@ -429,9 +423,6 @@
   },
   episode: {
     follow: 'Follow',
-    previewViews: '{n} views',
-    previewPlatforms: '{n} sources',
-    previewEmpty: 'No preview data',
     unfollow: 'Unfollow',
     favorite: 'Favorite',
     unfavorite: 'Unfavorite',
@@ -1556,10 +1547,10 @@
     more: 'More',
   },
   adminLayout: {
-    consoleHome: 'Console',
-    back: 'Back',
+    consoleHome: '🏠 Console',
+    back: '← Back',
     adminBackend: 'Admin Panel',
-    websiteHome: 'Website',
+    websiteHome: '🌐 Website',
     logout: 'Logout',
   },
   adminReports: {
@@ -1854,11 +1845,6 @@
     applyWpOnly: 'Wallpaper only',
     applyIcOnly: 'Icons only',
     applyBoth: 'Both',
-    accentWarnDark: 'This color is too dark for the dark theme — buttons and text may be hard to read. Try a lighter shade.',
-    accentWarnLight: 'This color is too light for the light theme — buttons and text may be hard to read. Try a darker shade.',
-    accentAutoText: 'Text on primary buttons switches to {color} automatically for readability',
-    accentTextBlack: 'black',
-    accentTextWhite: 'white',
   },
   // ===== Theme review (dedicated admin page) =====
   adminThemeReview: {

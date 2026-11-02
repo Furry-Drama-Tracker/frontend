@@ -276,7 +276,7 @@ const ThemeEditorModal = ({ isOpen, onClose, initial, onSave, saving = false, ti
             {selected && (
               <div style={{
                 position: 'absolute', top: '3px', right: '3px', width: '14px', height: '14px',
-                borderRadius: '50%', background: 'var(--primary)', color: 'var(--btn-text)', fontSize: '9px',
+                borderRadius: '50%', background: 'var(--primary)', color: '#fff', fontSize: '9px',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>✓</div>
             )}

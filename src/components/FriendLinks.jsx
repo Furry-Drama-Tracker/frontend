@@ -120,7 +120,7 @@ const FriendLinks = () => {
           <h1 style={{ margin: 0, color: 'var(--foreground)', fontSize: '22px' }}>{t('friendLink.title')}</h1>
           <button onClick={() => setShowApplyModal(true)} style={{
             padding: '8px 18px', borderRadius: '10px', fontSize: '14px',
-            background: 'var(--primary)', color: 'var(--btn-text)', border: 'none',
+            background: 'var(--primary)', color: '#fff', border: 'none',
             cursor: 'pointer', fontWeight: 600, transition: 'all 0.2s',
             display: 'flex', alignItems: 'center', gap: '6px'
           }}
@@ -328,7 +328,7 @@ const FriendLinks = () => {
 
               <button type="submit" disabled={applyLoading} style={{
                 padding: '10px', borderRadius: '10px', fontSize: '15px',
-                background: 'var(--primary)', color: 'var(--btn-text)', border: 'none',
+                background: 'var(--primary)', color: '#fff', border: 'none',
                 cursor: applyLoading ? 'not-allowed' : 'pointer', fontWeight: 600,
                 opacity: applyLoading ? 0.7 : 1, transition: 'all 0.2s'
               }}>

@@ -68,7 +68,7 @@ const SystemWallpaperManager = () => {
         style={{
           padding: '8px 16px', fontSize: '13px', fontWeight: 500, cursor: uploading ? 'wait' : 'pointer',
           borderRadius: '8px', border: '1px solid var(--primary-border)',
-          background: 'var(--primary)', color: 'var(--btn-text)', marginBottom: '12px',
+          background: 'var(--primary)', color: '#fff', marginBottom: '12px',
           opacity: uploading ? 0.6 : 1, transition: 'all 0.15s',
         }}
       >
@@ -101,7 +101,7 @@ const SystemWallpaperManager = () => {
                   style={{
                     width: '24px', height: '24px', borderRadius: '4px', border: 'none', cursor: 'pointer',
                     background: wp.enabled ? 'var(--primary)' : 'var(--hover-bg)',
-                    color: wp.enabled ? 'var(--btn-text)' : 'var(--foreground)', fontSize: '11px', padding: 0,
+                    color: wp.enabled ? '#fff' : 'var(--foreground)', fontSize: '11px', padding: 0,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}
                 >{wp.enabled ? '✓' : '✕'}</button>

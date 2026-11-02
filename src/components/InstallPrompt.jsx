@@ -136,7 +136,7 @@ export default function InstallPrompt() {
 
         .pwa-prompt-btn-install {
           padding: 5px 12px; border-radius: 6px; border: none;
-          background: var(--primary); color: var(--btn-text);
+          background: var(--primary); color: #fff;
           font-size: 11px; font-weight: 600; line-height: 1.2;
           cursor: pointer; transition: all 0.2s; white-space: nowrap;
           -webkit-appearance: none; appearance: none;

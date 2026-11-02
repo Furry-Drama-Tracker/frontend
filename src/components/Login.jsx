@@ -273,7 +273,10 @@ const Login = ({ login }) => {
           <p style={{color: 'var(--text-tertiary)', fontSize: '12px', margin: '0 0 8px'}}>
             {t('auth.yourLoginCode')}
           </p>
-          <div className="code-display">{deviceLoginCode}</div>
+          <div style={{
+            fontSize: '36px', fontWeight: '700', letterSpacing: '8px',
+            color: 'var(--primary)', fontFamily: 'monospace',
+          }}>{deviceLoginCode}</div>
         </div>
         <p style={{color: 'var(--text-secondary)', fontSize: '13px', lineHeight: 1.7}}>
           {t('auth.deviceCodeExpiry')}
@@ -345,7 +348,13 @@ const Login = ({ login }) => {
               placeholder={t('auth.deviceCodePlaceholder')}
               inputMode="numeric"
               maxLength="6"
-              className="code-input"
+              style={{
+                width: '100%', padding: '10px 12px', fontSize: '20px',
+                textAlign: 'center', letterSpacing: '6px', fontFamily: 'monospace',
+                borderRadius: '8px', border: '1px solid var(--border)',
+                background: 'var(--input)', color: 'var(--foreground)',
+                outline: 'none', boxSizing: 'border-box',
+              }}
             />
             {deviceCodeError && (
               <div className="error-message" style={{margin: 0, fontSize: '13px'}}>{deviceCodeError}</div>
@@ -397,7 +406,7 @@ const Login = ({ login }) => {
               maxLength={6}
               required
               autoFocus
-              className="code-input"
+              style={{ letterSpacing: '0.3em', textAlign: 'center', fontSize: '20px' }}
             />
           </div>
           <div className="form-group">
@@ -441,7 +450,13 @@ const Login = ({ login }) => {
               inputMode="numeric"
               maxLength="6"
               autoFocus
-              className="code-input"
+              style={{
+                width: '100%', padding: '10px 12px', fontSize: '20px',
+                textAlign: 'center', letterSpacing: '6px', fontFamily: 'monospace',
+                borderRadius: '8px', border: '1px solid var(--border)',
+                background: 'var(--input)', color: 'var(--foreground)',
+                outline: 'none', boxSizing: 'border-box',
+              }}
             />
             {emailVerifyCodeError && (
               <div className="error-message" style={{margin: 0, fontSize: '13px'}}>{emailVerifyCodeError}</div>
