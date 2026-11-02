@@ -275,7 +275,7 @@ const Login = ({ login }) => {
           </p>
           <div style={{
             fontSize: '36px', fontWeight: '700', letterSpacing: '8px',
-            color: 'var(--primary)', fontFamily: 'monospace',
+            color: 'var(--primary)',
           }}>{deviceLoginCode}</div>
         </div>
         <p style={{color: 'var(--text-secondary)', fontSize: '13px', lineHeight: 1.7}}>
@@ -350,7 +350,7 @@ const Login = ({ login }) => {
               maxLength="6"
               style={{
                 width: '100%', padding: '10px 12px', fontSize: '20px',
-                textAlign: 'center', letterSpacing: '6px', fontFamily: 'monospace',
+                textAlign: 'center', letterSpacing: '6px',
                 borderRadius: '8px', border: '1px solid var(--border)',
                 background: 'var(--input)', color: 'var(--foreground)',
                 outline: 'none', boxSizing: 'border-box',
@@ -452,7 +452,7 @@ const Login = ({ login }) => {
               autoFocus
               style={{
                 width: '100%', padding: '10px 12px', fontSize: '20px',
-                textAlign: 'center', letterSpacing: '6px', fontFamily: 'monospace',
+                textAlign: 'center', letterSpacing: '6px',
                 borderRadius: '8px', border: '1px solid var(--border)',
                 background: 'var(--input)', color: 'var(--foreground)',
                 outline: 'none', boxSizing: 'border-box',
