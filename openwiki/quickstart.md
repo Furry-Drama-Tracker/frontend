@@ -3,9 +3,6 @@ type: guide
 title: 快速上手与任务路由
 description: 兽剧聚合追踪平台前端的入口页：说明仓库定位、必须先起的 5000 端口后端与 /api、/uploads 代理前提、五个真实存在的 npm 脚本，并按“我要改什么”把读者路由到架构、子系统、工作流、后端契约、运维与验证页面。
 tags: [quickstart, task-routing, vite-proxy, dev-environment, navigation]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-29T12:47:15.545Z
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
@@ -34,6 +31,9 @@ sources:
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
 generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-02T17:44:42.174Z
 ---
 
 # 快速上手与任务路由

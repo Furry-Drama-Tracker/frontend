@@ -3,9 +3,6 @@ type: system
 title: 运行时站点配置、公告与静态页
 description: 站点配置链路：SiteSettingsContext 如何拉取 /api/site-content/settings 的 JSON 字符串、30 分钟 localStorage 缓存与 refreshSettings 生效路径，App 如何据此写 document.title、favicon、apple-touch-icon、运行时 manifest 与 theme-color，公告 banner 与 popup 的双通道与本地已读记录，以及隐私/条款/关于/许可/友链页的内容来源与后台写入侧（AdminSiteContent 与只读的 AdminEmailSettings）。
 tags: [site-content, site-settings, announcements, localStorage-cache, admin, static-pages, friend-links]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-29T12:47:15.545Z
 sources:
   - id: openwiki-source-f8d10828394c4129061d5b0e
     resource: repo://index.html
@@ -36,6 +33,9 @@ sources:
   - id: openwiki-source-52f73cb87517cf05f876b0b4
     resource: repo://src/contexts/SiteSettingsContext.jsx
 generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-02T17:44:42.174Z
 ---
 
 # 运行时站点配置、公告与静态页

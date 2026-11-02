@@ -3,9 +3,6 @@ type: system
 title: 界面国际化与运行时内容翻译
 description: 前端的两条互不替代的翻译路径：locales 静态 UI 文案与 t() 的插值/回退语义、切换语言整页 reload 的原因，以及后端多语言字段缺失时经 requestTranslation 队列调用 /api/translate 的按需机器翻译、跨实体去重缓存与失败标记；另含 CSP 翻译域名与改动检查清单。
 tags: [i18n, ui-strings, machine-translation, request-queue, localstorage-cache, csp]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-29T12:47:15.545Z
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
@@ -40,6 +37,9 @@ sources:
   - id: openwiki-source-a40ec8eba1327ab0c96f271f
     resource: repo://src/utils/translationCache.js
 generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-02T17:44:42.174Z
 ---
 
 # 界面国际化与运行时内容翻译

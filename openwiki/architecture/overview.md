@@ -3,9 +3,6 @@ type: architecture
 title: 架构总览：浏览器侧分层与后端边界
 description: 把兽剧前端 SPA 按职责切成启动脚本、入口副作用、全局 Provider、路由分区、领域组件、传输缓存六层，标注与 furry-drama-be-neo 的 HTTP 契约边界，并解释无外部状态库、纯 CSS 变量、纯 JSX 的架构取舍。
 tags: [architecture, spa-layering, backend-boundary, react-context, css-variables]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-29T12:47:15.545Z
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
@@ -57,7 +54,10 @@ sources:
     resource: repo://src/utils/translationCache.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+generated: { by: "opencode", at: "2026-11-02T17:44:42.174Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-02T17:44:42.174Z
 ---
 
 # 架构总览：浏览器侧分层与后端边界
@@ -161,7 +161,7 @@ flowchart TD
 `AppContent` 在渲染路由之前先算 `isAdminRoute = location.pathname.startsWith('/admin')`，随后走两条互不相交的返回分支：
 
 - **公共分区**：`skip-link`、`AnnouncementBanner`、`NavBar`（包在 `NavBarErrorBoundary` 里）、`div.container#main-content` 内的路由树，以及 `FooterBeian`、`FeedbackModal`、`ThemeColorPicker`、`OfflineIndicator`、`InstallPrompt`、`AnnouncementPopup`、强制改邮箱浮层与 `api-error` 提示条。
-- **后台分区**：只有 `<Routes>`（`/admin` 入口组件 + `AdminLayout` 下的 `Outlet` 子路由）与 `FooterBeian`；不渲染 `NavBar`，外壳由 `AdminLayout` 自己提供（顶栏、登出、心跳）。
+- **后台分区**：只有 `<Routes>`（`/admin` 入口组件 + `AdminLayout` 下的 `Outlet` 子路由）；不渲染 `NavBar`，也不渲染 `FooterBeian` 与前台浮层，外壳由 `AdminLayout` 自己提供（顶栏、角色化侧栏、登出、心跳），并由它导入 `src/admin-kit/index.css` 把后台包进 `.yuanli-admin` 样式作用域。
 
 这带来三个直接后果，改路由时必须一并考虑：后台页面拿不到 `NavBar` 提供的任何上下文 UI；所有后台子路由都被 `AdminGuard` 逐条包裹（再叠加 `AdminLayout` 自身的 `/api/admin/verify`），即同一个校验会触发两次；两套树共享同一个全局 `ErrorBoundary`，没有后台专属边界。
 
@@ -171,7 +171,7 @@ flowchart TD
 
 ## L4：领域组件平铺，取数逻辑在 hooks 里
 
-`src/components` 是平铺的单文件组件目录（无 folder-per-component），命名前缀是唯一的分组手段：`Admin*` 一律是后台页面或后台外壳，其余按领域命名（`Home`、`EpisodeDetail`、`Profile`、`UpdateCalendar`、`CreatorPage`、`ThemeWorkshop`…），少数是跨领域原语（`Modal`、`ConfirmModal`、`CustomSelect`、`Skeleton`、`SearchInput`、`ImageUploader`、`PasswordToggle`）。
+`src/components` 是平铺的单文件组件目录（无 folder-per-component），命名前缀是唯一的分组手段：`Admin*` 一律是后台页面或后台外壳，其余按领域命名（`Home`、`EpisodeDetail`、`Profile`、`UpdateCalendar`、`CreatorPage`、`ThemeWorkshop`…），少数是跨领域原语（`Modal`、`ConfirmModal`、`CustomSelect`、`Skeleton`、`SearchInput`、`ImageUploader`、`PasswordToggle`，以及后来的 `EmptyState`、`AdminSearchInput`、`ScrollProgress`）。`src/admin-kit/` 是唯一一个非 `components/` 的样式目录，存放后台「源力」设计 token 与组件 CSS，只在 `AdminLayout` 内生效。
 
 **没有数据层，只有取数 hooks。** `src/hooks` 里的 `useEpisodes`、`useCategories`、`useEpisodeForm`、`useImageUpload`、`useNotifications`、`useTranslation`、`usePushNotifications` 都是「用 `useState` 装数据 + 用 `axios`/`adminApi` 拉取」。由于没有查询缓存，写操作后的刷新是手写的：`useEpisodes` 的 `addEpisode` / `updateEpisode` / `deleteEpisode` 每次成功后都再调 `fetchEpisodes()`。相应地，组件之间不会自动共享同一份数据，同一个接口被多个组件各拉一次是常态。
 

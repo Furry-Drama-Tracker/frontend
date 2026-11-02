@@ -3,9 +3,6 @@ type: system
 title: PWA、离线缓存与浏览器兼容
 description: 兽剧前端的 PWA 与离线行为：vite-plugin-pwa autoUpdate 与 virtual:pwa-register 注册、workbox 预缓存与 api-data、uploads 运行时缓存白名单、运行时 manifest 指向后端动态端点与安装性、beforeinstallprompt 事件桥与安装入口、offlineQueue 的去重与 24 小时过期与 3 次重试及上线重放、OfflineIndicator 的离线/恢复/会话过期三态，以及 index.html 与 BrowserCompat 的双层兼容检测和绕过记录。
 tags: [pwa, service-worker, workbox, offline, browser-compat, install-prompt, frontend]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-29T12:47:15.545Z
 sources:
   - id: openwiki-source-f8d10828394c4129061d5b0e
     resource: repo://index.html
@@ -40,6 +37,9 @@ sources:
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
 generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-02T17:44:42.174Z
 ---
 
 # PWA、离线缓存与浏览器兼容

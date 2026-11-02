@@ -3,10 +3,9 @@ type: workflow
 title: 剧集创作、审核与版本流转
 description: 从前端视角串联剧集内容生产链路——AdminEpisodes 的创作与单集维护、AdminReview 的通过与驳回（含待审修改对照和授权编辑）、审核态与前台可见性、版本历史对比与回滚、回收站恢复/彻底删除与驳回后重提，以及仪表盘上的自动状态任务。
 tags: [episode, review-workflow, admin-console, version-history, trash, publication]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-29T12:47:15.545Z
 sources:
+  - id: openwiki-source-1fe4306a261748bda5b78973
+    resource: repo://src/App.jsx
   - id: openwiki-source-a0e8087e81fad28f90591a7b
     resource: repo://src/components/AdminDashboard.jsx
   - id: openwiki-source-602012ce5f31c1a198602c86
@@ -29,7 +28,10 @@ sources:
     resource: repo://src/hooks/useEpisodes.js
   - id: openwiki-source-ff495d7f24153076143f0ee8
     resource: repo://src/locales/zh.js
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+generated: { by: "opencode", at: "2026-11-02T17:44:42.174Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-02T17:44:42.174Z
 ---
 
 # 剧集创作、审核与版本流转
@@ -68,9 +70,11 @@ flowchart TD
 由此得出两条必须同时满足的改动约束：
 
 1. **改读路径要看两处**。creator 走 `/api/creator/my-episodes`（返回自己的剧集，含 `reviewStatus`、`reviewNote`、`hasPendingChanges`、`pendingChanges`），其他角色走 `/api/episodes`（返回公开列表结构 `episodes[]`）。两处响应形状在页面里被同一个兼容表达式吃掉（`Array.isArray(data) ? data : (data.episodes || data.list || [])`），所以后端改动某一侧的包装字段时页面不会报错，只会静默变空。
-2. **改写路径只需改一处，但要知道权限在后端**。新建、编辑、删除都不按角色分支，创建者/授权编辑的判定完全依赖后端；前端只用按钮可见性表达"创作者不能删"。
+2. **改写路径只需改一处，但要知道权限在后端**。新建、编辑、删除都不按角色分支，创建者/授权编辑的判定完全依赖后端；前端只用操作可见性（`.action-link`）表达"创作者不能删"。
 
-`AdminEpisodes` 用 `limit=100` 一次拉全量且**没有分页**（搜索框只是在本地 `episodes` 数组上过滤）。剧集数超过 100 后，列表与搜索都会静默缺失后排数据。后台唯一分页的剧集相关页面是回收站（每页 20 条，`total` / `totalPages` 来自响应）。
+`AdminEpisodes` 用 `limit=100` 一次拉全量且**没有分页**（顶部 `AdminSearchInput` 按 `searchKey` 在本地 `episodes` 数组上过滤并给出候选）。剧集数超过 100 后，列表与搜索都会静默缺失后排数据。后台唯一分页的剧集相关页面是回收站（每页 20 条，`total` / `totalPages` 来自响应）。
+
+表格本身已换成源力样式：`.yl-page-header` 标题区、`.table-wrapper` + `<table className="table">`、`.status-tag` 状态样式，行内操作从 `<button>` 改为 `.action-link` span（`role="button"`、`tabIndex=0`、`Enter` 键同样触发），删除类操作用 `.action-link.action-danger` 区分颜色。
 
 ## 审核态的状态机
 

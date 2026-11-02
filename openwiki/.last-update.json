@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-10-29T14:05:29.869Z",
-  "command": "init",
-  "gitHead": "473b64177d6ca1b16e950b19804694ce1d38bde5",
-  "model": "deepseek-flash",
+  "updatedAt": "2026-11-02T18:10:31.155Z",
+  "command": "update",
+  "gitHead": "ca6dc8d9ab5b02391102ce73118c5066e2b42f80",
+  "model": "host-agent/opencode",
   "status": "complete",
   "language": "zh-CN"
 }

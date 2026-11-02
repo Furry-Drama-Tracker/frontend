@@ -3,9 +3,6 @@ type: system
 title: 认证与账号体系
 description: 前端用户账号全流程：altcha 人机校验下的注册与登录多分支状态机（needVerification / needDeviceVerify / need2FA / accountNotFound）、跨浏览器设备验证登录码、2FA 启停、密码找回与重置、邮箱验证与变更、强制改邮箱拦截、AuthContext 初始化与心跳、设备会话管理、数据导出与账号注销。
 tags: [auth, account, login, two-factor, device-verification, altcha, session, frontend]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-29T12:47:15.545Z
 sources:
   - id: openwiki-source-5b54a58d1b51cd490b0e7162
     resource: repo://package.json
@@ -46,6 +43,9 @@ sources:
   - id: openwiki-source-4846c3b27b770d3975fb2c4e
     resource: repo://src/utils/deviceInfo.js
 generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-02T17:44:42.174Z
 ---
 
 # 认证与账号体系

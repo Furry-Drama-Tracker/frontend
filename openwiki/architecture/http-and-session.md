@@ -3,9 +3,6 @@ type: architecture
 title: HTTP 层、CSRF 与双 Token 刷新
 description: src/utils/axiosConfig.js 的全局 axios 单例与拦截器链：CSRF 预热与 X-XSRF-TOKEN 注入、419 与 401 两条刷新路径的并发合并与 409/403 补救、刷新后的用户快照合并与全局事件派发，以及绕过 axios 的 fetch/EventSource 必须自行承担的边界。
 tags: [http-client, axios-interceptors, csrf, token-refresh, session-expiry]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-29T12:47:15.545Z
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
@@ -34,6 +31,9 @@ sources:
   - id: openwiki-source-091078cd4f585582a9efba7a
     resource: repo://src/utils/offlineQueue.js
 generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-02T17:44:42.174Z
 ---
 
 # HTTP 层、CSRF 与双 Token 刷新
