@@ -1,0 +1,8 @@
+/* 管理后台样式入口：顺序不可调换
+ * 1. colors_and_type —— 源力 Design Token（已加 .yuanli-admin 作用域）
+ * 2. components      —— 源力组件样式（已加作用域）
+ * 3. admin-scope     —— 项目旧 Token 映射 + 后台外壳布局
+ */
+@import './colors_and_type.css';
+@import './components.css';
+@import './admin-scope.css';
