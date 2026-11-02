@@ -3994,23 +3994,20 @@ tr:hover,
 .bc-welcome-title {
   position: relative;
   z-index: 2;
-  font-size: clamp(1.9rem, 4vw, 2.75rem);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
   font-weight: 800;
   margin: 0;
-  letter-spacing: -0.025em;
-  line-height: 1.2;
-  text-wrap: balance;
+  letter-spacing: -0.02em;
   animation: fade-in-up 0.8s var(--ease-out) both;
 }
 
 .bc-welcome-sub {
   position: relative;
   z-index: 2;
-  font-size: clamp(0.95rem, 1.6vw, 1.1rem);
-  margin: 14px auto 0;
-  max-width: 52ch;
-  color: var(--text-secondary);
-  animation: fade-in-up 0.8s var(--ease-out) 0.12s both;
+  font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+  margin-top: 10px;
+  opacity: 0.92;
+  animation: fade-in-up 0.8s var(--ease-out) 0.15s both;
 }
 
 /* 轮播项 */
