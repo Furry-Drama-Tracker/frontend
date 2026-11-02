@@ -27,6 +27,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [banners, setBanners] = useState([]);
+  const [siteStats, setSiteStats] = useState(null);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -100,6 +101,16 @@ const Home = () => {
   useEffect(() => {
     axios.get('/api/categories').then(res => setCategories(res.data)).catch(() => {});
     axios.get('/api/banners').then(res => setBanners(res.data)).catch(() => {});
+    axios.get('/api/site-stats')
+      .then(res => {
+        const d = res.data || {};
+        setSiteStats({
+          users: Number(d.users) || 0,
+          episodes: Number(d.episodes) || 0,
+          online: Number(d.online) || 0,
+        });
+      })
+      .catch(() => setSiteStats({ users: 0, episodes: 0, online: 0 }));
   }, []);
 
   useEffect(() => {
@@ -244,6 +255,7 @@ const Home = () => {
         bannerImages={banners}
         welcomeTitle={welcomeTitle}
         welcomeSubtitle={welcomeSubtitle}
+        siteStats={siteStats}
         t={t}
         getLocalizedTitle={getLocalizedTitle}
         getLocalizedSubtitle={getLocalizedSubtitle}

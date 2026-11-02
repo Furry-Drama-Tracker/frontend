@@ -1,7 +1,59 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle, t, getLocalizedTitle, getLocalizedSubtitle, totalEpisodes, onBrowseClick }) => {
+
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' &&
+  typeof window.matchMedia === 'function' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/** 机械计数式数字滚动：每一位是一列 0-9 竖条，滚到目标刻度，位与位错峰 */
+const DigitRoll = ({ value, delay = 0, duration = 900 }) => {
+  const target = Number.isFinite(value) ? Math.max(0, Math.round(value)) : 0;
+  const text = target.toLocaleString();
+  const reduced = prefersReducedMotion();
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    if (reduced) return undefined;
+    const id = requestAnimationFrame(() => setReady(true));
+    return () => cancelAnimationFrame(id);
+  }, [reduced, target]);
+
+  const digits = text.split('');
+  const digitPositions = digits.map((ch, i) => (/\d/.test(ch) ? i : -1)).filter((i) => i >= 0);
+  const orderByIndex = new Map(
+    digitPositions.map((charIndex, p2) => [charIndex, digitPositions.length - 1 - p2])
+  );
+
+  return (
+    <span className="odometer" aria-label={text}>
+      {digits.map((ch, i) => {
+        if (!/\d/.test(ch)) {
+          return <span key={'sep-' + i} className="odometer-sep" aria-hidden="true">{ch}</span>;
+        }
+        const digit = Number(ch);
+        const order = orderByIndex.get(i) || 0;
+        return (
+          <span key={'d-' + i} className="odometer-digit" aria-hidden="true">
+            <span
+              className="odometer-strip"
+              style={{
+                transform: 'translateY(' + (ready ? -digit * 10 : 0) + '%)',
+                transitionDuration: reduced ? '0ms' : duration + 'ms',
+                transitionDelay: reduced ? '0ms' : (delay + order * 70) + 'ms',
+              }}
+            >
+              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => <span key={n}>{n}</span>)}
+            </span>
+          </span>
+        );
+      })}
+    </span>
+  );
+};
+
+const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle, siteStats, t, getLocalizedTitle, getLocalizedSubtitle, totalEpisodes, onBrowseClick }) => {
   const navigate = useNavigate();
   const [showWelcome, setShowWelcome] = useState(true);
   const [bannerIndex, setBannerIndex] = useState(0);
@@ -42,6 +94,32 @@ const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle
     setBannerIndex(idx);
   };
 
+
+  const stats = siteStats || null;
+  const statItems = stats
+    ? [
+        { key: 'users', label: t('home.statUsers'), value: stats.users },
+        { key: 'episodes', label: t('home.statEpisodes'), value: stats.episodes },
+        { key: 'online', label: t('home.statOnline'), value: stats.online },
+      ]
+    : [];
+
+  const statsBlock = statItems.length > 0 ? (
+    <div className="bc-stats" role="list">
+      {statItems.map((item, idx) => (
+        <React.Fragment key={item.key}>
+          {idx > 0 && <span className="bc-stat-divider" aria-hidden="true" />}
+          <div className={'bc-stat bc-stat--' + (idx + 1)} role="listitem">
+            <div className="bc-stat-value">
+              <DigitRoll value={item.value} delay={120 + idx * 120} />
+            </div>
+            <div className="bc-stat-label">{item.label}</div>
+          </div>
+        </React.Fragment>
+      ))}
+    </div>
+  ) : null;
+
   if (bannerImages.length === 0) {
     const statText = typeof totalEpisodes === 'number' && totalEpisodes > 0
       ? t('home.heroStat', { count: totalEpisodes })
@@ -55,12 +133,13 @@ const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle
         <div className="bc-hero-body">
           <h2 className="bc-welcome-title">{welcomeTitle}</h2>
           <p className="bc-welcome-sub">{welcomeSubtitle}</p>
+          {statsBlock}
           <div className="bc-hero-foot">
-            {statParts.length === 2 ? (
+            {!siteStats && statParts.length === 2 ? (
               <span className="bc-hero-stat">
                 {statParts[0]}<b>{totalEpisodes}</b>{statParts[1]}
               </span>
-            ) : statText ? (
+            ) : !siteStats && statText ? (
               <span className="bc-hero-stat">{statText}</span>
             ) : null}
             <button type="button" className="bc-hero-cta" onClick={onBrowseClick}>
@@ -86,6 +165,7 @@ const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle
           <i /><i /><i /><i />
         </div>
         <div className="bc-hero-body">
+          {statsBlock}
           <h2 className="bc-welcome-title">{welcomeTitle}</h2>
           <p className="bc-welcome-sub">{welcomeSubtitle}</p>
         </div>

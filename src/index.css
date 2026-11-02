@@ -4468,3 +4468,127 @@ tbody tr:hover {
     max-height: calc(100vh - 72px) !important;
   }
 }
+/* ============================================================
+   首屏站点规模：机械数字滚动
+   ============================================================ */
+.bc-stats {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(16px, 4vw, 44px);
+  margin: 22px 0 6px;
+}
+
+.bc-stat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 78px;
+  animation: bc-stat-in 0.62s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.bc-stat--1 { animation-delay: 0.02s; }
+.bc-stat--2 { animation-delay: 0.12s; }
+.bc-stat--3 { animation-delay: 0.22s; }
+
+@keyframes bc-stat-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.94);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.bc-stat-divider {
+  align-self: center;
+  width: 1px;
+  height: 32px;
+  background: var(--foreground);
+  opacity: 0.18;
+  transform-origin: center;
+  animation: bc-divider-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.bc-stat-divider:nth-of-type(1) { animation-delay: 0.28s; }
+.bc-stat-divider:nth-of-type(2) { animation-delay: 0.38s; }
+
+@keyframes bc-divider-in {
+  from { transform: scaleY(0); opacity: 0; }
+  to { transform: scaleY(1); opacity: 0.18; }
+}
+
+.bc-stat-value {
+  font-size: clamp(1.5rem, 3.4vw, 2.3rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+.bc-stat-label {
+  margin-top: 6px;
+  font-size: clamp(0.72rem, 1.2vw, 0.85rem);
+  color: var(--foreground);
+  opacity: 0.62;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* 机械计数器 */
+.odometer {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.odometer-digit {
+  position: relative;
+  display: inline-block;
+  width: 1ch;
+  height: 1em;
+  overflow: hidden;
+  vertical-align: bottom;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 12%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 12%, #000 88%, transparent 100%);
+}
+
+.odometer-strip {
+  display: flex;
+  flex-direction: column;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.odometer-strip > span {
+  display: block;
+  height: 1em;
+  line-height: 1;
+  text-align: center;
+}
+
+.odometer-sep {
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bc-stat,
+  .bc-stat-divider {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .bc-stats {
+    gap: 18px;
+    margin: 14px 0 2px;
+  }
+}
