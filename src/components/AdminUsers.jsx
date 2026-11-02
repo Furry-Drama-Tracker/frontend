@@ -4,7 +4,7 @@ import { useNavigate, useOutletContext } from 'react-router-dom';
 import Modal from './Modal';
 import CustomSelect from './CustomSelect';
 import PasswordToggle from './PasswordToggle';
-import SearchInput from './SearchInput';
+import AdminSearchInput from './AdminSearchInput';
 import { useI18n } from '../contexts/I18nContext';
 
 const DEVICE_TYPE_KEY_MAP = {
@@ -205,39 +205,28 @@ const AdminUsers = () => {
   );
 
   return (
-    <div className="admin-panel">
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px'}}>
-        <h2>{t('adminUsers.accountList')}</h2>
-        <button className="btn" onClick={() => setShowAddForm(true)}>
-          {t('adminUsers.addAdminAccount')}
-        </button>
+    <div>
+      <div className="yl-page-header">
+        <div>
+          <h1 className="yl-page-title">{t('adminUsers.accountList')}</h1>
+          <p className="yl-page-desc">
+            {t('adminUsers.accountCount', { count: filteredUsers.length })} ·{' '}
+            {t('adminUsers.adminCountLabel', { count: adminCount })} / {t('adminUsers.userCountLabel', { count: normalCount })}
+          </p>
+        </div>
+        <div className="yl-page-actions">
+          <button className="btn btn-md btn-primary" onClick={() => setShowAddForm(true)}>
+            {t('adminUsers.addAdminAccount')}
+          </button>
+        </div>
       </div>
 
       {error && <div className="error-message" style={{marginBottom: '15px'}}>{error}</div>}
       {success && <div className="success-message" style={{marginBottom: '15px', padding: '10px', background: 'var(--success-bg-strong)', border: '1px solid var(--success-border)', borderRadius: '6px', color: 'var(--success-text)'}}>{success}</div>}
 
-      <div style={{background: 'var(--card)', borderRadius: '12px', border: '1px solid var(--border)', overflow: 'hidden'}}>
-        <div style={{padding: '15px 20px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px'}}>
-          <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
-            <h3 style={{margin: 0}}>{t('adminUsers.accountListTitle')}</h3>
-            <span style={{color: 'var(--text-secondary)', fontSize: '14px'}}>
-              {t('adminUsers.accountCount', { count: filteredUsers.length })}
-            </span>
-          </div>
-          <div style={{display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap'}}>
-            <span style={{fontSize: '12px', color: 'var(--text-tertiary)'}}>
-              {t('adminUsers.adminCountLabel', { count: adminCount })} / {t('adminUsers.userCountLabel', { count: normalCount })}
-            </span>
-            <CustomSelect
-              options={ROLE_FILTER_OPTIONS.map(opt => ({ value: opt.value, label: t(opt.labelKey) }))}
-              value={roleFilter}
-              onChange={setRoleFilter}
-              placeholder={t('adminUsers.filterByRole')}
-            />
-          </div>
-        </div>
-        <div style={{padding: '12px 20px', borderBottom: '1px solid var(--border)'}}>
-          <SearchInput
+      <div className="yl-toolbar" style={{ marginBottom: 12 }}>
+        <div style={{ flex: '1 1 260px', maxWidth: 420 }}>
+          <AdminSearchInput
             data={users}
             searchKey={['accountId', 'username', 'email']}
             placeholder={t('adminUsers.searchPlaceholder')}
@@ -252,27 +241,37 @@ const AdminUsers = () => {
             )}
           />
         </div>
-        {filteredUsers.length === 0 ? (
+        <div style={{ width: 168, flexShrink: 0 }}>
+          <CustomSelect
+            options={ROLE_FILTER_OPTIONS.map(opt => ({ value: opt.value, label: t(opt.labelKey) }))}
+            value={roleFilter}
+            onChange={setRoleFilter}
+            placeholder={t('adminUsers.filterByRole')}
+          />
+        </div>
+      </div>
+
+      {filteredUsers.length === 0 ? (
           <div style={{padding: '40px', textAlign: 'center', color: 'var(--text-secondary)'}}>
             {search || roleFilter !== 'all' ? t('adminUsers.noMatch') : t('adminUsers.noAccounts')}
           </div>
         ) : (
-          <div style={{overflowX: 'auto'}}>
-            <table style={{width: '100%', borderCollapse: 'collapse'}}>
+          <div className="table-wrapper">
+            <table className="table">
               <thead>
                 <tr style={{borderBottom: '1px solid var(--border)'}}>
-                  <th style={{padding: '12px 20px', textAlign: 'left', color: 'var(--text-secondary)', fontWeight: '500', fontSize: '14px'}}>{t('adminUsers.nickname')}</th>
-                  <th style={{padding: '12px 20px', textAlign: 'left', color: 'var(--text-secondary)', fontWeight: '500', fontSize: '14px'}}>{t('adminUsers.accountId')}</th>
-                  <th style={{padding: '12px 20px', textAlign: 'left', color: 'var(--text-secondary)', fontWeight: '500', fontSize: '14px'}}>{t('adminUsers.email')}</th>
-                  <th style={{padding: '12px 20px', textAlign: 'left', color: 'var(--text-secondary)', fontWeight: '500', fontSize: '14px'}}>{t('adminUsers.role')}</th>
-                  <th style={{padding: '12px 20px', textAlign: 'left', color: 'var(--text-secondary)', fontWeight: '500', fontSize: '14px'}}>{t('adminUsers.registerTime')}</th>
-                  <th style={{padding: '12px 20px', textAlign: 'right', color: 'var(--text-secondary)', fontWeight: '500', fontSize: '14px'}}>{t('adminUsers.actions')}</th>
+                  <th>{t('adminUsers.nickname')}</th>
+                  <th>{t('adminUsers.accountId')}</th>
+                  <th>{t('adminUsers.email')}</th>
+                  <th>{t('adminUsers.role')}</th>
+                  <th>{t('adminUsers.registerTime')}</th>
+                  <th className="table-actions" style={{ textAlign: 'right' }}>{t('adminUsers.actions')}</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredUsers.map(u => (
                   <tr key={u._id} style={{borderBottom: '1px solid var(--border)'}}>
-                    <td style={{padding: '12px 20px'}}>
+                    <td>
                       <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
                         <div style={{
                           width: '36px', height: '36px', borderRadius: '50%',
@@ -288,13 +287,13 @@ const AdminUsers = () => {
                         )}
                       </div>
                     </td>
-                    <td style={{padding: '12px 20px', color: 'var(--text-tertiary)', fontSize: '13px', letterSpacing: '0.5px'}}>
+                    <td>
                       {u.accountId || '-'}
                     </td>
-                    <td style={{padding: '12px 20px', color: 'var(--text-secondary)', fontSize: '14px'}}>
+                    <td>
                       {u.email}
                     </td>
-                    <td style={{padding: '12px 20px'}}>
+                    <td>
                       {admin._id === u._id ? (
                         <span style={{
                           ...getRoleBadgeStyle(u.role),
@@ -340,28 +339,30 @@ const AdminUsers = () => {
                         </select>
                       )}
                     </td>
-                    <td style={{padding: '12px 20px', color: 'var(--text-secondary)', fontSize: '14px'}}>
+                    <td>
                       {new Date(u.createdAt).toLocaleDateString(locale)}
                     </td>
-                    <td style={{padding: '12px 20px', textAlign: 'right'}}>
-                      <div style={{display: 'flex', gap: '8px', justifyContent: 'flex-end'}}>
-                        <button
-                          className="btn"
-                          style={{padding: '6px 14px', fontSize: '13px'}}
-                          onClick={() => setDetailUser(u)}
+                    <td className="table-actions" style={{ textAlign: 'right' }}>
+                      <span
+                        className="action-link"
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => setDetailUser(u)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') setDetailUser(u); }}
+                      >
+                        {t('adminUsers.details')}
+                      </span>
+                      {admin._id !== u._id && (
+                        <span
+                          className="action-link action-danger"
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => handleDeleteUser(u._id)}
+                          onKeyDown={(e) => { if (e.key === 'Enter') handleDeleteUser(u._id); }}
                         >
-                          {t('adminUsers.details')}
-                        </button>
-                        {admin._id !== u._id && (
-                          <button
-                            className="btn btn-secondary"
-                            style={{padding: '6px 14px', fontSize: '13px', color: 'var(--destructive-text)', borderColor: 'var(--destructive-border)'}}
-                            onClick={() => handleDeleteUser(u._id)}
-                          >
-                            {t('adminUsers.delete')}
-                          </button>
-                        )}
-                      </div>
+                          {t('adminUsers.delete')}
+                        </span>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -369,7 +370,6 @@ const AdminUsers = () => {
             </table>
           </div>
         )}
-      </div>
 
       {addFormModal}
       <Modal isOpen={!!detailUser} onClose={() => setDetailUser(null)} maxWidth="520px">

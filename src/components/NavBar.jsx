@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
@@ -56,6 +56,7 @@ const NavBar = ({ onFeedback }) => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [installPrompt, setInstallPrompt] = useState(null);
   const [isInstalled, setIsInstalled] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   // 深浅外观切换已收敛到左下角外观面板与设置页，导航栏不再提供。
 
   useEffect(() => {
@@ -77,6 +78,14 @@ const NavBar = ({ onFeedback }) => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
       window.removeEventListener('appinstalled', handleInstalled);
     };
+  }, []);
+
+  // 滚动感知：顶部导航在滚动后加深阴影，避免与内容糊在一起
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 6);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   // 点击外部关闭下拉菜单
@@ -236,7 +245,7 @@ const NavBar = ({ onFeedback }) => {
 
   // ===== 主导航渲染 =====
   return (
-    <header ref={navRef}>
+    <header ref={navRef} className={scrolled ? 'nav-scrolled' : undefined}>
       <nav>
         <div className="logo">
           <a href="/" onClick={(e) => { e.preventDefault(); if (document.startViewTransition) { document.startViewTransition(() => navigate('/')); } else { navigate('/'); } }} style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}>

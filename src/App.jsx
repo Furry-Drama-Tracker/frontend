@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component, Suspense, lazy } from 'react';
+﻿import React, { useState, useEffect, Component, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -138,26 +138,40 @@ const LoadingFallback = () => {
   );
 };
 
-const AdminGuard = ({ children }) => {
+// 后台路由权限：与后端 handler 的 Protect 角色保持一致
+const ADMIN_ROLES_ALL = ['creator', 'admin', 'superadmin'];
+const ADMIN_ROLES_UP = ['admin', 'superadmin'];
+const ADMIN_ROLES_SUPER = ['superadmin'];
+
+const AdminGuard = ({ children, roles }) => {
   const [verifying, setVerifying] = React.useState(true);
-  const [authorized, setAuthorized] = React.useState(false);
+  // checking | ok | denied(角色不足) | guest(未登录/无后台权限)
+  const [state, setState] = React.useState('checking');
   const location = useLocation();
+  // 用字符串做依赖，避免调用方传入的数组字面量导致 effect 反复触发
+  const rolesKey = Array.isArray(roles) ? roles.join(',') : '';
 
   React.useEffect(() => {
+    let cancelled = false;
     const verifyAdmin = async () => {
       try {
-        const res = await axios.get('/api/admin/verify');
-        setAuthorized(res.status === 200);
+        const res = await axios.get('/api/admin/verify', { skipRedirect: true });
+        const role = res.data?.admin?.role || res.data?.role || 'user';
+        if (cancelled) return;
+        const allowed = rolesKey ? rolesKey.split(',') : null;
+        setState(allowed && !allowed.includes(role) ? 'denied' : 'ok');
       } catch {
-        setAuthorized(false);
+        if (!cancelled) setState('guest');
       }
-      setVerifying(false);
+      if (!cancelled) setVerifying(false);
     };
     verifyAdmin();
-  }, [location.pathname]);
+    return () => { cancelled = true; };
+  }, [location.pathname, rolesKey]);
 
   if (verifying) return <LoadingFallback />;
-  if (!authorized) return <Navigate to="/login" replace />;
+  if (state === 'guest') return <Navigate to="/login" replace />;
+  if (state === 'denied') return <Navigate to="/admin/dashboard" replace />;
   return children;
 };
 
@@ -511,33 +525,35 @@ function AppContent() {
           <Routes>
             <Route path="/admin" element={<Admin />} />
             <Route path="/admin" element={<AdminLayout />}>
-              <Route path="dashboard" element={<AdminGuard><AdminDashboard /></AdminGuard>} />
-              <Route path="episodes" element={<AdminGuard><AdminEpisodes /></AdminGuard>} />
-              <Route path="users" element={<AdminGuard><AdminUsers /></AdminGuard>} />
-              <Route path="categories" element={<AdminGuard><AdminCategories /></AdminGuard>} />
-              <Route path="banners" element={<AdminGuard><AdminBanners /></AdminGuard>} />
-              <Route path="review" element={<AdminGuard><AdminReview /></AdminGuard>} />
-              <Route path="episode-trash" element={<AdminGuard><AdminEpisodeTrash /></AdminGuard>} />
-              <Route path="reports" element={<AdminGuard><AdminReports /></AdminGuard>} />
-              <Route path="stats" element={<AdminGuard><AdminStats /></AdminGuard>} />
-              <Route path="creator-profile" element={<AdminGuard><AdminCreatorProfile /></AdminGuard>} />
-              <Route path="creator-profiles" element={<AdminGuard><AdminCreatorProfiles /></AdminGuard>} />
-              <Route path="announcements" element={<AdminGuard><AdminAnnouncements /></AdminGuard>} />
-              <Route path="site-content" element={<AdminGuard><AdminSiteContent /></AdminGuard>} />
-              <Route path="email-settings" element={<AdminGuard><AdminEmailSettings /></AdminGuard>} />
-              <Route path="audit-logs" element={<AdminGuard><AdminAuditLogs /></AdminGuard>} />
-              <Route path="backup" element={<AdminGuard><AdminBackup /></AdminGuard>} />
-              <Route path="feedback" element={<AdminGuard><AdminFeedback /></AdminGuard>} />
-              <Route path="api-usage" element={<AdminGuard><AdminApiUsage /></AdminGuard>} />
-              <Route path="friend-links" element={<AdminGuard><AdminFriendLinks /></AdminGuard>} />
-              <Route path="sessions" element={<AdminGuard><AdminSessions /></AdminGuard>} />
-              <Route path="analytics" element={<AdminGuard><AdminAnalytics /></AdminGuard>} />
-              <Route path="themes" element={<AdminGuard><AdminThemes /></AdminGuard>} />
-              <Route path="theme-review" element={<AdminGuard><AdminThemeReview /></AdminGuard>} />
+              {/* CREATOR / ADMIN / SUPER = 创作者、管理员、超级管理员；权限与后端接口保持一致 */}
+              <Route path="dashboard" element={<AdminGuard roles={ADMIN_ROLES_ALL}><AdminDashboard /></AdminGuard>} />
+              <Route path="episodes" element={<AdminGuard roles={ADMIN_ROLES_ALL}><AdminEpisodes /></AdminGuard>} />
+              <Route path="episode-trash" element={<AdminGuard roles={ADMIN_ROLES_ALL}><AdminEpisodeTrash /></AdminGuard>} />
+              <Route path="review" element={<AdminGuard roles={ADMIN_ROLES_ALL}><AdminReview /></AdminGuard>} />
+              <Route path="creator-profile" element={<AdminGuard roles={ADMIN_ROLES_ALL}><AdminCreatorProfile /></AdminGuard>} />
+
+              <Route path="users" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminUsers /></AdminGuard>} />
+              <Route path="categories" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminCategories /></AdminGuard>} />
+              <Route path="banners" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminBanners /></AdminGuard>} />
+              <Route path="reports" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminReports /></AdminGuard>} />
+              <Route path="feedback" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminFeedback /></AdminGuard>} />
+              <Route path="stats" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminStats /></AdminGuard>} />
+              <Route path="analytics" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminAnalytics /></AdminGuard>} />
+
+              <Route path="creator-profiles" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminCreatorProfiles /></AdminGuard>} />
+              <Route path="announcements" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminAnnouncements /></AdminGuard>} />
+              <Route path="site-content" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminSiteContent /></AdminGuard>} />
+              <Route path="email-settings" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminEmailSettings /></AdminGuard>} />
+              <Route path="audit-logs" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminAuditLogs /></AdminGuard>} />
+              <Route path="backup" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminBackup /></AdminGuard>} />
+              <Route path="api-usage" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminApiUsage /></AdminGuard>} />
+              <Route path="friend-links" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminFriendLinks /></AdminGuard>} />
+              <Route path="sessions" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminSessions /></AdminGuard>} />
+              <Route path="themes" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminThemes /></AdminGuard>} />
+              <Route path="theme-review" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminThemeReview /></AdminGuard>} />
             </Route>
           </Routes>
         </Suspense>
-        <FooterBeian />
       </>
     );
   }

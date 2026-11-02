@@ -73,7 +73,7 @@ const TagCloud = ({ selectedTag, onTagClick }) => {
                 padding: '5px 14px',
                 borderRadius: 'var(--radius-sm)',
                 background: isSelected ? 'var(--primary)' : 'var(--muted)',
-                color: isSelected ? '#fff' : 'var(--text-light)',
+                color: isSelected ? 'var(--btn-text)' : 'var(--text-light)',
                 fontSize: `${getFontSize(tag.count)}px`,
                 cursor: 'pointer',
                 transition: 'background 0.2s, color 0.2s',

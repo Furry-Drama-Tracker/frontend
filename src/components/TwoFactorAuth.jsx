@@ -89,8 +89,7 @@ const TwoFactorAuth = ({ user, setUser, onClose }) => {
   const inputStyle = {
     width: '100%', padding: '10px 14px', borderRadius: '6px',
     background: 'var(--input)', border: '1px solid var(--border)',
-    color: 'var(--foreground)', fontSize: '14px',
-    letterSpacing: '0.3em', textAlign: 'center'
+    color: 'var(--foreground)', fontSize: '14px'
   };
 
   const btnStyle = {
@@ -191,7 +190,7 @@ const TwoFactorAuth = ({ user, setUser, onClose }) => {
             onChange={(e) => setToken(e.target.value.replace(/\D/g, '').slice(0, 6))}
             placeholder="000000"
             maxLength={6}
-            style={inputStyle}
+            className="code-input"
           />
           <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
             <button onClick={() => { setStep('disabled'); setToken(''); setError(''); }} style={{
@@ -225,7 +224,7 @@ const TwoFactorAuth = ({ user, setUser, onClose }) => {
             onChange={(e) => setToken(e.target.value.replace(/\D/g, '').slice(0, 6))}
             placeholder="000000"
             maxLength={6}
-            style={inputStyle}
+            className="code-input"
           />
           <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
             <button onClick={onClose} style={{

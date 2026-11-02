@@ -12,6 +12,7 @@ import { useSiteSettings } from '../contexts/SiteSettingsContext';
 import { Icon } from '../contexts/IconContext';
 import API from '../utils/apiEndpoints';
 import useScrollReveal from '../hooks/useScrollReveal';
+import ScrollProgress from './ScrollProgress';
 
 const EpisodeDetail = ({ user }) => {
   const { t, lang } = useI18n();
@@ -35,6 +36,7 @@ const EpisodeDetail = ({ user }) => {
   const [showShare, setShowShare] = useState(false);
   const [episodesExpanded, setEpisodesExpanded] = useState(false);
   const [episodeSortOrder, setEpisodeSortOrder] = useState('desc');
+  const [epPreview, setEpPreview] = useState(null);
   const [favoriteFolders, setFavoriteFolders] = useState([]);
   const [showFolderPicker, setShowFolderPicker] = useState(false);
   const favoriteBtnRef = useRef(null);
@@ -335,6 +337,16 @@ const EpisodeDetail = ({ user }) => {
         episodeSortOrder === 'asc' ? a.episodeNumber - b.episodeNumber : b.episodeNumber - a.episodeNumber
       )
     : [], [episode?.episodes, episodeSortOrder]);
+  const showEpPreview = (e, se) => {
+    if (typeof window === 'undefined' || window.matchMedia('(hover: none)').matches) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = 264;
+    const left = Math.min(window.innerWidth - width - 16, Math.max(16, rect.right - width));
+    const top = Math.max(8, Math.min(rect.top, window.innerHeight - 220));
+    setEpPreview({ se, top, left });
+  };
+  const hideEpPreview = () => setEpPreview(null);
+
   const DEFAULT_SHOW_COUNT = 5;
   const displayedEpisodes = episodesExpanded
     ? sortedEpisodes
@@ -351,6 +363,7 @@ const EpisodeDetail = ({ user }) => {
 
   return (
     <div className="episode-detail">
+      <ScrollProgress />
       <div style={{marginBottom: '20px'}}>
         <button className="btn btn-secondary" onClick={() => {
           if (window.history.length > 1) {
@@ -364,7 +377,7 @@ const EpisodeDetail = ({ user }) => {
       </div>
       <div ref={infoRef} className={`reveal ${infoVisible ? 'visible' : ''}`}>
       <div className="episode-info">
-        <img src={episode.coverImage} alt={episode.title} decoding="async" />
+        <img src={episode.coverImage} alt={episode.title} decoding="async" className="img-fade" onLoad={(e) => e.currentTarget.classList.add('is-loaded')} />
         <div className="episode-details">
           <h2>{getLocalizedTitle(episode)}</h2>
           <p>{getLocalizedDescription(episode)}</p>
@@ -632,7 +645,12 @@ const EpisodeDetail = ({ user }) => {
           const isNewUpdate = !singleEpisode.isScheduled && user && isFollowing && followedAtEpisodes !== null && singleEpisode.episodeNumber > followedAtEpisodes;
           const showUnwatched = !singleEpisode.isScheduled && user && !isWatched && !isNewUpdate;
           return (
-            <div key={singleEpisode._id} className="episode-item" style={{
+            <div
+              key={singleEpisode._id}
+              className="episode-item"
+              onMouseEnter={(e) => showEpPreview(e, singleEpisode)}
+              onMouseLeave={hideEpPreview}
+              style={{
               opacity: isWatched ? 0.72 : 1,
               flexDirection: 'column',
               alignItems: 'stretch',
@@ -749,7 +767,7 @@ const EpisodeDetail = ({ user }) => {
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 8px 24px var(--shadow-modal)'; }}
               onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
               >
-                <img src={rec.coverImage} alt="" loading="lazy" decoding="async" style={{width: '100%', aspectRatio: '3/4', objectFit: 'cover'}} />
+                <img src={rec.coverImage} alt="" loading="lazy" decoding="async" className="img-fade" onLoad={(e) => e.currentTarget.classList.add('is-loaded')} style={{width: '100%', aspectRatio: '3/4', objectFit: 'cover'}} />
                 <div style={{padding: '10px 12px'}}>
                   <div style={{fontSize: '14px', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{getLocalizedTitle(rec)}</div>
                   <div style={{fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px'}}>
@@ -897,6 +915,55 @@ const EpisodeDetail = ({ user }) => {
           </>
         )}
       </Modal>
+
+      {epPreview && createPortal(
+        <div
+          className="ep-preview"
+          style={{ top: epPreview.top, left: epPreview.left }}
+          aria-hidden="true"
+        >
+          {episode.coverImage ? (
+            <img
+              className="ep-preview-cover"
+              src={episode.coverImage}
+              alt=""
+              onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
+            />
+          ) : (
+            <div className="ep-preview-cover ep-preview-cover--fallback" aria-hidden="true" />
+          )}
+          <div className="ep-preview-body">
+            <div className="ep-preview-title">
+              <span className="ep-preview-tag">
+                {t('episode.epPrefix')}{epPreview.se.episodeNumber}{t('episode.epSuffix')}
+              </span>
+              {(() => {
+                const label = `${t('episode.epPrefix')}${epPreview.se.episodeNumber}${t('episode.epSuffix')}`;
+                const title = getLocalizedTitle(epPreview.se) || '';
+                return title && title !== label ? <span> {title}</span> : null;
+              })()}
+            </div>
+            <div className="ep-preview-meta">
+              {epPreview.se.duration && <span>{epPreview.se.duration}</span>}
+              {(epPreview.se.releaseDate || epPreview.se.createdAt) && (
+                <span>
+                  {new Date(epPreview.se.releaseDate || epPreview.se.createdAt)
+                    .toLocaleDateString(lang === 'en' ? 'en-US' : 'zh-CN', { year: 'numeric', month: 'short', day: 'numeric' })}
+                </span>
+              )}
+              {typeof epPreview.se.views === 'number' && (
+                <span>{t('episode.previewViews', { n: epPreview.se.views })}</span>
+              )}
+              {(() => {
+                const links = epPreview.se.platformLinks || {};
+                const count = Object.keys(links).filter((k) => links[k]).length;
+                return count > 0 ? <span>{t('episode.previewPlatforms', { n: count })}</span> : null;
+              })()}
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 };
