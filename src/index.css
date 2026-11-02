@@ -488,7 +488,7 @@ nav ul li a[style*="primary"] {
   justify-content: center;
   padding: 10px 20px;
   background: var(--primary);
-  color: white;
+  color: var(--btn-text);
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -758,7 +758,7 @@ textarea[data-errmsg]::after {
   width: 100%;
   padding: 14px;
   background: var(--primary);
-  color: white;
+  color: var(--btn-text);
   border: none;
   border-radius: 8px;
   font-size: 16px;
@@ -2931,7 +2931,7 @@ nav ul li a:focus-visible {
   left: 50%;
   transform: translateX(-50%);
   background: var(--primary);
-  color: white;
+  color: var(--btn-text);
   padding: 12px 24px;
   border-radius: 0 0 8px 8px;
   z-index: 99999;
@@ -3895,7 +3895,7 @@ tr:hover,
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-  color: #fff;
+  color: var(--btn-text);
   text-align: center;
   padding: 0 24px;
 }
@@ -3919,7 +3919,7 @@ tr:hover,
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-  color: #fff;
+  color: var(--btn-text);
   text-align: center;
   padding: 0 24px;
   transition: opacity 0.8s var(--ease-smooth);
@@ -4147,7 +4147,7 @@ tr:hover,
 .ef-pill--active {
   background: var(--primary);
   border-color: transparent;
-  color: #fff;
+  color: var(--btn-text);
   font-weight: 600;
   box-shadow: 0 4px 14px -4px rgba(var(--primary-rgb), 0.5), var(--glow-primary);
 }
@@ -4338,7 +4338,7 @@ tbody tr:hover {
 .pagination button.active,
 .page-btn.active {
   background: var(--primary);
-  color: #fff;
+  color: var(--btn-text);
   box-shadow: 0 4px 12px -4px rgba(var(--primary-rgb), 0.5);
 }
 
