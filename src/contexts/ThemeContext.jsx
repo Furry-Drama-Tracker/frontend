@@ -32,6 +32,47 @@ export const generateColorShades = (hex) => {
   };
 };
 
+/* ---- 色彩可读性工具：按主题色亮度自动决定其上的文字用黑还是白 ---- */
+const toLinear = (channel) => {
+  const v = channel / 255;
+  return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+};
+
+/** 相对亮度（WCAG 2.x），返回 0~1 */
+export const relativeLuminance = (hex) => {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return 0;
+  return 0.2126 * toLinear(rgb.r) + 0.7152 * toLinear(rgb.g) + 0.0722 * toLinear(rgb.b);
+};
+
+/** 两色对比度，返回 1~21 */
+export const contrastRatio = (hexA, hexB) => {
+  const la = relativeLuminance(hexA);
+  const lb = relativeLuminance(hexB);
+  const hi = Math.max(la, lb);
+  const lo = Math.min(la, lb);
+  return (hi + 0.05) / (lo + 0.05);
+};
+
+/** 主题色表面上的文字色：默认白字，仅当黑字明显更清晰时才切黑字 */
+export const getOnPrimaryColor = (hex) => {
+  const lum = relativeLuminance(hex);
+  const withWhite = 1.05 / (lum + 0.05);
+  const withBlack = (lum + 0.05) / 0.05;
+  return withBlack > withWhite * 1.15 ? '#0c0d0e' : '#ffffff';
+};
+
+/**
+ * 主题色与当前主题背景的对比度告警。
+ * 返回 'dark' | 'light' | null，供 UI 提示"不推荐使用"。
+ */
+export const getAccentContrastWarning = (hex, theme) => {
+  const bg = theme === 'light' ? '#f4f6fb' : '#070b18';
+  const ratio = contrastRatio(hex, bg);
+  if (ratio >= 3) return null;
+  return theme === 'light' ? 'light' : 'dark';
+};
+
 export const PRESET_COLORS = [
   '#4f46e5', '#7c3aed', '#be185d', '#dc2626', '#ea580c',
   '#ca8a04', '#15803d', '#0e7490', '#1d4ed8'
@@ -122,6 +163,9 @@ export const themes = {
     '--btn-gradient-success': '#10b981',
     '--btn-gradient-purple': '#8b5cf6',
     '--btn-text': '#fff',
+    '--on-primary': '#ffffff',
+    '--primary-foreground': '#ffffff',
+    '--primary-rgb': '99, 102, 241',
     '--indicator-active': '#fff',
     '--indicator-inactive': 'rgba(255, 255, 255, 0.4)',
     '--banner-overlay': 'rgba(0, 0, 0, 0.7)',
@@ -237,6 +281,9 @@ export const themes = {
     '--btn-gradient-success': '#10b981',
     '--btn-gradient-purple': '#8b5cf6',
     '--btn-text': '#fff',
+    '--on-primary': '#ffffff',
+    '--primary-foreground': '#ffffff',
+    '--primary-rgb': '79, 70, 229',
     '--indicator-active': '#4f46e5',
     '--indicator-inactive': 'rgba(15, 23, 42, 0.2)',
     '--banner-overlay': 'rgba(0, 0, 0, 0.5)',
@@ -300,7 +347,18 @@ const applyAccentColor = (hex, currentTheme) => {
   root.style.setProperty('--gradient-bg2', `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.05 : 0.04})`);
   root.style.setProperty('--btn-gradient', hex);
   root.style.setProperty('--btn-gradient-primary', hex);
+  /* 供 CSS 里 rgba(var(--primary-rgb), a) 使用 */
+  root.style.setProperty('--primary-rgb', `${rgb.r}, ${rgb.g}, ${rgb.b}`);
+  /* 主题色上的文字：按亮度自动取黑字或白字 */
+  const onPrimary = getOnPrimaryColor(hex);
+  root.style.setProperty('--btn-text', onPrimary);
+  root.style.setProperty('--primary-foreground', onPrimary);
+  root.style.setProperty('--on-primary', onPrimary);
   root.style.setProperty('--btn-gradient-purple', hex);
+  root.style.setProperty(
+    '--btn-gradient-hover',
+    `linear-gradient(135deg, ${shades.primaryHover} 0%, ${shades.primaryLight} 100%)`
+  );
   /* 同步 2026 增强 token 到当前 accent 色 */
   root.style.setProperty('--glow-primary', `0 0 32px rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.45 : 0.3})`);
   root.style.setProperty('--glow-primary-strong', `0 0 48px rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${isDark ? 0.65 : 0.5})`);

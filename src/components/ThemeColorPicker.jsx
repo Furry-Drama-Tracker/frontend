@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme, getAccentContrastWarning, getOnPrimaryColor } from '../contexts/ThemeContext';
 import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
 import API from '../utils/apiEndpoints';
@@ -18,7 +18,7 @@ import { computeThemeType, themeTypeBadge } from './ThemeEditorModal';
 const ThemeColorPicker = () => {
   const { t } = useI18n();
   const { user, updateUser } = useAuth();
-  const { accentColor, setAccentColor, presetColors, themeMode, setThemeModeTo } = useTheme();
+  const { accentColor, setAccentColor, presetColors, themeMode, setThemeModeTo, theme } = useTheme();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('appearance'); // appearance / theme
@@ -168,6 +168,11 @@ const ThemeColorPicker = () => {
     { key: 'theme', icon: '🖼️', label: t('colorPicker.tabTheme') },
   ];
 
+  // 当前主题色与当前主题背景的对比度告警（深色模式下过暗 / 浅色模式下过亮）
+  const accentWarning = getAccentContrastWarning(accentColor, theme);
+  // 主题色表面上的文字色（黑/白自动切换）
+  const onPrimaryText = getOnPrimaryColor(accentColor);
+
   // 顺序：跟随系统第一位（也是默认值），其次浅色 / 深色。
   const appearanceOptions = [
     { mode: 'system', icon: '💻', label: t('settings.themeSystem') },
@@ -257,6 +262,40 @@ const ThemeColorPicker = () => {
                   />
                   <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{t('settings.customColor')}</span>
                   <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: 'monospace', marginLeft: 'auto' }}>{accentColor}</span>
+                </div>
+
+                {/* 主题色可读性提示：对比度过低时提醒不推荐 */}
+                {accentWarning && (
+                  <div style={{
+                    display: 'flex', alignItems: 'flex-start', gap: '6px',
+                    padding: '7px 9px', borderRadius: '7px',
+                    background: 'var(--warning-bg-subtle, rgba(245, 158, 11, 0.08))',
+                    border: '1px solid var(--warning-border, rgba(245, 158, 11, 0.3))',
+                  }}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{ color: 'var(--warning-text, #f59e0b)', flexShrink: 0, marginTop: '1px' }} aria-hidden="true">
+                      <path d="M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                    </svg>
+                    <span style={{ fontSize: '11px', lineHeight: 1.5, color: 'var(--warning-text, #f59e0b)' }}>
+                      {accentWarning === 'light' ? t('colorPicker.accentWarnLight') : t('colorPicker.accentWarnDark')}
+                    </span>
+                  </div>
+                )}
+
+                {/* 主题色上的文字色预览 */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{
+                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                    minWidth: '54px', height: '24px', padding: '0 10px',
+                    borderRadius: '6px', background: accentColor,
+                    color: onPrimaryText, fontSize: '11px', fontWeight: 600,
+                  }}>示例 Aa</span>
+                  <span style={{ fontSize: '11px', color: 'var(--text-tertiary)' }}>
+                    {t('colorPicker.accentAutoText', {
+                      color: onPrimaryText === '#0c0d0e'
+                        ? t('colorPicker.accentTextBlack')
+                        : t('colorPicker.accentTextWhite'),
+                    })}
+                  </span>
                 </div>
               </div>
             </div>
