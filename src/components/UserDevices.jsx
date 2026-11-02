@@ -186,7 +186,7 @@ const UserDevices = ({ user }) => {
                       />
                       <button onClick={() => handleSaveName(session._id)} style={{
                         padding: '4px 10px', borderRadius: '6px', fontSize: '12px',
-                        background: 'var(--primary)', color: '#fff', border: 'none', cursor: 'pointer'
+                        background: 'var(--primary)', color: 'var(--btn-text)', border: 'none', cursor: 'pointer'
                       }}>{t('common.save')}</button>
                       <button onClick={() => setEditingId(null)} style={{
                         padding: '4px 10px', borderRadius: '6px', fontSize: '12px',

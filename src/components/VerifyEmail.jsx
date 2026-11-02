@@ -128,13 +128,7 @@ const VerifyEmail = () => {
             inputMode="numeric"
             maxLength="6"
             autoFocus
-            style={{
-              width: '100%', padding: '10px 12px', fontSize: '20px',
-              textAlign: 'center', letterSpacing: '6px',
-              borderRadius: '8px', border: '1px solid var(--border)',
-              background: 'var(--input)', color: 'var(--foreground)',
-              outline: 'none', boxSizing: 'border-box',
-            }}
+            className="code-input"
           />
           <button
             type="submit"

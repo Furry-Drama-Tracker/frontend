@@ -148,7 +148,7 @@ const AccountSecurity = ({ user }) => {
       <div style={sectionStyle}>
         <div style={rowStyle}>
           <div style={labelStyle}>
-            <div style={{...iconStyle, background: 'rgba(99,102,241,0.1)', color: '#6366f1'}}>📱</div>
+            <div style={{...iconStyle, background: 'var(--primary-bg-subtle)', color: 'var(--primary)'}}>📱</div>
             <div>
               <div style={{fontWeight: 500, fontSize: '15px'}}>{t('profile.manageDevices')}</div>
               <div style={{fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px'}}>{t('profile.manageDevicesDesc')}</div>

@@ -165,6 +165,9 @@ export default {
     yearRecent5: '近5年',
     yearEarlier: '更早',
     noResults: '暂无剧集',
+    emptyFilterHint: '换个筛选条件试试，或者清空筛选看看全部剧集',
+    emptyLibraryHint: '片库还在扩充，欢迎通过意见反馈提交你发现的剧集',
+    clearFilters: '清空筛选条件',
     loadMore: '加载更多',
     searchResult: '搜索结果 "{query}"，共 {count} 条',
     searchPlaceholder: '搜索剧集...',
@@ -424,6 +427,9 @@ export default {
   },
   episode: {
     follow: '追番',
+    previewViews: '{n} 次播放',
+    previewPlatforms: '{n} 个观看渠道',
+    previewEmpty: '暂无可预览信息',
     unfollow: '取消追番',
     favorite: '收藏',
     unfavorite: '取消收藏',
@@ -1848,6 +1854,11 @@ export default {
     applyWpOnly: '仅背景',
     applyIcOnly: '仅图标',
     applyBoth: '全套',
+    accentWarnDark: '该颜色在深色界面里偏暗，按钮和文字容易看不清，建议换成更亮一些的颜色',
+    accentWarnLight: '该颜色在浅色界面里偏亮，按钮和文字容易看不清，建议换成更深一些的颜色',
+    accentAutoText: '按钮上的文字会自动切换为{color}以保证可读性',
+    accentTextBlack: '黑字',
+    accentTextWhite: '白字',
   },
   // ===== 主题审批（后台专门审批页） =====
   adminThemeReview: {

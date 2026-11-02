@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+﻿import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import API from '../utils/apiEndpoints';
@@ -11,6 +11,7 @@ import useTranslation from '../hooks/useTranslation';
 import useScrollReveal from '../hooks/useScrollReveal';
 import useStaggerReveal from '../hooks/useStaggerReveal';
 import BannerCarousel from './BannerCarousel';
+import EmptyState from './EmptyState';
 import EpisodeFilters from './EpisodeFilters';
 import TagCloud from './TagCloud';
 import EpisodeCard from './EpisodeCard';
@@ -28,6 +29,7 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
   const [banners, setBanners] = useState([]);
   const [siteStats, setSiteStats] = useState(null);
+  const [skeletonFading, setSkeletonFading] = useState(false);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -248,6 +250,28 @@ const Home = () => {
     handleFilterChange('tag', next);
   }, [handleFilterChange, filters.tag]);
 
+  // 是否存在生效中的筛选/搜索（用于空状态文案与「清空筛选」按钮）
+  const hasActiveFilter = Boolean(
+    searchQuery || filters.category || filters.status || filters.tag || filters.rating || filters.year
+  );
+
+  const resetFilters = useCallback(() => {
+    setFilters({ category: '', sort: 'latest', status: '', tag: '', rating: '', year: '' });
+    setSortOrder('desc');
+    setSearchParams(new URLSearchParams());
+  }, [setSearchParams]);
+
+  // 骨架屏与内容交叉淡入：内容出现后让骨架屏再淡出 190ms
+  useEffect(() => {
+    let hide;
+    const show = setTimeout(() => setSkeletonFading(!loading), 0);
+    if (!loading) hide = setTimeout(() => setSkeletonFading(false), 190);
+    return () => {
+      clearTimeout(show);
+      if (hide) clearTimeout(hide);
+    };
+  }, [loading]);
+
   return (
     <div>
       <div ref={bannerRef} className={`reveal ${bannerVisible ? 'visible' : ''}`}>
@@ -259,6 +283,8 @@ const Home = () => {
         t={t}
         getLocalizedTitle={getLocalizedTitle}
         getLocalizedSubtitle={getLocalizedSubtitle}
+        totalEpisodes={total}
+        onBrowseClick={() => categoriesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
       />
       </div>
       <div ref={categoriesRef} className={`reveal ${categoriesVisible ? 'visible' : ''}`}>
@@ -291,7 +317,7 @@ const Home = () => {
               alignItems: 'center',
               gap: '8px',
             }}>
-              <Icon name="action.play" fallback="▶️" size={18} /> {t('home.continueWatching')}
+              <Icon name="action.play" fallback={null} size={18} /> {t('home.continueWatching')}
             </h2>
           </div>
           <div style={{
@@ -339,6 +365,8 @@ const Home = () => {
                       alt={ep.title}
                       loading="lazy"
                       decoding="async"
+                      className="img-fade"
+                      onLoad={(e) => e.currentTarget.classList.add('is-loaded')}
                       style={{
                         width: '100%',
                         height: '110px',
@@ -415,7 +443,7 @@ const Home = () => {
               alignItems: 'center',
               gap: '8px',
             }}>
-              <Icon name="tab.recommended" fallback="🎯" size={18} /> {t('home.guessYouLike')}
+              <Icon name="tab.recommended" fallback={null} size={18} /> {t('home.guessYouLike')}
             </h2>
           </div>
           {recLoading ? (
@@ -476,6 +504,8 @@ const Home = () => {
                       alt={rec.title}
                       loading="lazy"
                       decoding="async"
+                      className="img-fade"
+                      onLoad={(e) => e.currentTarget.classList.add('is-loaded')}
                       style={{
                         width: '100%',
                         height: '120px',
@@ -516,7 +546,7 @@ const Home = () => {
                         marginTop: '4px',
                         padding: '1px 8px',
                         borderRadius: '10px',
-                        background: 'var(--primary-bg, rgba(99, 102, 241, 0.15))',
+                        background: 'var(--primary-bg)',
                         color: 'var(--primary)',
                         fontSize: '10px',
                         fontWeight: 500,
@@ -556,15 +586,15 @@ const Home = () => {
           marginBottom: '24px',
           textAlign: 'center',
           padding: '20px',
-          background: 'var(--primary-bg, rgba(99, 102, 241, 0.1))',
+          background: 'var(--primary-bg)',
           borderRadius: '8px',
-          border: '1px solid var(--primary-border, rgba(99, 102, 241, 0.2))',
+          border: '1px solid var(--primary-border)',
           cursor: 'pointer',
         }}
         onClick={() => navigate('/login')}
         >
           <span style={{ color: 'var(--primary)', fontSize: '14px', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-            <Icon name="tab.recommended" fallback="🎯" size={14} /> {t('home.loginForRecommendations')}
+            {t('home.loginForRecommendations')}
           </span>
         </div>
       )}
@@ -575,39 +605,48 @@ const Home = () => {
         </div>
       )}
 
-      {loading ? (
-        <div className="episode-grid">
-          {Array.from({ length: 8 }, (_, i) => (
-            <EpisodeCardSkeleton key={i} />
-          ))}
-        </div>
-      ) : episodes.length === 0 ? (
-        <div style={{
-          textAlign: 'center',
-          padding: '60px 20px',
-          color: 'var(--text-secondary)',
-        }}>
-          <div style={{ fontSize: '48px', marginBottom: '16px', lineHeight: 1 }}><Icon name="nav.search" fallback="🔍" size={48} /></div>
-          <p style={{ fontSize: '16px', margin: 0 }}>
-            {searchQuery ? `${t('home.noResults')}` : t('home.noResults')}
-          </p>
-        </div>
-      ) : (
-        <div className="episode-grid" ref={episodesRef}>
-          {episodes.map((episode, i) => (
-            <div key={episode._id} ref={i === 0 ? gridRef : undefined} className={`stagger-item ${i < visibleCount ? 'visible' : ''}`}>
-            <EpisodeCard
-              episode={episode}
-              highlightQuery={searchQuery}
-              t={t}
-              getLocalizedTitle={getLocalizedTitle}
-              getLocalizedDescription={getLocalizedDescription}
-              onTagClick={handleTagClick}
-            />
+      <div className="episode-grid-stack" aria-busy={loading ? 'true' : 'false'}>
+        {(loading || skeletonFading) && (
+          <div className={`stack-layer${loading ? '' : ' grid-leaving'}`} aria-hidden={!loading ? 'true' : undefined}>
+            <div className="episode-grid">
+              {Array.from({ length: 8 }, (_, i) => (
+                <EpisodeCardSkeleton key={i} />
+              ))}
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        )}
+        {!loading && (
+          <div className="stack-layer grid-enter">
+            {episodes.length === 0 ? (
+              <EmptyState
+                variant="film"
+                title={t('home.noResults')}
+                description={hasActiveFilter ? t('home.emptyFilterHint') : t('home.emptyLibraryHint')}
+                action={hasActiveFilter ? (
+                  <button type="button" className="btn btn-secondary" onClick={resetFilters}>
+                    {t('home.clearFilters')}
+                  </button>
+                ) : null}
+              />
+            ) : (
+              <div className="episode-grid" ref={episodesRef}>
+                {episodes.map((episode, i) => (
+                  <div key={episode._id} ref={i === 0 ? gridRef : undefined} className={`stagger-item ${i < visibleCount ? 'visible' : ''}`}>
+                    <EpisodeCard
+                      episode={episode}
+                      highlightQuery={searchQuery}
+                      t={t}
+                      getLocalizedTitle={getLocalizedTitle}
+                      getLocalizedDescription={getLocalizedDescription}
+                      onTagClick={handleTagClick}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
       {hasMore && !loading && episodes.length > 0 && (
         <div style={{ textAlign: 'center', padding: '24px' }}>

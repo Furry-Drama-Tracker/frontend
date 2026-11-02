@@ -77,7 +77,7 @@ const TagCloud = ({ selectedTag, onTagClick }) => {
                 padding: '4px 12px',
                 borderRadius: '999px',
                 background: isSelected ? 'var(--primary)' : 'var(--primary-bg)',
-                color: isSelected ? '#fff' : 'var(--primary)',
+                color: isSelected ? 'var(--btn-text)' : 'var(--primary)',
                 fontSize: `${getFontSize(tag.count)}px`,
                 opacity: isSelected ? '1' : getOpacity(tag.count),
                 cursor: 'pointer',
@@ -88,14 +88,14 @@ const TagCloud = ({ selectedTag, onTagClick }) => {
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = 'var(--primary)';
-                e.currentTarget.style.color = '#fff';
+                e.currentTarget.style.color = 'var(--btn-text)';
                 e.currentTarget.style.opacity = '1';
                 e.currentTarget.style.transform = 'translateY(-2px)';
                 e.currentTarget.style.boxShadow = '0 4px 12px var(--shadow-modal)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = isSelected ? 'var(--primary)' : 'var(--primary-bg)';
-                e.currentTarget.style.color = isSelected ? '#fff' : 'var(--primary)';
+                e.currentTarget.style.color = isSelected ? 'var(--btn-text)' : 'var(--primary)';
                 e.currentTarget.style.opacity = String(isSelected ? '1' : getOpacity(tag.count));
                 e.currentTarget.style.transform = 'translateY(0)';
                 e.currentTarget.style.boxShadow = 'none';
