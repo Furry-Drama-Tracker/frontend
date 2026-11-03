@@ -56,25 +56,11 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
-        runtimeCaching: [
-          {
-            urlPattern: /^https?:\/\/.*\/api\/(episodes|series|categories|banners|friend-links|site-content)/,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'api-data',
-              networkTimeoutSeconds: 10,
-              expiration: { maxEntries: 100, maxAgeSeconds: 60 * 60 }
-            }
-          },
-          {
-            urlPattern: /^https?:\/\/.*\/uploads\//,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'uploads',
-              expiration: { maxEntries: 200, maxAgeSeconds: 30 * 24 * 60 * 60 }
-            }
-          }
-        ]
+        // API 响应不应进入 Service Worker 缓存：其中可能包含当前用户的追番/历史/
+        // 通知状态，甚至超管的站点配置。登出后 Cache Storage 不会被自动清理，
+        // 共享设备上会造成隐私泄露。
+        navigateFallbackDenylist: [/^\/api\//, /^\/uploads\//],
+        runtimeCaching: []
       },
       devOptions: { enabled: false }
     })

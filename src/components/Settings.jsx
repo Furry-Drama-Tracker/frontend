@@ -127,7 +127,7 @@ const Settings = ({ user }) => {
           type: 'toggle',
           value: notificationEnabled,
           onChange: handleToggleNotification,
-          disabled: !('Notification' in window),
+          disabled: !('Notification' in window) || !push.supported,
         },
       ],
     },

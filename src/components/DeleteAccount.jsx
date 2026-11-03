@@ -36,7 +36,7 @@ const DeleteAccount = ({ user }) => {
     setDeleteLoading(true);
     setDeleteError('');
     try {
-      const res = await axios.post(API.AUTH.REQUEST_DELETION, {}, { headers: getAuthHeaders() });
+      const res = await axios.post(API.AUTH.REQUEST_DELETION, { password: deletePassword }, { headers: getAuthHeaders() });
       setDeletionStatus({
         requested: true,
         deletionRequestedAt: res.data.deletionRequestedAt,
@@ -47,6 +47,7 @@ const DeleteAccount = ({ user }) => {
       setDeletePassword('');
     } catch (err) {
       setDeleteError(err.response?.data?.message || t('profile.deletionRequestFailed'));
+      setDeleteStep(1);
     }
     setDeleteLoading(false);
   };
@@ -180,17 +181,13 @@ const DeleteAccount = ({ user }) => {
                     <button
                       style={{ background: 'var(--destructive-bg-strong)', border: '1px solid var(--destructive-border)', color: 'var(--destructive-text)', borderRadius: '8px', padding: '8px 16px', cursor: 'pointer', fontSize: '13px' }}
                       disabled={!deletePassword || deleteLoading}
-                      onClick={async () => {
-                        try {
-                          await axios.post(API.AUTH.LOGIN, { email: user.email, password: deletePassword });
-                          setDeleteStep(2);
-                          setDeleteError('');
-                        } catch {
-                          setDeleteError(t('profile.incorrectPassword'));
-                        }
+                      onClick={() => {
+                        if (!deletePassword) return;
+                        setDeleteStep(2);
+                        setDeleteError('');
                       }}
                     >
-                      {deleteLoading ? t('profile.verifying') : t('profile.verifyPassword')}
+                      {t('profile.verifyPassword')}
                     </button>
                   </div>
                 </>

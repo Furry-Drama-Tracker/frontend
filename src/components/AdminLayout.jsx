@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, NavLink, Outlet, useLocation } from 'react-router-dom';
+import { clearClientData } from '../utils/clearClientData';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
 import '../admin-kit/index.css';
@@ -29,7 +30,7 @@ const NAV_GROUPS = [
     en: 'Content',
     items: [
       { to: '/admin/episodes', key: 'pageTitle.adminEpisodes', roles: ALL_ROLES },
-      { to: '/admin/episode-trash', key: 'pageTitle.adminEpisodeTrash', roles: ALL_ROLES },
+      { to: '/admin/episode-trash', key: 'pageTitle.adminEpisodeTrash', roles: ADMIN_UP },
       { to: '/admin/categories', key: 'pageTitle.adminCategories', roles: ADMIN_UP },
       { to: '/admin/banners', key: 'pageTitle.adminBanners', roles: ADMIN_UP },
       { to: '/admin/announcements', key: 'pageTitle.adminAnnouncements', roles: SUPER_ONLY },
@@ -42,7 +43,7 @@ const NAV_GROUPS = [
     zh: '审核与治理',
     en: 'Moderation',
     items: [
-      { to: '/admin/review', key: 'pageTitle.adminReview', roles: ALL_ROLES },
+      { to: '/admin/review', key: 'pageTitle.adminReview', roles: ADMIN_UP },
       { to: '/admin/reports', key: 'pageTitle.adminReports', roles: ADMIN_UP },
       { to: '/admin/feedback', key: 'pageTitle.adminFeedback', roles: ADMIN_UP },
     ],
@@ -125,6 +126,7 @@ const AdminLayout = () => {
       /* 退出接口失败不阻塞前端登出 */
     }
     setAdmin(null);
+    await clearClientData();
     navigate('/login', { replace: true });
   };
 
