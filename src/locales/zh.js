@@ -1529,7 +1529,7 @@ export default {
   adminAnalytics: {
     noData: '暂无数据',
     loading: '加载中...',
-    title: '📈 数据分析',
+    title: '数据分析',
     '7days': '7天',
     '30days': '30天',
     totalUsers: '总用户',
@@ -1572,7 +1572,7 @@ export default {
     statusPending: '待处理',
     statusResolved: '已处理',
     statusDismissed: '已驳回',
-    title: '🚨 举报管理',
+    title: '举报管理',
     all: '全部',
     loading: '加载中...',
     noReports: '暂无举报',

@@ -1526,7 +1526,7 @@ export default {
   adminAnalytics: {
     noData: 'No data',
     loading: 'Loading...',
-    title: '📈 Analytics',
+    title: 'Analytics',
     '7days': '7 Days',
     '30days': '30 Days',
     totalUsers: 'Total Users',
@@ -1569,7 +1569,7 @@ export default {
     statusPending: 'Pending',
     statusResolved: 'Resolved',
     statusDismissed: 'Dismissed',
-    title: '🚨 Report Management',
+    title: 'Report Management',
     all: 'All',
     loading: 'Loading...',
     noReports: 'No reports',
