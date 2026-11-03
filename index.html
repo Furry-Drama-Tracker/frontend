@@ -5,7 +5,9 @@
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline' fonts.googleapis.com; img-src 'self' data: blob:; font-src 'self' fonts.gstatic.com; connect-src 'self' https://api.mymemory.translated.net https://translate.googleapis.com https://api.cognitive.microsofttranslator.com; frame-src 'self' https://player.bilibili.com https://www.youtube.com https://embed.nicovideo.jp; object-src 'none';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline' fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' fonts.gstatic.com; connect-src 'self' https://api.mymemory.translated.net https://translate.googleapis.com https://api.cognitive.microsofttranslator.com; frame-src 'self' https://player.bilibili.com https://www.youtube.com https://embed.nicovideo.jp; object-src 'none'; base-uri 'self'; form-action 'self';" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="permissions-policy" content="camera=(), microphone=(), geolocation=(), payment=()" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -129,6 +131,12 @@
         ];
         var BROWSER_NAMES = ['chrome', 'edge', 'firefox'];
 
+        function escapeHtml(s) {
+          return String(s).replace(/[&<>"']/g, function (ch) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+          });
+        }
+
         function render() {
           var L = I18N[currentLang];
           var reasonText = isIE ? L.reasonIE : L.reasonEdgeLegacy;
@@ -154,7 +162,7 @@
             icpVal = localStorage.getItem('_icp') || '';
           } catch (e) {}
           if (icpVal) {
-            icpHtml = '<a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank" rel="noopener noreferrer" style="position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:11px;color:#94a3b8;text-decoration:none;">' + icpVal + '</a>';
+            icpHtml = '<a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank" rel="noopener noreferrer" style="position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:11px;color:#94a3b8;text-decoration:none;">' + escapeHtml(icpVal) + '</a>';
           }
 
           return (
@@ -217,7 +225,7 @@
                   // 更新 ICP 显示
                   var icpContainer = overlay.querySelector('[data-icp]');
                   if (icpContainer) {
-                    icpContainer.innerHTML = '<a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank" rel="noopener noreferrer" style="position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:11px;color:#94a3b8;text-decoration:none;">' + data.icp + '</a>';
+                    icpContainer.innerHTML = '<a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank" rel="noopener noreferrer" style="position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:11px;color:#94a3b8;text-decoration:none;">' + escapeHtml(data.icp) + '</a>';
                   }
                 }
               } catch (e) {}

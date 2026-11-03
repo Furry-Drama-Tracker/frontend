@@ -67,12 +67,16 @@ const sanitizeSvg = (text) => {
   s = s.replace(/<\?xml[\s\S]*?\?>/gi, '').replace(/<!DOCTYPE[\s\S]*?>/gi, '');
   // 必须是 <svg> 开头。
   if (!s.trimStart().startsWith('<svg')) return null;
-  // 移除 script/foreignObject/iframe 等危险节点。
-  s = s.replace(/<(script|foreignObject|iframe|object|embed|link)\b[\s\S]*?<\/\1>/gi, '');
-  s = s.replace(/<(script|foreignObject|iframe|object|embed|link)\b[^>]*\/?>/gi, '');
-  // 移除 on* 事件属性与 javascript: 协议。
+  // 移除 script/style/foreignObject/iframe/animate 等危险节点。
+  s = s.replace(/<(script|style|foreignObject|iframe|object|embed|link|animate|set|discard)\b[\s\S]*?<\/\1>/gi, '');
+  s = s.replace(/<(script|style|foreignObject|iframe|object|embed|link|animate|set|discard)\b[^>]*\/?>/gi, '');
+  // 移除 on* 事件属性与 javascript:/data: 等危险协议（含未加引号形式）。
   s = s.replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '');
-  s = s.replace(/(href|xlink:href)\s*=\s*("|')\s*javascript:[^"']*\2/gi, '');
+  s = s.replace(/(href|xlink:href|src)\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, (m, attr, value) => {
+    const v = String(value).replace(/^["']|["']$/g, '').trim().toLowerCase();
+    if (v.startsWith('javascript:') || v.startsWith('vbscript:') || v.startsWith('data:text/html')) return '';
+    return m;
+  });
   // 颜色适配主题：显式颜色值替换为 currentColor。
   s = s.replace(/(fill|stroke)\s*=\s*("|')\s*(#[0-9a-fA-F]{3,8}|rgba?\([^)]*\)|hsla?\([^)]*\))\s*\2/gi, '$1="currentColor"');
   s = s.replace(/(fill|stroke)\s*:\s*(#[0-9a-fA-F]{3,8}|rgba?\([^)]*\)|hsla?\([^)]*\))\s*;?/gi, '$1:currentColor;');

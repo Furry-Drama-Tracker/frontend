@@ -530,8 +530,8 @@ function AppContent() {
               <Route path="users" element={<AdminGuard roles={ADMIN_ROLES_SUPER}><AdminUsers /></AdminGuard>} />
               <Route path="categories" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminCategories /></AdminGuard>} />
               <Route path="banners" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminBanners /></AdminGuard>} />
-              <Route path="review" element={<AdminGuard roles={ADMIN_ROLES_ALL}><AdminReview /></AdminGuard>} />
-              <Route path="episode-trash" element={<AdminGuard roles={ADMIN_ROLES_ALL}><AdminEpisodeTrash /></AdminGuard>} />
+              <Route path="review" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminReview /></AdminGuard>} />
+              <Route path="episode-trash" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminEpisodeTrash /></AdminGuard>} />
               <Route path="reports" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminReports /></AdminGuard>} />
               <Route path="stats" element={<AdminGuard roles={ADMIN_ROLES_UP}><AdminStats /></AdminGuard>} />
               <Route path="creator-profile" element={<AdminGuard roles={ADMIN_ROLES_ALL}><AdminCreatorProfile /></AdminGuard>} />

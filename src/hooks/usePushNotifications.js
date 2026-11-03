@@ -21,12 +21,27 @@ export default function usePushNotifications() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const swSupported = 'serviceWorker' in navigator && 'PushManager' in window;
-    setSupported(swSupported);
-    if (swSupported) {
-      setPermission(Notification.permission);
-      setSubscribed(localStorage.getItem(PUSH_ENABLED_KEY) === 'true');
-    }
+    let cancelled = false;
+    const check = async () => {
+      const swSupported = 'serviceWorker' in navigator && 'PushManager' in window;
+      if (!swSupported) {
+        setSupported(false);
+        return;
+      }
+      try {
+        const { data } = await axios.get('/api/notifications/vapid-public-key');
+        if (cancelled) return;
+        setSupported(!!data.publicKey);
+        if (data.publicKey) {
+          setPermission(Notification.permission);
+          setSubscribed(localStorage.getItem(PUSH_ENABLED_KEY) === 'true');
+        }
+      } catch {
+        if (!cancelled) setSupported(false);
+      }
+    };
+    check();
+    return () => { cancelled = true; };
   }, []);
 
   const subscribe = useCallback(async () => {
@@ -42,6 +57,10 @@ export default function usePushNotifications() {
 
       const registration = await navigator.serviceWorker.ready;
       const { data } = await axios.get('/api/notifications/vapid-public-key');
+      if (!data.publicKey) {
+        setLoading(false);
+        return false;
+      }
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(data.publicKey),

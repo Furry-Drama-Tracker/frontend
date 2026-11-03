@@ -71,7 +71,6 @@ axios.interceptors.response.use(
                   _id: result.user._id,
                   accountId: result.user.accountId,
                   username: result.user.username,
-                  email: result.user.email,
                   isEmailVerified: result.user.isEmailVerified,
                   role: result.user.role,
                   forceEmailChange: !!result.user.forceEmailChange
@@ -236,7 +235,6 @@ axios.interceptors.response.use(
                 _id: result.user._id,
                 accountId: result.user.accountId,
                 username: result.user.username,
-                email: result.user.email,
                 isEmailVerified: result.user.isEmailVerified,
                 role: result.user.role,
                 forceEmailChange: !!result.user.forceEmailChange

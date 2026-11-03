@@ -59,24 +59,23 @@ const AdminEpisodes = () => {
   const [error, setError] = useState('');
   const [historyEpisodeId, setHistoryEpisodeId] = useState(null);
 
-  useEffect(() => {
-    fetchEpisodes();
-    fetchCategories();
-    fetchCreators();
-  }, []);
-
   // ===== 数据获取 =====
   const fetchEpisodes = async () => {
     try {
-      let response;
-      if (admin.role === 'creator') {
-        // 创作者视图：传 limit=100 避免默认只返回 20 条导致剧集遗漏
-        response = await adminApi.get('/api/creator/my-episodes', { params: { limit: 100 } });
-      } else {
-        response = await adminApi.get('/api/episodes', { params: { limit: 100 } });
-      }
-      const data = response.data;
-      setEpisodes(Array.isArray(data) ? data : (data.episodes || data.list || []));
+      const all = [];
+      let page = 1;
+      let totalPages = 1;
+      do {
+        const response = admin.role === 'creator'
+          ? await adminApi.get('/api/creator/my-episodes', { params: { page, limit: 100 } })
+          : await adminApi.get('/api/episodes', { params: { page, limit: 100 } });
+        const data = response.data;
+        const batch = Array.isArray(data) ? data : (data.episodes || data.list || []);
+        all.push(...batch);
+        totalPages = Number(data.totalPages) || 1;
+        page += 1;
+      } while (page <= totalPages && page <= 100);
+      setEpisodes(all);
     } catch (error) {
       console.error('Error fetching episodes:', error);
     }
@@ -99,6 +98,13 @@ const AdminEpisodes = () => {
       console.error('获取创作者列表失败', err);
     }
   };
+
+  useEffect(() => {
+    fetchEpisodes();
+    fetchCategories();
+    if (admin.role !== 'creator') fetchCreators();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!episodeSearch.trim()) {

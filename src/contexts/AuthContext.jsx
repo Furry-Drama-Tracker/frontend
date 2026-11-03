@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { fetchCsrfToken } from '../utils/axiosConfig';
+import { clearClientData } from '../utils/clearClientData';
 import API from '../utils/apiEndpoints';
 
 const AuthContext = createContext(null);
@@ -157,7 +158,7 @@ export const AuthProvider = ({ children }) => {
       await axios.post(API.AUTH.LOGOUT);
     } catch {}
     setUser(null);
-    localStorage.removeItem('user');
+    await clearClientData();
   }, []);
 
   const updateUser = useCallback((updatedData) => {

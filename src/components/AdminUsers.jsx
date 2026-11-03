@@ -63,8 +63,16 @@ const AdminUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await adminApi.get('/api/admin/users', { params: { limit: 9999 } });
-      setUsers(res.data.list || res.data);
+      const all = [];
+      let page = 1;
+      let totalPages = 1;
+      do {
+        const res = await adminApi.get('/api/admin/users', { params: { page, limit: 200 } });
+        all.push(...(res.data.list || []));
+        totalPages = Number(res.data.totalPages) || 1;
+        page += 1;
+      } while (page <= totalPages && page <= 100);
+      setUsers(all);
     } catch (err) {
       console.error('获取用户列表失败', err);
     }
