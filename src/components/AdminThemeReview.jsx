@@ -111,15 +111,17 @@ const AdminThemeReview = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '8px' }}>
-        <h2 style={{ margin: 0, fontSize: '20px' }}>{t('adminThemeReview.title')}</h2>
-        <Link to="/admin/themes" className="btn btn-secondary" style={{ fontSize: '12px', padding: '5px 12px', textDecoration: 'none' }}>
-          {t('adminThemeReview.manageThemes')}
-        </Link>
+      <div className="yl-page-header">
+        <div>
+          <h1 className="yl-page-title">{t('adminThemeReview.title')}</h1>
+          <p className="yl-page-desc">{t('adminThemeReview.desc')}</p>
+        </div>
+        <div className="yl-page-actions">
+          <Link to="/admin/themes" className="btn btn-md btn-outline" style={{ textDecoration: 'none' }}>
+            {t('adminThemeReview.manageThemes')}
+          </Link>
+        </div>
       </div>
-      <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '0 0 16px 0', lineHeight: 1.6 }}>
-        {t('adminThemeReview.desc')}
-      </p>
 
       {error && <div className="error-message" style={{ marginBottom: '12px' }}>{error}</div>}
       {success && (
@@ -141,7 +143,7 @@ const AdminThemeReview = () => {
             {icon} {label}
             {badge > 0 && (
               <span style={{
-                marginLeft: '6px', background: '#ef4444', color: '#fff', fontSize: '11px', fontWeight: 700,
+                marginLeft: '6px', background: 'var(--destructive)', color: 'var(--btn-text)', fontSize: '11px', fontWeight: 700,
                 minWidth: '18px', height: '18px', borderRadius: '9px', display: 'inline-flex',
                 alignItems: 'center', justifyContent: 'center', padding: '0 5px', lineHeight: '18px',
               }}>{badge}</span>

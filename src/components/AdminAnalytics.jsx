@@ -195,7 +195,7 @@ const AdminAnalytics = () => {
     const selectedData = lifecycleData.filter(ep => selectedEpisodes.includes(ep.episodeId));
     if (selectedData.length === 0) return null;
 
-    const colors = ['#4f46e5', '#06b6d4', '#f59e0b', '#ef4444', '#10b981'];
+    const colors = ['#1777ff', '#3b76b8', '#2e9072', '#d9822b', '#c43138'];
     const maxWeeks = Math.max(...selectedData.map(ep => ep.weeks.length), 1);
     const maxViews = Math.max(...selectedData.flatMap(ep => ep.weeks.map(w => w.views)), 1);
 
@@ -340,20 +340,22 @@ const AdminAnalytics = () => {
   const retention = data.retention || [];
 
   return (
-    <div style={{ padding: '24px', maxWidth: '1000px', margin: '0 auto' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-        <h2 style={{ margin: 0 }}>{t('adminAnalytics.title')}</h2>
-        <div style={{ display: 'flex', gap: '8px' }}>
+    <div>
+      <div className="yl-page-header">
+        <div>
+          <h1 className="yl-page-title">{t('adminAnalytics.title')}</h1>
+        </div>
+        <div className="yl-page-actions">
           <button onClick={() => setPeriod('7d')} style={{
             padding: '6px 14px', borderRadius: '8px', fontSize: '13px',
             background: period === '7d' ? 'var(--primary)' : 'var(--hover-bg)',
-            color: period === '7d' ? '#fff' : 'var(--foreground)',
+            color: period === '7d' ? 'var(--btn-text)' : 'var(--foreground)',
             border: '1px solid var(--border)', cursor: 'pointer', transition: 'all 0.2s'
           }}>{t('adminAnalytics.7days')}</button>
           <button onClick={() => setPeriod('30d')} style={{
             padding: '6px 14px', borderRadius: '8px', fontSize: '13px',
             background: period === '30d' ? 'var(--primary)' : 'var(--hover-bg)',
-            color: period === '30d' ? '#fff' : 'var(--foreground)',
+            color: period === '30d' ? 'var(--btn-text)' : 'var(--foreground)',
             border: '1px solid var(--border)', cursor: 'pointer', transition: 'all 0.2s'
           }}>{t('adminAnalytics.30days')}</button>
         </div>

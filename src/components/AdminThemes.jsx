@@ -285,7 +285,7 @@ const AdminThemes = () => {
                           }}>
                             <span style={{
                               position: 'absolute', top: th.isDefault ? '2px' : '1px', left: th.isDefault ? '21px' : '2px',
-                              width: '18px', height: '18px', borderRadius: '50%', background: '#fff',
+                              width: '18px', height: '18px', borderRadius: '50%', background: 'var(--btn-text)',
                               transition: 'left 0.2s', boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
                             }} />
                           </span>

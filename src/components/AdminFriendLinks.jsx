@@ -109,11 +109,13 @@ const AdminFriendLinks = () => {
 
   return (
     <div className="admin-page">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-        <h2>{t('adminFriendLinks.title')}</h2>
-        <div style={{ display: 'flex', gap: '10px' }}>
+      <div className="yl-page-header">
+        <div>
+          <h1 className="yl-page-title">{t('adminFriendLinks.title')}</h1>
+        </div>
+        <div className="yl-page-actions">
           {!showForm && (
-            <button className="btn" onClick={() => { setShowForm(true); setEditingLink(null); setFormData({ name: '', nameEn: '', url: '', logo: '', description: '', descriptionEn: '', order: 0, isActive: true }); }}>{t('adminFriendLinks.addLink')}</button>
+            <button className="btn btn-md btn-primary" onClick={() => { setShowForm(true); setEditingLink(null); setFormData({ name: '', nameEn: '', url: '', logo: '', description: '', descriptionEn: '', order: 0, isActive: true }); }}>{t('adminFriendLinks.addLink')}</button>
           )}
         </div>
       </div>
@@ -213,9 +215,9 @@ const AdminFriendLinks = () => {
                   <span style={{ fontWeight: 600, fontSize: '15px' }}>{link.name}</span>
                   {(link.status === 'pending' || (!link.status && !link.isActive)) && (
                     <span style={{
-                      fontSize: '11px', color: '#f59e0b',
-                      background: '#fef3c7', padding: '1px 8px',
-                      borderRadius: '4px', border: '1px solid #fde68a'
+                      fontSize: '11px', color: 'var(--warning-text)',
+                      background: 'var(--warning-bg)', padding: '1px 8px',
+                      borderRadius: '4px', border: '1px solid var(--warning-border)'
                     }}>{t('adminFriendLinks.pending')}</span>
                   )}
                   {link.status === 'rejected' && (
