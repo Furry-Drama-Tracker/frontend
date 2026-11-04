@@ -70,7 +70,10 @@ const Timeline = () => {
     switch (activity.type) {
       case 'new_episode': {
         const epTitle = getLocalizedTitle({ title: activity.metadata?.singleEpisodeTitle, titleEn: activity.metadata?.singleEpisodeTitleEn }) || activity.metadata?.singleEpisodeTitle || '';
-        const result = t('timeline.newEpisode', { title, ep: activity.metadata?.episodeNumber || '', epTitle });
+        const customLabel = activity.metadata?.episodeLabel;
+        const result = customLabel
+          ? t('timeline.newEpisodeCustom', { title, ep: customLabel, epTitle })
+          : t('timeline.newEpisode', { title, ep: activity.metadata?.episodeNumber || '', epTitle });
         if (!title && (activity.description || activity.descriptionEn)) {
           return lang === 'en' ? (activity.descriptionEn || activity.description || result) : (activity.description || result);
         }

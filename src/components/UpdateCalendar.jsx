@@ -238,7 +238,7 @@ const UpdateCalendar = () => {
                           padding: '1px 6px', borderRadius: '3px', background: bgMap[item.type], color: colorMap[item.type],
                         }}>
                           {item.type === 'scheduled' && '🔔 '}{item.type === 'premiere' && '🎬 '}
-                          {getLocalizedTitle(item)}{item.episodeNumber ? ` ${t('calendar.episodeNum', { num: item.episodeNumber })}` : ''}
+                          {getLocalizedTitle(item)}{item.episodeNumber ? ` ${item.episodeLabel || t('calendar.episodeNum', { num: item.episodeNumber })}` : ''}
                         </span>
                       </Link>
                     ))}
@@ -309,7 +309,7 @@ const UpdateCalendar = () => {
                         overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'
                       }}>
                         {item.type === 'scheduled' && '🔔 '}{item.type === 'premiere' && '🎬 '}
-                        {getLocalizedTitle(item)}{item.episodeNumber ? ` ${t('calendar.episodeNum', { num: item.episodeNumber })}` : ''}
+                        {getLocalizedTitle(item)}{item.episodeNumber ? ` ${item.episodeLabel || t('calendar.episodeNum', { num: item.episodeNumber })}` : ''}
                       </Link>
                       {isFollowed && item.type === 'scheduled' && (
                         <button onClick={() => handleSubscribe(item._id)} disabled={subscribing === item._id} style={{
@@ -419,7 +419,7 @@ const UpdateCalendar = () => {
                     overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'
                   }}>
                     {item.type === 'scheduled' && '🔔 '}{item.type === 'premiere' && '🎬 '}
-                    {getLocalizedTitle(item)}{item.episodeNumber ? ` ${t('calendar.episodeNum', { num: item.episodeNumber })}` : ''}
+                    {getLocalizedTitle(item)}{item.episodeNumber ? ` ${item.episodeLabel || t('calendar.episodeNum', { num: item.episodeNumber })}` : ''}
                   </Link>
                   );
                 })}
@@ -472,7 +472,7 @@ const UpdateCalendar = () => {
                               <div style={{ fontSize: '14px', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{getLocalizedTitle(item)}</div>
                               <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>
                                 {item.type === 'scheduled' && `🔔 ${t('calendar.preview')}: `}{item.type === 'premiere' && `🎬 ${t('calendar.premiere')}`}{item.type === 'released' && '✅ '}
-                                {item.episodeNumber ? t('calendar.episodeNum', { num: item.episodeNumber }) : ''}
+                                {item.episodeNumber ? (item.episodeLabel || t('calendar.episodeNum', { num: item.episodeNumber })) : ''}
                               </div>
                             </div>
                             <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '10px', background: item.type === 'released' ? 'var(--success-bg-subtle)' : item.type === 'premiere' ? 'var(--primary-bg-subtle)' : 'var(--warning-bg-subtle)', color: item.type === 'released' ? 'var(--success-text)' : item.type === 'premiere' ? 'var(--primary)' : 'var(--warning-text)', flexShrink: 0, whiteSpace: 'nowrap' }}>
