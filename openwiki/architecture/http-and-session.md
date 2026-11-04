@@ -30,10 +30,10 @@ sources:
     resource: repo://src/utils/axiosConfig.js
   - id: openwiki-source-091078cd4f585582a9efba7a
     resource: repo://src/utils/offlineQueue.js
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 ---
 
 # HTTP 层、CSRF 与双 Token 刷新
@@ -194,10 +194,10 @@ sequenceDiagram
 
 ## 刷新成功后的快照合并与事件
 
-刷新响应携带的用户信息**不会**整包覆盖前端状态，而是按白名单合并进既有快照（`_id`、`accountId`、`username`、`email`、`isEmailVerified`、`role`、`forceEmailChange`），保留 `avatar` 等旧字段，然后写回 `localStorage.user` 并派发 `auth:token-refreshed`：
+刷新响应携带的用户信息**不会**整包覆盖前端状态，而是按白名单合并进既有快照（`_id`、`accountId`、`username`、`isEmailVerified`、`role`、`forceEmailChange`——`email` 已被刻意从白名单剔除，快照不再携带邮箱），保留 `avatar` 等旧字段，然后写回 `localStorage.user` 并派发 `auth:token-refreshed`：
 
 ```js
-const merged = { ...oldUser, _id: ..., accountId: ..., username: ..., email: ..., role: ..., forceEmailChange: !!result.user.forceEmailChange };
+const merged = { ...oldUser, _id: ..., accountId: ..., username: ..., role: ..., forceEmailChange: !!result.user.forceEmailChange };
 localStorage.setItem('user', JSON.stringify(merged));
 window.dispatchEvent(new CustomEvent('auth:token-refreshed', { detail: { user: merged } }));
 ```
@@ -205,7 +205,7 @@ window.dispatchEvent(new CustomEvent('auth:token-refreshed', { detail: { user: m
 `AuthContext` 监听该事件，把 `detail.user` 合并进 React 侧的 `user` 状态（角色、邮箱、`forceEmailChange` 都可能在刷新窗口内变化）。两个边界：
 
 - 合并**只在 `localStorage.user` 已存在时执行**（`if (stored)`）。没有快照（例如刚被登出清空）时即使刷新成功也不写、不派发，`AuthContext` 那边也保持 `user` 为 `null`。
-- 这次合并写入的字段集合与 `AuthContext.storeUserToLocalStorage` 的字段集合并不一致（后者写 `_id`/`accountId`/`username`/`isEmailVerified`/`role`/`avatar`，不写 `email`/`forceEmailChange`）。快照字段是「谁最后写谁生效」，读取方不要假设某个字段一定存在。`localStorage` 只是快照，权威会话状态始终在 cookie 与服务端，详见[状态与持久化](./state-and-persistence.md)。
+- 这次合并写入的字段集合与 `AuthContext.storeUserToLocalStorage` 的字段集合并不一致（后者写 `_id`/`accountId`/`username`/`isEmailVerified`/`role`/`avatar`；合并则补写 `forceEmailChange`，而 `avatar` 与 `email` 两边都不写）。快照字段是「谁最后写谁生效」，读取方不要假设某个字段一定存在——依赖 `user.email` 的 UI（例如注销密码校验）不能从快照取值，需要走服务端校验或重新拉取用户信息。`localStorage` 只是快照，权威会话状态始终在 cookie 与服务端，详见[状态与持久化](./state-and-persistence.md)。
 
 ## 登出、软拦截与错误事件
 

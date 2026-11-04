@@ -46,10 +46,10 @@ sources:
     resource: repo://src/utils/polyfills.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "opencode", at: "2026-11-02T17:44:42.174Z" }
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 ---
 
 # 构建、配置与部署
@@ -65,7 +65,7 @@ verified:
 | `npm run dev` | `vite` | 开发服务器固定 3000 端口，带 `no-store` 与 `/api`、`/uploads` 代理，见下文 |
 | `npm run build` | `vite build` | 只做构建：**不跑 lint、不跑 `generate-icons`**，产物 `dist/` 被 `.gitignore` 忽略，必须由部署流程自己构建 |
 | `npm run preview` | `vite preview` | 本地托管 `dist/` 验证产物；它不模拟 nginx 的 `/api`、`/uploads` 反代，所以预览里 API 调用会打到 preview 服务器自己 |
-| `npm run lint` | `eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0` | 唯一自动化门禁。`--max-warnings 0` 让任何警告变成失败；`dist`、`dev-dist`、`node_modules` 在 `eslint.config.js` 里被忽略 |
+| `npm run lint` | `eslint . --ext js,jsx --max-warnings 0` | 唯一自动化门禁。`--max-warnings 0` 让任何警告变成失败；但规则面刻意放宽——react-hooks 插件的实验性规则（`set-state-in-effect`、`immutability`、`refs`、`exhaustive-deps` 等）、`no-unused-vars`、`no-empty`、`no-useless-escape`、`react-refresh/only-export-components`、`react/display-name` 均关闭，`reportUnusedDisableDirectives` 置 off（脚本参数一并移除）；`public` 与 `dist`、`dev-dist`、`node_modules` 一起在 `eslint.config.js` 里被忽略 |
 | `npm run generate-icons` | `node generate-icons.mjs` | 手动步骤，从 `public/icon.svg` 重生成 PNG 图标，见"图标与静态资源" |
 
 **Node 版本没有仓库内约束。** `package.json` 没有 `engines` 字段，唯一的书面要求出现在 `README.md` 的"环境要求"（Node.js >= 20、npm >= 9），而 `.github/workflows/openwiki-update.yml` 固定用 Node 22。也就是说 Node 20.0 这类低于工具链实际下限的版本不会被 npm 拦下，只会在安装或启动时炸；给 `package.json` 补 `engines` 是唯一能让 CI/本地统一的地方。
@@ -228,18 +228,19 @@ CSP 以 `<meta http-equiv>` 写在 `index.html` 里，因此**它随构建产物
 |---|---|---|
 | `script-src` | `'self' 'unsafe-inline' blob:` | 页内有两个内联 `<script>`（早期语言检测、IE/旧 Edge 遮罩），遮罩还用内联 `onclick="window.__switchCompatLang()"`；去掉 `'unsafe-inline'` 这两个脚本与语言切换按钮都会失效。注意 CSP 里**没有 `'unsafe-eval'`**，IE 分支里的 JSON polyfill 用 `new Function` 构造解析器，只有在真正缺少 `JSON` 的古董浏览器上才会撞上这条限制 |
 | `style-src` | `'self' 'unsafe-inline' fonts.googleapis.com` | 组件大量使用 React 内联 `style`，同时要放行 Google Fonts 的 CSS |
-| `img-src` | `'self' data: blob:` | 只允许同源、`data:`、`blob:`；**没有 `https:`**，任何跨域图片（跨域后端、外部图床、外链 logo）都会被拦 |
+| `img-src` | `'self' data: blob: https:` | 同源、`data:`、`blob:` 之外放开了 `https:` 通配，所有 HTTPS 图片源（外部图床、页脚公安备案图标等）都能加载；纯 HTTP 图片源仍会被拦 |
 | `font-src` | `'self' fonts.gstatic.com` | 字体文件从 gstatic 取 |
 | `connect-src` | `'self'` + `api.mymemory.translated.net`、`translate.googleapis.com`、`api.cognitive.microsofttranslator.com` | `'self'` 覆盖 axios 与 SSE；三个翻译域名是历史直连许可——当前翻译走后端 `/api/translate`（`useTranslation` 里 `axios.post`），`src/` 内没有任何直接请求这些域名的代码 |
 | `frame-src` | `'self'` + `player.bilibili.com`、`www.youtube.com`、`embed.nicovideo.jp` | `EpisodeDetail` 会把 B 站（含 `b23.tv`、`av`/`BV` 号）、YouTube、niconico 链接转换成恰好这三家的嵌入地址；缺一个域名该播放器就白屏 |
 | `object-src` | `'none'` | 禁用插件 |
+| `default-src` / `base-uri` / `form-action` | `'self'` × 3 | `default-src` 兜底：未单独列出的指令（`media-src`、`worker-src`、`manifest-src` 等）回退到 `'self'`，本地资源照常、第三方媒体需要显式加指令；`base-uri 'self'` 与 `form-action 'self'` 阻断注入式改写与外站表单提交 |
 
-由于**没有 `default-src`**，未列出的指令（`media-src`、`worker-src`、`manifest-src`、`frame-ancestors` 等）不受约束：Service Worker 注册、视频播放、动态注入的 manifest link 因此能正常工作。增删 CSP 时必须同时评估三类消费者——机器翻译域名、三家嵌入播放器、以及图片/上传资源域；收紧 `img-src` 或 `connect-src` 是最容易造成"某些页面图片不显示、翻译不工作"的两处。
+CSP meta 之外还有两条同层的配套声明：`<meta name="referrer" content="no-referrer">` 让全站出站请求不携带 Referer，`permissions-policy` 显式禁用 camera / microphone / geolocation / payment。增删 CSP 时仍要同时评估三类消费者——机器翻译域名、三家嵌入播放器、以及图片/上传资源域（图片已被 `https:` 通配放开，一般不用动）；最容易造成"某些页面翻译不工作"的是 `connect-src`。
 
 `index.html` 里其余发布相关的内容：
 
 - **早期语言检测脚本**：在 React 挂载前读 `localStorage.lang`，否则看 `navigator.language`，把 `<html lang>` 与 `content-language`、`language` 两个 meta 一起改成 `zh-CN`/`en-US`。目的是让浏览器翻译、拼写检查、读屏在首屏就拿到正确语言，而不是靠"检测到的语言"。它写的是与 `I18nContext` 同一个 `lang` 键，两边必须保持同一套取值（`zh`/`en`）。
-- **IE/旧 Edge 遮罩**：一段 ES5 脚本（含 JSON polyfill），检测到 Trident/旧 EdgeHTML 时整屏替换为"换浏览器"提示，并用 `XMLHttpRequest` 拉 `/api/site-content/about` 解析出 ICP 备案号写进 `localStorage._icp`。新增接口或改 `/api/site-content/about` 的响应结构时，这段**不经过 axios、不走 CSRF、没有类型检查**的代码也要一起看。
+- **IE/旧 Edge 遮罩**：一段 ES5 脚本（含 JSON polyfill），检测到 Trident/旧 EdgeHTML 时整屏替换为"换浏览器"提示，并用 `XMLHttpRequest` 拉 `/api/site-content/about` 解析出 ICP 备案号写进 `localStorage._icp`（读缓存与 API 回填两处 `innerHTML` 拼接都先经局部 `escapeHtml()` 转义）。新增接口或改 `/api/site-content/about` 的响应结构时，这段**不经过 axios、不走 CSRF、没有类型检查**的代码也要一起看。
 - **字体**：`fonts.googleapis.com` 的 `Noto Sans SC` + `Plus Jakarta Sans`，配两条 `preconnect`（gstatic 那条带 `crossorigin`）。
 - **元信息**：`title`、`description`、`keywords`、`og:title/description/type/site_name`、`twitter:card/title/description`、`theme-color`、iOS 的 `apple-mobile-web-app-*`、`msapplication-TileColor`、`<link rel="alternate" type="application/rss+xml" href="/api/rss">`，以及中英双语 `<noscript>`。没有 `og:image`/`twitter:image`，社交平台分享时不会有预览图；`theme-color` 与 `apple-mobile-web-app-title` 会在运行时被站点设置覆盖（见下一节）。
 
@@ -270,7 +271,7 @@ CSP 以 `<meta http-equiv>` 写在 `index.html` 里，因此**它随构建产物
 
 后台还能配置 `pwaMaskableIcon` 与 `pwaBackgroundColor`，但 `App.jsx` 的运行时逻辑不消费这两项：它们只可能通过后端 manifest 端点生效（后端是否真的写进 manifest 需在该仓库核对）。站点设置各字段的完整语义见[站点设置与公告](../systems/site-settings-and-announcements.md)。
 
-Service Worker 本身由构建产物提供：`registerType: 'autoUpdate'` + `main.jsx` 里导入 `virtual:pwa-register` 并调用 `registerSW`，预缓存 `**/*.{js,css,html,ico,png,svg,woff2}`，运行时对 `/api/(episodes|series|categories|banners|friend-links|site-content)` 走 `NetworkFirst`（10s 超时、100 条、1 小时），对 `/uploads/` 走 `CacheFirst`（200 条、30 天）。新增一个需要离线兜底的 API 分组，必须改这条 `urlPattern`，否则不会进缓存。
+Service Worker 本身由构建产物提供：`registerType: 'autoUpdate'` + `main.jsx` 里导入 `virtual:pwa-register` 并调用 `registerSW`，预缓存 `**/*.{js,css,html,ico,png,svg,woff2}`。**运行时缓存已被刻意清空**：`workbox.runtimeCaching` 现在是空数组——原先对 `/api/(episodes|series|categories|banners|friend-links|site-content)` 的 NetworkFirst 与对 `/uploads/` 的 CacheFirst 已移除，因为 API 响应包含当前用户的追番/历史/通知状态甚至超管的站点配置，登出后 Cache Storage 不会被自动清理，会构成共享设备上的隐私泄露；另以 `navigateFallbackDenylist` 排除 `/api/` 与 `/uploads/` 前缀。离线读取改由应用层缓存承担（详见[PWA 与离线兼容](../systems/pwa-offline-and-compat.md)），登出时 `clearClientData` 删除全部 Cache Storage 兜底；若未来恢复某条 `urlPattern`，必须连同登出清理一起评估。
 
 ## OpenWiki 定时更新工作流
 
@@ -294,9 +295,9 @@ Service Worker 本身由构建产物提供：`registerType: 'autoUpdate'` + `mai
 
 | 你要改的东西 | 必须同步的位置 |
 |---|---|
-| 新增运行时依赖 | `optimizeDeps.include`；若需离线兜底还要加 workbox `urlPattern`；若暴露全局符号要加 ESLint globals |
+| 新增运行时依赖 | `optimizeDeps.include`；离线兜底走应用层缓存（SW 运行时缓存已清空，恢复须连同登出清理评估）；若暴露全局符号要加 ESLint globals |
 | 新增 `define` 全局常量 | `eslint.config.js` 的 `globals` |
-| 引入新的第三方域名（字体、图片、接口、嵌入播放器） | `index.html` 的 CSP 对应指令（`img-src`/`connect-src`/`font-src`/`frame-src`/`script-src`） |
+| 引入新的第三方域名（字体、接口、嵌入播放器） | `index.html` 的 CSP 对应指令（`connect-src`/`font-src`/`frame-src`/`script-src`；图片由 `img-src https:` 通配放开，一般无需改） |
 | 换成跨域部署 | CSP `connect-src` 与 `img-src`、`axios.defaults.baseURL`（当前需改代码）、后端 CORS 与 cookie 策略、`/api/rss` 链接 |
 | 换域名或子路径部署 | `base`、`index.html` 里的根绝对路径、manifest 的 `start_url`/`scope`、nginx `try_files` |
 | 换应用图标 | `public/icon.svg` → `npm run generate-icons`；运行时图标在后台"站点内容"里配 |

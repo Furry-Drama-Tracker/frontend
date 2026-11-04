@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:8b55387346666bd6ce14352c0eedd0ff949fe95545347ccd6356547355becb39",
+  "pageVersion": "sha256:ecabbcefd5b44841578c4951a30bc8a89ac6869eef1709a40c73599dbe361cb2",
   "claims": [
     {
       "id": "claim_48ba85de89be4e0db22c347239348265",
@@ -81,7 +81,7 @@
       "statement": "初始语言判定顺序为 localStorage.lang（需受支持）→ navigator.language 前两位命中 translations → 'zh'，同一套判定在 index.html 的 head 内联脚本里重写了一份，两份必须保持一致。",
       "evidence": [
         {
-          "resource": "repo://index.html#L32-L53",
+          "resource": "repo://index.html#L34-L55",
           "version": "repo-lines-v1:sha256:1ed3d7ea56190c5a0cfd8a7fe2a4a94d68d769723b5ef111aa4ba3cbb8d743b5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2YjhmNGUwMDg0MzkwOTc4MzgxZjVjOGIzMmEzNWEwMzc2N2M1MTE2MzY0YmY4YTJiMzA2ODk5NjYwNGFiNjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmODczZmMzYjJlMGRhMDk4ZDQxYWRkZmNiNmUzYTViNWQ0ZWRiZjZhMjYxMDE1MWM0ZDFlODFkMDZkOTg2ZjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE0OTRjNWU5MjRkMTE4MmIyN2ExNzY1ZTdjMTZkMTlhMDUwMmE1YmVjMmEyMjkyM2QwYjAwNTczYzM2N2I5MjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3OGUzYmZkOGJjZDE3ZDUzMTYwZTY5YmRmZWJhNTZmYzM3ZGQ4ZmEzMjNkMjU1MjZhMGM1OTc2MDdkYmJjNmUifQ"
         },
         {
@@ -105,7 +105,7 @@
       "statement": "语言 effect 会把 document.documentElement.lang 以及 og:locale、content-language、language 两个 meta（缺失时动态创建）统一写成完整 locale（zh-CN / en-US）。",
       "evidence": [
         {
-          "resource": "repo://index.html#L23-L26",
+          "resource": "repo://index.html#L25-L28",
           "version": "repo-lines-v1:sha256:9485a9b4df1434bb50419dd26c2dbda4b273b4872d71d40b82120278e1ccb9f1:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTU0OTdkNjY1ZDgxYjUwNzA5MjllYjZkNGJlYzcwYTVlNzljOWUxNDFlODJmYjA4NDQ2YzQ5ODRiODQxZjk1MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzJlZmVmYzZmYjUxOTNmM2Y4MDVjZWMzYTc3MGM5ZjZmNmEzMTc0ZTBiODA5MTc3NzJkZTUzZjk0NTM0MzRmNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDQ0NTcwNTY2MzI2YTc1MzllM2FkYzg1ZWI4NzliMzEzZTE1OGMwYzBkMDhjNGY3NjBkYzJjZTBmMjM3OWZhNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzY0ZTBjMTEwNWM5YjMwODUxMzBmZGU4OTkxY2VhZDI5MDQxMTk0YWU0YTk3NmYxNzllZGFkZTU3MWFlY2RhYiJ9"
         },
         {
@@ -257,8 +257,8 @@
       "statement": "index.html 的 CSP connect-src 允许 api.mymemory.translated.net、translate.googleapis.com、api.cognitive.microsofttranslator.com 三个翻译域名，但 src/ 内没有代码直连它们，所有翻译请求都打到同源 /api/translate。",
       "evidence": [
         {
-          "resource": "repo://index.html#L8-L9",
-          "version": "repo-lines-v1:sha256:0d71b75ba59975ffc303135d80653fd8be726bcf3f6b1649da74bc8f27110610:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTM0YjQ4MjI0MjExNTAwMDE5MTg0MjI4YTU5N2JkZTVkZDg2YjE4N2RjNjU1Y2QzODViNGE4ZjQ4MDY3MTlhMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODY3ZjA0MzRkZjNmNzBiNTFiYTc0MzQwYmExYmJjMjAxNmFmMzFmZGQxMzk3M2FlOTc1YzVmZTVjMmQ4YzdkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWUzYTE2NTk5YzQxMjMyMzQzYWRiODViZWVkNzYxODdjYzBmMDE1Yjk2ODA0Y2QwYzY4NjAwNjA1MDg1ZDY5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjI0ZWRjNTE1YjUxZGFlYmVmZTY1YWIwZTBmMzQ5YWQ1ZTM4NTRiMGQyMjVmMGRmYTZkNGFmNjM2Mjk4MzY3NyJ9"
+          "resource": "repo://index.html#L8-L8",
+          "version": "repo-lines-v1:sha256:c2853a5e1c2bcb823be2d80243d05a3884f60397e7f5dcbcf9cf34fcd9828168:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzI4NTNhNWUxYzJiY2I4MjNiZTJkODAyNDNkMDVhMzg4NGY2MDM5N2U3ZjVkY2JjZjljZjM0ZmNkOTgyODE2OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzI4NTNhNWUxYzJiY2I4MjNiZTJkODAyNDNkMDVhMzg4NGY2MDM5N2U3ZjVkY2JjZjljZjM0ZmNkOTgyODE2OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWUzYTE2NTk5YzQxMjMyMzQzYWRiODViZWVkNzYxODdjYzBmMDE1Yjk2ODA0Y2QwYzY4NjAwNjA1MDg1ZDY5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjc3ZDRiYThlZWY2NWZlYTdmNDUyMWI5YWUyNDM2NzA3NmJlOGIwZDkwMDJiN2Q2MjQ2NGI0ZDhiMzAzMDZlMyJ9"
         },
         {
           "resource": "repo://src/hooks/useTranslation.js#L17-L18",
@@ -275,7 +275,7 @@
           "version": "repo-lines-v1:sha256:e2a5e374cc6bbe05160752ef5c96b3d38a4c647105e9a9da8a5849c8b69323f9:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDYxYzhhNWQ5OGRmODYzNjFjYTQ2MWM0MGYyZjQwZTYxMDI4Y2ZiM2JmMDY5NmQzNjQ0OGE4ZWRlMjU3ZTMxMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjc4YTE1YjQzZWIyMDUxMGYzYzU2MjNmMWEwYzMxNDE0NjBjODVlYjdmODBjMTc4MDlmMmJjYjQ2MjBlNzA2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGU2YjI4ZTBmMTY4OGIxMmRmNDgxYjUwZWNlNmQyMmI3M2VkODU3NDYxZTllYjViYzc1NmYwZTVkYTk0MzFmZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2YyNWJhNGVhN2IwNDYyYzhiMTM2NDZhZGJhNDYxOWU3N2YwYjc3YTI0NzkyZTgxODYxYzRmNmJmNWUxN2U2MSJ9"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L92-L111",
+          "resource": "repo://src/utils/axiosConfig.js#L91-L110",
           "version": "repo-lines-v1:sha256:18aecda1ff0a47fc57c0e90cb5e6f5db3442469a4365bd2a3bd7ee6f6f525c12:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxYzk5YmE5MzIwMjE2NDMwODc0OWY0ZGY5MzcyN2NhMmRkMDFjZjk4M2RjYTI3YmUwYmFlZDA1NzkzOTgzNjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhODY0OWRiMjkzYTM4MGE2MzNjNGUzN2IyYTFlYjY1YTUwNWRiMDAzOTVjM2Y5NTllN2VhZjMwZGU2NjNjNTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkNjI2NGJkYzQ0ODFiZDRiM2M5ZmZmYjIyZTBiYzQ1ZWMyYTIxMGMzMGI4NWQ5MjUxMGY4ODYwOTNlYTY0ZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllYWEwNjJhZjRiZTBjMjM1MTIxMTMwNjc0NmVlNDM5OTMwZWQ1MDRlYWFhYjExZjUwMTg2NDg5NzY2Yjc5NTUifQ"
         }
       ]
@@ -285,7 +285,7 @@
       "statement": "locales 之外还有两套必须单独维护的硬编码双语字典：index.html 旧浏览器遮罩内置的 I18N.zh/I18N.en（需早于任何模块渲染）与 main.jsx 里按 document.documentElement.lang 前缀选词的原生表单校验文案 VALIDATION_MSG_MAP。",
       "evidence": [
         {
-          "resource": "repo://index.html#L83-L117",
+          "resource": "repo://index.html#L85-L119",
           "version": "repo-lines-v1:sha256:50cacb3832b8533673a5b18c81986576dcabe2bd60a9569f9d5bbd088dfaeb22:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxOGU1NTdkNmYxZGNjYWQ4YmMxYzMzMDRjZDMyNWM2ZWY5OGM2ODVjYmIwNDczZjkzYWU0MjBjNjQxMDYwNzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUxZDk0NzdkODY3MTg1NjlkNjQ3NTZkOWEwZmY0NzQ4YzU5Mjc0N2Q1YTBjOTg4OWExMmJjMTExNTEwNTkwZGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyNzE0NTMzYjEzMDdmZWI4YWQ1ZTkzNjAzNWQ2OTc3NjE0MTFlNGYzYzQ5NjUwOWRiMWMwNmE2NmQ4YzU3NzcifQ"
         },
         {
@@ -307,7 +307,7 @@
           "version": "repo-lines-v1:sha256:06bc803ffdcc4b38b91298dc723b5ec830ff5a303b22991da320b124a0a47e4a:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODFiZjQ4OTgxODk0MjliMjYzOGNiNWNmOGM5NmUxOWFkZmIzMDRjYTc0MWNmOTdkMDMyMjk1ZjA5M2I1OGRhNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2UwNWUzMmIzMzgyMTVhMWFmMjEwMWExZDQzYjBkNWEzMTE1OTY5ZmFkOTQzOWEwNjY1MmM2MDE0ZTU1MjE0ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzk3MDcwMzk3ODhkMWFjMWE0MDg1MTlkYTQyYmU4ODFkNWZhMTk4YTU1NTFlYTY3ZjdkNGE1MzhiMWVmNzc5NSJ9"
         },
         {
-          "resource": "repo://src/components/NavBar.jsx#L246-L247",
+          "resource": "repo://src/components/NavBar.jsx#L259-L260",
           "version": "repo-lines-v1:sha256:39bbe266f5cae4d7a84394a2de7a432ae7564aacf426ee8eaa60f8e585b72138:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDFlMWM0NTkxMDU2YTBhOGZiODU2OTJiMjVjOTJkMjM1YjA5YTc0NzZmZmIyMjJiZjU0MzdiMTBmZDQ3ZGRmNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTcyMTZlOGU5YzBhMWE2OGQwNmMyZmJhYTVmZDIxMzk0ODJiOGVmZDBhMTkzMTViOTE1ZTZjY2U4NDlkODlkYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTUwM2Y5Nzk3ZmNiZDEyMmY4NDI2ZTk3MGJmNWY3YWQ0ODQzOTRjMzc2MTcxYTIzZjBmNzEzMzZkOGY0N2FlNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjZlMzRkZjJiMmQ1OTc4NmE2M2I3YjkxNzk5OWEyODI0NjIxODkwODQzMGZkYzgxZjBlNzViYWU2ODcxYzViMyJ9"
         }
       ]
@@ -336,13 +336,35 @@
         },
         {
           "resource": "repo://package.json#L7-L14",
-          "version": "repo-lines-v1:sha256:4e271cad64d18c952fccf883a28207f9e215a1201efeee4f598f28a29f71d489:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmEzYjQ2OWQ5ZTA5NzU3MjI0NjY2NzM0YzllZjdiMjU0ZDg4NTM0ZjVkNWJiNzA5ODk2MDgwNWM1NTNkYzMwNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzUyMDMzNGJlN2IxYjUyMmU5YzNjNzU0N2Y4OWZkMDk0ZjE1MTAxNjMwOWY3NDk0YTdkYmMzNjg2MzIwMmJmYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjgyODNlNjM2ZmRkYWY5OWQxZjExZDk3MmRmYWI0MWU5NjUwNzVkZDNlODQyOTQ0YWQ4MWViMjA1NTQ2ZDU1NSJ9"
+          "version": "repo-lines-v1:sha256:8c9ac56b88e52a26308029474548168524d5dc0ac548e79957b4c728c1af7e84:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmEzYjQ2OWQ5ZTA5NzU3MjI0NjY2NzM0YzllZjdiMjU0ZDg4NTM0ZjVkNWJiNzA5ODk2MDgwNWM1NTNkYzMwNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzUyMDMzNGJlN2IxYjUyMmU5YzNjNzU0N2Y4OWZkMDk0ZjE1MTAxNjMwOWY3NDk0YTdkYmMzNjg2MzIwMmJmYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjgyODNlNjM2ZmRkYWY5OWQxZjExZDk3MmRmYWI0MWU5NjUwNzVkZDNlODQyOTQ0YWQ4MWViMjA1NTQ2ZDU1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_80e8c7b1c24c4c74aee65fcf926019cd",
+      "statement": "两份语言字典近期同步新增：notification.newEpisodeCustom/newEpisodePreviewCustom/previewVideoUpdateCustom/previewInfoUpdateCustom 四条自定义集号通知模板、timeline.newEpisodeCustom、singleEpisode.* 与 adminEpisodes.* 下的 episodeLabel/episodeLabelHint/episodeLabelPlaceholder；adminAnalytics.title 与 adminReports.title 的 emoji 已从两份字典移除。",
+      "evidence": [
+        {
+          "resource": "repo://src/locales/en.js#L110-L126",
+          "version": "repo-lines-v1:sha256:754e9b75d21bd7d95d01960ad13413e60c3d550acf23a8894b84bc9cc18a718f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyOGU2YmRhZjMyOTE3YmJhNmU2MTUyMDcwNjY1OGFhNmY3YmFmZWQ2OWFhZDVkNmZhMDhlNzMwNDBkZGRlNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3OWNmNDhlOTcxNjM5YjFiYzExNGNkMDI4MGE4YTI3Mzk4MDQ3NTI2YjAxZTNmNjY1NGU3NGY3MTE2N2VkMDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBlZWEwNWViNzdlMWMxOWIyNWE0ZDY1MWNkOTQwNTQ1MDNhMzEzOGU0YjFiNTA2NTIxNDEyNGZkMTMyYjI0MzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjZGJjMzM5YjM4MDRhYzU0MzEzZWM4NjI1NmY5YzQ1MWIzMjc1YzEyNWZmOWJhNzdjNzQ1YmIzODMyNTFkMTcifQ"
+        },
+        {
+          "resource": "repo://src/locales/zh.js#L110-L126",
+          "version": "repo-lines-v1:sha256:481f94918b6027f0959cc433d64d916447acaab0f093784f1e1a5813acc0ab50:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyOGU2YmRhZjMyOTE3YmJhNmU2MTUyMDcwNjY1OGFhNmY3YmFmZWQ2OWFhZDVkNmZhMDhlNzMwNDBkZGRlNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmODZhNjUxODZhMDIzNDUxMWZmNzQxZDZiY2E0MzFjZjc2MTM2Mzc5MmZmNWEwZTlmNjk5M2FiYTM5Yzk5ZTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlOWQ0NzdlNDQwNGZmNDc5ZGIxMjcyNTg3MDM0YTlhZWM4YjU0ZDk2ZjJhNDg5Mzc4Y2YyYjVlMDg3ZDg2ZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwNzY2MDczYTUxOWY2OTE5Yzg3NWY1ODJlY2Q3Zjk1OWQyY2U0ZTgyNzk5M2NjMWE1YWViNmU0ZTYxNjVjZTIifQ"
+        },
+        {
+          "resource": "repo://src/locales/zh.js#L1179-L1186",
+          "version": "repo-lines-v1:sha256:22cc6e0b75b0aaf8c4663106ff162fbfba9468fdda5568c0060384b20d8628d5:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2NiY2FhOGZhNTBmYzM4Mjk2YjMwMTMxNDUzYmY1Mzg0Y2ZhMDNjZTEwNmZmOGNmZjdkNTU4NGZiNDA1YWVhYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODQ5OWIxNWRjOTk4MjljNmU5NmM0OTI2OWYzY2JlZGZhMGNjOWNhYjQ0NzczOWQ2ZDU1MDI3NzNjMjZhYzRhYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODg5Y2YzYjI1ODUxNzk3Mzc3OTI5ZjU2YmUxN2ZhZmM4NGE0YTgzNmViN2M5MDFlNmVmZjQ3ODZmOTgwNGViZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjZhMDkyMjg5ZjJjZWJmODMxNGNmMzEwNTQ4ZDAzNWM3NWMwYWJmNzFhODhjMDlkOGVjZjcyNWRjNmQ5YTQ3MiJ9"
+        },
+        {
+          "resource": "repo://src/locales/zh.js#L735-L742",
+          "version": "repo-lines-v1:sha256:0b3526fc4d7d9ea7054732aea23c01a34cacfbf3d0251da8f6ef3c3b3aee1f72:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWFkMDA5YTkxYzljYWExZDdlOTdlN2I1YzY5MjJkMjY5MDYwMmRlNmMzYzQ1YmU1ZjI4OWIzNGNlMTAzOTA5MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjYyMjAzZjcwNzBmNzk1NTljMzE4NjU0YzA3ZmQzM2VmYTljZjUwNTA0ZmVkNmRlMTI0MmViMmUxZjEzNTg2YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2ZhYzMwYzJkMTJjNDUyMjcxYjQ4MGQ1MzI5ZTYzYWFmMzk5MmI3ZWMxNDY0YjBjNGU2MWJiYTM2N2IzMDhiNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWJhZjVlZjk1YjE2MjhjNmUyMzI2MGY0NTQ3N2JkODI1Y2U5MzQyOTkwZjEwZDkwYjFlOThkMWI4MzU5ZjBiMyJ9"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-02T17:44:42.174Z"
+    "at": "2026-11-04T16:54:50.811Z"
   }
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:072d6315bebba5cf57d21465e82465dbfe4a1edcad4710e2b77ebb18ec3ed0cd",
+  "pageVersion": "sha256:d5983409377f256d09635da96d25b5e067c66444e0ae21ce43cd7d05b0589628",
   "claims": [
     {
       "id": "claim_ea591384b9934882af66446d37af0156",
@@ -92,11 +92,11 @@
     },
     {
       "id": "claim_6253423aa9c24496ace0b1618df3ed06",
-      "statement": "sanitizeSvg 是用户 SVG 的唯一安全入口：去除 XML 声明与 DOCTYPE、要求以 <svg 开头、删除 script/foreignObject/iframe/object/embed/link 节点、删除 on* 事件属性与 javascript: 协议 href，并把显式颜色值（hex、rgb/rgba、hsl/hsla，属性与 style 两种写法）改写为 currentColor 以跟随主题色。",
+      "statement": "sanitizeSvg 是用户 SVG 的唯一安全入口：去除 XML 声明与 DOCTYPE、要求以 <svg 开头、删除 script/style/foreignObject/iframe/object/embed/link/animate/set/discard 节点（成对与自闭合两种写法）、删除 on* 事件属性，并按协议抹掉 href/xlink:href/src 上的 javascript:/vbscript:/data:text/html 值（支持带引号与未加引号属性写法），再把显式颜色值（hex、rgb/rgba、hsl/hsla，属性与 style 两种写法）改写为 currentColor 以跟随主题色。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/IconContext.jsx#L61-L81",
-          "version": "repo-lines-v1:sha256:31a26f9db286754c428cc68041608547442367ad5e6a6765829c3ebe047d2a4c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1Mjk3ZGUyZWI3NDFhNjlkZWQ2OTRkZWFmMzY4ZGEyMWQ2MjliNDJjZTZjNDkyNjc4MWZhYzY2ZTQ0NmZlYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhNzU4MjIzMDRhYzBlYzg5Y2I4NTU3NWRhNDI3ZTFhMGUwNGI5ZTI0YTRhYzUzZDk5MmZhZDYxNWJhOWIyMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmZDViNjU2YTU3ZTFjMWM4MDg4YzVjMTY3NjU2ZjVlZjhmZmYwOTA5YTQxMjhiYzE2Nzg5NDBhYzJhYzAyNmUifQ"
+          "resource": "repo://src/contexts/IconContext.jsx#L61-L90",
+          "version": "repo-lines-v1:sha256:cad333343dbf01f125a3d777acd523f6854c5104796a1fe77e4f0d722c49538c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1Mjk3ZGUyZWI3NDFhNjlkZWQ2OTRkZWFmMzY4ZGEyMWQ2MjliNDJjZTZjNDkyNjc4MWZhYzY2ZTQ0NmZlYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2YTMwZDZjYmI2YzgwZDgwYWM3M2NhYTEzYTQyOGU1ZmQ1NmE3OTZjNWVhYzVkMjQxMzgwNTNkZDc2Mjc3YjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhNzU4MjIzMDRhYzBlYzg5Y2I4NTU3NWRhNDI3ZTFhMGUwNGI5ZTI0YTRhYzUzZDk5MmZhZDYxNWJhOWIyMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU2YWU3MzBkOGJmNTdiNGNlYmVhMDYxNWRhMTRjMzFmNGE2YzYyMzBhYmVkYTExZTBiNzZjNGJhNDMzYTBlOTQifQ"
         }
       ]
     },
@@ -105,7 +105,7 @@
       "statement": "Icon 与 SvgIconPreview 都只从 svgMap 取清洗后的字符串再内联渲染（Icon 还给首个 <svg 注入 width/height），并以外层 color: inherit 让 currentColor 取到容器文字色；由于清洗只改写显式颜色，未声明 fill 的图形会保留 SVG 默认黑色，制作图标需显式声明 fill=\"currentColor\" 或走 stroke。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/IconContext.jsx#L231-L304",
+          "resource": "repo://src/contexts/IconContext.jsx#L235-L308",
           "version": "repo-lines-v1:sha256:6b8d612b9cdd2c97498efd95a60173043ef32839574fcc4ec2e4589187889620:eyJzZWxlY3RlZExpbmVDb3VudCI6NzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2YjA3NGQ0NjMzOTdmYzkwNmU3ZjIwZmMzZTEyODExMTY2ZGQwODRhNDljYzQ4OGQzYWRmNWU3ODU1NTY0NDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5N2VmNjM3ZjMzZDQyN2RjMGM0MTFhYWY2ZDZjY2Y1ZmY2ZThjNDRkYjQ3ODc4ODI2ZGIyMjNkYmZkYjdlNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0ZjRkMDhlNWYzOTdmZmNhNmFhYTg5MjJkOTUyODFlZmFiNjcxYWFjZDRhYWM0ODBlMTRkMTQzOWJhYmQwZDgifQ"
         }
       ]
@@ -115,7 +115,7 @@
       "statement": "主题图标覆盖按登录态双源获取：登录用户取 GET /api/themes/my/selection 的 iconsTheme，未登录取 GET /api/themes/active 的 theme；仅当 theme.icons 非空时设为覆盖，否则置 null 表示无覆盖。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/IconContext.jsx#L127-L145",
+          "resource": "repo://src/contexts/IconContext.jsx#L131-L149",
           "version": "repo-lines-v1:sha256:16224ead2303f6780cdd33b0054c2e62283004881426ac037b973463e1670b06:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1MzVjOTZiN2UyMzAyYmU1NDc4ODBhMGFmY2YxODVmNDU2MjdmNzQxMDgxY2UwYWU0NjQ1ZDYxYWFmZDcwYjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2NjE3YzU5NWQxYzc0NjA2MDlmMGMyZGMxMDVlNDg1MmU0OWIwMWY4OWI2NTQzNDhhYWU1YWVmYjE0ODVmYzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYxNTI0YzAwZjhlMGI2ZWFhYjJjMWFjZTZhYzg5ZmQxMTM3YzFiZDJlNTVkMWE5YzZiZTNkOWYwZGZjNDMwZGQifQ"
         }
       ]
@@ -125,7 +125,7 @@
       "statement": "最终映射是全局 /api/icons/list 的 mappings 与主题 icons 的逐键合成，合成时跳过 THEME_PROTECTED_ICON_KEYS（当前仅 misc.logo），因此主题不能整体接管图标表、也不能改动站点 Logo 这类身份资产（后端同样校验拒绝）；NavBar 的 Logo 实际来自站点设置 navLogo，misc.logo 只是注册表中的受保护键。",
       "evidence": [
         {
-          "resource": "repo://src/components/NavBar.jsx#L243-L246",
+          "resource": "repo://src/components/NavBar.jsx#L256-L259",
           "version": "repo-lines-v1:sha256:d5d098e22795169f8fea3e13bb6d6acd669d1450191e38fde68da870b4835ba7:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDczNjk1NjgzOWM2MzViYWQ3NGZlMzc2Zjk4OGYzZjVlY2I5MDIyZGZmZjczNTJlODgzNmQxMDc3ZDUyZTI3YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDFlMWM0NTkxMDU2YTBhOGZiODU2OTJiMjVjOTJkMjM1YjA5YTc0NzZmZmIyMjJiZjU0MzdiMTBmZDQ3ZGRmNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2YyNWZkNGYyZjg5ZGNkODEyMDBlODU2OGMwZDQyNWI3MmNjYzI0YmJhOTBhMTJkNjk4ODc2NjUzN2QwYjVhZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWFjYWFhYzEwOGFmZDdmOWNkYTNmNGQ5MjM5YjQ3MWE2ZjYwZjNjNGI0ZGM3OGM4ZTNhM2I4ZjE3YmRhZWZkYiJ9"
         },
         {
@@ -133,7 +133,7 @@
           "version": "repo-lines-v1:sha256:59a2b0a5940daeea9a46aa80e78d1814aa5a52c231fadf8f9127c2de7df90726:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFmMjJjZjA3MzI1OTJjMjQ3MTQxY2JlNjFlZmExMTAxMjYxMmY1YTMxMjJiOWFmOWJiYWY1MmY1NzI0ZDE5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWJlNTViMjQ2MjY5ZGZlNmY3MTJkYTgxMjEzZWRjZTM0MWYyOTVkZGEwYWFiNzAzZDQ0MjIwYWFhMDBiZmE5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzYzZTc3OTRiODJkODE3MzE4NWIwZTIwODY0Yzg0ZjExZDE3NWM4YzQ1M2JmMWY5ZGZmN2FmYjM3MTA0OTkyOSJ9"
         },
         {
-          "resource": "repo://src/contexts/IconContext.jsx#L164-L174",
+          "resource": "repo://src/contexts/IconContext.jsx#L168-L178",
           "version": "repo-lines-v1:sha256:d0456d4dc1ef7c3e69e0c15fc484a0336f85c00c9138d8b6e6af19466b5ab7a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiMWQ2ODNhMjJlNTdhZjJiM2NlZGZmY2ExODZkMzk1NzFhZjZjYzJiNGEwNjE4NmIxMjM4MjQ2Yjk5OWNjNTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5OWJmYTRiNmFhMzkzNmM2NzY2NGYyNDM2YjY3ZDFjOTQ2ZTc1YWQ4MGYyZGUzMzA2MWIzNjRjYWRlOGU4ZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3YmU1YWZhNjVlZTBlMDFmYjFhY2RhNDIwOGUyMzdlYWRhNWZjZjQzMzNlNzA3ZmUyY2I5MzNjYzQxMjVhMGUifQ"
         }
       ]
@@ -143,11 +143,11 @@
       "statement": "svgMap 以 SVG URL 为键缓存清洗结果：preloadSvgs 遇到已存在的键直接跳过、单个图标请求失败静默忽略；缓存只在 refreshIcons（用一次性构建的新 map 整体替换并同时刷新全局与主题 URL）或整页重载时重建，而 refreshIcons 虽暴露在 Context 上但目前没有页面调用。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/IconContext.jsx#L175-L200",
+          "resource": "repo://src/contexts/IconContext.jsx#L179-L204",
           "version": "repo-lines-v1:sha256:20e7c7c76550794a9dd35370b169d8fb8d55db867e1afa721814d9501b3aaad1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4Y2VmNzdhZGYxZDU5ZDhkYmQ3NGUzMWZiNTQ1YTkzZTc4ZmQxYzBkNTBkOGNmNWYzNGRiYjk1OGJkNGY4NDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1NjZjOWU2YzcwM2JlZjliNWJmMjEzZjk4N2JiNTYxMjkzNjQ4ZmNhNjBiN2VhNjJiOWZjM2NjNTkyY2NmOGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjliNmFmODAwZjVjYTBmOWVmZjFjMmI5NzQwNjEzY2IwYjIwNWU0YmYwMTNmNTFlN2MwYjNiZWVkNTNjYTlmNDEifQ"
         },
         {
-          "resource": "repo://src/contexts/IconContext.jsx#L99-L112",
+          "resource": "repo://src/contexts/IconContext.jsx#L103-L116",
           "version": "repo-lines-v1:sha256:dbae7cbb8e210245ce105905899e79240198a2b2fb3ee012440ba5584647fd33:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwMzUyYTAzYzllZjY3OTBlMjQ0ODEyZDZlMjg0OGZmM2VkYTgwNzkxMDZhYjQwZDQzYjYwMTUyODlhYTE0YjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4Y2RmODljMDdmMTc5Y2YwODdmMjY3YzI3MzI2NmNkOThlODEwZjgwMzY2N2ZmNjMyNmNkZDNjNDJkMDAwNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJmMjJkM2QxM2YwOTgyZjI5OTE4OTllODIzYzk1NGE3ZjEzMjJlZWFiNGRjYjMxOWVkMGRmNmVlNGFmZWY4N2QifQ"
         }
       ]
@@ -165,7 +165,7 @@
           "version": "repo-lines-v1:sha256:098b4fe16b50fef1182ef9edd26ba929871c06121532a2a2ec00491f5bc4db1f:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFmMjJjZjA3MzI1OTJjMjQ3MTQxY2JlNjFlZmExMTAxMjYxMmY1YTMxMjJiOWFmOWJiYWY1MmY1NzI0ZDE5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjVkNzc5YzhmYmNjYTc4OTEzYmQ5NWZlMmY4YTI0YzNjY2E0ODdhZTFlNmRkMjgxZTQ4ZjAwMjdkNGE0OGIwYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjc4YjQ3MTgyYjViMjgyOGZhN2MxYzU3ZjZiNGE2NWFiOWQzYjE3MTU4YWEzOWE0ZDdlYWE3NTIxZDIzZDBkYiJ9"
         },
         {
-          "resource": "repo://src/contexts/IconContext.jsx#L156-L163",
+          "resource": "repo://src/contexts/IconContext.jsx#L160-L167",
           "version": "repo-lines-v1:sha256:b1a5b9e9c6d9c0940d26e98935e78ee8c2ce00731eb78fe1de77cc49d1845bfc:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2MyOGJmODczNTc0NmRkNTY2ZTNhZjU1Y2QzOWE1MDE3ODIzY2U0OTE2M2QxNTk3NTAzNjg3MzEwYzgzNDYzZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGYwZGNkOTQ0NWQyYmZlNjI1NTg5MGI1YjIxZmY3MTgzZGZhNWVkYzFlYzM3MTA4OGYxYWEzMWJlMDFiNDM4YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTdiMmJkYWJlNGFlZGNmMTk0NTcxNTg5ZWQ4MDM1ODdiMWFiMDNmMmY0Mjk4NWI0MzJmZWE4ODAzNGJkMTkzNCJ9"
         }
       ]
@@ -175,11 +175,11 @@
       "statement": "Icon 组件的渲染契约是：按 mappings[name] 取 URL、再查 svgMap 命中则内联渲染，未命中或加载失败时渲染调用方给的 fallback（通常是 emoji），fallback 为 null 时返回 null；SvgIconPreview 在内容未就绪时显示 ◈ 占位，避免列表页因图标加载失败而塌陷。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/IconContext.jsx#L231-L264",
+          "resource": "repo://src/contexts/IconContext.jsx#L235-L268",
           "version": "repo-lines-v1:sha256:ab1a5619f2d7cefbc08105d3c088d15dbf516df41e6297c8c2c55af06d3bd6e7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2YjA3NGQ0NjMzOTdmYzkwNmU3ZjIwZmMzZTEyODExMTY2ZGQwODRhNDljYzQ4OGQzYWRmNWU3ODU1NTY0NDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5N2VmNjM3ZjMzZDQyN2RjMGM0MTFhYWY2ZDZjY2Y1ZmY2ZThjNDRkYjQ3ODc4ODI2ZGIyMjNkYmZkYjdlNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlMDNhZDc0NGM0YTY4YTM0ODVhOWRmMzBlYmEzOTA0ZmMwNTgwYTlhNjIxM2Q1YzQ0ZWY2NzU3NDEzZWFlZGIifQ"
         },
         {
-          "resource": "repo://src/contexts/IconContext.jsx#L265-L304",
+          "resource": "repo://src/contexts/IconContext.jsx#L269-L308",
           "version": "repo-lines-v1:sha256:62dacf63663f34659fd4052900107cfa8ea4517d3269d89ac7b57c1638952e18:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3NzFhYzAwZWRlZjE2NDNiMzgxOWM2ODgyYWE5NDZmNzlhOWQ2ZWZiNzM4YzMzZjRlZWY0NWQxNjYzZDlhNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0ZjRkMDhlNWYzOTdmZmNhNmFhYTg5MjJkOTUyODFlZmFiNjcxYWFjZDRhYWM0ODBlMTRkMTQzOWJhYmQwZDgifQ"
         }
       ]
@@ -244,11 +244,11 @@
     },
     {
       "id": "claim_00978d5674bb4a768b580beaf77b9a25",
-      "statement": "AdminThemes（/admin/themes）是主题的素材与上架状态管理页：支持全部/系统/个人/待审核筛选，提供编辑、删除、系统主题启停、isSystem 双向切换，以及仅超管可见且全站唯一的「设为站点默认」开关；超管新建主题时直接以 isSystem: isSuper 落库。",
+      "statement": "AdminThemes（/admin/themes）是主题的素材与上架状态管理页：支持全部/系统/个人/待审核筛选，提供编辑、删除、系统主题启停、isSystem 双向切换，以及仅超管可见且全站唯一的「设为站点默认」开关；超管新建主题时直接以 isSystem: isSuper 落库；默认开关滑块等硬编码配色已替换为 CSS 变量（var(--btn-text) 等）。",
       "evidence": [
         {
           "resource": "repo://src/components/AdminThemes.jsx#L261-L314",
-          "version": "repo-lines-v1:sha256:2ef6fb83ab4dce9782332af8c912c033965ae393d0c7b5843e6bbf4fc2c3fbda:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlNWEyZjE5YzhhZWU1YTBhMzc4NzUyNmIzNmFhMGMzOTljYWExZGY4NjM3ZmNlNmE4M2IwZDUzNzVjNTljMDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlNWM3Njk4ODIzMzhiYzY2OWQ4NDdkZmI2Y2FjNjAyYmIwNGQwYTdkMjZmZjM5MmJmNmYxZmVkNjE2NGVlN2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJlOWYwMDJlZTk0YmU5ZTc3MWZlYzJiYTMzYTc4MzgzOGY3NDY3YWQ2M2E0MTAzNTJiODJlOTJkYWJlMThkZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkxMTkxN2M5MjU3YzE1MWI2NmRlZDc1ZDUwZGFmNGIxNTQ2OTE2NWE2OGNjYzZkMGU2MGY0MGYxOTI5MmI1ZTkifQ"
+          "version": "repo-lines-v1:sha256:490713eaa76bc04ae7d2196e636cb9ff40668a8035f343377018947abacb9231:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlNWEyZjE5YzhhZWU1YTBhMzc4NzUyNmIzNmFhMGMzOTljYWExZGY4NjM3ZmNlNmE4M2IwZDUzNzVjNTljMDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlNWM3Njk4ODIzMzhiYzY2OWQ4NDdkZmI2Y2FjNjAyYmIwNGQwYTdkMjZmZjM5MmJmNmYxZmVkNjE2NGVlN2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJlOWYwMDJlZTk0YmU5ZTc3MWZlYzJiYTMzYTc4MzgzOGY3NDY3YWQ2M2E0MTAzNTJiODJlOTJkYWJlMThkZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkxMTkxN2M5MjU3YzE1MWI2NmRlZDc1ZDUwZGFmNGIxNTQ2OTE2NWE2OGNjYzZkMGU2MGY0MGYxOTI5MmI1ZTkifQ"
         },
         {
           "resource": "repo://src/components/AdminThemes.jsx#L58-L152",
@@ -261,7 +261,7 @@
       "statement": "AdminThemeReview（/admin/theme-review）是 superadmin 专用的投稿审批台：非超管进入即重定向 /admin/dashboard；分待审核/已通过/已驳回三档，其中已通过一档把 status 缺失的历史主题视为已上架；驳回必须填写 note（前端拦下），通过与驳回统一走 POST /api/themes/:id/review，已通过/已驳回卡片还支持反向复核。",
       "evidence": [
         {
-          "resource": "repo://src/components/AdminThemeReview.jsx#L234-L258",
+          "resource": "repo://src/components/AdminThemeReview.jsx#L236-L260",
           "version": "repo-lines-v1:sha256:3fa32974e2fae607dcfad40092b31a3897532cee5a3b90e1b0d0f911ae4dad66:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmOTczNDNhMDM0MjhjNGEwMmZiYmQ3OGNlNDkwMzNkM2U2YmI1MDRhZGYxYTUyMWM1NGQ3YThmOWQwMmJjMTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkNDlhNjFiNGM4ZDc4ZTRkMThlMmZjODBmMjE1NWE5NTNiYWY1YWNlY2Y5ZmRiM2QyNDIwNDFkOTM4NmNiYTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNjZjVjODIxZWYwYTVmMmZhZWNjYjliNDFhMzVmNTg3ZWIyYjkzOWZhNDMxZWUxODM3ODdkNGZjYmI0Y2M3MmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyYzI1NDE3ODlhMzA5MTJhMjhlYjQ2NDhiYTk1ZDUzYzQyNmExMGZlMDg5YjIzM2M3ZDJlN2MyNGJlMTYxMGEifQ"
         },
         {
@@ -301,7 +301,7 @@
       "statement": "ICON_COMPONENT_KEYS 是图标组件键的唯一真源，主题编辑器的图标选择器（过滤保护名单后）、位置预览与后台图标映射都从该数组取值，运行时由 <Icon name=... /> 消费；新增可换图位置必须同时往注册表加键并在使用点补 Icon 组件，否则该键在编辑器中可选却不会出现在页面上。",
       "evidence": [
         {
-          "resource": "repo://src/components/NavBar.jsx#L263-L264",
+          "resource": "repo://src/components/NavBar.jsx#L276-L277",
           "version": "repo-lines-v1:sha256:ab49309e6790e24efe0a6228b932154470c402e03be4461238ba9aa8d2cea2c1:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzQ4Y2I2Y2ZjMWI4YTU5ZWMwY2NiODE1MzlkZDhkMDU0OWE0MDk5NWIzZWVmY2VjYTJmYmJjMGVhZjBlODgyYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTk5OGIyYjQ3Y2RlN2Q2ZWEzZjI2MzA4Y2E2YThiZTg2ZWQxOTQ4OTYyZTkzOTNiYzllZWNiNWZlOGE0NDU4OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzIyOTUzNTU0NjMyZDAzODZhMTVjNzg4MDhjMDQxYmJiOTRjZTY3MGFjNTNmNDM1NzEyZjg2MjA3YWRiMDEyOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDE2ZTVhODZmMDExMmE0ZjQxOWY0NDI4M2YxZjk2MWEzYjYyNjY4N2E4MjEzMWRmMjVkNWMyODE4YTNmYTYxYyJ9"
         },
         {
@@ -341,14 +341,32 @@
           "version": "repo-file-v1:sha256:882c964adba388b23a31b4e381d157fb81c272ee67b489b7d4d5fd2d8d85ff34"
         },
         {
-          "resource": "repo://src/components/AdminLayout.jsx#L151-L214",
-          "version": "repo-lines-v1:sha256:1bd6cfc7d23b6d7c4aa4ee6f507462d321b3c069bd7f5cd06fd26ced8f37d45f:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3MjE2ZThlOWMwYTFhNjhkMDZjMmZiYWE1ZmQyMTM5NDgyYjhlZmQwYTE5MzE1YjkxNWU2Y2NlODQ5ZDg5ZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ1NDkxMTY3YWZjOGMxMjAzYWEwNDFkMmFhMzk3MmE4NzIyMmE1ZGJmYjVlMjVkMjdhMGZiNWIzY2Q4MjE1ZTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIyNTU0MTYyZDk3ZjExMGVkNGUyOTJjOTVlYmMzZTg4NTIxMWUyZjk3M2Q5ZGExZGQ2OWVkOTBmYWRlYTk5ZWQifQ"
+          "resource": "repo://src/components/AdminLayout.jsx#L185-L215",
+          "version": "repo-lines-v1:sha256:4c07ae665e235a031981fa8fe1a4ab296ec4ed170235eecf03c0a3f9e8d5ca10:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViNTUyOWI3OTUzOTRmODFjZmE4MDliNDMzMTA2MDZhOGRiODM2MjU2NzA3NDY3MDAzZmRjZGU4YWU0NzQwMTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhMDIxZTQ0OTg3MjIzNzRiNWIxYWM4YjRjYTMzMGMxZjlhNTA1N2ViNmRlYThiYTIyNGUxNGRmNDk5YTkwNTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRkYzdlNDkyZmQ2NGMzNjMwNTZiNDdhNTg5MjJkNDhjYzkzZDQxNWI1MWRhNmQ4YWJhMWQ1YTI4NGYwMDAwYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0OGZlNjI1MGM2MTU3YmRjM2I0NDc2ODMxYWYwMzM0ZDhmNmMzMzU3NDBkNzU4NDZiNDMwNzU0YjVkMTJmZWYifQ"
+        },
+        {
+          "resource": "repo://src/components/AdminLayout.jsx#L8-L8",
+          "version": "repo-lines-v1:sha256:88764241d9b5dc3138f7b644cd47c827c310bc8a751193b97b9ba69051c8efa8:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODg3NjQyNDFkOWI1ZGMzMTM4ZjdiNjQ0Y2Q0N2M4MjdjMzEwYmM4YTc1MTE5M2I5N2I5YmE2OTA1MWM4ZWZhOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODg3NjQyNDFkOWI1ZGMzMTM4ZjdiNjQ0Y2Q0N2M4MjdjMzEwYmM4YTc1MTE5M2I5N2I5YmE2OTA1MWM4ZWZhOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2YyOTQyZjAyNDJjNTA3Y2Y2NGQxYzlmZDE5NTcwMzY0OGUwNDMzNjVkNDEyNWY4ZGE4MGFlMGRhYjg3ZjAyZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmViOGUyODgwYmVmNDQzYjE4YzY2MzYwMjZjYTY1NjM4NWE3YTc1ZDVhMWEwN2ExMWQ2YTViOWE1NDA5MTExYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_88ba884d93914db9a8c2c790f9cd122a",
+      "statement": "后台主题两页完成配色与头部规范化：AdminThemeReview 换用 yl-page-header/yl-page-title/yl-page-desc/yl-page-actions 骨架并把计数徽章底色换成 var(--destructive)/var(--btn-text)；AdminThemes 的默认开关滑块底色换成 var(--btn-text)。",
+      "evidence": [
+        {
+          "resource": "repo://src/components/AdminThemeReview.jsx#L111-L160",
+          "version": "repo-lines-v1:sha256:b4d7309037e6b8179f116d1f56f5e9aace88ecdcd884cbb5259e0e48318dc957:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4ZWVhNDM3YjhiNjZjNTZhYzExMzBkOTc1ZjE3N2ZhM2Y5YWE0ODJiYzRiODk4ZGY4NDllZjhkNmI4OTNiODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdjZjgxMDhhZGQ3YWI3ZGZmNGMzZWRmZTFlMzdjZmY5MWZlMTBjYmYxZDIzMzhjZjBlY2ZmOGY1YmFhYmY4MGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5ZmI3OTJhMWM5YzZlYWI2M2ZhNzlmMzk0Mzg4ZmE2YzI5ZTgyMWUzM2MyODQ2NjFiOTA5NjIyODgyZTkwZDUifQ"
+        },
+        {
+          "resource": "repo://src/components/AdminThemes.jsx#L283-L290",
+          "version": "repo-lines-v1:sha256:d2675d205d4328c1a6922c32efe2cfed018188b8c1a5c19a816b3705cd3e81f9:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGMwZDhkNGRiNGFhYzhjZTkyMmVkZDZlNmZhNGVmYWQyZmYyYmEwNDQzNDFlZWI3NWZiMGVmOWEwNDljNTdiYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTQwYmZkZmQ4OTJiNzUyY2YyOGJlMGU1MzY0OTRiNzE5OGYxNmIwNzBjMWIzNDU0YmUxZTk3NmNkZTNjOTMzYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmU1OTgxYjg5MzY1N2FkNjZiOWNhYjM3MmM2MjY4OTYxYTljMjM0YTI4YmRhNWZiZDk1YWMyMjQ2NGU1YWIyZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODEyNmY1Y2ZlMGM3NDY1NTM1MGIwYjNkMzI4NWRhNmY2MDNjOGRkOGU5OTE2NmY3Mzc1ODM1OGFhNGMyMTdkZiJ9"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-02T17:44:42.174Z"
+    "at": "2026-11-04T16:54:50.811Z"
   }
 }

@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:64ab0a6c7c7bd3105a3338aefe5db721a5392a102f56ce1c5d924fbee64334d2",
+  "pageVersion": "sha256:b5dd1b68f17e9818d52bfe9e47003f8fc6eba547ed029d509d1e35bfe9148d6a",
   "claims": [
     {
       "id": "claim_90247b4ca36240c08854613683ea2409",
       "statement": "剧集（Episode）文档在前端被消费的字段集合为 title/titleEn、description/descriptionEn、coverImage、category（单数名的字符串数组，表单内部叫 categories 并在提交时映射回 category）、tags、status、totalEpisodes、currentEpisodes、premiereDate、updateDay、views、averageRating/ratingCount、hideCreator、createdBy/allowedEditors/customAuthors、qqGroupLink/qqGroupNumber、reviewStatus 与 episodes 数组；详情接口 GET /api/episodes/:id 直接内联返回 episodes。",
       "evidence": [
         {
-          "resource": "repo://src/components/AdminEpisodes.jsx#L204-L265",
+          "resource": "repo://src/components/AdminEpisodes.jsx#L212-L273",
           "version": "repo-lines-v1:sha256:22647f5986a5bfd42fd9549428936e217fc3e230fed593ef5feb6295915c9899:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNDQzMWJjYzUyZTJiYTkzZTc1ZjllZjJmN2Q0ODNiMjg5YWZkYWQwN2Q0NTRkMmU0MjQ1NzAxZTc4NTNjNTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUxZTM3MjVkYTAwMmI0NmVkOGI0ZGU4ODAwM2FkOTcxMGRjYWYxOGQ1N2M0NzAxZGMzYmVmZjBiMmM1Y2IxM2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc1NzQ0ZjYxNzA4NGJlM2U3ZWI4YmNiY2M0ZDIwMjkzNGY1YmU0M2ZiOTBkZmI3YTI3ZDUwOTUwNTYzZWVmNjUifQ"
         },
         {
@@ -21,7 +21,7 @@
       "statement": "totalEpisodes 为 null 表示「总集数未知」，与 0 语义不同：前端用只存在于表单的 unknownTotalEpisodes 开关表达它，提交前 delete 该字段并把 totalEpisodes 置 null；渲染时 null 走「更新至第 N 集」，数字走「第 N/M 集」。",
       "evidence": [
         {
-          "resource": "repo://src/components/AdminEpisodes.jsx#L219-L252",
+          "resource": "repo://src/components/AdminEpisodes.jsx#L227-L260",
           "version": "repo-lines-v1:sha256:704cdade93023923310ad3e7de0cdf953bf6697dfa030aeaf22aaebb0410d685:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyNzRiYjkxMjNmODIxZWYyMmM1MzBjMTAxMDFlMDRmY2JiMGQ3YzkwNWIxNDM1NWIyYTk0ODkyNzFmYzFjZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyMTU5YmU1NDU1ZDBjZTc3OGYyMzY5MzZiZjQyMDdhYWE3N2IzNGU4MmEyNGMyMGMwMWMwNTBiNDQ0OTQ0MGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ0ZmYxOTQwODE3MjRjZDc0NWIyNmY4ZTQ0ZDUxNmUwZjViMGIxOWJlZmQwNjY0OTJhZDJjYjM3MDc4ZGZlN2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEwNjU3MDE4NzlmMjNmYjE2ZGQxNGJhZGQyMTA0YjUyMDJmMDVhMzI3NjgxYWY2YjAyMDlhZWQzNDY0NjU1ZDIifQ"
         },
         {
@@ -39,7 +39,7 @@
           "version": "repo-lines-v1:sha256:fa53c98ce496fdb45a9240a3cdeebd0d53ea0119edae5b1c157be79cc9186f11:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmRjNTJmMDhiMzliMDhiMDFjOGQzMDhiZjg4MGIwYmVmMDJmZDFkZmNjOWQ5YWE5M2E0ZDFiNWY0ZDU4YjZjYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTc3ZTJhZTczZjgxNjA5NmZhYmFjYTIwYTc3ZjA1MzZjOWY3NDcxZmE1YzcyYTFhOGUwNDcwNjAzMWYzMjY4NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzkxNGFlNjYwOTI0ZmQ2MjIwMDBmZjhjZTg5MjdhN2ZlYWRmMjlhODRkMDhiNjFlOTQyZTVlYjI0Y2U3MTQzZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGFkZDIwYWVlNmNjYWU4OTFkM2U5ZjJmMjk3YWUzMTQzZmUxM2NhODVjYTk1OWNlMWY4ZjNlOGQ1ZWZlM2VkYyJ9"
         },
         {
-          "resource": "repo://src/components/EpisodeDetail.jsx#L384-L393",
+          "resource": "repo://src/components/EpisodeDetail.jsx#L415-L424",
           "version": "repo-lines-v1:sha256:2316a7647cb84a02c768bf279d9dad67d60803ce517c79889ea89aafa3dd24cf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlMjhkMTkwZjA3YzlmYjI2ZGM0YzMzZjI3MzlhNjYwOTE1NDE4YjVjMWM3Njg1NzZiYjE5Y2YzMDE5ZjQyN2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzNjRiMGI2NzRlMTY1MmY0OTE3ODcwYzkzYmVhZmNkM2JmNzg1MjAwMzhlYTZiNjJhZmE1ZmQ4Y2M2NTliMDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMxNmY1N2Y2ZDY1YmVkMzg2YWQ3YTIwNGIzOTE0NjA4ZWYyM2Q3N2ZmNmMxOGJhMGZkYTEzOTdiMDY5OGNjYWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRkMDgyZWZlZjExOWYwNzNkNGVmN2I1OTNmNmUzMDA5MGRlNzYyNDk5NmM2NjkyNTkwNzQ2NmEwMGZhN2Y3Y2YifQ"
         }
       ]
@@ -53,7 +53,7 @@
           "version": "repo-lines-v1:sha256:c197114db2d68e5087c4de1515ddcedec874c32088ea7d16ac6b447c1091d2fa:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg4ZjE1ZDAxODk4MGYzZTE1MzQ2M2U3MjZjMzRmYTUzNGM3ZmJhM2U5Yjc0OTQyODc5MmUxMjJhYWMzMmM5YTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRlYjAwYzhmZGMyOTc0Y2M5OWZhYzMwZmQ1Zjc1NmQ1ZGQzMjc5MjIzNDE4Njk2ZjQ1MDdmMzU1YjhkNmNlNjYifQ"
         },
         {
-          "resource": "repo://src/components/EpisodeDetail.jsx#L422-L443",
+          "resource": "repo://src/components/EpisodeDetail.jsx#L453-L474",
           "version": "repo-lines-v1:sha256:64624fb0fec4dbe7643b8c3ad4b41d1887821546bbc8e93fa3ea222aabfa4d72:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0NDRhMzFkOGVjN2U4OGY4NTU3MTUyNmJmMjdjOTU4ODIwZGZmZDI5ZjY4NTIxZDBjMDViNzcwNWExZjE4YjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5NDE2MzdmYmQ3Mzg2MjJjZTQ5ZGNlNjk0YWMzNjFkOWEyMjYyYTQwNjQyYzg2ZDk2MDBjODI4NTJkMjQyMGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNkZTYyYTQwMDhhNWQ4NmY4OTgyMzdkMDczMWFiYmZmNWFiZWM1NzRkOTY1NWI3MmYyMjNiYWNhYmVhNjZlMzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjExMDBiZTUxZTJkMmNiZDkxYTU2MDY2NDYxMmZjOWFkZTI0MjEyZjgxZTg1YzllZjg3NDA4NDQwY2ZkYTNjOTMifQ"
         }
       ]
@@ -74,11 +74,15 @@
     },
     {
       "id": "claim_b3a8dccb33d54491a4a223403175a804",
-      "statement": "单集（SingleEpisode）的读写路径分层：列表内联在 GET /api/episodes/:id 的 episodes 数组里，新增走 POST /api/episodes/:id/episodes，改/删走 PUT/DELETE /api/episodes/single/:id，播放计数走 PUT /api/episodes/single/:id/view；字段含 episodeNumber、title/titleEn、duration、platformLinks（平台名到 url 的对象，表单用 name/url 列表编辑）、releaseDate、isScheduled、scheduledDate、isUpcoming。",
+      "statement": "单集（SingleEpisode）的读写路径分层：列表内联在 GET /api/episodes/:id 的 episodes 数组里，新增走 POST /api/episodes/:id/episodes，改/删走 PUT/DELETE /api/episodes/single/:id，播放计数走 PUT /api/episodes/single/:id/view；字段含 episodeNumber、episodeLabel（可选自定义显示序号，≤40 字符，读取回退链 episodeLabelCustom ?? episodeLabel，展示位 episodeLabel || episodeNumber）、title/titleEn、duration、platformLinks（平台名到 url 的对象，表单用 name/url 列表编辑）、releaseDate、isScheduled、scheduledDate、isUpcoming。",
       "evidence": [
         {
-          "resource": "repo://src/components/SingleEpisodeManager.jsx#L17-L100",
-          "version": "repo-lines-v1:sha256:061a0468a3fa4a400a33f288c34a698bba85b1789f084673c749b91654193329:eyJzZWxlY3RlZExpbmVDb3VudCI6ODQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4YjkwNmZkY2UxY2U1NjZmNDNjNGFkOWU4YzAzZjY3NzBhYmEzY2JiYWExNjg2OTY2YTAxZWJlZTUwZWZlNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlNDAwOTBkMjRlM2FlNmFjMWM1OGQ1ODYyYWI3Y2EzY2NjMWYwZDJmY2Y2ZGJiMTM5MjJlMmRmYzEwMmEwNWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJjN2I3ODY1YjYxYzBjY2JhNGQ0NTMzY2FkOTQ0NGJlYmQ5M2RjM2ExZTBmYTQyZGEwY2JkMGViZDFiYWIxN2YifQ"
+          "resource": "repo://src/components/SingleEpisodeManager.jsx#L141-L160",
+          "version": "repo-lines-v1:sha256:905b98843a3578ef949f2b3cff74863d5697fdaaf510343830951d82d3f36567:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1ZTBlY2VmMzMwMDc0OWQ2NzZkOTQwNDIxMmY3Mjg0NjkyNGJhYTcwYWNlZDgzZWQxNGJlMDBmOTViYzI4MTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhZTY1MmJmMGE5YTRhYmQwZjJlYjMxY2I1N2M1NjE3MWFkY2FlM2FjY2NjOTBlNDljMjhkYzgwZDlmYWNkZmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFmYzE3MTA0N2E2YWI4YTAyNTY5NjZkMzEwNGE2MWVhNmI5NDk4YzY1MDMyZDhmOWY0N2RmMmUyNzNiMzhiMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM2ZjQyZTgzYWFkZTRjZjJlNzA4ODMxMTIxMjM2M2I2ZTI4YTVjZjM1ZjE3ODgzZWNlYTQ1Y2IxODFlNGViNDQifQ"
+        },
+        {
+          "resource": "repo://src/components/SingleEpisodeManager.jsx#L17-L122",
+          "version": "repo-lines-v1:sha256:3f7929120d3259815920aab745e28be37238d14f44515fcb7a904e0f18e76086:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI5OGI5MDZmZGNlMWNlNTY2ZjQzYzRhZDllOGMwM2Y2NzcwYWJhM2NiYmFhMTY4Njk2NmEwMWViZWU1MGVmZTYxIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJiNzBlNTZiOGVkZGRkODZkYmQ4ZWM2MTQxMmEwZWQyOTcxYjgzYTY2YjhlODQwN2QxNDhmNmZlYjgyMDMwODE2IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI3ZTQwMDkwZDI0ZTNhZTZhYzFjNThkNTg2MmFiN2NhM2NjYzFmMGQyZmNmNmRiYjEzOTIyZTJkZmMxMDJhMDVkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI1MWUzNzI1ZGEwMDJiNDZlZDhiNGRlODgwMDNhZDk3MTBkY2FmMThkNTdjNDcwMWRjM2JlZmYwYjJjNWNiMTNmIn0"
         },
         {
           "resource": "repo://src/hooks/useEpisodes.js#L78-L117",
@@ -91,11 +95,11 @@
       "statement": "单集提交时 isScheduled 决定 scheduledDate 与 releaseDate 互斥：预告集把 releaseDate 置 null，勾选「不设预告日期」时 scheduledDate 也为 null；非预告集把 scheduledDate 置 null 并取 releaseDate（空则 null）。",
       "evidence": [
         {
-          "resource": "repo://src/components/AdminEpisodes.jsx#L305-L328",
+          "resource": "repo://src/components/AdminEpisodes.jsx#L313-L336",
           "version": "repo-lines-v1:sha256:6a1a2054d9960e67d5c45aec1472cd275fded131c17599269e476cc1d0778eb2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmNjRiNjk1MWFiZTU4YWRmNzljMDg3ZmQ1NzNmZGNhZTJhZDFjNGI3ZTBlY2E2Mzg5NzE5ODExYmNiNWZkMGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzM2RlZTdkYzg3YWRmNGQwZmFkY2IxYjcwZjk1NjJiYmU1Y2FhM2M4NDEzZjBhNjIwMzM0NmY1ODAyMzRjMDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUxZTM3MjVkYTAwMmI0NmVkOGI0ZGU4ODAwM2FkOTcxMGRjYWYxOGQ1N2M0NzAxZGMzYmVmZjBiMmM1Y2IxM2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyMmVjOTgwOWFlNTI3NDEzODg0OWNjY2I3OGE1MmY3NWNkNjZiMDhhYzAwYzk5NjE3NWRjMWI0YWU2YTdhOWMifQ"
         },
         {
-          "resource": "repo://src/components/SingleEpisodeManager.jsx#L40-L70",
+          "resource": "repo://src/components/SingleEpisodeManager.jsx#L41-L71",
           "version": "repo-lines-v1:sha256:34126a9d37c8f763d07fb04c872ec63e21b8c6a497aec315a5ae1d84f9276471:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmNjRiNjk1MWFiZTU4YWRmNzljMDg3ZmQ1NzNmZGNhZTJhZDFjNGI3ZTBlY2E2Mzg5NzE5ODExYmNiNWZkMGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU0YzRlYmI1NzI1YzFiNzM4OWMwNGUwNzNkNzc1ZDM2NjMxMDE2OGM3ODI2NjEwMTZmNzgwM2IwNDE1NGRkNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVjZjAwZWEwYWVlNDNlYmUxYzRmMTMyMjJmMTBlNTViODExODNhMmJkYzI3NWNlNGJjMDBiNmM1NGQ0OTdlZjEifQ"
         }
       ]
@@ -105,8 +109,8 @@
       "statement": "「一键转正预告集」由前端置 isScheduled=false、releaseDate=now 后 PUT /api/episodes/single/:id；请求体不显式发送 isUpcoming，组件注释记录后端在 isUpcoming 由 true 变 false 时把剧集 currentEpisodes 加一并向追番用户发通知，因此单集写入会改动剧集级计数与通知。",
       "evidence": [
         {
-          "resource": "repo://src/components/SingleEpisodeManager.jsx#L101-L122",
-          "version": "repo-lines-v1:sha256:ae8a1eff34e5cbe3835eeb9fc810ceb8e7e180a1e87f4ede25b6c11aff885f8c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzNjZlZDllYzg3YTQyYmYzNWI4MTNhZjA1YzIwZjExNmYxMGQxNzc3NGFjMThkOTg4YTlkNzU1OTU0NDkzZDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUxZTM3MjVkYTAwMmI0NmVkOGI0ZGU4ODAwM2FkOTcxMGRjYWYxOGQ1N2M0NzAxZGMzYmVmZjBiMmM1Y2IxM2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM1MjgwZWE3ZDc3MzM2OGMwNmNkYzVkNDQ3YmZkMDkyMGRiYzI5NmIzZDcxMDNlODEzZTkzNDA3NjEyZjAzNDIifQ"
+          "resource": "repo://src/components/SingleEpisodeManager.jsx#L105-L122",
+          "version": "repo-lines-v1:sha256:5df393da3d7f13177995cedf1887da73b6f4b329a99a1c8b5ac461f05b7b3da9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhZDdhMGFiYzMyYTc0NDQ1ZDMxMDg3ODFiMmQzYzRmNzk5ODkxY2U2ZDQ5ODk2MGMwMTMyMWQ1YzJkMGYzNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3MGU1NmI4ZWRkZGQ4NmRiZDhlYzYxNDEyYTBlZDI5NzFiODNhNjZiOGU4NDA3ZDE0OGY2ZmViODIwMzA4MTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyOGNkNmFjMDhlNTJlYjhiZDM1MTQzYTQyY2FlMDk1MTM0NjRkMzkxZDE0ODY5ZTY3NTM0ZDViNjAxOWZlN2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUxZTM3MjVkYTAwMmI0NmVkOGI0ZGU4ODAwM2FkOTcxMGRjYWYxOGQ1N2M0NzAxZGMzYmVmZjBiMmM1Y2IxM2YifQ"
         }
       ]
     },
@@ -125,7 +129,7 @@
       "statement": "「待审修改」是独立于 reviewStatus 的第二层状态：已通过剧集再次编辑时改动进入 pendingChanges 并置 hasPendingChanges（附 pendingChangeSummary），原审核内容继续对外展示，且编辑表单优先加载 pendingChanges 而不是正文字段。",
       "evidence": [
         {
-          "resource": "repo://src/components/AdminEpisodes.jsx#L204-L236",
+          "resource": "repo://src/components/AdminEpisodes.jsx#L212-L244",
           "version": "repo-lines-v1:sha256:096aa87d53603c14ec1ce163d856eb0e18c9327da190d20d88106b187432d802:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNDQzMWJjYzUyZTJiYTkzZTc1ZjllZjJmN2Q0ODNiMjg5YWZkYWQwN2Q0NTRkMmU0MjQ1NzAxZTc4NTNjNTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUxZTM3MjVkYTAwMmI0NmVkOGI0ZGU4ODAwM2FkOTcxMGRjYWYxOGQ1N2M0NzAxZGMzYmVmZjBiMmM1Y2IxM2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1YzM1YTYyYjMzYzMwNjA5M2EyYzdiNWFmYzA4ODc3YjkzZTc1YjEwNTI0ZWQ2ZGM4MTRjOGI0Mzk5MzIzZmYifQ"
         },
         {
@@ -136,15 +140,15 @@
     },
     {
       "id": "claim_c6c94013d8d6447b8e57f07218036643",
-      "statement": "被驳回的剧集由创作者通过 POST /api/episodes/:id/resubmit 重新置为 pending；creator 角色的后台剧集列表数据源是 GET /api/creator/my-episodes，而其他后台角色走 /api/episodes。",
+      "statement": "被驳回的剧集由创作者通过 POST /api/episodes/:id/resubmit 重新置为 pending；creator 角色的后台剧集列表数据源是 GET /api/creator/my-episodes，而其他后台角色走 /api/episodes（两者现在都按 page/limit=100 循环翻页拉全量，依赖 totalPages，上限 100 页）。",
       "evidence": [
         {
-          "resource": "repo://src/components/AdminEpisodes.jsx#L285-L295",
-          "version": "repo-lines-v1:sha256:df00b8e8ba56e5dfcc443fe382f87c5a368e03d60bc29c462971667800f8c211:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3MGZmOTllZGFhMmEyYjU2MjhmNjUwZjE2OTFhYzdhNzNhMDA3OTQ3NWY5ZWU5OWRkMGExY2NmYzdkMjQyMzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUxZTM3MjVkYTAwMmI0NmVkOGI0ZGU4ODAwM2FkOTcxMGRjYWYxOGQ1N2M0NzAxZGMzYmVmZjBiMmM1Y2IxM2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY1MjhmYmIzMWNiYjE0ZDJhNTBmODJiZDg1ZTE1NGVjYzU4NTU3YzNjY2I5OWU0MGFjNzM3NmIzM2I1ZDE1MGUifQ"
+          "resource": "repo://src/components/AdminEpisodes.jsx#L290-L300",
+          "version": "repo-lines-v1:sha256:e91364986a6064ce3f3cc37e31ddd97758332fed9955e9d482b9dbb74e2519bb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0ZjQxYmJjYWVlNmIxMjM2MWJkMDVmZDA5MGMxNmYwODJjM2YzMDdjODgxYWU0NGUyYTE0YTFmMDdlMDZkYTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVlMTQwYjllMDRmNWIwYjFhOGZjNGRhMzJjNjk2ZjNkNTg1MWFkNzQyM2Q4MGFlZTE1MWZmMDU3ZWFkYjAzMDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUxZTM3MjVkYTAwMmI0NmVkOGI0ZGU4ODAwM2FkOTcxMGRjYWYxOGQ1N2M0NzAxZGMzYmVmZjBiMmM1Y2IxM2YifQ"
         },
         {
-          "resource": "repo://src/components/AdminEpisodes.jsx#L69-L84",
-          "version": "repo-lines-v1:sha256:9bf2acdc7edf3e872bf789ae9ce6564d41ea49960f04a38b7f865e8917a58768:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3N2UwMmIyN2Y3YWMwOWM4YmNmN2Y2YTI1Zjg1MGE5MjE3MzlmODI3OWVhZWNlYzExYmRmZjg4ZTZkNTkxYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIzOGMxMTczMDRiNDc2NzQxZGRmNWE1ODAzZGU0NDRlNmUxZWY0Mjk2MzQ0M2MwN2MwMjE0ZGI2NmJiNTI1NjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM4M2EzN2MwYzgwNmI3MDRjYjNkZmE2Y2NmZjM5MzNjYmJmZWQyYmZjZWU5ZTliNDczNmZkYWFlYmFhODdhZmQifQ"
+          "resource": "repo://src/components/AdminEpisodes.jsx#L63-L85",
+          "version": "repo-lines-v1:sha256:fa4aa8c43f0f37755b108168d97eb4a28e870830ede7f910e740460804872db2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjZTkyNGNiMmU5MzZkOTlkZDlmYjQyMzlhYzdiNGM2ZjA3OWY1Yzg3OWQ2ZTk5YjcxZmNjOGVkZTE1Nzg5MDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmNGIxYjc5MjQxY2RhYTk2YzNhNDhkZDg2NGM5MjkwYTA5ZjI1ZDQ3YTc2ZDY5Yjk0MzYwOWJlOWI3YWYwMTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI1MmIxOTIyMWUyMjYwMTVkMWEzN2VjNGM5ZTlhNjNjMGNjZDUyMTZmMjJiNDc3ZGI0YjBiNDgzZDYxOTg0NDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllNWExMjQ1Y2FjNWU4YzYzZTM4MGYzNGNhYjM4YzA2YmM3MWIzZjQwNDE1MmJiMDI0N2I4NzBmOGM5MTEwYWIifQ"
         }
       ]
     },
@@ -213,7 +217,7 @@
       "statement": "follow 以 followedAtEpisodes 作为「新集」判定基线，history 的 watchedEpisodes 是集号数字数组而非单集 _id：个人中心把 1..currentEpisodes 与 watchedEpisodes 求差集，集号大于 followedAtEpisodes 的未看集显示红色「有更新 +N」，其余未看集只显示黄色计数；followedAtEpisodes 为 null 时两类提示都不出现。",
       "evidence": [
         {
-          "resource": "repo://src/components/EpisodeDetail.jsx#L636-L641",
+          "resource": "repo://src/components/EpisodeDetail.jsx#L667-L672",
           "version": "repo-lines-v1:sha256:f6e3073e944814cacace10b5d45b8bde8b34ca9b9149e990e057801178067b4a:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQyODkzY2M1MWMzMDVlOGExNmEwNTAzNDM3Yjc1MzFlOGY1ZTI5NTgzOWNjZDlkMDA2YWZmOTNlOTM2NmNiMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGVmMDUzNzliMmMyNDI2ODBmNmIxM2RlMjc2ODNmNmMzZTExYTRhNmExYTNhYmJjM2ZmMDdhMWUyYTVjOTAxNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDdiZWFmYjFlMzlmNjEwNGU1MDUxMmE1NjBkYjYxOTk1YjU1MmU4NGUzZGNmYWM0OGE3NTU4MzIxYTcyZDNiMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzZhMzM3ZTllMzNjZmZlNGU4YjI2NjgzN2EzMjYzMGRiODllNWFmNzlkMzRiYWE4NDM4ZmUwYjU4ZmI3ZWQwMSJ9"
         },
         {
@@ -227,12 +231,12 @@
       "statement": "观看历史是显式动作：只有点击平台跳转链接后才 POST /api/histories/record（episodeId 加 episodeNumber），打开播放弹窗本身只做 PUT /api/episodes/single/:id/view 计数；记录成功后顺手 PUT /api/notifications/read-episode/:episodeId；用户侧状态由聚合端点 GET /api/episodes/:id/user-status 一次返回 isFollowing、followedAtEpisodes、watchedEpisodes、score、isFavorite。",
       "evidence": [
         {
-          "resource": "repo://src/components/EpisodeDetail.jsx#L322-L341",
-          "version": "repo-lines-v1:sha256:2dff30de7552c8aafc098c4c217a57257cd7bca577f34c349dd8ccb5221d6102:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjYTc3YjU2YmI3YzhjMTBkNTM5N2JlMTNjNDM5N2MxNjU1MTZmNTgyMzc4ZTQ1OWZiNDllZTA0NzIyN2FiZGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxMWE1ODQ4ZDVlNmNjZWVlNDYxMmQ2ZDdiNzk0ZTY5Mzk4MTBjNWNjMDcxNzE0Nzg0ZDRlZjFiNTdiZjM0ZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc4NjY4ZWMxYjNiYzY2OWZmOGM2MzA4NmJhNzI5NDFmYmU1NzQ1ZWY2MmM5MjBmZTQxN2YzMWQ0ZmI4ZDQ1MTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljMGVlNjAyNzM2MjJjNTQyM2YwZTYwMDg1MDc1ZDAwYTYxZDQ4OWFjMDZmOWU3MWY0OWM1MGEwOTBlNmJhYjcifQ"
+          "resource": "repo://src/components/EpisodeDetail.jsx#L318-L332",
+          "version": "repo-lines-v1:sha256:25f5bb9148a592f15a5b25984ff1d4abcab382f565dda5ff3688150e4b862d48:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmODBlZjE0NTc0NGQ2MDk1OGExNzA3OTY2OWI5MzU3NTY1ZTFjYjI2MzdmYWE3OGQ1NGFlMzFhMjViNjdjMjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUxZTM3MjVkYTAwMmI0NmVkOGI0ZGU4ODAwM2FkOTcxMGRjYWYxOGQ1N2M0NzAxZGMzYmVmZjBiMmM1Y2IxM2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2NDQyNWEzMDA4ZDBlZjk0OGU2MjcwZjE1YTk4ODkyNTUzMjg1MTY1NGQzZDJjYWRlNjRmNTMyYjdkZWU4ZjQifQ"
         },
         {
-          "resource": "repo://src/components/EpisodeDetail.jsx#L88-L100",
-          "version": "repo-lines-v1:sha256:6bbdaf4fb3338dc4084a93c07b79484f19423492868ee9f0b308d35614abb513:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxZGUzZTlhZjY2ODJlM2JlN2RlOGZlZjlmZmYyMDZmM2UyZGJkNGFlNTYwZjc0YmFiNjJjOWE0MjY3OWNhYzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxN2FmMTEwMWM5N2I3YzJmNTI1NDA3ODJlNjM0Y2M0NDQwZjBlOTcwMzQxZTUyZjk3NTIzMTFkNzhiN2Q3ZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhmZDU0MjdlNDBmYWM2ZTEwODc3YTEwYTZhMjU0MzdkNTZlOWZmZWU3OGNmYTdmNmRlMzc4NWU2YzM1NDY4NmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlYWUwYzhlZWY4MzQ2MWI5ZDA0NTc2YzYwNzg5MmIyMDczYzdkM2NmN2RiY2NiMjkxNTliYmZiYzBiY2Y1ODUifQ"
+          "resource": "repo://src/components/EpisodeDetail.jsx#L85-L100",
+          "version": "repo-lines-v1:sha256:e2624d329b7d3782782769f3f6a838e5ef9a3a45ec314dea2e86b770efa4d553:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc5NjU3MDA5NjE2YWZiZThmODg1ZjZlMDZjYjM1ZWRjZDI4ZmFmNmJhN2I4MDFhYjgxMGM3MjEzYmIyYjBmZWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxN2FmMTEwMWM5N2I3YzJmNTI1NDA3ODJlNjM0Y2M0NDQwZjBlOTcwMzQxZTUyZjk3NTIzMTFkNzhiN2Q3ZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg4MmVmNjkwNDc2ZTM4MmFmMGE3N2U5YWMxYmIxMGI5NTkyNWJiNzM1YjA1Yjc0OWE1YTZkYTI1ZTg3MmI2ZjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlYWUwYzhlZWY4MzQ2MWI5ZDA0NTc2YzYwNzg5MmIyMDczYzdkM2NmN2RiY2NiMjkxNTliYmZiYzBiY2Y1ODUifQ"
         }
       ]
     },
@@ -280,11 +284,15 @@
     },
     {
       "id": "claim_56040983bac144938df0ab03fb655f54",
-      "statement": "通知是前端只消费的实体，type 枚举包括 new_episode、status_change、review_result、feedback_reply、friend_link_apply、friend_link_status、report_result、reminder；文案由 metadata（episodeNumber、isPreview、previewUpdateType、status、note、reply、name）拼 i18n 模板，未知 type 回退渲染可机翻的 message，new_episode 还会在 metadata 缺集号时从 message 正则抓「第 N 集」。",
+      "statement": "通知是前端只消费的实体，type 枚举包括 new_episode、status_change、review_result、feedback_reply、friend_link_apply、friend_link_status、report_result、reminder；文案由 metadata（episodeNumber、episodeLabel、isPreview、previewUpdateType、status、note、reply、name）拼 i18n 模板——metadata.episodeLabel 存在时优先用 newEpisodeCustom 系模板（newEpisodeCustom/newEpisodePreviewCustom/previewVideoUpdateCustom/previewInfoUpdateCustom），未知 type 回退渲染可机翻的 message，new_episode 还会在 metadata 缺集号时从 message 正则抓「第 N 集」。",
       "evidence": [
         {
-          "resource": "repo://src/components/NavBar.jsx#L127-L186",
-          "version": "repo-lines-v1:sha256:68d4ba7c613d2aa5fe7ba633c5241da87c1e68a4239fea1396161a83bb557112:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0MDBiZTkwMWU0MDk2ZWIwZDMxNzQ3MjkzNThhYzdjNTM4OGUyMmRmOTUwMzIyZGNiZDk1MGZmMmJhNzc5ZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4NWMzY2IxMThiYWIwMjI5OGI5MGM1N2U1MWI0NjdlNzBkM2U4YmVlZjM1NGY4NzgyZjVkN2Q0Yzk0ZjBiNTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjN2YwNDZmNDk5YzFlMGU1NjEzN2RhY2FmNDFmZmVhMGM1OTc5ODI5NjY4NjQ2MThmODRiZGRiZWFjYTlmMjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUxZTM3MjVkYTAwMmI0NmVkOGI0ZGU4ODAwM2FkOTcxMGRjYWYxOGQ1N2M0NzAxZGMzYmVmZjBiMmM1Y2IxM2YifQ"
+          "resource": "repo://src/components/NavBar.jsx#L127-L190",
+          "version": "repo-lines-v1:sha256:b293ca33b9ceaf7257cb368fd6aa63b3315adbb1075f252d4a8bde48a6097611:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0MDBiZTkwMWU0MDk2ZWIwZDMxNzQ3MjkzNThhYzdjNTM4OGUyMmRmOTUwMzIyZGNiZDk1MGZmMmJhNzc5ZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxNzYzOWQ1NWIzODAzNDljMjExZjhmYzJiOGI3ZDJlZjRhOGM5MzZmOGI3NTdkY2Q5MzA2MzgxNDM1YzRmZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjN2YwNDZmNDk5YzFlMGU1NjEzN2RhY2FmNDFmZmVhMGM1OTc5ODI5NjY4NjQ2MThmODRiZGRiZWFjYTlmMjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIxYmY5OGI5ODVjY2ZiZjcxODAzYWRhY2U2NDA0OWUyZDI5NWRhZmUxNmVjNGExZWIxODdkM2RmNjY1MTliNmQifQ"
+        },
+        {
+          "resource": "repo://src/locales/zh.js#L110-L126",
+          "version": "repo-lines-v1:sha256:481f94918b6027f0959cc433d64d916447acaab0f093784f1e1a5813acc0ab50:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyOGU2YmRhZjMyOTE3YmJhNmU2MTUyMDcwNjY1OGFhNmY3YmFmZWQ2OWFhZDVkNmZhMDhlNzMwNDBkZGRlNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmODZhNjUxODZhMDIzNDUxMWZmNzQxZDZiY2E0MzFjZjc2MTM2Mzc5MmZmNWEwZTlmNjk5M2FiYTM5Yzk5ZTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlOWQ0NzdlNDQwNGZmNDc5ZGIxMjcyNTg3MDM0YTlhZWM4YjU0ZDk2ZjJhNDg5Mzc4Y2YyYjVlMDg3ZDg2ZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwNzY2MDczYTUxOWY2OTE5Yzg3NWY1ODJlY2Q3Zjk1OWQyY2U0ZTgyNzk5M2NjMWE1YWViNmU0ZTYxNjVjZTIifQ"
         }
       ]
     },
@@ -365,22 +373,22 @@
           "version": "repo-lines-v1:sha256:59a2b0a5940daeea9a46aa80e78d1814aa5a52c231fadf8f9127c2de7df90726:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFmMjJjZjA3MzI1OTJjMjQ3MTQxY2JlNjFlZmExMTAxMjYxMmY1YTMxMjJiOWFmOWJiYWY1MmY1NzI0ZDE5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWJlNTViMjQ2MjY5ZGZlNmY3MTJkYTgxMjEzZWRjZTM0MWYyOTVkZGEwYWFiNzAzZDQ0MjIwYWFhMDBiZmE5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzYzZTc3OTRiODJkODE3MzE4NWIwZTIwODY0Yzg0ZjExZDE3NWM4YzQ1M2JmMWY5ZGZmN2FmYjM3MTA0OTkyOSJ9"
         },
         {
-          "resource": "repo://src/contexts/IconContext.jsx#L164-L174",
+          "resource": "repo://src/contexts/IconContext.jsx#L168-L178",
           "version": "repo-lines-v1:sha256:d0456d4dc1ef7c3e69e0c15fc484a0336f85c00c9138d8b6e6af19466b5ab7a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiMWQ2ODNhMjJlNTdhZjJiM2NlZGZmY2ExODZkMzk1NzFhZjZjYzJiNGEwNjE4NmIxMjM4MjQ2Yjk5OWNjNTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5OWJmYTRiNmFhMzkzNmM2NzY2NGYyNDM2YjY3ZDFjOTQ2ZTc1YWQ4MGYyZGUzMzA2MWIzNjRjYWRlOGU4ZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3YmU1YWZhNjVlZTBlMDFmYjFhY2RhNDIwOGUyMzdlYWRhNWZjZjQzMzNlNzA3ZmUyY2I5MzNjYzQxMjVhMGUifQ"
         }
       ]
     },
     {
       "id": "claim_050c0901db1d46188cb48405e7f06898",
-      "statement": "主题与图标 SVG 在 inline 渲染前会被清洗：去掉 XML 声明与 DOCTYPE、移除 script/foreignObject/iframe/object/embed/link 节点、删除 on* 事件属性与 javascript: 协议，并把显式 fill/stroke 颜色替换为 currentColor；清洗或加载失败时回退到调用方传入的 fallback。",
+      "statement": "主题与图标 SVG 在 inline 渲染前会被清洗：去掉 XML 声明与 DOCTYPE、移除 script/style/foreignObject/iframe/object/embed/link/animate/set/discard 节点、删除 on* 事件属性，并按协议移除 href/xlink:href/src 上的 javascript:/vbscript:/data:text/html 值（含未加引号属性写法），再把显式 fill/stroke 颜色替换为 currentColor；清洗或加载失败时回退到调用方传入的 fallback。",
       "evidence": [
         {
           "resource": "repo://src/contexts/IconContext.jsx#L231-L264",
-          "version": "repo-lines-v1:sha256:ab1a5619f2d7cefbc08105d3c088d15dbf516df41e6297c8c2c55af06d3bd6e7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2YjA3NGQ0NjMzOTdmYzkwNmU3ZjIwZmMzZTEyODExMTY2ZGQwODRhNDljYzQ4OGQzYWRmNWU3ODU1NTY0NDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5N2VmNjM3ZjMzZDQyN2RjMGM0MTFhYWY2ZDZjY2Y1ZmY2ZThjNDRkYjQ3ODc4ODI2ZGIyMjNkYmZkYjdlNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlMDNhZDc0NGM0YTY4YTM0ODVhOWRmMzBlYmEzOTA0ZmMwNTgwYTlhNjIxM2Q1YzQ0ZWY2NzU3NDEzZWFlZGIifQ"
+          "version": "repo-lines-v1:sha256:73dfb32e9a8c7f03b994144f2b2f211b10b40d95b6fc07d6690e9a6c9f4141fa:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzODM4MGIwMzI1NDUzMzBhNDdjNDQ1MWY0MWIxMDI0MDgyYzRiMDc4NDFjOTdkZjhmYjc4Y2RiNjk1NzZjOWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAyMDcwNTE2ZGQwOTAwYmZhYmRmMWQzYzE5M2U0Y2YwY2UzYjljYWU0MzE4ZWRkNGYxZTMxYTI2Njk1OWJjNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY4ODU2ODNmNmE3MDQxMGE2M2Q2NDM0MjAxMTQzMjk4Y2FlODAxYjQzYWNmNjE2NzJhZTZiZTcxZGZhMDJjZGUifQ"
         },
         {
-          "resource": "repo://src/contexts/IconContext.jsx#L61-L81",
-          "version": "repo-lines-v1:sha256:31a26f9db286754c428cc68041608547442367ad5e6a6765829c3ebe047d2a4c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1Mjk3ZGUyZWI3NDFhNjlkZWQ2OTRkZWFmMzY4ZGEyMWQ2MjliNDJjZTZjNDkyNjc4MWZhYzY2ZTQ0NmZlYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhNzU4MjIzMDRhYzBlYzg5Y2I4NTU3NWRhNDI3ZTFhMGUwNGI5ZTI0YTRhYzUzZDk5MmZhZDYxNWJhOWIyMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmZDViNjU2YTU3ZTFjMWM4MDg4YzVjMTY3NjU2ZjVlZjhmZmYwOTA5YTQxMjhiYzE2Nzg5NDBhYzJhYzAyNmUifQ"
+          "resource": "repo://src/contexts/IconContext.jsx#L61-L90",
+          "version": "repo-lines-v1:sha256:cad333343dbf01f125a3d777acd523f6854c5104796a1fe77e4f0d722c49538c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1Mjk3ZGUyZWI3NDFhNjlkZWQ2OTRkZWFmMzY4ZGEyMWQ2MjliNDJjZTZjNDkyNjc4MWZhYzY2ZTQ0NmZlYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2YTMwZDZjYmI2YzgwZDgwYWM3M2NhYTEzYTQyOGU1ZmQ1NmE3OTZjNWVhYzVkMjQxMzgwNTNkZDc2Mjc3YjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhNzU4MjIzMDRhYzBlYzg5Y2I4NTU3NWRhNDI3ZTFhMGUwNGI5ZTI0YTRhYzUzZDk5MmZhZDYxNWJhOWIyMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU2YWU3MzBkOGJmNTdiNGNlYmVhMDYxNWRhMTRjMzFmNGE2YzYyMzBhYmVkYTExZTBiNzZjNGJhNDMzYTBlOTQifQ"
         }
       ]
     },
@@ -421,7 +429,7 @@
           "version": "repo-lines-v1:sha256:7e1158a068a674e4b0d80d6ce2fa7fe76f9a95e7fe24a560888f330dbc5796c0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTczLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI4YWY1NTU1MGIwNTQ4ZTIzZTFjNzE5MjI4MjZlZDQ2NTgxZDdlZTQxNTBlZjY3MmJhYTY4ODJkNjY0ZjY5MjdlIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJmZGVkNDk4MTk4MmMwOGQ0Njc5ZGRlN2JjNTY5NDRlMzdlNjRlODlkNTdkNDZhZmFkODY1MGFkMjU3N2NjZGIyIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxNjE2OTQ5ODVmNzg1MzkyOGViNWY4NWQwNjRhNWUzODgxMmNjZjdmNjhhYTZkMGJhYTA1YWIwZjA4MzI0ODI3In0"
         },
         {
-          "resource": "repo://src/components/NavBar.jsx#L187-L195",
+          "resource": "repo://src/components/NavBar.jsx#L200-L208",
           "version": "repo-lines-v1:sha256:552926334602a94604b9229981c0b4683bc916392aebbc14533a5f976d7c4cd7:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTQzZjk0M2Q1ZDNmNmQwMmE3MTdhYjljMWUwNjAzZDRjODQ2ZGVhMTIxMmFlYWM4ZTIxMWQ4Y2VjYzNmZTliMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODZjMGY4MjM5YTMzOGViNzhhMjkwMjkyZjNiZjkxYmY0NDZkNTkzMTFmMGUxZWZlNDc3NmRlMGQ0ZTQ3MDQ1MyJ9"
         }
       ]
@@ -435,7 +443,7 @@
           "version": "repo-lines-v1:sha256:87047d099cc631ac0df92d9747f16ff8294a6ebb4e2a18a4aa85a9cf4c3fe002:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk2NmZiZmE4ODk5OGRhNzQ2NTZjNTAxOTQ5NTZjMjVmMDg0OTQ1NzY2MGMwMDlmZTYzZDFlOWZhOWRjOTMxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjFiZjI2ODhhZTZkMTFkMTJiZTgyOWUwM2IwNzgzNGI0YTVmZGEyYzM0ZjdhMzY1NWMxMTdhMDdjMzRkNTU2MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGUxNTQ3NTdhNzIzNDQ5NmQ3MzA5ZTY4OWMxYTM4Y2NjNjNiZTNiODZiNzY4N2I3NTE5YTBlMGFhODdmNzIwMCJ9"
         },
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L12-L28",
+          "resource": "repo://src/contexts/AuthContext.jsx#L13-L29",
           "version": "repo-lines-v1:sha256:86cf80347e0e318eaf8dd16a051fcf888d216fc214aa44f518544c7ae80cda61:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiYjllOTg4YjdjOTA2ZWY4NWQ5Nzc1NzYxZjc4ZGUzN2I3ZjMwNmQyMzRmMGVkMGU5M2Q2M2VlZWQ4ODMxN2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRmZDA2ZTliOTk3MjI4MjY2MDkwMjYzOTEwMWRkMDFjYjhiYmFlOTYxMjAwMmE1YTRlNmM1MDMzZGJlMGU1YjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRmNzAzYzZlNzc0ZTMxOTA2Y2Y1ZjU4NzZlYjhkMTgwYTZlNDY5MDQwNzRlMzUyZWFlYTUwMjVlYjkyMmY3ODEifQ"
         }
       ]
@@ -443,6 +451,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-02T17:44:42.174Z"
+    "at": "2026-11-04T16:54:50.811Z"
   }
 }

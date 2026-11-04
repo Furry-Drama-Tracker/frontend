@@ -10,6 +10,8 @@ sources:
     resource: repo://src/App.jsx
   - id: openwiki-source-23fd220365cc63dc831c29e4
     resource: repo://src/components/AdminEmailSettings.jsx
+  - id: openwiki-source-11c92b2033df029713925335
+    resource: repo://src/components/AdminLayout.jsx
   - id: openwiki-source-c4a2ade1820d6e35c826fcde
     resource: repo://src/components/AdminSiteContent.jsx
   - id: openwiki-source-d27eefb45eb714b85112e9ac
@@ -32,10 +34,12 @@ sources:
     resource: repo://src/components/SitePage.jsx
   - id: openwiki-source-52f73cb87517cf05f876b0b4
     resource: repo://src/contexts/SiteSettingsContext.jsx
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+  - id: openwiki-source-c2c0ea0f423d599c75fe6a63
+    resource: repo://src/hooks/useTranslation.js
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 ---
 
 # 运行时站点配置、公告与静态页
@@ -114,7 +118,7 @@ flowchart TD
 | --- | --- | --- |
 | `browserTitle`、`browserTitleEn` | `browserTitle{En}` → `browserTitle` → `t('site.defaultName')` | `document.title` 的站点名后缀；`EpisodeDetail`、`CreatorPage` 各自单独拼标题时也用它 |
 | `favicon` | 无回退（空则不动） | 只有非空时才改 `link[rel~='icon']` 的 `href`，否则保持 `index.html` 里的 `/icon.svg` |
-| `siteName`、`siteNameEn`、`navLogo` | `getLocalizedContent` → `t('site.defaultName')` | `NavBar` 标题与 Logo；`siteSettingsLoading` 为真时标题渲染空串 |
+| `siteName`、`siteNameEn`、`navLogo` | `getLocalizedContent` → `t('site.defaultName')` | `NavBar` 标题与 Logo；`siteSettingsLoading` 为真时标题渲染空串。**管理后台也加入消费**：`AdminLayout` 侧栏品牌区用 `settings.navLogo` 渲染 `<img>`（无则回退默认「兽」字），站点名用 `getLocalizedContent(settings, 'siteName')` 再回退 `t('site.defaultName')`——后台品牌随站点设置变化，不再写死 |
 | `welcomeTitle`、`welcomeSubtitle`（含 `En`） | `getLocalizedContent` → `t('home.welcomeTitle')` / `t('home.welcomeSubtitle')` | `Home` 首屏欢迎语，同样受 `loading` 抑制 |
 | `pwaName` | `pwaName` → `siteName` → 默认站点名 | `apple-mobile-web-app-title`、`application-name`、后端 manifest 的名称来源 |
 | `pwaShortName` | 空则取 `pwaName` 前 12 个字符 | 同上（短名） |

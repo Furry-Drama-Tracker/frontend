@@ -32,10 +32,10 @@ sources:
     resource: repo://src/contexts/ThemeContext.jsx
   - id: openwiki-source-7c8446b7383bfa65b6d9e1b7
     resource: repo://src/index.css
-generated: { by: "opencode", at: "2026-11-02T17:44:42.174Z" }
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 ---
 
 # 主题、外观与图标引擎
@@ -153,8 +153,8 @@ flowchart LR
 用户与管理员上传的 SVG 只经过这一个函数就被 `dangerouslySetInnerHTML` 插进页面，因此它的规则就是**安全边界**：
 
 - 去掉 `<?xml ...?>` 声明与 `<!DOCTYPE ...>`（防 XXE），并要求字符串以 `<svg` 开头，否则返回 `null`（拒绝）；
-- 删除 `script` / `foreignObject` / `iframe` / `object` / `embed` / `link` 元素（成对与自闭合两种写法都覆盖）；
-- 删除 `on*` 事件属性，并抹掉 `href` / `xlink:href` 上的 `javascript:` 协议；
+- 删除 `script` / `style` / `foreignObject` / `iframe` / `object` / `embed` / `link` / `animate` / `set` / `discard` 元素（成对与自闭合两种写法都覆盖；新增的 `style`/`animate` 族能挡住 CSS 注入与 SMIL 动画型攻击面）；
+- 删除 `on*` 事件属性，并按协议抹掉 `href` / `xlink:href` / `src` 三个属性上的 `javascript:`、`vbscript:`、`data:text/html` 值——实现是取属性值（支持带引号与**未加引号**两种写法）转小写后前缀比对，命中即整段删除，比旧的单一正则更系统；
 - 把**显式颜色值**（`#rgb`/`#rrggbbaa`、`rgb()/rgba()`、`hsl()/hsla()`）统一改写成 `currentColor`，属性写法和 `style="fill:..."` 内联写法都处理。
 
 配色由此自动跟随主题：`Icon` 外层 span 设 `color: inherit`，SVG 里的 `currentColor` 就取到所在容器的文字色（导航是 `--foreground`，主色按钮上是按钮文字色）。两个容易踩的边界：只改写「显式颜色」，所以 `fill="none"`、`stroke="currentColor"` 原样保留，而**完全没写 `fill` 的图形会保留 SVG 默认的黑色**——做图标时应显式声明 `fill="currentColor"` 或走 stroke；命名色（如 `fill="red"`）也不在改写范围内。
@@ -202,7 +202,7 @@ flowchart LR
 
 两个页面职责分明，都通过 `src/utils/apiEndpoints.js` 的 `API.THEMES.*` 取路径：
 
-- **`AdminThemes`（`/admin/themes`）**：主题的「素材与上架状态的家」。列表支持全部 / 系统 / 个人 / 待审核筛选；卡片展示类型徽章、壁纸缩略图、最多 8 个图标预览与状态徽章（默认 > 待审核 > 驳回 > 系统 > 个人）。操作含编辑、删除、系统主题启停、`isSystem` 双向切换（需确认），以及仅超管可见的「设为站点默认」开关——站点默认主题全站唯一，也允许一个都没有。超管新建主题时直接 `isSystem: isSuper` 落库；待审核卡片给一个跳转审核页的入口。
+- **`AdminThemes`（`/admin/themes`）**：主题的「素材与上架状态的家」。列表支持全部 / 系统 / 个人 / 待审核筛选；卡片展示类型徽章、壁纸缩略图、最多 8 个图标预览与状态徽章（默认 > 待审核 > 驳回 > 系统 > 个人）。操作含编辑、删除、系统主题启停、`isSystem` 双向切换（需确认），以及仅超管可见的「设为站点默认」开关——站点默认主题全站唯一，也允许一个都没有。超管新建主题时直接 `isSystem: isSuper` 落库；待审核卡片给一个跳转审核页的入口。两页的硬编码配色已清理为 CSS 变量（如默认开关滑块的 `var(--btn-text)`、徽章的 `var(--destructive)`/`var(--warning-*)`），并统一改用源力 `yl-page-header` 头部骨架、标题不再带 emoji。
 - **`AdminThemeReview`（`/admin/theme-review`，superadmin 专用）**：投稿的审批台。非超管进入即 `navigate('/admin/dashboard', { replace: true })`；分「待审核 / 已通过 / 已驳回」三档，其中**已通过一档把 `status` 缺失的历史主题也算进来**（早于审核流程创建的主题视为已上架）。通过 → 升级为系统主题上架；驳回 → 必须填写 `note`（否则前端拦下），原因回写卡片并通知作者；已通过/已驳回的卡片还提供反向复核（再次驳回 / 再次通过），动作统一走 `POST /api/themes/:id/review`。
 
 ## 扩展与改动须知

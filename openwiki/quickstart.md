@@ -30,10 +30,10 @@ sources:
     resource: repo://src/utils/axiosConfig.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 ---
 
 # 快速上手与任务路由
@@ -68,12 +68,12 @@ server: {
 | `npm run dev` | `vite`，dev server 跑在 `http://localhost:3000`，带 `/api`、`/uploads` 代理与 `no-store` 响应头 | 日常开发（依赖 5000 端口后端） |
 | `npm run build` | `vite build` → `dist/`，`build.target: es2019`，生产环境 `oxc.drop` 去掉 `console`/`debugger` | 发布前、需要真实 Service Worker 行为时 |
 | `npm run preview` | `vite preview`，本地预览 `dist/` 产物 | 冒烟生产构建 |
-| `npm run lint` | `eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0` | 提交前唯一自动化门禁 |
+| `npm run lint` | `eslint . --ext js,jsx --max-warnings 0` | 提交前唯一自动化门禁（规则面已放宽，见下） |
 | `npm run generate-icons` | `node generate-icons.mjs`：用 `sharp` 从 `public/icon.svg` 生成 `icon-192x192.png`、`icon-512x512.png`、`apple-touch-icon.png` | 改了应用图标之后 |
 
 环境要求 Node.js >= 20（`README.md`）。**没有 `npm test`**：`package.json` 不存在 test 脚本，`AGENTS.md` 明确写了 "No test runner is configured"；`playwright` 虽然躺在 `devDependencies` 里，但没有任何脚本或源码引用它。验证策略见[验证与质量门禁](testing/verification-and-quality-gates.md)。
 
-`npm run lint` 使用 ESLint 9 flat config（`eslint.config.js`，忽略 `dist`、`dev-dist`、`node_modules`），并且带 `--max-warnings 0`——任何一条 warning 都会让命令以非零码退出，`no-unused-vars` 这类 warning 级别的规则同样会挡住提交。
+`npm run lint` 使用 ESLint 9 flat config（`eslint.config.js`，忽略 `dist`、`dev-dist`、`node_modules`、`public`），并且带 `--max-warnings 0`——任何 warning 都会以非零码退出。但规则面已刻意放宽：`no-unused-vars`、`react-hooks` 的实验性诊断（`set-state-in-effect` 等）、`exhaustive-deps`、`no-empty`、`no-useless-escape`、`react-refresh/only-export-components` 全部关闭，lint 只拦截语法、`no-undef` 与 react 基础正确性（如 `jsx-key`）问题——风格一致性靠人工评审，完整语义见[验证与质量门禁](testing/verification-and-quality-gates.md)。
 
 ## 五分钟心内模型
 
@@ -137,7 +137,7 @@ src/App.jsx
 | 改 PWA 缓存、离线队列、安装提示、浏览器兼容遮罩 | [PWA、离线缓存与浏览器兼容](systems/pwa-offline-and-compat.md) | workbox 运行时缓存白名单、`offlineQueue` 重放、双层兼容检测 |
 | 改站点名称/Logo/favicon/manifest/公告/隐私条款等静态页 | [运行时站点配置、公告与静态页](systems/site-settings-and-announcements.md) | 站点配置 30 分钟 TTL 缓存与动态 manifest 端点 |
 | 改暗/亮主题、强调色、壁纸、图标引擎与主题审核 | [主题、外观与图标引擎](systems/theming-and-icons.md) | CSS 变量派生、壁纸注入优先级、`misc.logo` 等受保护图标键 |
-| 改后台外壳、角色可见性、待办徽章、任一管理页 | [管理后台：布局、角色可见性与待办](systems/admin-console.md) | `AdminLayout` 二次 verify、creator/admin/superadmin 三档入口 |
+| 改后台外壳、角色可见性、待办徽章、任一管理页 | [管理后台：布局、角色可见性与待办](systems/admin-console.md) | `AdminLayout` 二次 verify、creator/admin/superadmin 三档入口；审核 `/admin/review` 与单集回收站 `/admin/episode-trash` 已收紧为 admin/superadmin（`ADMIN_ROLES_UP`） |
 
 ### 按流程、契约与运维改
 

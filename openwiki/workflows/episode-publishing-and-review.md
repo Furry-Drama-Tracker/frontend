@@ -28,10 +28,10 @@ sources:
     resource: repo://src/hooks/useEpisodes.js
   - id: openwiki-source-ff495d7f24153076143f0ee8
     resource: repo://src/locales/zh.js
-generated: { by: "opencode", at: "2026-11-02T17:44:42.174Z" }
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 ---
 
 # 剧集创作、审核与版本流转
@@ -43,8 +43,8 @@ verified:
 | 页面 / 组件 | 路由 | 前端角色门 | 主要接口 |
 | --- | --- | --- | --- |
 | `AdminEpisodes` | `/admin/episodes` | 仅 `AdminGuard`（四角色都进） | `/api/episodes`、`/api/creator/my-episodes`、`/api/episodes/single/:id`、`/api/episodes/:id/resubmit`、`/api/episodes/upload` |
-| `AdminReview` | `/admin/review` | 组件内要求 `admin` / `superadmin`，否则 `navigate('/admin/dashboard', { replace: true })` | `/api/review/pending`、`/api/review/all`、`/api/review/approve/:id`、`/api/review/reject/:id`、`/api/review/assign-editor/:id`、`/api/review/remove-editor/:id` |
-| `AdminEpisodeTrash` | `/admin/episode-trash` | **无**（入口卡片只对 admin/superadmin 渲染，页面本身不判角色） | `/api/episode-trash`、`/api/episode-trash/:id/versions`、`/api/episode-trash/:id/restore` |
+| `AdminReview` | `/admin/review` | 路由层已收紧为 `ADMIN_ROLES_UP`（admin/superadmin，creator 被 AdminGuard 送回仪表盘）；组件内仍要求 `admin` / `superadmin`，否则 `navigate('/admin/dashboard', { replace: true })` | `/api/review/pending`、`/api/review/all`、`/api/review/approve/:id`、`/api/review/reject/:id`、`/api/review/assign-editor/:id`、`/api/review/remove-editor/:id` |
+| `AdminEpisodeTrash` | `/admin/episode-trash` | 路由层已收紧为 `ADMIN_ROLES_UP`（admin/superadmin，creator 被 AdminGuard 送回仪表盘）；页面本身不判角色 | `/api/episode-trash`、`/api/episode-trash/:id/versions`、`/api/episode-trash/:id/restore` |
 | `EpisodeVersionHistory` | 无独立路由（`AdminEpisodes` 内的 Modal） | 继承父页 | `/api/versions/:episodeId`、`/api/versions/:episodeId/diff/:v1/:v2`、`/api/versions/:episodeId/rollback/:version` |
 
 页面的角色约定与后台整体结构见[后台管理控制台](../systems/admin-console.md)；字段语义（`reviewStatus`、`pendingChanges`、`hasPendingChanges`、`changeSummary`）见[领域模型](../concepts/domain-model.md)。创作者档案的审核（`/admin/creator-profile(s)`）是与剧集审核同构但**独立**的另一条链路，不在本文范围。
@@ -56,8 +56,8 @@ verified:
 ```mermaid
 flowchart TD
     A["admin 对象（AdminLayout 通过 /api/admin/verify 注入 outlet context）"] --> B{"admin.role 是 creator"}
-    B -->|是| C["GET /api/creator/my-episodes?limit=100"]
-    B -->|否| D["GET /api/episodes?limit=100"]
+    B -->|是| C["GET /api/creator/my-episodes（page/limit=100 循环翻页）"]
+    B -->|否| D["GET /api/episodes（page/limit=100 循环翻页）"]
     C --> E["创作者列表：审核状态列 + 重新提交按钮"]
     D --> F["管理员列表：创建者与授权编辑列 + 删除按钮"]
     G["AdminReview"] --> H["GET /api/review/pending 与 /api/review/all"]
@@ -72,7 +72,7 @@ flowchart TD
 1. **改读路径要看两处**。creator 走 `/api/creator/my-episodes`（返回自己的剧集，含 `reviewStatus`、`reviewNote`、`hasPendingChanges`、`pendingChanges`），其他角色走 `/api/episodes`（返回公开列表结构 `episodes[]`）。两处响应形状在页面里被同一个兼容表达式吃掉（`Array.isArray(data) ? data : (data.episodes || data.list || [])`），所以后端改动某一侧的包装字段时页面不会报错，只会静默变空。
 2. **改写路径只需改一处，但要知道权限在后端**。新建、编辑、删除都不按角色分支，创建者/授权编辑的判定完全依赖后端；前端只用操作可见性（`.action-link`）表达"创作者不能删"。
 
-`AdminEpisodes` 用 `limit=100` 一次拉全量且**没有分页**（顶部 `AdminSearchInput` 按 `searchKey` 在本地 `episodes` 数组上过滤并给出候选）。剧集数超过 100 后，列表与搜索都会静默缺失后排数据。后台唯一分页的剧集相关页面是回收站（每页 20 条，`total` / `totalPages` 来自响应）。
+`AdminEpisodes` 已改为**循环翻页拉全量**：按 `page` 从 1 递增、`limit=100` 逐页请求，读响应里的 `totalPages` 决定是否继续（上限 100 页，即约 1 万条），全部累加进同一个数组后再做本地过滤——原先「超过 100 条静默缺失后排数据」的坑已被填掉，但 1 万条以上的剧集仍会缺失，且翻页期间没有加载提示。顶部 `AdminSearchInput` 仍在这份全量数组上按 `searchKey` 本地过滤。后台唯一做服务端分页的剧集相关页面仍是回收站（每页 20 条，`total` / `totalPages` 来自响应）。
 
 表格本身已换成源力样式：`.yl-page-header` 标题区、`.table-wrapper` + `<table className="table">`、`.status-tag` 状态样式，行内操作从 `<button>` 改为 `.action-link` span（`role="button"`、`tabIndex=0`、`Enter` 键同样触发），删除类操作用 `.action-link.action-danger` 区分颜色。
 
@@ -114,7 +114,7 @@ stateDiagram-v2
 
 提交前在客户端做四项校验：封面（`coverImage`）、标题、描述、总集数（勾选"未知集数"时跳过并提交 `totalEpisodes: null`）。请求体只包含内容字段：`category`（数组，来自 `/api/categories` 的 `name` 列表多选）、`tags`、`updateDay`、`premiereDate`（**仅 `status === 'upcoming'` 且未勾"不设首播"时** 才转 `toISOString()`，否则恒为 `null`）、`hideCreator`、`customAuthors`（创作者 `_id` 数组，候选来自 `/api/admin/creators`）、QQ 群两个字段。
 
-创建成功后页面不复位回列表，而是**连锁进入下一步**：用响应体回填编辑表单、打开编辑 Modal、拉取该剧集的单集列表并展开单集表单，单集号默认 `1`、标题默认取 `adminEpisodes.episodePrefix` 插值。这是"建剧集 → 补单集"的引导路径，改动创建流程时要保留这条接力。
+创建成功后页面不复位回列表，而是**连锁进入下一步**：用响应体回填编辑表单、打开编辑 Modal、拉取该剧集的单集列表并展开单集表单，单集号默认 `1`、显示序号 `episodeLabel` 默认空串、标题默认取 `adminEpisodes.episodePrefix` 插值。这是"建剧集 → 补单集"的引导路径，改动创建流程时要保留这条接力。
 
 ### 编辑已通过剧集：changeSummary 与待审修改回填
 
@@ -124,7 +124,7 @@ stateDiagram-v2
 
 ### 单集维护
 
-单集 CRUD 全部内联在 `AdminEpisodes` 里，不走共享 hook：新增 `POST /api/episodes/:id/episodes`、编辑 `PUT /api/episodes/single/:id`、删除 `DELETE /api/episodes/single/:id`（删除前 `window.confirm`）。每次写入后同时刷新单集列表与剧集列表，因为单集操作会改变剧集级计数。
+单集 CRUD 全部内联在 `AdminEpisodes` 里，不走共享 hook：新增 `POST /api/episodes/:id/episodes`、编辑 `PUT /api/episodes/single/:id`、删除 `DELETE /api/episodes/single/:id`（删除前 `window.confirm`）。每次写入后同时刷新单集列表与剧集列表，因为单集操作会改变剧集级计数。表单在「集数」旁新增了「显示序号」（`episodeLabel`，选填、≤40 字符，占位「例如：1（上）、1（番外）」，编辑时读取回退链 `episodeLabelCustom ?? episodeLabel`）；单集列表的序号列按 `episodeLabel || episodeNumber` 渲染，留空显示纯集号。
 
 单集提交有一个必须保持的互斥关系：
 

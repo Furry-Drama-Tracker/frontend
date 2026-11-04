@@ -30,10 +30,10 @@ sources:
     resource: repo://src/utils/apiEndpoints.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 ---
 
 # 通知投递：SSE、轮询与 Web Push
@@ -141,7 +141,7 @@ sequenceDiagram
 
 | `type` | 使用的 metadata | 词条 |
 | --- | --- | --- |
-| `new_episode` | `episodeNumber`；`isPreview` 时再看 `previewUpdateType` 为 `video` / `info` | `notification.newEpisode`、`newEpisodePreview`、`previewVideoUpdate`、`previewInfoUpdate` |
+| `new_episode` | `episodeLabel` 存在时直接用 *Custom 模板；否则 `episodeNumber`，`isPreview` 时再看 `previewUpdateType` 为 `video` / `info` | `notification.newEpisode`、`newEpisodePreview`、`previewVideoUpdate`、`previewInfoUpdate`；自定义集号变体 `newEpisodeCustom`、`newEpisodePreviewCustom`、`previewVideoUpdateCustom`、`previewInfoUpdateCustom` |
 | `status_change` | `status` | `notification.statusChange` |
 | `feedback_reply` | `reply` | `notification.feedbackReply` |
 | `friend_link_apply` | `name` | `notification.friendLinkApply` |
@@ -153,7 +153,7 @@ sequenceDiagram
 两条回退路径保证"后端先上新类型、前端未更新"不会白屏：
 
 - `switch` 未命中任何分支时 `getNotificationMessage` 返回 `null`，`renderNotificationMessage` 改用 `<TranslatableText text={n.message} />` 渲染后端原文——中文环境直接用原文，其它语言走运行时机器翻译。`status_change` 缺 `metadata.status` 时也走这条回退。
-- `new_episode` 缺 `metadata.episodeNumber` 时用 `n.message.match(/第(\d+)集/)` 抽集数。这个正则只认中文，若后端文案改成英文，集数会在文案里留空。
+- `new_episode` 带 `metadata.episodeLabel` 时优先用 `*Custom` 文案模板（自定义序号替换「第 N 集」，配合 `notification.*Custom` 词条）；缺 `metadata.episodeNumber` 时用 `n.message.match(/第(\d+)集/)` 抽集数。这个正则只认中文，若后端文案改成英文，集数会在文案里留空。
 
 **新增通知类型的完整清单**（漏一步就是静默降级）：
 
@@ -163,16 +163,16 @@ sequenceDiagram
 
 ## Web Push：订阅管理在前端，展示不在
 
-`usePushNotifications` 是一个纯"订阅簿记"hook，四个状态：`supported`（`'serviceWorker' in navigator && 'PushManager' in window`）、`permission`（挂载时读 `Notification.permission`）、`subscribed`（挂载时读 `localStorage['push-notifications-enabled'] === 'true'`）、`loading`。
+`usePushNotifications` 是一个纯"订阅簿记"hook，四个状态：`supported`（**双重判定**：`'serviceWorker' in navigator && 'PushManager' in window` 之外，还必须在挂载时请求 `GET /api/notifications/vapid-public-key` 且响应带非空 `publicKey`——无钥或请求失败都置 `false`，服务端未配置 VAPID 时整条推送链路视为不可用）、`permission`（判定支持后读 `Notification.permission`）、`subscribed`（同样仅在判定支持后读 `localStorage['push-notifications-enabled'] === 'true'`）、`loading`。
 
-订阅流程：`Notification.requestPermission()`（非 `granted` 直接返回 `false`）→ `navigator.serviceWorker.ready` → `GET /api/notifications/vapid-public-key` 拿 `publicKey` → `pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(publicKey) })` → `POST /api/notifications/push/subscribe`（体 `{ subscription: subscription.toJSON() }`）→ 本地写 `'true'`。退订流程反向：取当前 `subscription` → `POST /api/notifications/push/unsubscribe`（体 `{ endpoint }`）→ `subscription.unsubscribe()` → 本地写 `'false'`。`urlBase64ToUint8Array` 负责把 URL-safe base64 的公钥补齐 padding、还原 `+`/`/` 再转 `Uint8Array`；这是 `applicationServerKey` 唯一接受的格式。
+订阅流程：`Notification.requestPermission()`（非 `granted` 直接返回 `false`）→ `navigator.serviceWorker.ready` → `GET /api/notifications/vapid-public-key` 拿 `publicKey`（**此次会再校验一次：为空则直接返回 `false`，不发起订阅**）→ `pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(publicKey) })` → `POST /api/notifications/push/subscribe`（体 `{ subscription: subscription.toJSON() }`）→ 本地写 `'true'`。退订流程反向：取当前 `subscription` → `POST /api/notifications/push/unsubscribe`（体 `{ endpoint }`）→ `subscription.unsubscribe()` → 本地写 `'false'`。`urlBase64ToUint8Array` 负责把 URL-safe base64 的公钥补齐 padding、还原 `+`/`/` 再转 `Uint8Array`；这是 `applicationServerKey` 唯一接受的格式。
 
 两处已知的弱点是改这块时必须先知道的：
 
 - **`subscribed` 只是 localStorage 镜像，从不向 `pushManager.getSubscription()` 复核。** 用户在浏览器设置里撤销权限、清站点数据、或在另一台设备退订后，本机 UI 仍会显示"已开启"；`permission` 是实时读的，`subscribed` 不是。
-- **设置页的开关与 hook 状态并不同步。** `Settings` 的 `notification` 项初值来自 `Notification.permission === 'granted'`；关闭时 `handleToggleNotification` 只 `setNotificationEnabled(false)`、**根本没有调用 `unsubscribe()`**（浏览器订阅仍然存在、后端记录仍在）；开启时先 `await push.toggle()` 再 `setNotificationEnabled(push.subscribed)`——读的是本次渲染前的旧值，因此即使订阅成功，UI 也可能显示为关闭。真正可靠的判断是 `localStorage['push-notifications-enabled']` 与后端订阅记录。
+- **设置页的开关与 hook 状态并不同步。** `Settings` 的 `notification` 项初值来自 `Notification.permission === 'granted'`，且在 `push.supported` 为 `false`（浏览器不支持或后端未配 VAPID）时整体禁用；关闭时 `handleToggleNotification` 只 `setNotificationEnabled(false)`、**根本没有调用 `unsubscribe()`**（浏览器订阅仍然存在、后端记录仍在）；开启时先 `await push.toggle()` 再 `setNotificationEnabled(push.subscribed)`——读的是本次渲染前的旧值，因此即使订阅成功，UI 也可能显示为关闭。真正可靠的判断是 `localStorage['push-notifications-enabled']` 与后端订阅记录。
 
-另一个结构性事实：仓库里没有自定义 Service Worker 源文件，SW 由 `vite-plugin-pwa` 生成（`registerType: 'autoUpdate'`，workbox 只配了 `runtimeCaching`，无 `push`/`notificationclick` 处理器），入口只在 `src/main.jsx` 里注册 `virtual:pwa-register`。所以**推送的展示样式与点击后的落地页不由本仓库代码决定**；前端的责任止于"把有效的 `PushSubscription` 交给后端"。
+另一个结构性事实：仓库里没有自定义 Service Worker 源文件，SW 由 `vite-plugin-pwa` 生成（`registerType: 'autoUpdate'`，workbox 的 `runtimeCaching` 已清空、只剩预缓存与 `navigateFallbackDenylist`，无 `push`/`notificationclick` 处理器），入口只在 `src/main.jsx` 里注册 `virtual:pwa-register`。所以**推送的展示样式与点击后的落地页不由本仓库代码决定**；前端的责任止于"把有效的 `PushSubscription` 交给后端"。
 
 ## 配置与运维要点
 
