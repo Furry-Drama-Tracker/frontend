@@ -373,7 +373,8 @@ const EpisodeDetail = ({ user }) => {
   };
   const moveEpPreview = (e) => {
     if (!canShowEpPreview()) return;
-    setEpPreview(prev => (prev ? { ...prev, ...positionEpPreview(e) } : prev));
+    const position = positionEpPreview(e);
+    setEpPreview(prev => (prev ? { ...prev, ...position } : prev));
   };
   const hideEpPreview = () => setEpPreview(null);
 
