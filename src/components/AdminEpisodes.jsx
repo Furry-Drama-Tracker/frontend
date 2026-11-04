@@ -48,6 +48,7 @@ const AdminEpisodes = () => {
   });
   const [newSingleEpisode, setNewSingleEpisode] = useState({
     episodeNumber: 1,
+    episodeLabel: '',
     title: '',
     duration: '',
     platformLinksList: [],
@@ -193,6 +194,7 @@ const AdminEpisodes = () => {
         setShowSingleEpisodeForm(true);
         setNewSingleEpisode({
           episodeNumber: 1,
+          episodeLabel: '',
           title: t('adminEpisodes.episodePrefix', { num: 1 }),
           duration: '',
           platformLinksList: [],
@@ -335,6 +337,7 @@ const AdminEpisodes = () => {
       const nextNum = singleEpisodes.length + 1;
       setNewSingleEpisode({
         episodeNumber: nextNum,
+        episodeLabel: '',
         title: t('adminEpisodes.episodePrefix', { num: nextNum }),
         duration: '',
         platformLinksList: [],
@@ -354,6 +357,7 @@ const AdminEpisodes = () => {
     setEditingSingleEpisode(singleEpisode);
     setNewSingleEpisode({
       episodeNumber: singleEpisode.episodeNumber,
+      episodeLabel: singleEpisode.episodeLabelCustom ?? singleEpisode.episodeLabel ?? '',
       title: singleEpisode.title,
       duration: singleEpisode.duration,
       platformLinksList: toLinksList(singleEpisode.platformLinks),
@@ -748,6 +752,7 @@ const AdminEpisodes = () => {
                 const nextNum = singleEpisodes.length + 1;
                 setNewSingleEpisode({
                   episodeNumber: nextNum,
+                  episodeLabel: '',
                   title: t('adminEpisodes.episodePrefix', { num: nextNum }),
                   duration: '',
                   platformLinksList: [],
@@ -773,6 +778,16 @@ const AdminEpisodes = () => {
                     value={newSingleEpisode.episodeNumber}
                     onChange={(e) => setNewSingleEpisode({...newSingleEpisode, episodeNumber: parseInt(e.target.value) || 1})}
                     required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>{t('adminEpisodes.episodeLabelLabel')} <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>{t('adminEpisodes.episodeLabelHint')}</span></label>
+                  <input
+                    type="text"
+                    value={newSingleEpisode.episodeLabel}
+                    onChange={(e) => setNewSingleEpisode({...newSingleEpisode, episodeLabel: e.target.value})}
+                    placeholder={t('adminEpisodes.episodeLabelPlaceholder')}
+                    maxLength={40}
                   />
                 </div>
                 <div className="form-group">
@@ -925,6 +940,7 @@ const AdminEpisodes = () => {
                       const nextNum = singleEpisodes.length + 1;
                       setNewSingleEpisode({
                         episodeNumber: nextNum,
+                        episodeLabel: '',
                         title: t('adminEpisodes.episodePrefix', { num: nextNum }),
                         duration: '',
                         platformLinksList: [],
@@ -957,7 +973,7 @@ const AdminEpisodes = () => {
               <tbody>
                 {singleEpisodes.map(se => (
                   <tr key={se._id}>
-                    <td>{se.episodeNumber}</td>
+                    <td>{se.episodeLabel || se.episodeNumber}</td>
                     <td>{se.title}</td>
                     <td>
                       {se.duration || '-'}

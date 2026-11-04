@@ -142,6 +142,19 @@ const NavBar = ({ onFeedback }) => {
           const match = n.message?.match(/第(\d+)集/);
           ep = match ? match[1] : '';
         }
+        const customLabel = n.metadata?.episodeLabel;
+        if (customLabel) {
+          if (n.metadata?.isPreview) {
+            if (n.metadata?.previewUpdateType === 'video') {
+              return t('notification.previewVideoUpdateCustom', { title, ep: customLabel });
+            }
+            if (n.metadata?.previewUpdateType === 'info') {
+              return t('notification.previewInfoUpdateCustom', { title, ep: customLabel });
+            }
+            return t('notification.newEpisodePreviewCustom', { title, ep: customLabel });
+          }
+          return t('notification.newEpisodeCustom', { title, ep: customLabel });
+        }
         if (n.metadata?.isPreview) {
           if (n.metadata?.previewUpdateType === 'video') {
             return t('notification.previewVideoUpdate', { title, ep: ep ?? '' });

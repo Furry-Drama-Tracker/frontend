@@ -16,6 +16,7 @@ const SingleEpisodeManager = ({ episode, onClose }) => {
   const [editingSingleEpisode, setEditingSingleEpisode] = useState(null);
   const [newSingleEpisode, setNewSingleEpisode] = useState({
     episodeNumber: 1,
+    episodeLabel: '',
     title: '',
     duration: '',
     platformLinksList: [],
@@ -72,6 +73,7 @@ const SingleEpisodeManager = ({ episode, onClose }) => {
     setEditingSingleEpisode(singleEpisode);
     setNewSingleEpisode({
       episodeNumber: singleEpisode.episodeNumber,
+      episodeLabel: singleEpisode.episodeLabelCustom ?? singleEpisode.episodeLabel ?? '',
       title: singleEpisode.title,
       duration: singleEpisode.duration,
       platformLinksList: toLinksList(singleEpisode.platformLinks),
@@ -105,6 +107,7 @@ const SingleEpisodeManager = ({ episode, onClose }) => {
     try {
       await updateSingleEpisode(singleEpisode._id, {
         episodeNumber: singleEpisode.episodeNumber,
+        episodeLabel: singleEpisode.episodeLabelCustom ?? singleEpisode.episodeLabel ?? '',
         title: singleEpisode.title,
         titleEn: singleEpisode.titleEn,
         titleJa: singleEpisode.titleJa,
@@ -124,6 +127,7 @@ const SingleEpisodeManager = ({ episode, onClose }) => {
     const nextNum = singleEpisodes.length + 1;
     setNewSingleEpisode({
       episodeNumber: nextNum,
+      episodeLabel: '',
       title: t('calendar.episodeNum', { num: nextNum }),
       duration: '',
       platformLinksList: [],
@@ -227,6 +231,25 @@ const SingleEpisodeManager = ({ episode, onClose }) => {
                 value={newSingleEpisode.episodeNumber}
                 onChange={(e) => setNewSingleEpisode({...newSingleEpisode, episodeNumber: parseInt(e.target.value) || 1})}
                 required
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  borderRadius: '6px',
+                  border: '1px solid var(--border)',
+                  backgroundColor: 'var(--hover-bg-strong)',
+                  color: 'var(--text-light)',
+                  fontSize: '14px'
+                }}
+              />
+            </div>
+            <div style={{ marginBottom: '12px' }}>
+              <label style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>{t('singleEpisode.episodeLabel')} <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>{t('singleEpisode.episodeLabelHint')}</span></label>
+              <input
+                type="text"
+                value={newSingleEpisode.episodeLabel}
+                onChange={(e) => setNewSingleEpisode({...newSingleEpisode, episodeLabel: e.target.value})}
+                placeholder={t('singleEpisode.episodeLabelPlaceholder')}
+                maxLength={40}
                 style={{
                   width: '100%',
                   padding: '8px 12px',
@@ -488,7 +511,7 @@ const SingleEpisodeManager = ({ episode, onClose }) => {
                 padding: '15px'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                  <h5 style={{ margin: 0 }}>{t('calendar.episodeNum', { num: singleEpisode.episodeNumber })}</h5>
+                  <h5 style={{ margin: 0 }}>{singleEpisode.episodeLabel || t('calendar.episodeNum', { num: singleEpisode.episodeNumber })}</h5>
                   <div style={{ display: 'flex', gap: '8px' }}>
                     {singleEpisode.isUpcoming && (
                       <button

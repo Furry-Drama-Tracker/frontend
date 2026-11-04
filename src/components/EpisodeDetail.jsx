@@ -655,7 +655,7 @@ const EpisodeDetail = ({ user }) => {
                       minWidth: '32px', height: '24px', padding: '0 8px', borderRadius: '6px',
                       background: 'var(--primary-bg)', color: 'var(--primary-light)',
                       border: '1px solid var(--primary-border)', fontSize: '13px', fontWeight: 600, margin: 0
-                    }}>{t('episode.epPrefix')}{singleEpisode.episodeNumber}{t('episode.epSuffix')}</span>
+                    }}>{singleEpisode.episodeLabel || `${t('episode.epPrefix')}${singleEpisode.episodeNumber}${t('episode.epSuffix')}`}</span>
                     <span style={{ fontSize: '15px', fontWeight: 600, color: 'var(--foreground)', overflow: 'hidden', textOverflow: 'ellipsis' }}>{getLocalizedTitle(singleEpisode)}</span>
                     {singleEpisode.isScheduled && singleEpisode.scheduledDate && (
                       <span style={{
@@ -794,7 +794,7 @@ const EpisodeDetail = ({ user }) => {
               padding: '16px', borderBottom: '1px solid var(--border)'
             }}>
               <h3 style={{margin: 0, color: 'var(--foreground)'}}>
-                {t('episode.epPrefix')}{watchModal.episodeNumber}{t('episode.epSuffix')} - {getLocalizedTitle(watchModal)}
+                {watchModal.episodeLabel || `${t('episode.epPrefix')}${watchModal.episodeNumber}${t('episode.epSuffix')}`} - {getLocalizedTitle(watchModal)}
               </h3>
               <button onClick={() => closeWatchModal()} aria-label={t('common.close')} style={{
                 background: 'none', border: 'none', color: 'var(--foreground)',
@@ -925,10 +925,10 @@ const EpisodeDetail = ({ user }) => {
           <div className="ep-preview-body">
             <div className="ep-preview-title">
               <span className="ep-preview-tag">
-                {t('episode.epPrefix')}{epPreview.se.episodeNumber}{t('episode.epSuffix')}
+                {epPreview.se.episodeLabel || `${t('episode.epPrefix')}${epPreview.se.episodeNumber}${t('episode.epSuffix')}`}
               </span>
               {(() => {
-                const label = `${t('episode.epPrefix')}${epPreview.se.episodeNumber}${t('episode.epSuffix')}`;
+                const label = epPreview.se.episodeLabel || `${t('episode.epPrefix')}${epPreview.se.episodeNumber}${t('episode.epSuffix')}`;
                 const title = getLocalizedTitle(epPreview.se) || '';
                 return title && title !== label ? <span> {title}</span> : null;
               })()}
