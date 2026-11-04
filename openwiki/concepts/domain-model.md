@@ -58,10 +58,12 @@ sources:
     resource: repo://src/hooks/useEpisodes.js
   - id: openwiki-source-8a340c1c334700f536c603ec
     resource: repo://src/hooks/useNotifications.js
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+  - id: openwiki-source-ff495d7f24153076143f0ee8
+    resource: repo://src/locales/zh.js
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 ---
 
 # 领域模型与术语表
@@ -142,6 +144,7 @@ erDiagram
 | 字段 | 类型 | 语义 |
 | --- | --- | --- |
 | `episodeNumber` | number | 集号，是「已看集数」「新集提示」的全部比较基准 |
+| `episodeLabel` | string（≤40 字符） | **自定义显示序号**（如「1（上）」「番外」），选填；留空时展示回退 `episodeNumber`。编辑表单的读取回退链是 `episodeLabelCustom ?? episodeLabel ?? ''`（`episodeLabelCustom` 是后端给创作者留的自定义值字段），所有展示位统一按 `episodeLabel || episodeNumber` 渲染 |
 | `title` / `titleEn` | string | 集标题；多语言回退同剧集。转正时的更新请求还会把已有的 `titleJa` 原样透传，表单本身不编辑它 |
 | `duration` | string | 时长，自由文本 |
 | `platformLinks` | `{ 平台名: url }` | 跳转链接映射；表单内部用 `{name, url}` 列表编辑，提交时转成对象，读取时再转回列表 |
@@ -256,7 +259,7 @@ stateDiagram-v2
 
 | `type` | `metadata` 关键字段 | 文案键 |
 | --- | --- | --- |
-| `new_episode` | `episodeNumber`、`isPreview`、`previewUpdateType`（`video` / `info`） | `notification.newEpisode`、`newEpisodePreview`、`previewVideoUpdate`、`previewInfoUpdate` |
+| `new_episode` | `episodeNumber`、`episodeLabel`、`isPreview`、`previewUpdateType`（`video` / `info`） | `notification.newEpisode`、`newEpisodePreview`、`previewVideoUpdate`、`previewInfoUpdate`；`metadata.episodeLabel` 存在时改用 `newEpisodeCustom` 系模板 |
 | `status_change` | `status` | `notification.statusChange` |
 | `review_result` | `status`、`note` | `notification.reviewApproved`、`reviewRejected` |
 | `feedback_reply` | `reply` | `notification.feedbackReply` |
@@ -264,7 +267,7 @@ stateDiagram-v2
 | `report_result` | `status`（`resolved` 表示采纳） | `notification.reportResult` |
 | `reminder` | 无 | `notification.reminder` |
 
-- `new_episode` 有兼容逻辑：`metadata.episodeNumber` 缺失时从 `message` 里正则抓「第 N 集」。
+- `new_episode` 有兼容逻辑：`metadata.episodeLabel` 存在时优先走 `*Custom` 文案模板（用自定义序号替换「第 N 集」）；否则 `metadata.episodeNumber` 缺失时从 `message` 里正则抓「第 N 集」。
 - **未读数只有一个真源**：`GET /api/notifications/unread-count` 每 60 秒轮询一次，SSE 消息里携带的 `unreadCount` 直接覆盖本地值（不再按 `type === 'new'` 自增），避免虚增。
 - SSE 需要先 `GET /api/auth/sse-ticket` 换票据再连 `/api/notifications/stream?ticket=...`，断线最多重连 5 次，退避从 5 秒指数增长到 60 秒上限。
 - 提醒订阅是独立端点：`POST /api/notifications/subscribe-reminder`（`{ episodeId }`），用于更新日历里「更新提醒」。
@@ -307,7 +310,7 @@ stateDiagram-v2
 - 注册表 `ICON_COMPONENT_KEYS` 是唯一的真源，按前缀分五组：`nav.*`（导航入口）、`action.*`（按钮动作）、`status.*`（播出状态徽章）、`tab.*`（首页栏目标题）、`misc.*`（站点身份与零散图示）。主题编辑器 `ThemeEditorModal`（管理后台 `/admin/themes` 与用户主题工坊共用）的图标选择器过滤掉保护名单后逐项渲染这个数组，`IconLocationPreview` 也按 key 取位置说明；新增可换图位置必须同时加入该数组并在使用点补 `<Icon name=... />`，否则无法被绑定。
 - 运行时映射是两层合成：全局映射（`GET /api/icons/list` 的 `mappings`）+ 主题图标覆盖（登录取 `my/selection` 的 `iconsTheme.icons`，未登录取 `/api/themes/active` 的 `theme.icons`）。覆盖是逐键替换，不是整体替换。
 - **保护名单 `THEME_PROTECTED_ICON_KEYS = ['misc.logo']`**：主题不得覆盖站点 Logo，前端合成时跳过、后端同样校验拒绝。这是唯一一类「主题不能改」的组件键。
-- SVG 会先清洗再内联渲染：去掉 XML 声明/DOCTYPE、`script`/`foreignObject`/`iframe`/`object`/`embed`/`link` 节点、`on*` 事件属性与 `javascript:` 协议，并把显式 `fill`/`stroke` 颜色统一改成 `currentColor`，使图标跟随主题色。清洗失败或加载失败的键回退到调用方给的 `fallback`（通常是 emoji）。
+- SVG 会先清洗再内联渲染：去掉 XML 声明/DOCTYPE、`script`/`style`/`foreignObject`/`iframe`/`object`/`embed`/`link`/`animate`/`set`/`discard` 节点、`on*` 事件属性，并按协议移除 `href`/`xlink:href`/`src` 上的 `javascript:`/`vbscript:`/`data:text/html` 值（含未加引号的属性写法），再把显式 `fill`/`stroke` 颜色统一改成 `currentColor`，使图标跟随主题色。清洗失败或加载失败的键回退到调用方给的 `fallback`（通常是 emoji）。
 - 主题选择变化通过 `window` 事件 `THEME_SELECTION_CHANGED_EVENT`（`'theme-selection-changed'`）广播，`IconProvider` 监听后重拉覆盖；增删图标后管理页调用 `refreshIcons()` 重建缓存。
 
 ## 站点内容键 SiteContent
@@ -352,6 +355,7 @@ stateDiagram-v2
 | --- | --- | --- | --- |
 | 剧集 | Episode | `episode`、`/api/episodes` | — |
 | 单集 | Single episode | `episodeNumber`、`/api/episodes/:id/episodes` | `singleEpisode.title` |
+| 显示序号 | Custom episode label | `episodeLabel`、`episodeLabelCustom`（读取回退链） | `singleEpisode.episodeLabel`、`adminEpisodes.episodeLabelLabel` |
 | 预告集 / 转正 | Preview episode / publish | `isScheduled`、`isUpcoming`、`scheduledDate` | `singleEpisode.setPreview`、`markPublished` |
 | 连载中 / 已完结 / 即将上映 | Ongoing / Completed / Upcoming | `status` | `home.statusOngoing`、`statusCompleted`、`statusUpcoming` |
 | 总集数未知 | Unknown total episodes | `totalEpisodes: null` | `adminEpisodes.unknownTotalEpisodes` |

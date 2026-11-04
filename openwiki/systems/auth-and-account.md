@@ -40,12 +40,14 @@ sources:
     resource: repo://src/main.jsx
   - id: openwiki-source-37ca2d167bb7e856d4f1a11c
     resource: repo://src/utils/axiosConfig.js
+  - id: openwiki-source-0772ae522304487a6af3bee6
+    resource: repo://src/utils/clearClientData.js
   - id: openwiki-source-4846c3b27b770d3975fb2c4e
     resource: repo://src/utils/deviceInfo.js
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 ---
 
 # 认证与账号体系
@@ -88,7 +90,7 @@ verified:
 - `getAuthHeaders()` **恒返回空对象**，保留它只是历史兼容——凭据由 `axios.defaults.withCredentials` 自动携带的 httpOnly cookie 承担。账号页组件普遍把它透传给 axios，看起来像在加鉴权头，实际不起作用。
 - `login(userData)` 只做两件事：`setUser`，以及把快照子集写进 `localStorage.user`（`_id`、`accountId`、`username`、`isEmailVerified`、`role`、`avatar`）。注意**快照里没有 email**：`AccountSecurity` 显示的 `user.email` 来自 `/api/auth/me` 或登录响应，而不是本地快照。
 - `updateUser(next)` 支持函数式更新，并在结果非空时重写快照。`TwoFactorPage`、`ForceEmailChange`、`Profile` 都靠它同步 `twoFactorEnabled`、`forceEmailChange`、邮箱变更等字段。
-- `logout()` 先 `POST /api/auth/logout`，**无论成败**都清空 `user` 与 `localStorage.user`，且不负责跳转；调用方（`NavBar` 的登出按钮、`ForceEmailChange` 成功页）自己决定去哪。
+- `logout()` 先 `POST /api/auth/logout`，**无论成败**都清空 `user`，再 `await clearClientData()` 清掉 `localStorage` 的 `user`/`offline_queue` 与全部 Cache Storage（与后台登出共用同一工具），且不负责跳转；调用方（`NavBar` 的登出按钮、`ForceEmailChange` 成功页）自己决定去哪。
 
 `initializing` 是渲染门禁：`AppContent` 在它为真时只渲染加载占位，所以任何账号页面都要等一次 `/api/auth/me` 结束才会出现。快照字段与 `localStorage` 侧的完整清单见[状态管理与持久化](../architecture/state-and-persistence.md)。
 
@@ -320,8 +322,8 @@ sequenceDiagram
 
 1. `GET /api/auth/deletion-status`，只有 `requested` 为真才渲染倒计时面板。
 2. 未申请时点「申请注销」进入步骤 0：列出冷却期、可随时取消、7 天后永久删除等条款；点「我已了解」进入步骤 1。
-3. 步骤 1 要求输入登录密码做身份确认。**这一步实际调用的是 `POST /api/auth/login`（`{ email, password }`，不带 altcha、不带 deviceInfo）**，并把**任何**失败都显示为「密码错误」。因此若账号开启了 2FA，后端会返回 `need2FA`（属于 2xx，不是错误），前端会把它当成密码验证通过而直接放行到步骤 2——这个「重认证」并不构成真正的二次确认。
-4. 步骤 2 是最终确认，`POST /api/auth/request-deletion`（无请求体），成功后用响应里的 `deletionRequestedAt`/`deleteAt` 渲染倒计时面板。
+3. 步骤 1 要求输入登录密码。**前端不再自行调用登录端点验证**：旧实现「先 `POST /api/auth/login` 自验」在邮箱变更后会拿旧邮箱失真，且 2FA 账号的 `need2FA`（2xx）会被误当作验证通过，已被整体移除；现在点「验证密码」只是本地把流程推进到步骤 2（仅要求密码非空），密码本身留待下一步交给服务端。
+4. 步骤 2 是最终确认，`POST /api/auth/request-deletion`，**请求体携带 `{ password }`**，由服务端校验密码；校验失败时前端显示后端 `message` 并把流程回退到步骤 1，成功后用响应里的 `deletionRequestedAt`/`deleteAt` 渲染倒计时面板。
 5. 倒计时面板用 `formatCountdown` 把 `deleteAt` 差值格式化为「天+小时 / 小时+分钟 / 分钟」，已过期显示「即将删除」，并可用 `POST /api/auth/cancel-deletion` 撤销（成功后本地清空状态，回到申请面板）。
 
 ## 已知粗糙处与改动检查清单
@@ -329,7 +331,7 @@ sequenceDiagram
 | 现象 | 位置 | 影响 |
 | --- | --- | --- |
 | `showReset` 分支不可达、`resetToken` 从未赋值 | `Login` | 内嵌重置流程是死代码，改动请去 `ResetPassword` |
-| 注销的密码验证复用登录端点、不区分 `need2FA` | `DeleteAccount` | 2FA 账号的「密码验证」形同虚设；同时会顺带触发一次登录成功响应（被忽略） |
+| 注销密码改由服务端校验 | `DeleteAccount` | 旧「复用 login 端点自验」的 2FA 误放行缺陷已修复：`password` 随 `request-deletion` 提交，校验失败回退步骤 1；改这块时不要再引入前端自验 |
 | 回前台的 `/api/auth/me` 响应被丢弃 | `AuthContext` | 长时间挂起后回前台，`user` 的角色/邮箱变化要等下一次刷新或重新挂载才反映 |
 | 心跳不补发 | `AuthContext` | 后台标签页休眠时可能出现超过 5 分钟的空档 |
 | 「登出其他设备」后不重新拉取 | `UserDevices` | 列表与真实会话状态短暂不一致 |

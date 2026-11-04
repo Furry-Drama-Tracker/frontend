@@ -1,18 +1,22 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:ea05946717b069f06cd05c9101a534a1046d010c15caff0088a02f6a24236451",
+  "pageVersion": "sha256:1359e96076eeed371fedf7e21265caacae21d5abaea074413111c25878dd2413",
   "claims": [
     {
       "id": "claim_85060bcca16a45068377512cdb8ceaa0",
-      "statement": "AuthContext 不持有任何 token：getAuthHeaders() 恒返回空对象，凭据由 httpOnly cookie 自动携带；login() 只设置内存 user 并把 _id/accountId/username/isEmailVerified/role/avatar 子集写入 localStorage.user（不含 email），updateUser() 支持函数式更新并重写快照，logout() 无论登出请求成败都清空 state 与快照且不负责跳转。",
+      "statement": "AuthContext 不持有任何 token：getAuthHeaders() 恒返回空对象，凭据由 httpOnly cookie 自动携带；login() 只设置内存 user 并把 _id/accountId/username/isEmailVerified/role/avatar 子集写入 localStorage.user（不含 email），updateUser() 支持函数式更新并重写快照，logout() 无论登出请求成败都清空 state、经 clearClientData() 清掉 localStorage 快照与全部 Cache Storage（与后台登出共用）且不负责跳转。",
       "evidence": [
         {
           "resource": "repo://src/contexts/AuthContext.jsx#L12-L28",
-          "version": "repo-lines-v1:sha256:86cf80347e0e318eaf8dd16a051fcf888d216fc214aa44f518544c7ae80cda61:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiYjllOTg4YjdjOTA2ZWY4NWQ5Nzc1NzYxZjc4ZGUzN2I3ZjMwNmQyMzRmMGVkMGU5M2Q2M2VlZWQ4ODMxN2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRmZDA2ZTliOTk3MjI4MjY2MDkwMjYzOTEwMWRkMDFjYjhiYmFlOTYxMjAwMmE1YTRlNmM1MDMzZGJlMGU1YjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRmNzAzYzZlNzc0ZTMxOTA2Y2Y1ZjU4NzZlYjhkMTgwYTZlNDY5MDQwNzRlMzUyZWFlYTUwMjVlYjkyMmY3ODEifQ"
+          "version": "repo-lines-v1:sha256:72c14e11ae3c8f32d6cdc6f68fc6de04c232815056eb5dc1c767249a6fc73d80:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZlMTk4NzE1NmI2Y2ZmOTFkNTAwMGEwN2VjNzNmYWU4NjVlNWI1NzUzNDE2NTdhYTVjNTk2NzE1ZjUyNjc3NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjOGUzYWZhYzE5NDRmY2JlNGVlYmFkNjViOWVhZWM5NmIwMWUxZjVhOWEwODRhNmU1MmUxMDVjMDJhN2E1NWEifQ"
         },
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L149-L172",
-          "version": "repo-lines-v1:sha256:3f44d3d72de9087dc7b1d7aee3ba0e95f767413a04ee2fc9da744d039031bbc5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzOWRkOWZkN2Y4MzI0OGY4OGI2NzgwYTAyZjE2ZDA3OWExZjNlMmIyODU0NzkzYzFiMzNkNWEyZGFhMmJiOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjYTQzM2ViZjc2NmYwODBjZWZiYTM5ODFlOTM4N2M1ZWE1YjFmYTcwNmJhOTlmNjgyMjU0ODE2ZmJjZGI4OWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMwMmQyYzA1MTUyOTUyNzgxMTBiMDQ1MjQ1MmJhZTJhNTk3ZWZhMTFiNzI3YmRjYzQ2Nzk5NjczZjI4ZjQ0MGYifQ"
+          "resource": "repo://src/contexts/AuthContext.jsx#L156-L161",
+          "version": "repo-lines-v1:sha256:9e839ff4e5098d3fdec5b6bec275c5fbba648dc3505de1be7567ee182d55efb7:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjEyMDNiMTQxNGFmNzMyNzc3NTRjYjk4MTY2OWM0MTBkMTMwMTdjMGY4YmU4OGIyZjJkMWJiNzcwYmMxYTYyOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmI4NDI1ZWIwM2M1YTc0MjI4ZDZhYTczYWNkM2QzNjFlZmMzZDQ1NDhiOTMyNDM0M2QzN2YwYjNmYmE4MDc0NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjQyZWY4M2RkZmJhNzc4MzkwYzFkMjk1ZGM2NjE0MGZmMDcxYzBhYWJjNmVjYzdjZGE5ZGEwMzQ3MmVlYzExNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGMwNmI3YjZmNTEyNWI3MGQyOGJhYmU2YTQ4Nzg0ZjEwZmY4ZThiOWY5NGIxYWFiMGJkYTlkNTE2YWUxZmZmZCJ9"
+        },
+        {
+          "resource": "repo://src/utils/clearClientData.js#L1-L18",
+          "version": "repo-lines-v1:sha256:565ac99a2c6febc146e348985629ec76630308e9030c6f6fa80ea7f279d3b118:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlMDIzZmZkNDA2MjI2YjIzNWYwOTk4Mjc3ZTNmYjI5ZjllOTA0YzBjMzg2YWViZjBiMWQwMmI2ZjI0NTE5ZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiZTg4NzhkOWI3ZTcwMThmZjZkOTFmNjQ1OGQyOWU2YTdmNTMxODJjZjRhYzEyZDk5NmNlNTIwYTI3NWI1YjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
@@ -21,7 +25,7 @@
       "statement": "AuthProvider 挂载时的初始化顺序是 fetchCsrfToken() → GET /api/auth/me（带 _t 与 skipRedirect）→ 成功后 POST /api/user-sessions/create（载荷 screenWidth/screenHeight/language，失败 1 秒后重试一次）；无本地快照时仍会请求 me 以靠 cookie 恢复会话，me 失败则删除快照并置 user=null，全程用 AbortController 防 StrictMode 双挂载竞态。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L29-L88",
+          "resource": "repo://src/contexts/AuthContext.jsx#L30-L89",
           "version": "repo-lines-v1:sha256:4ad9cb70ec8312b52ac305ac3bc22afaa81af97b36a1b96c11c54bfb2e2389f3:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzZjljYzdkYTdhZjU5YTMwODc2NDRhMjI4ZTZmNGI3NjhkMzRiZWQ5ZmZkZWE0ZTAwZDE2MWZmM2IzMGI4YzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1NDNiNTg2OWZjOGY3OWQzMTc0Y2QyMDVjYmU1ODA0MDdlYjdkMmM0NWEyYTBkMDJhNWFiMDM3NTNkZjYxOTkifQ"
         }
       ]
@@ -31,7 +35,7 @@
       "statement": "若 localStorage.user 存在但不是合法 JSON，初始化只删除快照并立即结束，不请求 /api/auth/me，initializing 直接置 false。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L74-L85",
+          "resource": "repo://src/contexts/AuthContext.jsx#L75-L86",
           "version": "repo-lines-v1:sha256:e524105b1ae4293f65c2edf50bf87092dfc774c2ddeae1ee8cc71102a77e8d1a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2ZTFhMTZiYmUyZDRlNDMwMTg5MzBiMjQ3MGQ2NTA0MTBlMjhjOWJlZTBjNzU0YWM2OWQ2ODdmOGZhMGM4NWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2ZWY0NmVmNzI5M2YzMTkwZjVlN2YyMDMwNmMwNDI0NDk2ZDQ4NzQ1Y2U5ZmVkN2U4N2I3YzcxMzM4YTdkZjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZkODZhYjZmMTMzMTJhMDI0MGY2OGVlNTA4N2IwNjBlMGYxZDk0NmFjZjkwYjE4ZjczOWExZDkyMjk0ZDNmZDMifQ"
         }
       ]
@@ -41,7 +45,7 @@
       "statement": "仅当 user 非空时才注册 5 分钟 setInterval 心跳 POST /api/user-sessions/heartbeat，页面 visibilityState 为 hidden 时整次跳过、挂载时不立即发送、回到前台也不补发，心跳失败被静默忽略。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L114-L125",
+          "resource": "repo://src/contexts/AuthContext.jsx#L115-L126",
           "version": "repo-lines-v1:sha256:3baf31a2fb507f184239caa7f4d931ba2a115987b4379831ea8fa7bddf33df00:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0YzFjNjc3MmRiNWY0ODViNDVmYzVjYTE1ZTkyOTk4N2E4MDFmZTJjOTNiNzExNmNkODRhZTI5MWJhMjZmNDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3YjBkMmU3NTE5ODczOGEwZTAyNzA3MmM2NmNkZDE5YmMxNWRkN2I2MGZmYmQzMjE2YzMwYTQ3NjBlZmNlNDUifQ"
         }
       ]
@@ -51,7 +55,7 @@
       "statement": "visibilitychange 回到 visible 时会重新请求 GET /api/auth/me 并调用 fetchCsrfToken()，但 me 的响应被直接丢弃（仅 catch），因此不会更新 React 侧 user，实际收益是刷新 CSRF token 与触发拦截器的续期副作用。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L126-L139",
+          "resource": "repo://src/contexts/AuthContext.jsx#L127-L140",
           "version": "repo-lines-v1:sha256:03187f84f4d3a9f444ab02eb9e2e402eda8284413f52769ec3557798b9b4c0a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNjNjIxOTRiYTM3YmM1NTg1MDIzMmNhYzYxZWY4NGM4NzA2ZDg0ODA2ZmNhNGNlNzQ1N2UwNDQ1ODU4MWE0ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5NDgxNTkwMzc0NDhhNTk1NmY2YjI1OWM4MTMxZGI2YzM5NDJjN2RlNDlhNDQwMTMwZjBhYWM2YWUyYjJlNzMifQ"
         }
       ]
@@ -61,11 +65,11 @@
       "statement": "AuthContext 通过三个自定义事件与 axios 层同步：auth:session-expired（detail.type === 'user'）置空 user、auth:force-email-change 给 user 打 forceEmailChange、auth:token-refreshed 用 detail.user 合并快照；并监听原生 online 动态导入 offlineQueue 来回放离线写。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L140-L148",
+          "resource": "repo://src/contexts/AuthContext.jsx#L141-L149",
           "version": "repo-lines-v1:sha256:c1b97442cfbeeb48be7c24f90bc726f28c02a63d01bfc22571ab6b5ccd463ece:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk2NmZiZmE4ODk5OGRhNzQ2NTZjNTAxOTQ5NTZjMjVmMDg0OTQ1NzY2MGMwMDlmZTYzZDFlOWZhOWRjOTMxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWEyNTYxMTE3ZTM4NTM0MTE2NTZmMzllNmY4NTliZTcxNWM1MzNjNzM3MDIzNzBhMjg1MWUyNTI5NmVmN2YzYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWI5YzMyNGZhN2IwYTIzM2I0NGY3NmE1NzZmMjJmYzhlZDQ4YzE3YmRiZWEzMDcwNDI4MTMwMDMzNjg1Y2QyNSJ9"
         },
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L89-L113",
+          "resource": "repo://src/contexts/AuthContext.jsx#L90-L114",
           "version": "repo-lines-v1:sha256:0d9ae3d7b450f463fae2bc907c9b535b8f9d63019a0ab4468cae61ea29df192c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZkODZhYjZmMTMzMTJhMDI0MGY2OGVlNTA4N2IwNjBlMGYxZDk0NmFjZjkwYjE4ZjczOWExZDkyMjk0ZDNmZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjZWZmMzM3Nzg0YjFhNzllMTQwM2UzMDFhY2E1Mzc4NzlhNjJkMmFjMTk1ODgzZTAwODQ1MTAzNzk1OGYyYjUifQ"
         }
       ]
@@ -281,7 +285,7 @@
           "version": "repo-lines-v1:sha256:75cd55a50200257ce3a3687ad2e72399a116adfc52bf752096b1d3ffd6c280df:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM4OTllMGE4NzNkZTEzNGZkYTNhM2U5NGIxZTU0NDgzNjQyNjI1MzkzODAxMjVmMWE2ODRhZDM0YWYzMWFkZmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmMzMyMDQ0OWI2ZmZkZDk0MWRlMDY2MzkzNWFlNDFiMGRmODU1NDg0ZTZlZTY1YmIyYTVhNWNmMTM5MDZmMjIifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L111-L122",
+          "resource": "repo://src/utils/axiosConfig.js#L110-L121",
           "version": "repo-lines-v1:sha256:417ab96f193fa80436ea6e0e5197f5dba1bf2a87e5fc812c5c714f3793c4207e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhODY0OWRiMjkzYTM4MGE2MzNjNGUzN2IyYTFlYjY1YTUwNWRiMDAzOTVjM2Y5NTllN2VhZjMwZGU2NjNjNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1OTA2NzBmNTNiNDAxOGRiNGMxNDZiOWM5NmE5ZWMwZDg4ODI4MzNiZWEwZGY3MzFiYTZlYzQ4YjE4NGZkOGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4NzVhMGZhMDQ5OTFlNTg0NTY2OWY0YTk1ZmYxMmViM2Q2ZTg1NDExOWRjODY5NzZjMDA0MTdjZmU4OWY0ZTcifQ"
         }
       ]
@@ -330,19 +334,19 @@
     },
     {
       "id": "claim_8655ad437f414e19986837f5c77f4ff0",
-      "statement": "账号注销是三步对话：风险清单 → 输入密码「验证」（实际调用 POST /api/auth/login，只带 email 与 password，不带 altcha/deviceInfo，任何失败都显示「密码错误」，因此 need2FA 这类 2xx 响应会被当成验证通过）→ 最终确认后 POST /api/auth/request-deletion；倒计时面板由 deletion-status 返回的 deleteAt 驱动，可用 cancel-deletion 撤销。",
+      "statement": "账号注销是三步对话：风险清单 → 输入密码（前端不再调 POST /api/auth/login 自验——旧实现在邮箱变更后会失真且 2FA 账号会被 need2FA 误放行，已移除；「验证密码」仅本地推进到下一步）→ 最终确认后 POST /api/auth/request-deletion 且请求体携带 { password } 由服务端校验，校验失败显示错误并回退步骤 1；倒计时面板由 deletion-status/request-deletion 返回的 deleteAt 驱动，可用 cancel-deletion 撤销。",
       "evidence": [
         {
-          "resource": "repo://src/components/DeleteAccount.jsx#L183-L216",
-          "version": "repo-lines-v1:sha256:8ea7ef9abf3d6fe3c0f85ec14012ac875c5cace9256b30827e110ec5769e8e5b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlMGQ3NzczNmFkYmU1Zjg5MjU1MTA0NWYxNGVhMWVhZGY5NDgwMjhlMTk1MjJmNjViYjg0OWFkMzg3ZjM2MmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTAwNTlmNDhjYTU2ZjZiNTBmZGM2OWExNWM3YjdlNjMzY2MxZTEzNjA4ZGFhNTBlZDkyM2JlYjBmNjM2ZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY0YzA0OWYzZTU4OWFkOTNjNzgyNTY2NDU5NzczNzZmYTI0Y2U4MGJlMmE0MTg1YTkwMzE1ZjYyZDY4NTgwMjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyYjc0MzAyNzA5ODc0NTI5MTllMzg2MDdhOTlkZDI2MzVkMDU4MzVlZDVmMGNhZjFiYmVkNTBkOTUwYjAzMjMifQ"
+          "resource": "repo://src/components/DeleteAccount.jsx#L181-L194",
+          "version": "repo-lines-v1:sha256:53119ea856f1947edaee673f4ba18501f1e8a25856465cdb00c420173ee0d358:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzNWM3MTJhYjZjMTIwZjRlNWE0MWU0MjEyNThlNTU4ZTE2ODUwMGM0ZmYwYWViZDU2OWM1MjgxNTU5YzYxODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1ODFlNGYzNjBiYWVhZjY5YTUwNmIxZDIxODlkMzIwODYxNGIxYjM1NmM2N2Y0NDk4NGM4NTdiNDY4NGU5ZmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM2NTAyM2I0OWI1Y2NlZGNjNDQ5ZjdhMDYxZDA3ZDc1MjVjNGRhN2ZhYTdhZGI3ZjdkOGY0NWNmNWRmNjg5ZjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ2YjU1MjZkZGM5NzQ5NDMzMzQwYjdkYjcwMzM4NzkyNWRmYzE1OTZmNjE5ZWZmNjAzYWU4NmMxMDZlODk2NjEifQ"
         },
         {
-          "resource": "repo://src/components/DeleteAccount.jsx#L23-L64",
-          "version": "repo-lines-v1:sha256:1fcdd4aa66b0aecc5d8f32897f713fe5b3b0a35214fd01b7981e29178bfc38e3:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI4MTAwZjE3OWI1ZTg3M2I2ZjQ3OGY1ZTc3NTI3OTRmZTNhN2UwNzMwODk2ODlkMjJhZGQzNTEwNDkyYTk4YmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFmODgzYjRhZmUxYmNhMDRhNTI3YzYzYWYzZjQ4YmNiMjFjMTM4OGMyZjMzOTQ0ZDFiMzU5ZDFiNTY2ZGQ3ZjMifQ"
+          "resource": "repo://src/components/DeleteAccount.jsx#L195-L215",
+          "version": "repo-lines-v1:sha256:162d655896a189f1c36329bbb6ff31c0ee55ed8ff704492401d4839769dd9cdc:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlN2Y2NGNkYmIyYmY3ZTM2MzEwNTZlOWZhY2RmOTc4OGIxNzdmMzc2NDI0ODhmNWVkYWFiZWQ2MGI2NzQxOGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMjE1ZmQwM2NmYzJiZWViZjgwNGExN2FjNWU5NDc5NTFmN2NkMmRjMDU2MDUyMjQ5OWM2MDZmZGJjZDcxODUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY5YzYyZjI4MGExOWJkNWEyNzkxNzhkODE3NzkzMDE5MDBmOWVhOTc4MTgwNzk5MWY2NzMzZGU2Yzc0NTg2NjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwYzZkMmM1NWIxZmU5ODZiYjMwOGMwMGY5ODNhMjM0NjUyNDg1NGQ0NzYxNTk2Njk4YzljNTNjMWFlNjUyYjYifQ"
         },
         {
-          "resource": "repo://src/components/DeleteAccount.jsx#L65-L77",
-          "version": "repo-lines-v1:sha256:63467666e5f83ada290d8ec7b7d7b451ead6a5eb0fd2819f0467917a6eabf78b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhMzUzZTQ5NDk4N2VjYmY2ZWRjZjVjNzllMmQ0Y2JiZWY0MzVjMGEwMmYxYzM4YTNlZTZkY2VhM2FiMjUxNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMxMDM5NGEwN2Q1MzY4YmJmMzZlMzM3YTAxNTgzMDk2NGM1MDhlMjZhZDI2NjI5MDk5NDE2Yzg4OTUyYzk1YTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFkNjdjZGE3MDNiZTllYTA3ZDA1ZjMzNTIwNDcyYWFmY2E4NGFhZjZjNGU5NjZiNjE0NmFkZGRjNGJkNjIyY2IifQ"
+          "resource": "repo://src/components/DeleteAccount.jsx#L35-L53",
+          "version": "repo-lines-v1:sha256:411c80ab813f0ae5d497138f1d5146ab0fb8dea44a440e814f090d3ec1c48cf7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2ZDA2Mzk4NTBmODhlN2I1NGUzNWQyMDA0MmUzNTlhZTQ1MzUxOTcyZTFjZWJhNGZhMjk3YjMzMzBjMzdlNjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkYTBmZGI5NTk1MTE2NGFhM2E4NzQ2ZjcxMjliZjJkN2I5MGM1MzdmODliMjY5NGFhNzU5YjNjOGMyNTYwNDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmOTA4YTk2NDlmOWRlZTlhOGYwMDI1ZTdmMTU0M2FkYzRmY2ZjYzY3NzY1MzJiMzUyMzQ3MTNiODgzZDA1ZWYifQ"
         }
       ]
     },
@@ -384,13 +388,13 @@
       "evidence": [
         {
           "resource": "repo://package.json#L7-L14",
-          "version": "repo-lines-v1:sha256:4e271cad64d18c952fccf883a28207f9e215a1201efeee4f598f28a29f71d489:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmEzYjQ2OWQ5ZTA5NzU3MjI0NjY2NzM0YzllZjdiMjU0ZDg4NTM0ZjVkNWJiNzA5ODk2MDgwNWM1NTNkYzMwNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzUyMDMzNGJlN2IxYjUyMmU5YzNjNzU0N2Y4OWZkMDk0ZjE1MTAxNjMwOWY3NDk0YTdkYmMzNjg2MzIwMmJmYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjgyODNlNjM2ZmRkYWY5OWQxZjExZDk3MmRmYWI0MWU5NjUwNzVkZDNlODQyOTQ0YWQ4MWViMjA1NTQ2ZDU1NSJ9"
+          "version": "repo-lines-v1:sha256:8c9ac56b88e52a26308029474548168524d5dc0ac548e79957b4c728c1af7e84:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmEzYjQ2OWQ5ZTA5NzU3MjI0NjY2NzM0YzllZjdiMjU0ZDg4NTM0ZjVkNWJiNzA5ODk2MDgwNWM1NTNkYzMwNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzUyMDMzNGJlN2IxYjUyMmU5YzNjNzU0N2Y4OWZkMDk0ZjE1MTAxNjMwOWY3NDk0YTdkYmMzNjg2MzIwMmJmYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjgyODNlNjM2ZmRkYWY5OWQxZjExZDk3MmRmYWI0MWU5NjUwNzVkZDNlODQyOTQ0YWQ4MWViMjA1NTQ2ZDU1NSJ9"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-02T17:44:42.174Z"
+    "at": "2026-11-04T16:54:50.811Z"
   }
 }

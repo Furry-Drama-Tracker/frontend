@@ -30,16 +30,18 @@ sources:
     resource: repo://src/main.jsx
   - id: openwiki-source-37ca2d167bb7e856d4f1a11c
     resource: repo://src/utils/axiosConfig.js
+  - id: openwiki-source-0772ae522304487a6af3bee6
+    resource: repo://src/utils/clearClientData.js
   - id: openwiki-source-091078cd4f585582a9efba7a
     resource: repo://src/utils/offlineQueue.js
   - id: openwiki-source-d4b3b9732ac6eae1003ca59f
     resource: repo://src/utils/polyfills.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 ---
 
 # PWA、离线缓存与浏览器兼容
@@ -49,7 +51,7 @@ verified:
 **先记住三条不变量：**
 
 1. **开发环境没有 Service Worker。**`vite.config.js` 的 `devOptions: { enabled: false }` 让 `vite dev` 既不生成 SW 也不注入 manifest link，`npm run dev` 下观察到的一切 "离线/不弹安装" 都不是线上行为。
-2. **缓存白名单就是离线能力的上限。**只有命中 `workbox.runtimeCaching` 两条 `urlPattern` 的 GET 请求，断网时才可能有答案；其余请求（鉴权、通知、评分、历史）离线即失败。
+2. **浏览器缓存层不缓存任何 API 数据。**`workbox.runtimeCaching` 已被刻意清空（原 `/api/` NetworkFirst 与 `/uploads/` CacheFirst 已移除）——出于隐私考虑，API 响应含个人追番/历史/通知与站点配置，登出后 Cache Storage 不会自动清理；断网时除预缓存的应用外壳外，所有 `/api/` 与 `/uploads/` 请求都没有离线答案，离线可用的只有应用层补偿（`offlineQueue`）。
 3. **只有可重放的写操作才允许进离线队列。**当前唯一入队点是评分，且回放用的是「当前会话身份」。
 
 ## 全景：四层各自负责什么
@@ -74,44 +76,38 @@ verified:
 
 **开发环境的正确读法**：`devOptions.enabled: false` 同时关掉了 SW 与 manifest 注入，所以 `vite dev` 下 `beforeinstallprompt` 不会触发、`navigator.serviceWorker` 永远是空。想验证离线行为必须 `npm run build && npm run preview`。另外因为 `sw.js` 本身不在预缓存里，它的 HTTP 缓存头会直接决定 `autoUpdate` 的灵敏度（见[构建、配置与部署](../operations/build-and-release.md)的 nginx 建议）。
 
-## 缓存策略：预缓存清单 + 两条运行时路由
+## 缓存策略：预缓存清单 + 清空的运行时缓存
 
-`vite.config.js` 的 `workbox` 段只做了三件事：声明预缓存通配、额外收进一个图标、注册两条运行时路由。
+`vite.config.js` 的 `workbox` 段现在只做三件事：声明预缓存通配、额外收进一个图标、**显式声明空的运行时缓存并排除 API 前缀**。
 
 | 配置 | 值 | 效果 |
 | --- | --- | --- |
 | `globPatterns` | `**/*.{js,css,html,ico,png,svg,woff2}` | 构建产物（含 `index.html`、所有懒加载 chunk、字体、图标）进预缓存，条目版本由内容指纹或文件名哈希决定 |
 | `includeAssets` | `['apple-touch-icon.png']` | 显式把 iOS 主屏图标收进预缓存 |
-| `navigateFallback` | 未覆写 | 使用插件默认的 `index.html` 导航回退：任意路由（`/episode/x`、`/timeline`…）在断网时返回预缓存的应用外壳，而不是浏览器错误页 |
+| `navigateFallback` | 未覆写 | 使用插件默认的 `index.html` 导航回退：任意前端路由在断网时返回预缓存的应用外壳，而不是浏览器错误页 |
+| `navigateFallbackDenylist` | `[/^\/api\//, /^\/uploads\//]` | 导航回退不吞掉 API/媒体前缀的请求，这些 URL 断网时直接失败而不是拿到应用外壳 |
+| `runtimeCaching` | `[]`（**刻意清空**） | 不再缓存任何运行时响应；原先的 `api-data` NetworkFirst 与 `uploads` CacheFirst 已移除 |
 
-运行时缓存只有两条，**按 URL 前缀命中，且只对 GET 生效**：
-
-| cacheName | `urlPattern` | 策略 | 参数 | 语义 |
-| --- | --- | --- | --- | --- |
-| `api-data` | `^https?://.*/api/(episodes|series|categories|banners|friend-links|site-content)` | `NetworkFirst` | `networkTimeoutSeconds: 10`、100 条、1 小时 | 优先网络；10 秒无响应或断网时回退缓存副本 |
-| `uploads` | `^https?://.*/uploads/` | `CacheFirst` | 200 条、30 天 | 命中缓存直接返回，永不再请求网络（直到条目过期/被挤出） |
+清空 `runtimeCaching` 是一次**以隐私为动机的策略反转**：API 响应包含当前用户的追番、历史、通知状态，甚至超管的站点配置，而登出后 Cache Storage 不会被自动清理——共享设备上的下一个使用者可能从缓存里读到上一个用户的私有数据。配合前端登出链路新加的 `clearClientData`（删除 `localStorage` 的 `user`/`offline_queue` 并删除**全部** Cache Storage 条目），现在两层防御都是显式的：SW 默认不写、登出时兜底清。
 
 ```mermaid
 flowchart TD
   R["浏览器发起请求"] --> N{"request.mode 是 navigate"} 
-  N -->|是| NAV["预缓存的 index.html 应用外壳"]
-  N -->|否| M{"方法为 GET"}
-  M -->|否| NET1["直连后端，SW 不参与"]
-  M -->|是| A{"URL 命中 api 白名单"}
-  A -->|是| NF["NetworkFirst 写 api-data 并缓存 1 小时"]
-  A -->|否| U{"URL 前缀为 /uploads/"}
-  U -->|是| CF["CacheFirst 读 uploads 缓存 30 天"]
-  U -->|否| NET2["直连后端，断网即失败"]
+  N -->|是 且命中 /api/ 或 /uploads/| DENY["直连后端，断网即失败（denylist 排除回退）"]
+  N -->|其他| NAV["预缓存的 index.html 应用外壳"]
+  N -->|否| M{"方法为 GET 且预缓存命中"}
+  M -->|是| PRE["返回预缓存副本"]
+  M -->|否| NET2["直连后端，断网即失败"]
 ```
 
-图：一次请求在 Service Worker 层被四种方式分流，只有导航回退与两条运行时路由带离线答案。
+图：一次请求在 Service Worker 层被四种方式分流；**只有静态产物有离线答案，任何 API/媒体请求都没有**。
 
 由此可以推出几条改动时最容易踩的结论：
 
-- **新增一个需要离线兜底的接口分组，必须改这条 `urlPattern`。**它不在白名单里就不会被缓存——`/api/notifications/*`、`/api/auth/*`、`/api/ratings`、`/api/histories/*` 目前都不在，所以"离线能刷首页、但点进后台或拉通知就报错"是设计结果，不是 bug。
-- **`site-content` 也在白名单里**（`/api/site-content/:key` 与 `/api/site-content/pwa-manifest` 都命中），这意味着断网时站点文案、`about`、甚至 manifest 都可能拿到 1 小时内的旧副本。
-- **`uploads` 的 `CacheFirst` 把"文件命名是否唯一"变成了前端可见的正确性问题。**上传成功后后端返回的 URL 形如 `/uploads/...`（命名规则不在本仓库，见[媒体上传](media-upload.md)）；只要后端对同一路径做了覆盖写而不是生成新文件名，已经缓存过的客户端在 30 天内**仍会看到旧图**，且没有任何失效入口。换图时优先让 URL 变化（换名或加指纹），不要只为省流量而放宽这条策略。
-- 写请求永不进缓存池：`ratings`、`histories`、`comments` 之类的 POST 断网一律失败，需要离线支持只能走下面的应用层队列。
+- **离线能力的上限现在是「预缓存的应用外壳」。**断网时能打开任意前端路由看到壳子与文案，但首页列表、通知、详情数据全部失败——"离线能刷首页"不再是事实；数据级离线只能靠应用层缓存（`site_settings_cache`、`translation_cache_v2`）与离线队列。
+- **若要为某组接口恢复离线兜底**，必须重新给 `runtimeCaching` 加条目，并同步评估登出清理（`clearClientData` 会删除全部 Cache Storage，缓存的公共数据也会随之消失）；把鉴权接口挪进缓存白名单则会让响应进入共享缓存，是隐私事故。
+- **`uploads` 不再被缓存**：换图立即生效，不再有"同名覆盖后 30 天旧图"的问题；代价是图片永远走网络，弱网下加载变慢。
+- 写请求与从前一样永不进缓存池：`ratings`、`histories` 之类的 POST 断网一律失败，需要离线支持走下面的应用层队列。
 
 ## manifest：构建期占位与运行时后端端点
 
@@ -125,8 +121,8 @@ flowchart TD
 
 **缓存与安装性在这里互相影响，改缓存策略前必须一起想：**
 
-- 改指之后，浏览器拉 manifest 的请求落在 `site-content` 的 `NetworkFirst` 路由上——manifest 会被写进 `api-data` 并保留 1 小时。好处是断网时浏览器仍可能读到一份旧 manifest；代价是后台改完名称/图标后，客户端最长可能要等到这条缓存条目过期才看到新值，而**不是**立即生效。
-- 若 `api-data` 里没有 manifest 的副本、网络又不可达（首次访问即离线），浏览器就拿不到 manifest：安装提示不会弹，已安装应用的元数据也刷新不了。这是「把 manifest 从静态文件改成动态端点」换来的耦合，缓解手段只有让站点设置/首屏请求尽早成功（`SiteSettingsContext` 自身还有 30 分钟 localStorage 缓存，见[状态与持久化](../architecture/state-and-persistence.md)）。
+- 运行时缓存清空后，浏览器拉 manifest 的请求**不再有任何 SW 缓存**（`/api/site-content/pwa-manifest` 同时被 `navigateFallbackDenylist` 排除）：后台改完名称/图标后客户端**立即**拉到新值，不再有 api-data 里最长 1 小时的旧副本——这是本次缓存策略反转顺带解除的一处耦合。
+- 代价是断网时动态 manifest 一定拿不到：安装提示不会弹、已安装应用的元数据也刷新不了。缓解手段只剩让站点设置尽早成功（`SiteSettingsContext` 自身还有 30 分钟 localStorage 缓存，见[状态与持久化](../architecture/state-and-persistence.md)）。
 - 站点设置**取不到**时 link 保持构建期那一套，而 `/manifest.webmanifest` 是预缓存资源，因此「离线且设置未加载」的首次访问仍然有 manifest 可用——这是双份 manifest 设计里唯一的兜底路径。
 - 后台还能配 `pwaMaskableIcon`、`pwaBackgroundColor`，但上述运行时逻辑不消费这两项，它们只能通过后端 manifest 端点生效；字段语义与保存链路见[站点设置与公告](site-settings-and-announcements.md)，端点清单见[后端契约地图](../integrations/backend-api-map.md)。
 
@@ -247,7 +243,7 @@ stateDiagram-v2
 
 - 构造一个 `z-index: 2147483647` 的全屏遮罩插到 `body` 最前，内容由中英双语字典 `I18N` 渲染：标题、具体原因（IE / 旧 Edge 各一套）、支持的浏览器版本、三款浏览器的国内/国际下载入口；
 - 提供语言切换按钮 `window.__switchCompatLang()`，写 `localStorage.lang` 后**只重绘遮罩**、不刷新页面；
-- 用 `XMLHttpRequest`（IE 下回退 `ActiveXObject` 的 `Msxml2.XMLHTTP` / `Microsoft.XMLHTTP`）请求 `/api/site-content/about`，把解析出的 `icp` 写进 `localStorage._icp` 并回填遮罩底部——这条请求不经过 axios、不带 CSRF、没有类型检查。
+- 用 `XMLHttpRequest`（IE 下回退 `ActiveXObject` 的 `Msxml2.XMLHTTP` / `Microsoft.XMLHTTP`）请求 `/api/site-content/about`，把解析出的 `icp` 写进 `localStorage._icp` 并回填遮罩底部——这条请求不经过 axios、不带 CSRF、没有类型检查；`_icp` 的读缓存回显与 API 回填两处 `innerHTML` 拼接都先经局部 `escapeHtml()` 全量转义，防止站点配置里的字符串注入遮罩。
 
 必须注意它的边界：它**不阻断启动**。IE 之所以被"挡住"，是因为 IE 不执行 `type="module"`；EdgeHTML 很可能照样下载并挂载 React，只是被遮罩盖住。它也**不认绕过记录**（下面那个 `browserCompat_bypass_*` 键），只做 UA 判断、不做版本阈值与特性检测，而且它的判定名单里没有 Chrome/Firefox/Safari 的旧版本。
 
@@ -299,9 +295,9 @@ stateDiagram-v2
 
 | 你要改的东西 | 必须同步的位置 |
 | --- | --- |
-| 新增需要离线可读的 GET 接口 | `vite.config.js` 的 `runtimeCaching.urlPattern`（白名单即契约）；并确认响应体足够小、`maxAgeSeconds` 与业务新鲜度匹配 |
-| 调整 `uploads` 缓存策略 | 确认上传路径是否会同名覆盖（`CacheFirst` + 30 天会让旧图长期可见） |
-| 改 manifest 字段（名称/图标/主题色/启动参数） | 记住用户可见值来自后端 `/api/site-content/pwa-manifest`，构建期那份只是首次加载占位；改完还要考虑 `api-data` 里最长 1 小时的旧副本 |
+| 新增需要离线可读的 GET 接口 | `vite.config.js` 的 `workbox.runtimeCaching`（当前为空、刻意不缓存）；恢复任何条目都要连同登出清理 `clearClientData` 一起评估，且不得缓存鉴权接口 |
+| 调整 `uploads` 行为 | 上传路径改名/加指纹仍推荐（URL 唯一性好习惯）；SW 不再缓存，图片永远走网络 |
+| 改 manifest 字段（名称/图标/主题色/启动参数） | 记住用户可见值来自后端 `/api/site-content/pwa-manifest`，构建期那份只是首次加载占位；动态 manifest 无缓存、改动立即生效 |
 | 实现 `shortcuts` / `share_target` | `Home` 需要新增 `tab`/`action`/分享参数分支，否则 manifest 里的声明永远无效 |
 | 改安装提示行为 | `src/main.jsx` 的事件桥（全局变量 + `pwa-install-available`）、`InstallPrompt`、`Settings` 里同名的 `pwa-install-dismissed` 键；`NavBar` 里那份监听是死代码，改不改都不生效 |
 | 新增离线写操作 | `offlineQueue` 的去重键与丢弃策略（见上文"硬性要求"）；给用户一个"待同步"提示，因为当前没有任何 UI 或重放入口 |

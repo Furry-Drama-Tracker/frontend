@@ -36,10 +36,10 @@ sources:
     resource: repo://src/utils/axiosConfig.js
   - id: openwiki-source-a40ec8eba1327ab0c96f271f
     resource: repo://src/utils/translationCache.js
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 ---
 
 # 界面国际化与运行时内容翻译
@@ -92,7 +92,7 @@ flowchart TD
 - **英文缺键的表现是「显示中文」，不是显示 key**——因为 zh 是回退语言。这类漏配静默无害，只能靠人工审 en 文案或对比两份文件发现。
 - **只有 zh 也缺时才看到裸 key**（例如页面上出现 `settings.someNewLabel`）。这是定位漏配最强的信号，看到就说明 `t()` 的 key 与两份字典都不匹配（常见于重命名 key 后忘了改调用点）。
 
-`zh.js` 与 `en.js` 是同一套命名空间（`common.*`、`nav.*`、`notification.*`、`browserCompat.*`、`sitePage.*`、`settings.*`、`pageTitle.*`、`adminXxx.*` 等）的平行结构，`en.js` 行数与 `zh.js` 仅差几行，出现新命名空间时两份都要建。带插值的典型用法是通知文案：`t('notification.newEpisode', { title, ep })`、`t('notification.feedbackReply', { reply })`。
+`zh.js` 与 `en.js` 是同一套命名空间（`common.*`、`nav.*`、`notification.*`、`browserCompat.*`、`sitePage.*`、`settings.*`、`pageTitle.*`、`adminXxx.*` 等）的平行结构，`en.js` 行数与 `zh.js` 仅差几行，出现新命名空间时两份都要建。带插值的典型用法是通知文案：`t('notification.newEpisode', { title, ep })`、`t('notification.feedbackReply', { reply })`。近期新增的键包括：`notification.newEpisodeCustom` / `newEpisodePreviewCustom` / `previewVideoUpdateCustom` / `previewInfoUpdateCustom`（通知携带自定义集号 `metadata.episodeLabel` 时的变体模板）、`timeline.newEpisodeCustom`、以及 `singleEpisode.*` 与 `adminEpisodes.*` 下的 `episodeLabel` / `episodeLabelHint` / `episodeLabelPlaceholder`（「显示序号」表单三件套）；同时 `adminAnalytics.title`、`adminReports.title` 的 emoji 已从两份字典中移除（后台标题统一交给 PageHeader 骨架）。
 
 ### 初始语言判定
 

@@ -50,14 +50,16 @@ sources:
     resource: repo://src/hooks/usePushNotifications.js
   - id: openwiki-source-37ca2d167bb7e856d4f1a11c
     resource: repo://src/utils/axiosConfig.js
+  - id: openwiki-source-0772ae522304487a6af3bee6
+    resource: repo://src/utils/clearClientData.js
   - id: openwiki-source-091078cd4f585582a9efba7a
     resource: repo://src/utils/offlineQueue.js
   - id: openwiki-source-a40ec8eba1327ab0c96f271f
     resource: repo://src/utils/translationCache.js
-generated: { by: "opencode", at: "2026-11-02T17:44:42.174Z" }
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 ---
 
 # 状态管理与浏览器持久化契约
@@ -102,11 +104,11 @@ flowchart TD
 
 **冷启动不会用快照渲染。** `localStorage.user` 只在启动 effect 里被读出、`JSON.parse` 校验一次格式，然后 `initAuth()` 被调用——注意它接收的 `storedUser` 参数在函数体里根本没有被使用。真正的流程是：`fetchCsrfToken()` → `GET /api/auth/me`（带 `skipRedirect: true`、`_t: Date.now()` 破缓存、`AbortController`）→ 用响应覆盖 `user` 并重写快照 → 再串行 `POST /api/user-sessions/create`（上报 `screen.width/height` 与 `navigator.language`，失败 1 秒后重试一次）。`initializing` 直到 `me` 结束才置假，而 `AppContent` 在 `initializing` 为真时只渲染加载文案，所以**冷启动的可见结果完全取决于 `/api/auth/me`，与快照内容无关**。
 
-快照的字段是**刻意收窄的六个字段**：`_id`、`accountId`、`username`、`isEmailVerified`、`role`、`avatar`（外加 `role` 兜底 `user`、`avatar` 兜底空串）。这意味着 `updateUser()` 传入的 `backgroundPrefs`、`emailNotificationPrefs`、`email` 等字段只活在 React state 里，不进快照——刷新后由 `/api/auth/me` 重新带回。唯一例外是 `axiosConfig` 在 token 刷新成功时会把 `me` 风格的对象（含 `email`、`forceEmailChange`）合并写回 `user` 键，因此该键的实际 schema 由两个写者共同决定，读方不要假设字段齐全。
+快照的字段是**刻意收窄的六个字段**：`_id`、`accountId`、`username`、`isEmailVerified`、`role`、`avatar`（外加 `role` 兜底 `user`、`avatar` 兜底空串）。这意味着 `updateUser()` 传入的 `backgroundPrefs`、`emailNotificationPrefs`、`email` 等字段只活在 React state 里，不进快照——刷新后由 `/api/auth/me` 重新带回。唯一例外是 `axiosConfig` 在 token 刷新成功时会把 `me` 风格的对象合并写回 `user` 键，但白名单同样收窄（补写 `forceEmailChange`，不写 `email` 与 `avatar`），因此该键的实际 schema 由两个写者共同决定，读方不要假设字段齐全——依赖 `user.email` 的 UI 必须改走服务端校验或重新拉取。
 
 **读方几乎都把它当布尔量用。** `EpisodeDetail`、`Profile`、`UpdateCalendar` 读 `localStorage.getItem('user')` 只为判断「有没有会话」再发请求（真正的用户数据来自 Context 或 API），`axiosConfig` 则把它当合并基底。这是它可以只存六个字段的前提。
 
-**清理点有四个**：登出（`POST /api/auth/logout` 后无论成败都清）、`GET /api/auth/me` 失败、`401` 刷新失败与 `419` 刷新失败（两段响应拦截器各自 `removeItem('user')` 并派发 `auth:session-expired`）、以及快照 JSON 解析失败（此时直接 `initializing = false`，连 `me` 都不发）。**登出只清 `user` 一个键**——`site_settings_cache`、`translation_cache_v2`、`search_history`、`home_scroll_pos`、`push-notifications-enabled` 全部跨账号保留，登出不是「重置浏览器状态」。
+**清理点有四个**：登出（`POST /api/auth/logout` 后无论成败都清）、`GET /api/auth/me` 失败、`401` 刷新失败与 `419` 刷新失败（两段响应拦截器各自 `removeItem('user')` 并派发 `auth:session-expired`）、以及快照 JSON 解析失败（此时直接 `initializing = false`，连 `me` 都不发）。**登出经 `src/utils/clearClientData.js` 清理**：删除 `user` 与 `offline_queue` 两个键并删除**全部** Cache Storage 条目（对 localStorage/Cache Storage 不可用静默容忍），前台 `AuthContext.logout` 与后台 `AdminLayout.handleLogout` 共用这一个工具；而 `site_settings_cache`、`translation_cache_v2`、`search_history`、`home_scroll_pos`、`push-notifications-enabled` 仍跨账号保留，登出依然不是「重置浏览器状态」。配合 Service Worker 侧已清空的 `runtimeCaching`（不再缓存 `/api/` 响应），登出清理现在能覆盖绝大多数用户私有数据残留。
 
 **运行期有三个定时/事件驱动行为**：登录后每 5 分钟一次 `POST /api/user-sessions/heartbeat`（`document.visibilityState === 'hidden'` 时跳过，失败静默）；`visibilitychange` 回到前台时重发 `GET /api/auth/me` 与 `fetchCsrfToken()`（防止长时间挂起后 CSRF cookie 过期导致后续写请求 403）；`online` 时动态 `import('../utils/offlineQueue')` 并 `processOfflineQueue(axios)`。
 
@@ -169,7 +171,7 @@ ThemeContext 另外导出三个纯函数供 UI 复用：`relativeLuminance(hex)`
 
 ## IconContext：零持久化的派生状态
 
-图标引擎没有任何 storage 键，状态全部来自服务端：`GET /api/icons/list`（`icons` + `mappings`）、登录用户 `GET /api/themes/my/selection` 取 `iconsTheme`、未登录 `GET /api/themes/active` 取默认主题。拉到的 SVG 会被 `sanitizeSvg()` 清洗（去掉 `<?xml?>`/DOCTYPE、`script/foreignObject/iframe/object/embed/link` 节点、`on*` 属性与 `javascript:` 协议），并把 `fill`/`stroke` 的显式颜色改写为 `currentColor`，以 inline 方式渲染。
+图标引擎没有任何 storage 键，状态全部来自服务端：`GET /api/icons/list`（`icons` + `mappings`）、登录用户 `GET /api/themes/my/selection` 取 `iconsTheme`、未登录 `GET /api/themes/active` 取默认主题。拉到的 SVG 会被 `sanitizeSvg()` 清洗（去掉 `<?xml?>`/DOCTYPE、`script/style/foreignObject/iframe/object/embed/link/animate/set/discard` 节点、`on*` 属性，并按协议移除 `href`/`xlink:href`/`src` 上的 `javascript:`/`vbscript:`/`data:text/html` 值），并把 `fill`/`stroke` 的显式颜色改写为 `currentColor`，以 inline 方式渲染。
 
 **它的生命周期被 `user` 与一个事件驱动**：`useEffect` 依赖 `[user, fetchThemeIcons]`，因此登录/登出会重新解析主题图标；同时监听 `theme-selection-changed` 事件，`ThemeWorkshop`/`ThemeColorPicker` 应用或取消主题后广播，它重新拉取覆盖。
 
@@ -181,13 +183,13 @@ ThemeContext 另外导出三个纯函数供 UI 复用：`relativeLuminance(hex)`
 
 | 键 | 归属模块 | 写入时机 | 读取方 | 清理与过期 |
 | --- | --- | --- | --- | --- |
-| `user` | `AuthContext`、`axiosConfig` | 登录成功、`GET /api/auth/me` 成功、`updateUser`、token 刷新成功、`403 + forceEmailChange` 打标 | `AuthContext` 冷启动、`axiosConfig`（合并基底）、`EpisodeDetail`、`Profile`、`UpdateCalendar`（后三者只判断存在性） | 登出、`me` 失败、JSON 解析失败、`401`/`419` 刷新失败时 `removeItem` |
+| `user` | `AuthContext`、`axiosConfig` | 登录成功、`GET /api/auth/me` 成功、`updateUser`、token 刷新成功、`403 + forceEmailChange` 打标 | `AuthContext` 冷启动、`axiosConfig`（合并基底）、`EpisodeDetail`、`Profile`、`UpdateCalendar`（后三者只判断存在性） | 登出（经 `clearClientData`）、`me` 失败、JSON 解析失败、`401`/`419` 刷新失败时 `removeItem` |
 | `lang` | `I18nContext`、`index.html` 内联脚本 | `lang` effect 每次执行、`switchLang`、旧浏览器遮罩的语言按钮 | `I18nContext` 初值、`index.html` 早期语言脚本与遮罩 | 从不清理，仅被覆盖 |
 | `theme` | `ThemeContext` | `setThemeModeTo`（存 `dark`/`light`/`system`，**不存解析结果**） | `ThemeContext` 两处初值 | 从不清理，仅被覆盖 |
 | `accent_color` | `ThemeContext` | `setAccentColor`（仅 `#rrggbb`） | `ThemeContext` 初值 | 非法值不写；已存在的非法值回退默认色但**不删除** |
 | `site_settings_cache` | `SiteSettingsContext` | 每次站点配置拉取成功 | `SiteSettingsContext` 挂载时 | TTL 30 分钟，读取时过期即 `removeItem` |
-| `offline_queue` | `utils/offlineQueue.js` | `addToOfflineQueue`（`EpisodeDetail` 在离线且评分失败时入队）、`processOfflineQueue` 回写失败项 | `getOfflineQueue`/`processOfflineQueue`（由 `AuthContext` 的 `online` 监听触发） | 条目 24 小时过期并被过滤；同 `method+url+data` 去重；单个动作重试超过 3 次被丢弃；`clearOfflineQueue()` 已导出但**无调用方** |
-| `push-notifications-enabled` | `hooks/usePushNotifications.js` | 订阅成功写 `'true'`、退订成功写 `'false'` | 同一 hook 挂载时作为 `subscribed` 初值（`NavBar`、`Settings` 各持一个实例） | 从不清理；它只是本地镜像，与浏览器 `PushManager`/服务端订阅状态可能不一致 |
+| `offline_queue` | `utils/offlineQueue.js`、`clearClientData` | `addToOfflineQueue`（`EpisodeDetail` 在离线且评分失败时入队）、`processOfflineQueue` 回写失败项 | `getOfflineQueue`/`processOfflineQueue`（由 `AuthContext` 的 `online` 监听触发） | 条目 24 小时过期并被过滤；同 `method+url+data` 去重；单个动作重试超过 3 次被丢弃；登出时随 `clearClientData` 整键删除；`clearOfflineQueue()` 已导出但**无调用方** |
+| `push-notifications-enabled` | `hooks/usePushNotifications.js` | 订阅成功写 `'true'`、退订成功写 `'false'` | 同一 hook 挂载时作为 `subscribed` 初值（仅当后端返回 VAPID 公钥、判定支持推送后才读取；`NavBar`、`Settings` 各持一个实例） | 从不清理；它只是本地镜像，与浏览器 `PushManager`/服务端订阅状态可能不一致 |
 | `browserCompat_bypass_<hash>` | `BrowserCompat` | 「继续访问」1 分钟后反馈选择「使用正常」时写 `'ok'` | `BrowserCompat` 挂载时 | 从不清理；`<hash>` 是 `navigator.userAgent` 的 32 位哈希，**与用户无关**，同浏览器所有账号共享 |
 | `_icp` | `index.html` 遮罩、`BrowserCompat` | 取到 ICP 备案号时 | `index.html` 遮罩渲染、`BrowserCompat` 的 API 失败回退 | 从不清理；仅用于旧浏览器遮罩与兜底显示 |
 | `translation_cache_v2` + `translation_cache_ttl_v2` | `utils/translationCache.js` | `setCache`（`/api/translate` 成功）后 500ms 防抖落盘 | 模块初始化时载入内存字典 | 单条 TTL 24 小时（按 `ttl` 表逐条过滤）；超过 2000 条按插入顺序淘汰；模块初始化时**主动删除**旧版 `translation_cache` / `translation_cache_ttl` |
@@ -227,7 +229,7 @@ ThemeContext 另外导出三个纯函数供 UI 复用：`relativeLuminance(hex)`
 
 1. **先查读取方**。上表的「读取方」列就是影响面清单；`user` 与 `lang` 还有 `index.html` 内联脚本这一层 React 之外的读者——只改 `src/` 会让旧浏览器遮罩和首帧语言判定读到空值（表现为遮罩文案语言错、`<html lang>` 与页面实际语言不一致）。
 2. **决定旧键怎么处置**。仓库现有两种范式：`translationCache` 在模块初始化时主动 `removeItem` 旧键名（`translation_cache`、`translation_cache_ttl`）；`SiteSettingsContext` 用 TTL 让旧结构自然失效（过期即删）。若新格式与旧值不兼容且没有 TTL，就必须像前一种那样在读取前显式删除，否则 `JSON.parse` 后的形状错误会一路传到渲染层。
-3. **明确登出语义**。当前只有 `user` 会在登出时清理。任何承载「用户隐私数据」的新键都必须自己加清理（`logout` 与两个刷新失败分支），否则会跨账号泄漏到下一个登录者。
+3. **明确登出语义**。当前登出经 `clearClientData` 清理 `user`、`offline_queue` 两个 localStorage 键与全部 Cache Storage 条目；除此之外的键（偏好、缓存、历史）不随登出清理。任何承载「用户隐私数据」的新键都必须自己加清理（加入 `clearClientData` 或在 `logout` 与两个刷新失败分支单独处理），否则会跨账号泄漏到下一个登录者。
 4. **明确浏览器维度**。需要「按设备/浏览器记住」而**不是按账号**的键，参考 `browserCompat_bypass_<hash>` 的写法，把维度编进键名而不是值里；不要在共享键里混合多用户数据。
 5. **确认是否需要跨标签页**。目前没有任何 `storage` 事件监听，新键不会自动跨标签页同步；若确实需要，要显式加 `storage` 监听或事件广播，并说明理由。
 
@@ -248,9 +250,9 @@ ThemeContext 另外导出三个纯函数供 UI 复用：`relativeLuminance(hex)`
 ## 已知缺口与失败语义
 
 - **多标签页不同步**：`theme` / `accent_color` / `lang` / `user` 在其它标签页都不会刷新；`lang` 只是靠 reload 让本页生效。
-- **`offline_queue` 不按用户隔离**：队列里只有 `method/url/data`，冲刷发生在任意一次 `online`，登出也不清空。若 A 用户离线评分后 B 用户登录，队列会带着 B 的 cookie 重放，失败会走 `401` → 清快照 → 跳登录。
+- **`offline_queue` 不按用户隔离**：队列里只有 `method/url/data`，冲刷发生在任意一次 `online`。登出已经 `clearClientData` 清空队列，但登录期间切换账号（不经过登出）仍不清：若 A 用户离线评分后未登出而 B 用户在同一会话接管，队列会带着 B 的 cookie 重放，失败会走 `401` → 清快照 → 跳登录。
 - **`clearOfflineQueue` 是死代码**：导出了但无人调用，队列的收缩完全依赖 24 小时 TTL 与 3 次重试上限。
 - **`push-notifications-enabled` 会失真**：它只在 `subscribe`/`unsubscribe` 成功时更新，浏览器侧被系统设置撤销或服务端清理订阅后，本地仍显示已开启。
-- **`user` 快照字段不完整**：`AuthContext` 收窄写、`axiosConfig` 全量合并，两者对同一键的 schema 不一致；依赖 `email`、`forceEmailChange` 之外的扩展字段会出现「刷新后消失」。
+- **`user` 快照字段不完整**：`AuthContext` 收窄写（含 `avatar`、不含 `email`/`forceEmailChange`），`axiosConfig` 刷新合并补写 `forceEmailChange`（同样不写 `email`/`avatar`），两者对同一键的 schema 不一致；`email` 现在完全不入快照，依赖它的读取方必须改走服务端。
 - **`site_settings_cache` 不随管理端改动作废**：只有 `AdminSiteContent` 自己调 `refreshSettings()`，其它标签页/其它管理员的缓存最多滞后 30 分钟。
 - **无测试防护网**：`package.json` 只有 `dev/build/lint/preview/generate-icons`，没有测试运行器。状态契约的验证只能靠 `npm run lint` 加手动场景：登出后刷新（`user` 已清）、断网评分后恢复网络（队列冲刷）、切换 `system` 主题后改系统外观（`matchMedia` 生效）、清空 `site_settings_cache` 后首帧（站点名回退）、以及应用主题后图标是否即时刷新（事件是否派发）。

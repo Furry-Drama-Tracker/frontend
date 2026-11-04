@@ -30,10 +30,12 @@ sources:
     resource: repo://src/utils/adminApi.js
   - id: openwiki-source-37ca2d167bb7e856d4f1a11c
     resource: repo://src/utils/axiosConfig.js
-generated: { by: "opencode", at: "2026-11-02T17:44:42.174Z" }
+  - id: openwiki-source-0772ae522304487a6af3bee6
+    resource: repo://src/utils/clearClientData.js
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 ---
 
 # 路由分区与访问守卫
@@ -49,7 +51,7 @@ verified:
 | 分区 | 判定 | 骨架 | 路由声明 | 兜底 |
 | --- | --- | --- | --- | --- |
 | 公共树 | `pathname` 不以 `/admin` 开头 | `skip-link` → `AnnouncementBanner` → `NavBarErrorBoundary`/`NavBar` → `.container#main-content` → `.page-enter`（`key={location.pathname}`）→ `Suspense` → `Routes` | 30 余条扁平路由 | `path="*"` → `NotFound` |
-| 后台树 | `pathname` 以 `/admin` 开头 | 无前台骨架，只有 `Suspense` → 后台 `Routes` | `/admin` 跳板 + `/admin` 布局路由及其 24 个子路径 | **无** `*` 兜底 |
+| 后台树 | `pathname` 以 `/admin` 开头 | 无前台骨架，只有 `Suspense` → 后台 `Routes` | `/admin` 跳板 + `/admin` 布局路由及其 23 个子路径 | **无** `*` 兜底 |
 
 两个分区之前还有一道共同前置：`initializing` 为真时直接返回一个 `common.loading` 占位页，所以后台页面同样要等 `AuthContext` 的 `GET /api/auth/me` 初始化结束（无论用户是否登录）。`FooterBeian` 与一批全局浮层（`FeedbackModal`、`ThemeColorPicker`、`OfflineIndicator`、`InstallPrompt`、`AnnouncementPopup`、`ForceEmailChange`、`apiError` 提示条）都只出现在公共分支的返回值里，后台分支一条都不渲染。这个不对称有实际后果，见后文「forceEmailChange 拦截层」。
 
@@ -75,13 +77,13 @@ verified:
 后台分支里有两条同路径 `/admin` 的声明，职责不同：
 
 - `/admin` **跳板** `Admin`（`components/Admin.jsx`）：不渲染 UI，仅 `GET /api/admin/verify`，成功后 `navigate('/admin/dashboard', { replace: true })`，失败则 `navigate('/login', { replace: true })`。
-- `/admin` **布局路由** `AdminLayout`：为 24 个子路径提供外壳（顶栏、返回、回到前台首页、登出）与 `Outlet`。
+- `/admin` **布局路由** `AdminLayout`：为 23 个子路径提供外壳（顶栏、返回、回到前台首页、登出）与 `Outlet`。
 
 子路径按能力大致分四组，便于定位新增页面的位置：
 
 | 分组 | 典型路径 | 路由级角色 |
 | --- | --- | --- |
-| 审核与内容 | `/admin/review`、`/admin/episode-trash`、`/admin/episodes`、`/admin/creator-profile` | `ADMIN_ROLES_ALL` |
+| 审核与内容 | `/admin/review`、`/admin/episode-trash`、`/admin/episodes`、`/admin/creator-profile` | `review`/`episode-trash` 为 `UP`，`episodes`/`creator-profile` 为 `ALL` |
 | 内容与站点配置 | `/admin/categories`、`/admin/banners`、`/admin/announcements`、`/admin/site-content`、`/admin/friend-links` | 前两者 `UP`，其余 `SUPER` |
 | 账号与安全运维 | `/admin/users`、`/admin/sessions`、`/admin/audit-logs`、`/admin/backup`、`/admin/email-settings`、`/admin/api-usage` | `SUPER` |
 | 统计与主题 | `/admin/stats`、`/admin/analytics`、`/admin/themes`、`/admin/theme-review` | 统计/分析 `UP`，主题 `SUPER` |
@@ -134,8 +136,8 @@ sequenceDiagram
 
 | 角色集合 | 后台路由 |
 | --- | --- |
-| `ADMIN_ROLES_ALL` | `dashboard`、`episodes`、`review`、`episode-trash`、`creator-profile` |
-| `ADMIN_ROLES_UP` | `categories`、`banners`、`reports`、`stats`、`feedback`、`analytics` |
+| `ADMIN_ROLES_ALL` | `dashboard`、`episodes`、`creator-profile` |
+| `ADMIN_ROLES_UP` | `categories`、`banners`、`review`、`episode-trash`、`reports`、`stats`、`feedback`、`analytics` |
 | `ADMIN_ROLES_SUPER` | `users`、`creator-profiles`、`announcements`、`site-content`、`email-settings`、`audit-logs`、`backup`、`api-usage`、`friend-links`、`sessions`、`themes`、`theme-review` |
 
 `roles` 以 `roles.join(',')` 的字符串作为 effect 依赖，避免调用方传入的数组字面量导致反复 verify；effect 内用 `cancelled` 标志阻止卸载后的 setState。路由级判定只减少一次无意义的页面挂载，后端仍然是最终授权方。
@@ -146,7 +148,7 @@ sequenceDiagram
 
 1. 通过 `<Outlet context={{ admin }} />` 把 `verify` 返回的 admin 对象下发给所有子页面。**所有后台页面都用 `useOutletContext()` 读取 `admin`**，因此新页面必须声明为布局路由的子路由，否则解构 `null` 会直接抛错。
 2. 每 5 分钟 `POST /api/user-sessions/heartbeat`，让后台常驻标签页不会因会话闲置被判失效。
-3. 登出：`POST /api/admin/logout` 后清空 `admin` 并 `replace` 到 `/login`。
+3. 登出：`POST /api/admin/logout` 后清空 `admin`，经 `clearClientData()` 清掉 `localStorage` 快照与全部 Cache Storage（与前台 `AuthContext.logout` 共用同一工具），再 `replace` 到 `/login`。
 4. 角色化侧栏：`NAV_GROUPS` 把入口分成概览、内容管理、审核与治理、用户管理、主题外观、数据与系统六组，每项标注允许角色，渲染前按当前 `admin.role` 过滤掉无权项与空组。
 5. 后台画布：根节点加 `.yuanli-admin` 并导入 `src/admin-kit/index.css`，同时把 `document.body` 的底部内边距临时置 0，避免前台为固定页脚预留的空白在后台露出。
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:d96ed0f16f8871eb2ef972189b9aefc4291f510b7769794d9a1e35a61dd072fa",
+  "pageVersion": "sha256:9a82ecd6f0ad03f4cf2c54d54bad41fbb8f75b02c0900e8febd61df63dcc8f18",
   "claims": [
     {
       "id": "claim_b5a9e448b1de4d8a98c56a822226816d",
@@ -16,31 +16,31 @@
         },
         {
           "resource": "repo://package.json#L7-L14",
-          "version": "repo-lines-v1:sha256:4e271cad64d18c952fccf883a28207f9e215a1201efeee4f598f28a29f71d489:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmEzYjQ2OWQ5ZTA5NzU3MjI0NjY2NzM0YzllZjdiMjU0ZDg4NTM0ZjVkNWJiNzA5ODk2MDgwNWM1NTNkYzMwNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzUyMDMzNGJlN2IxYjUyMmU5YzNjNzU0N2Y4OWZkMDk0ZjE1MTAxNjMwOWY3NDk0YTdkYmMzNjg2MzIwMmJmYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjgyODNlNjM2ZmRkYWY5OWQxZjExZDk3MmRmYWI0MWU5NjUwNzVkZDNlODQyOTQ0YWQ4MWViMjA1NTQ2ZDU1NSJ9"
+          "version": "repo-lines-v1:sha256:8c9ac56b88e52a26308029474548168524d5dc0ac548e79957b4c728c1af7e84:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmEzYjQ2OWQ5ZTA5NzU3MjI0NjY2NzM0YzllZjdiMjU0ZDg4NTM0ZjVkNWJiNzA5ODk2MDgwNWM1NTNkYzMwNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzUyMDMzNGJlN2IxYjUyMmU5YzNjNzU0N2Y4OWZkMDk0ZjE1MTAxNjMwOWY3NDk0YTdkYmMzNjg2MzIwMmJmYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjgyODNlNjM2ZmRkYWY5OWQxZjExZDk3MmRmYWI0MWU5NjUwNzVkZDNlODQyOTQ0YWQ4MWViMjA1NTQ2ZDU1NSJ9"
         }
       ]
     },
     {
       "id": "claim_a4904947285e4145a5520bda4295954c",
-      "statement": "npm run lint 的完整命令是 `eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0`；在 ESLint 9 flat config 下 `--ext` 被翻译成一条额外的 files 条目而非目录遍历过滤器，实际规则范围由 eslint.config.js 里 `files: ['**/*.{js,jsx}']` 决定。",
+      "statement": "npm run lint 的完整命令是 `eslint . --ext js,jsx --max-warnings 0`（已移除 --report-unused-disable-directives 参数）；在 ESLint 9 flat config 下 `--ext` 被翻译成一条额外的 files 条目而非目录遍历过滤器，实际规则范围由 eslint.config.js 里 `files: ['**/*.{js,jsx}']` 决定。",
       "evidence": [
         {
-          "resource": "repo://eslint.config.js#L7-L19",
-          "version": "repo-lines-v1:sha256:dae003ab095de12d3b4fa6f1f463c5d7f33e3176a09001128a4a7ffeac2b1772:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5NjdlMTBkYTY3NDI3ZWE5NDk1YTFjMDk1NTMzZDg3ZGE0ZmE0NjYxNTdlNGMxMDYxMTExMGMyNGYzNmYzYzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBhZTM4YzMxZDg2OGIzZGNjNDA2ODNkMjVmNTZkMGZjMmM2ZDg5YzQ1MzJjZWY1MGUwYzgwMjcyMTFjM2FiZGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk5NzhkMTJlMTVmZmJhYjgzYWM2YTY3ODE5OGE0OTUwMWE4MzdlZTk0N2FmZDgxN2ZmYjNmYTZkYzM3ZmRmZTkifQ"
+          "resource": "repo://eslint.config.js#L6-L14",
+          "version": "repo-lines-v1:sha256:f1c75424de13a6845a1c3777f4c78d571beb54758f671f7fd43722976a04eacf:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmFiZTYwYWQyNjM1MjQzMjY2M2Q1NDA4MTRlYThmZDRkZTU3OTkzNTAwYzY1NWIyNzViYzQ5Yzg2YTc5YmM5YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGRhYWU0MWViYTk3Mjk1Zjc0NjUwNjJhZGI4NGM3OWMyYjRmODg2M2QzYjZlYWYyM2FlMzE5NGQ0NTFjNjZhMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjFmM2NlZmJmOTZhY2UwODVmZmQ3ZTM1OWExMjdkMDZhNTk5MzliZGIzNDA5ZWE2NzQ3NDMwM2U1NmJjZDlhYiJ9"
         },
         {
           "resource": "repo://package.json#L10-L11",
-          "version": "repo-lines-v1:sha256:a844ac0f3f8054451f11d105aff5c9b7f561453fe1051404dab405b02f86b188:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDQxOWI2ODBmZmE5YWY2MjMzMmMwNmUwNDVhMGYzNTQyOGQzYTU4ODU2NWJmYmRlODQzNDIyYjA1MzYyM2JiNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTI5YjRiMjE1YjBhYmE4ZWQ1MzZmMTlkM2E5YTMxMTU1MDNjMDRmZTkyZjZiY2FkZDk5NTBhNjhhOTEzNzk2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTc3MzEzYzZhZTMyYjU5ZjNhNDUxYTg2YmEzMDUzMGNlY2EyYTYwZGUyYWM1ODg0NmQ0ODllMzc4Y2U3ZGEyNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzMwNjQ4OWYwODQxM2FiOTVkZmIyYzVmOGVkMWQyOWY3YzhjY2E1ZDcwMDk0ZjJiNDhmNDZjMmU0ZDNkMDFiOCJ9"
+          "version": "repo-lines-v1:sha256:92b77c6056df736856af6fa92c2d898d4d2d8f06d3509ef6593af039ec8f2770:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODA4ZGNlZDZiYTc3ZTRhOTlmNjAxY2IxYmZkNjRhOTc3ZmRkNDI5ZGMyNTAwNjg0OGFiMDA3MmUwMjQ2MzE1NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTI5YjRiMjE1YjBhYmE4ZWQ1MzZmMTlkM2E5YTMxMTU1MDNjMDRmZTkyZjZiY2FkZDk5NTBhNjhhOTEzNzk2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTc3MzEzYzZhZTMyYjU5ZjNhNDUxYTg2YmEzMDUzMGNlY2EyYTYwZGUyYWM1ODg0NmQ0ODllMzc4Y2U3ZGEyNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzMwNjQ4OWYwODQxM2FiOTVkZmIyYzVmOGVkMWQyOWY3YzhjY2E1ZDcwMDk0ZjJiNDhmNDZjMmU0ZDNkMDFiOCJ9"
         }
       ]
     },
     {
       "id": "claim_62873a3153e5444597550b38415312f2",
-      "statement": "lint 的忽略名单只有 dist、dev-dist、node_modules，因此 public/ 下的 vendored JS（altcha.js 与 workers/*.js）同样要按项目规则通过 warn-as-error 检查；而 .mjs 文件（generate-icons.mjs）会被 ESLint 枚举但不匹配配置对象的 files，一条规则都不会跑。",
+      "statement": "lint 的忽略名单现为 dist、dev-dist、node_modules、public 四条——public/ 下的 vendored JS（altcha.js 与 workers/*.js）不再被 lint，升级第三方文件不会影响 lint 结果；而 .mjs 文件（generate-icons.mjs）会被 ESLint 枚举但不匹配配置对象的 files，一条规则都不会跑。",
       "evidence": [
         {
-          "resource": "repo://eslint.config.js#L8-L11",
-          "version": "repo-lines-v1:sha256:c224474c8273e7f8c39ffbe67560b2e853d5844cc0d461f9e386e39b1baf3b15:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzQwNWMwYWQxZTJkZGVjOGZmYjM4MjYyNzA0NjdkM2U0ZjZjZGZhZDQ3MWM4MTYzYjFmZjdhM2ZmMjYxN2U2YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjlmYTk5YTFhZmE3NmRkOGJhNzQ4YjJkM2JmMGM3MTQ0YTE4Y2E0NDBlNDc3ZTA5ZDAxOWJkZjZkMGFjN2NjZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDkxYzc1NDIxMjg5YTIwYzFkYWI3NTU3ZThiN2E1YjA5YTY0Y2E5ZTgzM2MzYTc5ZDI2Mzc2MjFhMDg3ZWVkYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGIyYTU1ZjhjYzAzZTFiYmM1Yjg5NjNhNDcyY2ZjMDY2NDlhY2MyNTQzZGVhYmRiZDk1YTNhNzFkYmFkNTRiMiJ9"
+          "resource": "repo://eslint.config.js#L7-L8",
+          "version": "repo-lines-v1:sha256:7c31f092c58f6aac6f33312beb73e2b321a841b1b8fc588e6ef5debb23acbfcc:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjk2N2UxMGRhNjc0MjdlYTk0OTVhMWMwOTU1MzNkODdkYTRmYTQ2NjE1N2U0YzEwNjExMTEwYzI0ZjM2ZjNjMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTk0Yjc0NjFiODMyMmFhZjczZWRiMjg5YmNkN2EzMmJhMTc5YWQ3ZjExYTYxNjE0ZTBlMzBmNWMwNDRmNjRlZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGFlMzhjMzFkODY4YjNkY2M0MDY4M2QyNWY1NmQwZmMyYzZkODljNDUzMmNlZjUwZTBjODAyNzIxMWMzYWJkYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTlkMTViOTBkYThmZDQ3MGY3MjE0YzdhNGNjMDQ0OTEwYjdmYWZlMWRjMzA5MjQ2YzI1YWMzYTY1ZWYyZTJiYSJ9"
         },
         {
           "resource": "repo://generate-icons.mjs#L1-L7",
@@ -49,68 +49,44 @@
         {
           "resource": "repo://public/altcha.js",
           "version": "repo-file-v1:sha256:303f813aab3b8e9e5990dd202228f897c3ec85b2ba7525ccbe868b807a23ae27"
-        },
-        {
-          "resource": "repo://public/workers/pbkdf2.js",
-          "version": "repo-file-v1:sha256:77bb86d75c39ec375353e4389a88f6a4d332111ec5caca951b1a7f3e1686e960"
         }
       ]
     },
     {
       "id": "claim_232ee1c90e344f7d846bb7d6cc5eb532",
-      "statement": "react-refresh/only-export-components 与 no-unused-vars 在 eslint.config.js 里配成 warn（分别带 allowConstantExport 与 `^_` 忽略模式），由 react-hooks recommended 引入的 react-hooks/exhaustive-deps 也是 warn；--max-warnings 0 把这三类警告全部提升为失败，工程内因此用 4 处 `eslint-disable-next-line react-hooks/exhaustive-deps` 压制依赖告警。",
+      "statement": "react-refresh/only-export-components、no-unused-vars 与 react-hooks/exhaustive-deps 三类规则已在 eslint.config.js 显式关闭（此前是 warn），--max-warnings 0 保留「出现 warn 即失败」的语义但当前无任何规则产生 warning；工程内既有的 4 处 eslint-disable-next-line react-hooks/exhaustive-deps 注释成为无害死注释，新代码不应再依赖这种压制写法。",
       "evidence": [
         {
-          "resource": "repo://eslint.config.js#L26-L36",
-          "version": "repo-lines-v1:sha256:f1475a93038f92daef00e606614802d44c8a3fe14e10f5f72c1e750ca525eeea:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0ODZhOWIzYzk4NGM1ZmFmMmZmOWQyMjM5Yjk5ODY3MTVlMDEyMjQ3NzMwMjdiNzIyNTQ1ZGNjMDBiNDg4OTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgzNWI5NjlmZjQ1OTIxMWYzZGMwMTkxZGVmYjU0OTdiMjQzZGQwZjhjNzEzZTJkMzQyNWM3MGMzZjM3NzlmM2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwMmQyYzBkNmRjNWU3NGQ5MmZhMTRiOTFkYmVhMjY0MDkwYmViMzVmZGI5MTg4ZDliMzQxMTgxZGNlOWY0Y2UifQ"
+          "resource": "repo://eslint.config.js#L31-L50",
+          "version": "repo-lines-v1:sha256:a397ca9858f5d2a88d12ed13070bd38c537c3fb6077071fdde1efb6a9b0d33f8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2ODljZmE2OWVhOWVmMzQ4YjUwMTMzZDAxMDU1NDc4ZGZlMWJhMWEzZTMwZDkxZmM0MWVkNzk2YjQ0MjUyMDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyN2NlNTJjNjE2YTBkN2ZmOWYyOTg2Mjg5ZjZlYzhhMGNjNDAzYTlkZmU4MTA0ODI1YWI1NjYxNjIxMzk5MmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwMmQyYzBkNmRjNWU3NGQ5MmZhMTRiOTFkYmVhMjY0MDkwYmViMzVmZGI5MTg4ZDliMzQxMTgxZGNlOWY0Y2UifQ"
         },
         {
           "resource": "repo://package.json#L10-L11",
-          "version": "repo-lines-v1:sha256:a844ac0f3f8054451f11d105aff5c9b7f561453fe1051404dab405b02f86b188:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDQxOWI2ODBmZmE5YWY2MjMzMmMwNmUwNDVhMGYzNTQyOGQzYTU4ODU2NWJmYmRlODQzNDIyYjA1MzYyM2JiNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTI5YjRiMjE1YjBhYmE4ZWQ1MzZmMTlkM2E5YTMxMTU1MDNjMDRmZTkyZjZiY2FkZDk5NTBhNjhhOTEzNzk2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTc3MzEzYzZhZTMyYjU5ZjNhNDUxYTg2YmEzMDUzMGNlY2EyYTYwZGUyYWM1ODg0NmQ0ODllMzc4Y2U3ZGEyNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzMwNjQ4OWYwODQxM2FiOTVkZmIyYzVmOGVkMWQyOWY3YzhjY2E1ZDcwMDk0ZjJiNDhmNDZjMmU0ZDNkMDFiOCJ9"
-        },
-        {
-          "resource": "repo://src/components/AdminEpisodeTrash.jsx#L31-L32",
-          "version": "repo-lines-v1:sha256:1b6e3686e7f0677075cfa92d031188e31abf3655487f493b5ed108b07d3510a0:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDM1ZWFjOWY3Njc4NGI4YjIyZjY0Yzc4NTIwMzI2ZjU1NjM1OTIwYWE1ZDIxYTlmY2IyNWE5ODk0YjdhZTJlNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWU2YzQ5OTE0MjE3YmZkZTZkODE1ZmY1ZjkwZTMwOTE3YTg5OGQ4ZGE1Y2MwOGYzYzU0ZmQxMmE0MjViMjQ3NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDYzYjcwODczYjUyNDZlYzQ3YzFkZTQ1YzU2NGRkOTNiNzZhNGY2MzIyOTg4MDRjNTBhZjViY2VlZTQyNGMwZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjU5MDdkN2FlMTU0OGUzZjFmOGZhZTNhOGU0MGExZThkMDBiM2Q0NDY4ODYwYWE2MjM3ZWMzNGQ3Mjc4MzRlOSJ9"
-        },
-        {
-          "resource": "repo://src/components/Modal.jsx#L62-L63",
-          "version": "repo-lines-v1:sha256:02e8f12dfe5468e42302e972528e202151c350c9afd8960e6a1b8a7d3768e877:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDM1ZWFjOWY3Njc4NGI4YjIyZjY0Yzc4NTIwMzI2ZjU1NjM1OTIwYWE1ZDIxYTlmY2IyNWE5ODk0YjdhZTJlNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ4YTNmNDg2YTM0ZmZhMGNmZTdiYWI0OGE2ZTQzOTg5MDY4Y2MwYmFjNTI5YTQ5NmU5ZTBiMGZhYzJhZTZhZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTRmMDkyNjM4ZmIwOGUyNWU0OTZiZDUzODVhNmIwMmNmNjNiMTYxN2Y3YTcwY2VkZWNiNGM4MWM4N2I3MTE4NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDc3YjkwOWNkN2QxODVhYTI4ZTEwZmNiMTRkYjk1NGMwNTE2Y2RlNzhjZTJkZWFhMDczZDM2ZGU0ZDdlYjJmZiJ9"
-        },
-        {
-          "resource": "repo://src/hooks/useCategories.js#L27-L28",
-          "version": "repo-lines-v1:sha256:3d7d268198badc07c70ce6ed15390a4b2befc183c444c62d6f24d269ee1afb34:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDM1ZWFjOWY3Njc4NGI4YjIyZjY0Yzc4NTIwMzI2ZjU1NjM1OTIwYWE1ZDIxYTlmY2IyNWE5ODk0YjdhZTJlNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmRjNTJmMDhiMzliMDhiMDFjOGQzMDhiZjg4MGIwYmVmMDJmZDFkZmNjOWQ5YWE5M2E0ZDFiNWY0ZDU4YjZjYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWUxMDYwYzBmZTVlYTVjMGJmOTI0ZjQyM2I0NjZkMTZiMjA4NzM0YTA0M2VjYjE5MDgyNWQyMWQ5MTllYzc0MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDc2MGFkYTQzMDk5ZDJhZmIzNmQ4OTYxNGFiM2QyMTBlNjMzODg3NzdhMzhiNTQyZmQ3NWJlZTQxZTNhOTc5MSJ9"
-        },
-        {
-          "resource": "repo://src/hooks/useEpisodes.js#L120-L121",
-          "version": "repo-lines-v1:sha256:3d7d268198badc07c70ce6ed15390a4b2befc183c444c62d6f24d269ee1afb34:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDM1ZWFjOWY3Njc4NGI4YjIyZjY0Yzc4NTIwMzI2ZjU1NjM1OTIwYWE1ZDIxYTlmY2IyNWE5ODk0YjdhZTJlNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmRjNTJmMDhiMzliMDhiMDFjOGQzMDhiZjg4MGIwYmVmMDJmZDFkZmNjOWQ5YWE5M2E0ZDFiNWY0ZDU4YjZjYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGMwNmY5YjUxZjliYjFhYTA5YjZhNDg5NGZhM2QyN2YwNWQ0N2Y5OTJiMGI2ZjBiZmYwYmFmNDBlZDcyMmVlZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjIwMjQyOTVkY2U4NTBkYTRjNmE2OGNhODk2ZWMyOGJlNTZhMjViMTUwZTI3NjM2NThhMzRhZjA0M2U2MDY4YyJ9"
+          "version": "repo-lines-v1:sha256:92b77c6056df736856af6fa92c2d898d4d2d8f06d3509ef6593af039ec8f2770:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODA4ZGNlZDZiYTc3ZTRhOTlmNjAxY2IxYmZkNjRhOTc3ZmRkNDI5ZGMyNTAwNjg0OGFiMDA3MmUwMjQ2MzE1NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTI5YjRiMjE1YjBhYmE4ZWQ1MzZmMTlkM2E5YTMxMTU1MDNjMDRmZTkyZjZiY2FkZDk5NTBhNjhhOTEzNzk2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTc3MzEzYzZhZTMyYjU5ZjNhNDUxYTg2YmEzMDUzMGNlY2EyYTYwZGUyYWM1ODg0NmQ0ODllMzc4Y2U3ZGEyNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzMwNjQ4OWYwODQxM2FiOTVkZmIyYzVmOGVkMWQyOWY3YzhjY2E1ZDcwMDk0ZjJiNDhmNDZjMmU0ZDNkMDFiOCJ9"
         }
       ]
     },
     {
       "id": "claim_1d4637771c8b4d78bb7aabc9db2d47cc",
-      "statement": "`--report-unused-disable-directives` 在 flat config 下以 error 级别报告失效的 eslint-disable 注释（不是 warn），所以那 4 处压制注释一旦对应告警不再触发，注释本身就会让 lint 失败，必须同批删除。",
+      "statement": "--report-unused-disable-directives 已从 lint 脚本移除，eslint.config.js 同步配置 linterOptions.reportUnusedDisableDirectives: 'off'——失效的 eslint-disable 注释不再导致 lint 失败（flat config 下曾以 error 级别报告）。",
       "evidence": [
         {
+          "resource": "repo://eslint.config.js#L9-L9",
+          "version": "repo-lines-v1:sha256:2111f239ac65c9fecd4f7975d4ee0c677b58a8ea67852ea25d2792392518d2f8:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjExMWYyMzlhYzY1YzlmZWNkNGY3OTc1ZDRlZTBjNjc3YjU4YThlYTY3ODUyZWEyNWQyNzkyMzkyNTE4ZDJmOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjExMWYyMzlhYzY1YzlmZWNkNGY3OTc1ZDRlZTBjNjc3YjU4YThlYTY3ODUyZWEyNWQyNzkyMzkyNTE4ZDJmOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODJiMTg0YjQzN2UyNzg2NTQzYTE2OWRjNWU4YmE1ODVmNDBmNTc3ZTVjYjJkYTc0Zjk4YzBmMGFhNmFmMTg2OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDhkYzU2NDYxNzE1Nzc1OTI0NjZiMDUyMzM0ZWVjNzkxOTMyNjVhOTk0ZTg3YThmOTc2ODMwOWI4N2JmZGMyNSJ9"
+        },
+        {
           "resource": "repo://package.json#L10-L11",
-          "version": "repo-lines-v1:sha256:a844ac0f3f8054451f11d105aff5c9b7f561453fe1051404dab405b02f86b188:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDQxOWI2ODBmZmE5YWY2MjMzMmMwNmUwNDVhMGYzNTQyOGQzYTU4ODU2NWJmYmRlODQzNDIyYjA1MzYyM2JiNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTI5YjRiMjE1YjBhYmE4ZWQ1MzZmMTlkM2E5YTMxMTU1MDNjMDRmZTkyZjZiY2FkZDk5NTBhNjhhOTEzNzk2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTc3MzEzYzZhZTMyYjU5ZjNhNDUxYTg2YmEzMDUzMGNlY2EyYTYwZGUyYWM1ODg0NmQ0ODllMzc4Y2U3ZGEyNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzMwNjQ4OWYwODQxM2FiOTVkZmIyYzVmOGVkMWQyOWY3YzhjY2E1ZDcwMDk0ZjJiNDhmNDZjMmU0ZDNkMDFiOCJ9"
-        },
-        {
-          "resource": "repo://src/components/Modal.jsx#L62-L63",
-          "version": "repo-lines-v1:sha256:02e8f12dfe5468e42302e972528e202151c350c9afd8960e6a1b8a7d3768e877:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDM1ZWFjOWY3Njc4NGI4YjIyZjY0Yzc4NTIwMzI2ZjU1NjM1OTIwYWE1ZDIxYTlmY2IyNWE5ODk0YjdhZTJlNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ4YTNmNDg2YTM0ZmZhMGNmZTdiYWI0OGE2ZTQzOTg5MDY4Y2MwYmFjNTI5YTQ5NmU5ZTBiMGZhYzJhZTZhZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTRmMDkyNjM4ZmIwOGUyNWU0OTZiZDUzODVhNmIwMmNmNjNiMTYxN2Y3YTcwY2VkZWNiNGM4MWM4N2I3MTE4NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDc3YjkwOWNkN2QxODVhYTI4ZTEwZmNiMTRkYjk1NGMwNTE2Y2RlNzhjZTJkZWFhMDczZDM2ZGU0ZDdlYjJmZiJ9"
-        },
-        {
-          "resource": "repo://src/hooks/useEpisodes.js#L120-L121",
-          "version": "repo-lines-v1:sha256:3d7d268198badc07c70ce6ed15390a4b2befc183c444c62d6f24d269ee1afb34:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDM1ZWFjOWY3Njc4NGI4YjIyZjY0Yzc4NTIwMzI2ZjU1NjM1OTIwYWE1ZDIxYTlmY2IyNWE5ODk0YjdhZTJlNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmRjNTJmMDhiMzliMDhiMDFjOGQzMDhiZjg4MGIwYmVmMDJmZDFkZmNjOWQ5YWE5M2E0ZDFiNWY0ZDU4YjZjYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGMwNmY5YjUxZjliYjFhYTA5YjZhNDg5NGZhM2QyN2YwNWQ0N2Y5OTJiMGI2ZjBiZmYwYmFmNDBlZDcyMmVlZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjIwMjQyOTVkY2U4NTBkYTRjNmE2OGNhODk2ZWMyOGJlNTZhMjViMTUwZTI3NjM2NThhMzRhZjA0M2U2MDY4YyJ9"
+          "version": "repo-lines-v1:sha256:92b77c6056df736856af6fa92c2d898d4d2d8f06d3509ef6593af039ec8f2770:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODA4ZGNlZDZiYTc3ZTRhOTlmNjAxY2IxYmZkNjRhOTc3ZmRkNDI5ZGMyNTAwNjg0OGFiMDA3MmUwMjQ2MzE1NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTI5YjRiMjE1YjBhYmE4ZWQ1MzZmMTlkM2E5YTMxMTU1MDNjMDRmZTkyZjZiY2FkZDk5NTBhNjhhOTEzNzk2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTc3MzEzYzZhZTMyYjU5ZjNhNDUxYTg2YmEzMDUzMGNlY2EyYTYwZGUyYWM1ODg0NmQ0ODllMzc4Y2U3ZGEyNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzMwNjQ4OWYwODQxM2FiOTVkZmIyYzVmOGVkMWQyOWY3YzhjY2E1ZDcwMDk0ZjJiNDhmNDZjMmU0ZDNkMDFiOCJ9"
         }
       ]
     },
     {
       "id": "claim_b24c7a04e4a546f1baaa0d6bfe3aff25",
-      "statement": "lint 展开的规则集包含 @eslint/js recommended、eslint-plugin-react recommended（jsx-key、jsx-no-target-blank、no-unescaped-entities 等为 error，prop-types/react-in-jsx-scope/jsx-uses-react 被关掉）与 eslint-plugin-react-hooks 7.x 的 recommended——后者已包含 React Compiler 的一组诊断规则（set-state-in-effect、set-state-in-render、refs、static-components 等以 error 启用），因此 effect 内同步 setState 一类写法会让 lint 直接失败。",
+      "statement": "lint 展开的规则集包含 @eslint/js recommended、eslint-plugin-react recommended（jsx-key、jsx-no-target-blank、no-unescaped-entities 等为 error，prop-types/react-in-jsx-scope/jsx-uses-react/display-name 被关掉，no-empty/no-useless-escape 也单独关闭）与 eslint-plugin-react-hooks 7.x recommended，但其中 React Compiler 诊断组（set-state-in-effect、immutability、refs、static-components、preserve-manual-memoization）与 exhaustive-deps 已全部显式关闭——effect 内同步 setState 一类写法不再让 lint 失败，rules-of-hooks 仍为 error。",
       "evidence": [
         {
-          "resource": "repo://eslint.config.js#L26-L36",
-          "version": "repo-lines-v1:sha256:f1475a93038f92daef00e606614802d44c8a3fe14e10f5f72c1e750ca525eeea:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0ODZhOWIzYzk4NGM1ZmFmMmZmOWQyMjM5Yjk5ODY3MTVlMDEyMjQ3NzMwMjdiNzIyNTQ1ZGNjMDBiNDg4OTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgzNWI5NjlmZjQ1OTIxMWYzZGMwMTkxZGVmYjU0OTdiMjQzZGQwZjhjNzEzZTJkMzQyNWM3MGMzZjM3NzlmM2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwMmQyYzBkNmRjNWU3NGQ5MmZhMTRiOTFkYmVhMjY0MDkwYmViMzVmZGI5MTg4ZDliMzQxMTgxZGNlOWY0Y2UifQ"
+          "resource": "repo://eslint.config.js#L31-L50",
+          "version": "repo-lines-v1:sha256:a397ca9858f5d2a88d12ed13070bd38c537c3fb6077071fdde1efb6a9b0d33f8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2ODljZmE2OWVhOWVmMzQ4YjUwMTMzZDAxMDU1NDc4ZGZlMWJhMWEzZTMwZDkxZmM0MWVkNzk2YjQ0MjUyMDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyN2NlNTJjNjE2YTBkN2ZmOWYyOTg2Mjg5ZjZlYzhhMGNjNDAzYTlkZmU4MTA0ODI1YWI1NjYxNjIxMzk5MmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwMmQyYzBkNmRjNWU3NGQ5MmZhMTRiOTFkYmVhMjY0MDkwYmViMzVmZGI5MTg4ZDliMzQxMTgxZGNlOWY0Y2UifQ"
         },
         {
           "resource": "repo://package.json#L27-L31",
@@ -123,7 +99,7 @@
       "statement": "eslint.config.js 的 languageOptions 同时并入 globals.browser 与 globals.node 并额外声明 `__APP_VERSION__` 为 readonly：新增任何 `define` 注入的全局常量都必须同步加进这里，否则 no-undef 会让 lint 失败；反过来说 node globals 的并入使 no-undef 无法发现浏览器代码里误用 process、Buffer、require 这类错误。",
       "evidence": [
         {
-          "resource": "repo://eslint.config.js#L11-L20",
+          "resource": "repo://eslint.config.js#L12-L21",
           "version": "repo-lines-v1:sha256:82b0afb1574c8fad07dc138cf073f6e8e7ad5b1cefe47877e3276155dfb8b226:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5ZmE5OWExYWZhNzZkZDhiYTc0OGIyZDNiZjBjNzE0NGExOGNhNDQwZTQ3N2UwOWQwMTliZGY2ZDBhYzdjY2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyMzdmMjQ2ODk4YzdlOGU0MmFiZDU2MmJkZjNkYzUyNjIyNjI1NTAzNGM4OTQzYmQzMmIxM2MwMWY2MjJhMzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI4NWQ0ODUyOTY3N2EyZDkwMjQwYmVlNWFhOWNhOTZjODAzZDU4YTcxOTQ4NzE2N2ZhYzc2NzkwNjNkMWRhYmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUxNzdmNGM3ZGI5YWM4NGY1YjAzNmM5ZjEyNjA4M2ZiZjA0ZTNkMTcwMDA0Nzg0ZjEwMjg4MTJhMWNhZmRlMTAifQ"
         },
         {
@@ -155,12 +131,12 @@
           "version": "repo-lines-v1:sha256:24a953cdff5194425bc03da6d4f44eb244b58206a69148acca45ad0abf3c327b:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWM5NTJjNWM0NWYwNmU4OGFiNjhlYzNlZmVlNWYxNGE1YjliNmI3MTg2NmZmMzdiMGZlODhlMTY0OGU3ODFkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTRlMTQ4YWZlMjVjMGIyNDliYTRkYTFkMjEwNGE2YTYxNDE4OGZmZjY5NjNmMDA4MTljNjNmNTQ5MDdlYjQ3YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGYwZGVhNWI3ZmY4NWI0YmNkZWNlOGQwYzMwNTA2NGE5ZTY3MmY5Yzg5ODVkMTY0ZDliMDliMWQ5ZDI3YzEzNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzQxOWY3OWMzOWRiNmZlMTViYTJiMDQzOWI4ZTc4NGQxNDYxYzNjMGNhZGUxOTcxMWFhYTAwYTFjYzgyZDEwZCJ9"
         },
         {
-          "resource": "repo://package.json#L23-L27",
-          "version": "repo-lines-v1:sha256:94f558bd7cb554123e2aac0db0fc1293d84919b60c746ac327f78b6d120b57bf:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWRjNGRlN2VkMzVhMjMzNjQ1Mzk4NjRkYWRiOTM4Yjg3MjMzMzc5MTc5ZDYyOTJiOWZmNWY2MTlhNmMxMzE2NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjZiZjRiYTBlNGVhZjI2YTZhN2FhOTRlNWE4NjE2NGQxMTE5MjFjODZkMzg0N2YyOGQxZjMwZTUwYjQwZWUzNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzQyNjU0YjRhZDBkOGVmYjdiYmY5MjJlNGZmZWNjYWE4YTA3YzNlZTc0ODFmODhlYzgxY2YzYzJkZjczOWE0NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWZmMmRjMzQ4NDcxMDliM2U5OTIyNmQxNTBjZGRlOGY2MjQyZmE3ZWQ2NWVjNmE5ZGYxYmY0ZTdlYmVlNzJiNSJ9"
+          "resource": "repo://package.json#L24-L36",
+          "version": "repo-lines-v1:sha256:a5a65a4dd605143ee5977c5b6c26bd01536e3e552e258c0e4a43c89787630287:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3MjFkZDliODJkNjkyM2EwMDIzNTJhYjkzOTJjZTVhMzgwMDc1NmUwYTYxMDEyOGNiOGUzNDRlNDE3ZGM0MTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5Y2E5YWUwOWY3ZTFjZTJjNDYwMzJmNjhiYjRiNDM0MjA1N2Y2OTExOTFmZTljY2I2YmQ0YzliNzljZWJhN2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE0MGU0M2QzZGExZjIxZDQ4NmIxZmI0YTkwOWE4NDBlMzZjMTEzOTlkOTYxNDVlNmEwOTdlNTI1NWZhNDBlYzQifQ"
         },
         {
-          "resource": "repo://package.json#L9-L13",
-          "version": "repo-lines-v1:sha256:1f5481600fb13c2c1a8a6df1bf4649aaeb5b6b24993c3642c674be863f610fc2:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGMxNDYwNDc3ZDZkODJkYzdmYjM1M2IzN2IxMGZkNzI2OWU2ZWUzODJjZTExMTE4OTliYTIxMzI0MTlkYzFjNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ1Y2QyZmI0ZjNkZjg4NDUxNTI1NWIzOTUyM2YyZjhiNTQ3MmJlZWE5ZjU2NmZmY2EyMDRkYjgwMjU2MTA0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTdjOTFkNGI2ZjUwMGFkNGI5YjIyZWJhNDFmZTNmOWY2OGMzMGQwMjE4ZGZiZTZkNTczN2VkODdjMWFlOTAxYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzFmMDE1MDE1ZmJkZGEyMjM2OGZkYTllNDAyOWEzY2MwNzdmNjUyOTY4MjVjMTQzOWVjNmY0YTMyOGY5NmU5MyJ9"
+          "resource": "repo://package.json#L7-L14",
+          "version": "repo-lines-v1:sha256:8c9ac56b88e52a26308029474548168524d5dc0ac548e79957b4c728c1af7e84:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmEzYjQ2OWQ5ZTA5NzU3MjI0NjY2NzM0YzllZjdiMjU0ZDg4NTM0ZjVkNWJiNzA5ODk2MDgwNWM1NTNkYzMwNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzUyMDMzNGJlN2IxYjUyMmU5YzNjNzU0N2Y4OWZkMDk0ZjE1MTAxNjMwOWY3NDk0YTdkYmMzNjg2MzIwMmJmYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjgyODNlNjM2ZmRkYWY5OWQxZjExZDk3MmRmYWI0MWU5NjUwNzVkZDNlODQyOTQ0YWQ4MWViMjA1NTQ2ZDU1NSJ9"
         }
       ]
     },
@@ -173,7 +149,7 @@
           "version": "repo-lines-v1:sha256:a2ecb4f4dcb7f02686706ae6cf4cfb2bdd13bde3583af7415472458beac856fb:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2MyZmQ2MjdmMzFmOTAzYjIxNTc1NGNhNjIyZGU3NjVlOTgwZGJiNDNlNTgxNTNiYTExNTUwYzI1OGUxMGE1YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWYyMTVmZDAzY2ZjMmJlZWJmODA0YTE3YWM1ZTk0Nzk1MWY3Y2QyZGMwNTYwNTIyNDk5YzYwNmZkYmNkNzE4NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDIwNmNmOTUxMjRiZGY2ZjNmZTQwYzY1NmQzYTYyMTFkNzcyNWU4YTc5ZWZhOTVmMjMzYzFkODBiYjcyNWFjNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmQ1MTcyODkzMTJkMDZkZmM0MWRjZTc0MTBhN2Q0NmVmMjUzMTczY2RlY2FmYjU5ZjdiMGY1MzA3MTcyNjgwMyJ9"
         },
         {
-          "resource": "repo://vite.config.js#L116-L122",
+          "resource": "repo://vite.config.js#L102-L108",
           "version": "repo-lines-v1:sha256:73468cca2d5c3347f6a292093bc6d30cce5cc585ce1128404c67712566022360:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmRjZGQxNmZmY2JmMWQzMThiY2IyNDNiMTk0ZDE4MjMwY2U2MWQxYTY2MmEyMGEwZTYwYzljMjg0OTljMTNjMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODU4MGI3NjUxOGRhZTk3OWZhZWJkMDIzNjdhMjkyOTJhNTBkOTc2MDkyMjUxYTM4YTZjZTMwODgwYmE0MjgyNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWZlOTMwYTIyOWI5YzQzOTdlYjZiNGY5MzI4YThhM2QyMTRlNGE0ZjczZmFkNmY0NzBiN2M2NzhjNThlNDMxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
         }
       ]
@@ -183,22 +159,22 @@
       "statement": "`npm run preview` 只托管 dist（默认 4173），vite.config.js 只有 server.proxy 而无 preview 段，所以 preview 下 /api 与 /uploads 不会转发到后端，无法验证任何依赖数据的功能；同时 VitePWA 的 devOptions.enabled 为 false，dev 服务器不生成 SW 也不注入 manifest link，PWA 相关验证只能在 preview 或真实部署上做。",
       "evidence": [
         {
-          "resource": "repo://vite.config.js#L79-L81",
+          "resource": "repo://vite.config.js#L65-L67",
           "version": "repo-lines-v1:sha256:f42d64cf17f2379765b0ba6dc1aa4e46a222bea460086f3d565d09d949ebb868:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmVhMDY1YjUwMzQwZjFkZTA5YjRlMDEyZWE1MzBmNzJlN2Y1ODkwMmViNDRjMjJkZTVmYmI4NTlkNzlkM2VmMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTY0ZDhjMDczNDI5ODkzMTAxNTc2ZDg4ZDk5MTI3ZTg5ZDY4OTFkM2IxN2U4OWRmMDJlYzlhZTcwNzA1ZDhiZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU5ZjkwNDliOTBjN2FhOTM3NDM5ZDdmZDU5NTUwMzA1OWQ4MDJlMGVmM2NhNjk1YjhhNTFiM2FkNjNlMTFmZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDhkYmVmODdhZDc1ODc5NTczMjk5OWRlZTJiNTgzMjRhMDYwODUxM2I5MzU4NmEyZmUyOTEzNWE5MGUyMTA5OCJ9"
         },
         {
-          "resource": "repo://vite.config.js#L98-L122",
+          "resource": "repo://vite.config.js#L84-L108",
           "version": "repo-lines-v1:sha256:14682e68cac42d644aa364d180492ed9fa15750a7004756d529e1aa4699b426c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwZTY2YWZlMzEwMjMxZDJlNjA5MWE1ZDg5YTYzZTc0OTg1ZmM3YzAyMzY0YTg5OWI0Y2FjZjdmNTI3Mjk2NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1ODBiNzY1MThkYWU5NzlmYWViZDAyMzY3YTI5MjkyYTUwZDk3NjA5MjI1MWEzOGE2Y2UzMDg4MGJhNDI4MjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg4MTgwYTM4MmNhNTE1ZmVkODFhODgwMzk2ZGM0ZDU2M2VlMzVmYmIxZGFiNDQ2OTcyOGM4YWRhMjZjNmQ4ODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
     {
       "id": "claim_dec464b3f4994f13a930f850b8365293",
-      "statement": "PWA 缓存面是固定的两份清单：预缓存 `**/*.{js,css,html,ico,png,svg,woff2}`，运行时只有匹配 `/api/(episodes|series|categories|banners|friend-links|site-content)` 的 NetworkFirst（10 秒超时、100 条、1 小时）与 `/uploads/` 的 CacheFirst（200 条、30 天）；新增 API 分组不改 urlPattern 就不会进缓存，且在 /uploads 下复用同一路径替换图片会让老用户继续看到旧图。",
+      "statement": "PWA 缓存面现为：预缓存 `**/*.{js,css,html,ico,png,svg,woff2}` 一份清单，运行时缓存清空（runtimeCaching: []）且 navigateFallbackDenylist 排除 /api/ 与 /uploads/——新增 API 分组不会进缓存，/uploads 下同名替换图片立即生效；恢复缓存条目须连同登出清理评估。",
       "evidence": [
         {
-          "resource": "repo://vite.config.js#L57-L80",
-          "version": "repo-lines-v1:sha256:adba4152fdb963db628d7dc3166b5387f8d968b566762fc01b0e86534e0dcbe5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2NGM0ZDAzNTBjYTdhYWVlNmFmZTVkY2E4M2RlOTg3MGEwNzVkZDU5ZmRjZTJjYmNlZjZiZDg1ZjBiYTA2OWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0NzVlOTRhOTA0YWM0OWIzMTU0ZDQ2NzJhNjZlODYyOWI4NmRhYzc0ZTNlMjkzN2JlNjkyN2FlM2RhMTFjNTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiZjhiMDcxYWQ5NmNjOTYzY2QxM2Y5MzFhN2ZkNWU1ZjIxMzc4ZmY0OWYwOTVmNmUwYTM1YmRkNjIyYjllZTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEwZjIzMWMwODg0ZWM4ODVkM2JjOGU0NDY0MDNmN2I3ZTliN2U2ZDE2YzkwZjc4OGE4NTA5ZmU4YWIwNjEyMjcifQ"
+          "resource": "repo://vite.config.js#L56-L70",
+          "version": "repo-lines-v1:sha256:3bb2343d48e75de68d0a06f1d150c325347d7b70632befdf24ff1c3ff8a321a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5NzhlMjUwM2I4Y2YzN2EwNmY3ZDZmMGEzYTZiNmZlMzU2OTFmYmNhYjUwYjg3NzVjYWI2ZmFiYzcxYzU5MmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjExYjYxZDQ1NWZhNTk5YTQ5M2EzZGNmMGIyNzVlNGRhYWJkYzVlZDMzMDRlNTY0MmI4NjI4NmNjYzFlODc5NDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3YWRjZDVjNDQ3NjUyMDNhZDQzM2EzYzA1NDUyMTRmZjg0ZTY3MTc0YzE4MTVlYzdhYjQyNjNkNjBkZGMxYjcifQ"
         }
       ]
     },
@@ -207,7 +183,7 @@
       "statement": "CSRF 头只在非 GET 且内存里已有 token 时附加，initCsrf 失败也照样 resolve 放行，因此启动期取 token 失败会让写请求无头发出并被后端以 403 拒绝；普通写请求没有“403 重取 CSRF 后重试”的补救（该补救只存在于 refreshAccessToken 内部），主动补取只发生在启动与标签页 visibilitychange 回到前台时。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L126-L139",
+          "resource": "repo://src/contexts/AuthContext.jsx#L127-L140",
           "version": "repo-lines-v1:sha256:03187f84f4d3a9f444ab02eb9e2e402eda8284413f52769ec3557798b9b4c0a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNjNjIxOTRiYTM3YmM1NTg1MDIzMmNhYzYxZWY4NGM4NzA2ZDg0ODA2ZmNhNGNlNzQ1N2UwNDQ1ODU4MWE0ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5NDgxNTkwMzc0NDhhNTk1NmY2YjI1OWM4MTMxZGI2YzM5NDJjN2RlNDlhNDQwMTMwZjBhYWM2YWUyYjJlNzMifQ"
         },
         {
@@ -215,22 +191,22 @@
           "version": "repo-lines-v1:sha256:1bea04d30e1123c85507f89a203826e150621aaa99c19262ac9ae95b746bd6d1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkMzE2MzlmNjNkMTBlMDg1MTA1MzQ0M2QzYmQxMGNkOTgyNzQ3NTQ2NTc3NThhMmFkNGI5ZGM4ZDdlZDNlODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjYzkyNzNmOWUyODMwMzljYTYzNWM3NTU0MDcxMTc4MjA2MGI0ZTNiNDc2ZDhmYTkyNTA3NGIxNDUxNmMzNmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3NWNhMjBhMmM5ZTZiOGZjZGY4YTZlODc0YTE2ZjI4MTcxYzgzMjRkMzE3M2VhZjgwYzk2ZTZiYTA5YTYxY2IifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L174-L198",
+          "resource": "repo://src/utils/axiosConfig.js#L173-L197",
           "version": "repo-lines-v1:sha256:2c7758c31017a21c8c909360af1239ef4c7900a0254766dd82b0759375187f6e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmY2EzZjY1MDNlMzQwY2ViNTk1OWE5OTc5M2E4ZTFlZWEzZTg1OWM3ODMxMzVjMTEwNGJhNGU4Yzc2MTEyZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzMTYxYTM3MzdlZTNhNDY1NDMwNThjMjk1NGU0MjMyZGFjZmMyMDhkMGRiMGQ3MDc5MzI0NmRlNWQxMThhNDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyYTQ4ZTliZDk3NWFmM2QxODVlYTZjNDc2MDBmNTE0NjYyMDI4NjdhYzEyMmRkMmI0ZjJhNGQ2NmRmNmU2ZDgifQ"
         }
       ]
     },
     {
       "id": "claim_7074d2bfeeb049cca447e00d3d4366c6",
-      "statement": "419 与 401 共用同一套刷新合并机制：同一时刻只发一个 /api/auth/refresh，挂起请求在成功后各自重试原请求一次（_isRetry 防重复），刷新返回 409 被视为成功（另一标签页已换新 cookie），刷新成功会把 role、email、isEmailVerified、forceEmailChange 合并进 localStorage.user 并广播 auth:token-refreshed，失败则清 localStorage.user、派发 auth:session-expired 并在 1 秒窗口内只跳一次 /login。",
+      "statement": "419 与 401 共用同一套刷新合并机制：同一时刻只发一个 /api/auth/refresh，挂起请求在成功后各自重试原请求一次（_isRetry 防重复），刷新返回 409 被视为成功（另一标签页已换新 cookie），刷新成功会把 role、isEmailVerified、forceEmailChange 合并进 localStorage.user 并广播 auth:token-refreshed（email 已从合并白名单剔除），失败则清 localStorage.user、派发 auth:session-expired 并在 1 秒窗口内只跳一次 /login。",
       "evidence": [
         {
-          "resource": "repo://src/utils/axiosConfig.js#L148-L269",
-          "version": "repo-lines-v1:sha256:6c28f73d0d9c68e17a057eb917dbada70cd2eb96c676a42dc0ee486b80208239:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIyMWRlMDlmYWZmNGE2M2QxMTQ1Y2U4MjlmNDIxOGRkNDE4Y2YyMWM2NzY3NDEzZDAzYWFhZDlhZjFkY2Q1Mzk1IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5ZWRlY2QwNGJlNWU3ZDc4Yjg2ZTYxMmE1OTlmNTU4ZTgzM2JjYjVmNWRmZjBiOGZjMGQyYTdlZDJkMWI1Njc1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJhMjQ2Yzc0YmM5Y2E0NmVhNjM0MzkwOTFiZmI5MTE3YmJjMDI3NjJmNzMxYThmMGVmZGRjMDg5ZmI4MDE5ZTk0In0"
+          "resource": "repo://src/utils/axiosConfig.js#L147-L266",
+          "version": "repo-lines-v1:sha256:8c8c9a6c77de81f1e6f83bd87f71709364773794f21402c23192ff5ebb9d3b79:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIyMWRlMDlmYWZmNGE2M2QxMTQ1Y2U4MjlmNDIxOGRkNDE4Y2YyMWM2NzY3NDEzZDAzYWFhZDlhZjFkY2Q1Mzk1IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0OTk2N2VjMWVkMzgzNmY4ZWIxN2FmZjE3MmI1YmZlZjdkZTYwNDg1YTQzOWM2Y2ExMWM1OTFlMTc1NTczOWFlIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5ZWRlY2QwNGJlNWU3ZDc4Yjg2ZTYxMmE1OTlmNTU4ZTgzM2JjYjVmNWRmZjBiOGZjMGQyYTdlZDJkMWI1Njc1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJhOGUwZjJkOTc0MDMwM2RjZGM2ZGU3OGJjY2M4MzY3OWQ0MTVjMmEwNTliMGRmODZmN2NlNjdhZjU3MWQ4OTUxIn0"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L44-L126",
-          "version": "repo-lines-v1:sha256:b6d4e1d694cbc972ebda2170f6630141633ed628781a8194abe65338f9fc16ff:eyJzZWxlY3RlZExpbmVDb3VudCI6ODMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzNDIyMGEyY2MyNjQ1YjM3ZTNkZTg3OWMyZmQ5ZmE0YmM5MWIwODc1NTk5OTMzN2UxY2MyYzRlMGIzZTZhNGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNjZjVlZTU4NTAxOGViYmY5MTUyODhkNzQxZDA2MTMyM2UzMmM5ZTVhMjY4ZDI3YWIxYmYzYjQyZjY3NWFlZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0ZWZjYTViMDY1OTcxMDYzMjllMjM0YzY2OGQ5NWFhNGE4YWY4NTg0YTE3YzQ1ODQzYzMzZGFkMDVjY2JhOGEifQ"
+          "resource": "repo://src/utils/axiosConfig.js#L44-L138",
+          "version": "repo-lines-v1:sha256:8d27afa713023d93d831c528c42d65ae71491ffc090199d3df8284b8ab1f872a:eyJzZWxlY3RlZExpbmVDb3VudCI6OTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzNDIyMGEyY2MyNjQ1YjM3ZTNkZTg3OWMyZmQ5ZmE0YmM5MWIwODc1NTk5OTMzN2UxY2MyYzRlMGIzZTZhNGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNjZjVlZTU4NTAxOGViYmY5MTUyODhkNzQxZDA2MTMyM2UzMmM5ZTVhMjY4ZDI3YWIxYmYzYjQyZjY3NWFlZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEwOTljNGI5MmRkYTk4NjM0YTcwZDA3ZTMxNTAzMThkMWEzMzkyZmMzOWVmZDhhYzcwNjhhNmUyYmE5YTM5ODkifQ"
         }
       ]
     },
@@ -239,7 +215,7 @@
       "statement": "登录后的会话心跳每 5 分钟发一次 POST /api/user-sessions/heartbeat，但 document.visibilityState 为 hidden 时跳过；标签页回到前台时处理器会重新请求 /api/auth/me 与 /api/csrf-token，用于长时间挂起后恢复用户快照与 CSRF token。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L114-L139",
+          "resource": "repo://src/contexts/AuthContext.jsx#L115-L140",
           "version": "repo-lines-v1:sha256:2a2b571c04d12b30e7b9e355ac431281b9d8e799332bfca0015fcb8546ab40da:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0YzFjNjc3MmRiNWY0ODViNDVmYzVjYTE1ZTkyOTk4N2E4MDFmZTJjOTNiNzExNmNkODRhZTI5MWJhMjZmNDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5NDgxNTkwMzc0NDhhNTk1NmY2YjI1OWM4MTMxZGI2YzM5NDJjN2RlNDlhNDQwMTMwZjBhYWM2YWUyYjJlNzMifQ"
         }
       ]
@@ -256,11 +232,11 @@
     },
     {
       "id": "claim_66c73d1413ff4cee96ba7aed2f0091e5",
-      "statement": "所有服务端图标 SVG 必须先经 sanitizeSvg 清洗（要求以 `<svg` 开头、移除 script/foreignObject/iframe/object/embed/link、剥离 on* 事件属性与 javascript: 链接、把显式 fill/stroke 颜色改成 currentColor）才通过 dangerouslySetInnerHTML 内联；主题图标合并时跳过 THEME_PROTECTED_ICON_KEYS（仅 misc.logo），且图标 key 必须登记在 ICON_COMPONENT_KEYS 才能被后台映射与主题编辑器选中。",
+      "statement": "所有服务端图标 SVG 必须先经 sanitizeSvg 清洗（要求以 `<svg` 开头、移除 script/style/foreignObject/iframe/object/embed/link/animate/set/discard、剥离 on* 事件属性并按协议抹掉 href/xlink:href/src 的 javascript:/vbscript:/data:text/html 值、把显式 fill/stroke 颜色改成 currentColor）才通过 dangerouslySetInnerHTML 内联；主题图标合并时跳过 THEME_PROTECTED_ICON_KEYS（仅 misc.logo），且图标 key 必须登记在 ICON_COMPONENT_KEYS 才能被后台映射与主题编辑器选中。",
       "evidence": [
         {
           "resource": "repo://src/contexts/IconContext.jsx#L164-L174",
-          "version": "repo-lines-v1:sha256:d0456d4dc1ef7c3e69e0c15fc484a0336f85c00c9138d8b6e6af19466b5ab7a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiMWQ2ODNhMjJlNTdhZjJiM2NlZGZmY2ExODZkMzk1NzFhZjZjYzJiNGEwNjE4NmIxMjM4MjQ2Yjk5OWNjNTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5OWJmYTRiNmFhMzkzNmM2NzY2NGYyNDM2YjY3ZDFjOTQ2ZTc1YWQ4MGYyZGUzMzA2MWIzNjRjYWRlOGU4ZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3YmU1YWZhNjVlZTBlMDFmYjFhY2RhNDIwOGUyMzdlYWRhNWZjZjQzMzNlNzA3ZmUyY2I5MzNjYzQxMjVhMGUifQ"
+          "version": "repo-lines-v1:sha256:33002d568a9b8c3a501d2459465a15b7e69ec6c37de58e468f8bd9aa7e3a0db0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0NTI1MTZkN2NjMzUwYjhkZmJiMGJhZTYyZDA0MTYxMmY2OTM5NTY1ZTUwZjE5YTYzNWQxZGE2NWI2NzhjYjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiY2VhZmQzZmVhNjQ3MjIwZjI5ZDEzYjIzYWI4ZWY4OTJmY2Y1ZmQzYzc5OWI2MWYyYTY0NmZlMTQxYjFlOTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmNWFkMjI4OTc3MDM4NWE0MjAzNDU1NDNiYjBlYjhmYTVhNWE0MzZjMjJiYWI5OTdkM2MwZjVlODExNjQwM2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUwZmRjNjNjOThmYjFjN2EyMTZjMmE0YWRhNGUzMTliYmRhZTIyZGE4YTlhZGY4N2Q0NGVlODhhZWE5YzI2ODEifQ"
         },
         {
           "resource": "repo://src/contexts/IconContext.jsx#L17-L60",
@@ -268,11 +244,11 @@
         },
         {
           "resource": "repo://src/contexts/IconContext.jsx#L231-L264",
-          "version": "repo-lines-v1:sha256:ab1a5619f2d7cefbc08105d3c088d15dbf516df41e6297c8c2c55af06d3bd6e7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2YjA3NGQ0NjMzOTdmYzkwNmU3ZjIwZmMzZTEyODExMTY2ZGQwODRhNDljYzQ4OGQzYWRmNWU3ODU1NTY0NDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5N2VmNjM3ZjMzZDQyN2RjMGM0MTFhYWY2ZDZjY2Y1ZmY2ZThjNDRkYjQ3ODc4ODI2ZGIyMjNkYmZkYjdlNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlMDNhZDc0NGM0YTY4YTM0ODVhOWRmMzBlYmEzOTA0ZmMwNTgwYTlhNjIxM2Q1YzQ0ZWY2NzU3NDEzZWFlZGIifQ"
+          "version": "repo-lines-v1:sha256:73dfb32e9a8c7f03b994144f2b2f211b10b40d95b6fc07d6690e9a6c9f4141fa:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzODM4MGIwMzI1NDUzMzBhNDdjNDQ1MWY0MWIxMDI0MDgyYzRiMDc4NDFjOTdkZjhmYjc4Y2RiNjk1NzZjOWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAyMDcwNTE2ZGQwOTAwYmZhYmRmMWQzYzE5M2U0Y2YwY2UzYjljYWU0MzE4ZWRkNGYxZTMxYTI2Njk1OWJjNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY4ODU2ODNmNmE3MDQxMGE2M2Q2NDM0MjAxMTQzMjk4Y2FlODAxYjQzYWNmNjE2NzJhZTZiZTcxZGZhMDJjZGUifQ"
         },
         {
-          "resource": "repo://src/contexts/IconContext.jsx#L61-L81",
-          "version": "repo-lines-v1:sha256:31a26f9db286754c428cc68041608547442367ad5e6a6765829c3ebe047d2a4c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1Mjk3ZGUyZWI3NDFhNjlkZWQ2OTRkZWFmMzY4ZGEyMWQ2MjliNDJjZTZjNDkyNjc4MWZhYzY2ZTQ0NmZlYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhNzU4MjIzMDRhYzBlYzg5Y2I4NTU3NWRhNDI3ZTFhMGUwNGI5ZTI0YTRhYzUzZDk5MmZhZDYxNWJhOWIyMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmZDViNjU2YTU3ZTFjMWM4MDg4YzVjMTY3NjU2ZjVlZjhmZmYwOTA5YTQxMjhiYzE2Nzg5NDBhYzJhYzAyNmUifQ"
+          "resource": "repo://src/contexts/IconContext.jsx#L61-L90",
+          "version": "repo-lines-v1:sha256:cad333343dbf01f125a3d777acd523f6854c5104796a1fe77e4f0d722c49538c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1Mjk3ZGUyZWI3NDFhNjlkZWQ2OTRkZWFmMzY4ZGEyMWQ2MjliNDJjZTZjNDkyNjc4MWZhYzY2ZTQ0NmZlYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2YTMwZDZjYmI2YzgwZDgwYWM3M2NhYTEzYTQyOGU1ZmQ1NmE3OTZjNWVhYzVkMjQxMzgwNTNkZDc2Mjc3YjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhNzU4MjIzMDRhYzBlYzg5Y2I4NTU3NWRhNDI3ZTFhMGUwNGI5ZTI0YTRhYzUzZDk5MmZhZDYxNWJhOWIyMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU2YWU3MzBkOGJmNTdiNGNlYmVhMDYxNWRhMTRjMzFmNGE2YzYyMzBhYmVkYTExZTBiNzZjNGJhNDMzYTBlOTQifQ"
         }
       ]
     },
@@ -323,12 +299,12 @@
           "version": "repo-lines-v1:sha256:f2bda19beaf66a8c23c57d6ca163d49094844998a01788ca6cd3b5b66efb5ff3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2ZDcxMGExNzYyODk1Y2Q0YzkzYzZhMmEyOWU2MjkyNGQ2ZjczMGQ5NWUyYWQxNzdjYTUwNDhlYjU2OWM5YWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiMDc4NDhhNDM2NjY1NmIyYmE2MTk3YmUwMmI5MjA4MTQ1NDZmOWQ5YWQwYjUzMzllNGMyNmEyYzk0NjUxMTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhZDVlY2I5NDI1MGZlNjFjYWJhYTJiZTQzMGYyMjc2YTgxOWM1OWUwMDFmNzNmMGI3NTFlZmM1ZTkyMGZjYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyNTk5ZWE3ZmJjM2JmNDk4ZDA3NmE5ZWEwNTM1NWRhZmU5YjdlNDk1YmI5NmE1ODExYTQyNGE5Y2VjMDFiM2MifQ"
         },
         {
-          "resource": "repo://package.json#L23-L37",
-          "version": "repo-lines-v1:sha256:7654d10da977f976ab829cb4f019503ee08a0650c378e52bb3713154d03f34d2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkYzRkZTdlZDM1YTIzMzY0NTM5ODY0ZGFkYjkzOGI4NzIzMzM3OTE3OWQ2MjkyYjlmZjVmNjE5YTZjMTMxNjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZGE0NDRlY2UwZjBjZjdjNTA4OTM1ZmViZTc5YzJjYTNiNTIzNTgxZjIzOWMwNDUxMzYxNzZhYjdmYTU1NzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0MjY1NGI0YWQwZDhlZmI3YmJmOTIyZTRmZmVjY2FhOGEwN2MzZWU3NDgxZjg4ZWM4MWNmM2MyZGY3MzlhNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0M2Y4M2I1MzEzODYzYWIzZDM1Y2EyZjE2OTlmMDg2OTFjN2E0M2Q4ZGE2MWRlMDk0ZTIzZDlmN2Y3Y2RlYjgifQ"
+          "resource": "repo://package.json#L24-L36",
+          "version": "repo-lines-v1:sha256:a5a65a4dd605143ee5977c5b6c26bd01536e3e552e258c0e4a43c89787630287:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3MjFkZDliODJkNjkyM2EwMDIzNTJhYjkzOTJjZTVhMzgwMDc1NmUwYTYxMDEyOGNiOGUzNDRlNDE3ZGM0MTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5Y2E5YWUwOWY3ZTFjZTJjNDYwMzJmNjhiYjRiNDM0MjA1N2Y2OTExOTFmZTljY2I2YmQ0YzliNzljZWJhN2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE0MGU0M2QzZGExZjIxZDQ4NmIxZmI0YTkwOWE4NDBlMzZjMTEzOTlkOTYxNDVlNmEwOTdlNTI1NWZhNDBlYzQifQ"
         },
         {
           "resource": "repo://package.json#L7-L14",
-          "version": "repo-lines-v1:sha256:4e271cad64d18c952fccf883a28207f9e215a1201efeee4f598f28a29f71d489:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmEzYjQ2OWQ5ZTA5NzU3MjI0NjY2NzM0YzllZjdiMjU0ZDg4NTM0ZjVkNWJiNzA5ODk2MDgwNWM1NTNkYzMwNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzUyMDMzNGJlN2IxYjUyMmU5YzNjNzU0N2Y4OWZkMDk0ZjE1MTAxNjMwOWY3NDk0YTdkYmMzNjg2MzIwMmJmYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjgyODNlNjM2ZmRkYWY5OWQxZjExZDk3MmRmYWI0MWU5NjUwNzVkZDNlODQyOTQ0YWQ4MWViMjA1NTQ2ZDU1NSJ9"
+          "version": "repo-lines-v1:sha256:8c9ac56b88e52a26308029474548168524d5dc0ac548e79957b4c728c1af7e84:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmEzYjQ2OWQ5ZTA5NzU3MjI0NjY2NzM0YzllZjdiMjU0ZDg4NTM0ZjVkNWJiNzA5ODk2MDgwNWM1NTNkYzMwNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzUyMDMzNGJlN2IxYjUyMmU5YzNjNzU0N2Y4OWZkMDk0ZjE1MTAxNjMwOWY3NDk0YTdkYmMzNjg2MzIwMmJmYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjgyODNlNjM2ZmRkYWY5OWQxZjExZDk3MmRmYWI0MWU5NjUwNzVkZDNlODQyOTQ0YWQ4MWViMjA1NTQ2ZDU1NSJ9"
         }
       ]
     },
@@ -355,7 +331,7 @@
           "version": "repo-lines-v1:sha256:4a44e2b6f36144dcd8ab7bdf6d5901692d9d7e9eed673bb8a0d6cdad150156b5:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWI2MmY2MGQ4NTkwYTU3OWNmNDZmOGQ2NzM3OGM0YzU3MmI5NjJjZWNjZGI5MGM3YTVmN2I0MmI5NjA3ODJhNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODlmNmM1YjRmODJmNjcyZTJjZmRjYWRjNjczMzU3NDkzODliZjQ4YzFmMWJmNzk0NWQxZTA5Y2Y3OWY0MjFhYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDU2MzNiNTI3MDdkZTJjYzBlOTMyMDI5ZWM0YWViNDIwOWVkZjAzMzQ4ZDI4MjUzNmE3MTkwMGFmYWZjMDZjMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWI3Yzc1OWE5Yjg5OWQxMDI4NzA3N2U2YjFjOTcxNDliZGNmYWU1YmYyZTUyYmI3NDUwZDM5YzE3MDgzNzMyMiJ9"
         },
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L140-L148",
+          "resource": "repo://src/contexts/AuthContext.jsx#L141-L149",
           "version": "repo-lines-v1:sha256:c1b97442cfbeeb48be7c24f90bc726f28c02a63d01bfc22571ab6b5ccd463ece:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk2NmZiZmE4ODk5OGRhNzQ2NTZjNTAxOTQ5NTZjMjVmMDg0OTQ1NzY2MGMwMDlmZTYzZDFlOWZhOWRjOTMxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWEyNTYxMTE3ZTM4NTM0MTE2NTZmMzllNmY4NTliZTcxNWM1MzNjNzM3MDIzNzBhMjg1MWUyNTI5NmVmN2YzYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWI5YzMyNGZhN2IwYTIzM2I0NGY3NmE1NzZmMjJmYzhlZDQ4YzE3YmRiZWEzMDcwNDI4MTMwMDMzNjg1Y2QyNSJ9"
         },
         {
@@ -367,6 +343,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-02T17:44:42.174Z"
+    "at": "2026-11-04T16:54:50.811Z"
   }
 }

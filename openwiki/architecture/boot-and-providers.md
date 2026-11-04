@@ -2,10 +2,10 @@
 type: architecture
 title: 启动链与全局 Provider 树
 description: 前端从 index.html 内联脚本、main.jsx 模块副作用到 App.jsx 全局 Provider 嵌套的完整启动顺序，以及各层副作用、错误边界失败表现与不可随意改动的约束。
-tags: [boot-sequence, entry-point, react-context, provider-tree, error-boundary]
+tags: [boot-sequence, entry-point, react-context, provider-tree, error-boundary, csp, security-headers]
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
@@ -41,7 +41,7 @@ sources:
     resource: repo://src/utils/polyfills.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 ---
 
 # 启动链与全局 Provider 树
@@ -69,9 +69,9 @@ flowchart TD
 
 **早期语言检测。** 文档静态声明为 `lang="zh-CN"`，但 head 里一段同步内联脚本会在解析期读取 `localStorage.lang`（只接受 `zh` / `en`），否则按 `navigator.language` 是否以 `en` 开头决定，回退 `zh`；随后把 `document.documentElement.lang` 与 `meta[http-equiv="content-language"]`、`meta[name="language"]` 统一写成完整 locale（`zh-CN` / `en-US`）。目的是让浏览器翻译、拼写检查、无障碍服务在初始加载时就能正确识别页面语言，而不是等 React 挂载后再改（那时浏览器已做完首次语言判定）。这也是为什么切换语言走的是「写 localStorage 后整页 reload」而不是纯状态更新，详见[国际化与翻译](../systems/i18n-and-translation.md)。脚本整体包在 `try/catch` 里，隐私模式下 localStorage 抛错也不会阻断启动。`<noscript>` 刻意写成中英双语，避免浏览器通过纯中文内容误判语言。
 
-**旧浏览器兜底遮罩。** body 末尾第二段内联脚本刻意只用 ES5：先给缺 `JSON` 的环境补一个 `parse`/`stringify`，再用 UA 判定 `MSIE|Trident`（IE）与 `Edge/\d+` 且非 `Edg/`（EdgeHTML 旧 Edge）；命中就构造一个 `z-index: 2147483647` 的全屏遮罩，内置中英双语字典、语言切换按钮（写回 `localStorage.lang` 并重绘）与浏览器下载入口，并通过 XHR（IE 下回退 `ActiveXObject`）请求 `/api/site-content/about` 取 ICP 备案号，写入 `localStorage._icp` 供后续复用。注意它并不能真正「中止」启动：对 IE 起作用只是因为 IE 不执行 `type="module"`；旧 Edge 可能会照样加载并挂载 React，只是被遮罩盖住。真正的第二道闸门是 React 层里的 `BrowserCompat`。
+**旧浏览器兜底遮罩。** body 末尾第二段内联脚本刻意只用 ES5：先给缺 `JSON` 的环境补一个 `parse`/`stringify`，再用 UA 判定 `MSIE|Trident`（IE）与 `Edge/\d+` 且非 `Edg/`（EdgeHTML 旧 Edge）；命中就构造一个 `z-index: 2147483647` 的全屏遮罩，内置中英双语字典、语言切换按钮（写回 `localStorage.lang` 并重绘）与浏览器下载入口，并通过 XHR（IE 下回退 `ActiveXObject`）请求 `/api/site-content/about` 取 ICP 备案号，写入 `localStorage._icp` 供后续复用。`localStorage._icp` 回显与 API 返回值回填这两处 `innerHTML` 拼接，都先经过脚本局部定义的 `escapeHtml()`（`&<>"'` 全量转义）再插入，防止站点配置里的 ICP 字符串破坏遮罩结构。注意它并不能真正「中止」启动：对 IE 起作用只是因为 IE 不执行 `type="module"`；旧 Edge 可能会照样加载并挂载 React，只是被遮罩盖住。真正的第二道闸门是 React 层里的 `BrowserCompat`。
 
-**CSP。** head 里的 `Content-Security-Policy` meta 是这份前端唯一的运行期安全策略：`script-src 'self' 'unsafe-inline' blob:`（内联早期脚本与 `blob:` 依赖 `'unsafe-inline'` / `blob:`）、`style-src 'self' 'unsafe-inline' fonts.googleapis.com`、`img-src 'self' data: blob:`、`font-src 'self' fonts.gstatic.com`、`connect-src 'self'` 加上三家翻译 API、`frame-src 'self'` 加上 B 站 / YouTube / niconico 播放器、`object-src 'none'`。这意味着新增任何第三方资源都要同步改这条 meta：新的翻译/接口域名要加进 `connect-src`，新的播放器域名要加进 `frame-src`，而外部站点的图片（例如页脚引用 `https://www.beian.gov.cn/img/ghs.png` 的公安备案图标）不在 `img-src` 白名单内，会被直接拦截。
+**CSP 与运行期安全头。** head 里的 `Content-Security-Policy` meta 是这份前端唯一的运行期安全策略，以 `default-src 'self'` 兜底、再逐项放开：`script-src 'self' 'unsafe-inline' blob:`（内联早期脚本与 `blob:` 依赖 `'unsafe-inline'` / `blob:`）、`style-src 'self' 'unsafe-inline' fonts.googleapis.com`、`img-src 'self' data: blob: https:`（`https:` 通配放开所有 HTTPS 图片源）、`font-src 'self' fonts.gstatic.com`、`connect-src 'self'` 加上三家翻译 API、`frame-src 'self'` 加上 B 站 / YouTube / niconico 播放器、`object-src 'none'`，并以 `base-uri 'self'`、`form-action 'self'` 收尾。同层的两条配套 meta 构成运行期安全声明的其余部分：`<meta name="referrer" content="no-referrer">` 让全站出站请求不携带 Referer，`permissions-policy` 显式禁用 camera / microphone / geolocation / payment。这意味着新增任何第三方资源都要同步改这条 meta：新的翻译/接口域名要加进 `connect-src`，新的播放器域名要加进 `frame-src`，新的脚本域名要加进 `script-src`；图片因 `img-src` 已放开 `https:` 通配，一般不需要再动（此前页脚引用外部 HTTPS 图标会被拦截的问题因此消除）。
 
 ## 阶段二：main.jsx 的模块级副作用
 
@@ -174,7 +174,7 @@ sequenceDiagram
 1. `main.jsx` 里 `import './utils/axiosConfig'` 是**副作用导入，不可移除、不可下移进懒加载 chunk**；它必须在任何 Provider effect 发请求之前执行。
 2. Provider 顺序保持 `Router → Theme → I18n → SiteSettings → Auth → Icon → ErrorBoundary → BrowserCompat → AppContent`。新增 Provider 时按 hook 依赖插入：用 `useAuth()` 的必须在 `AuthProvider` 内，用 `useI18n()` 或 `static contextType = I18nContext` 的必须在 `I18nProvider` 内，不要在 `IconProvider` 之上换掉 `AuthProvider`。
 3. `ErrorBoundary` 与 `NavBarErrorBoundary` 保持 class + `static contextType = I18nContext` 的遗留写法，并保留 `I18nContext` 的具名导出与 HMR 身份复用。
-4. 早期内联脚本必须维持 ES5 且不新增外链依赖；CSP meta 是白名单，新增第三方脚本、图片、接口或 iframe 域名时同步扩充对应指令。
+4. 早期内联脚本必须维持 ES5 且不新增外链依赖；CSP meta 是白名单，新增第三方脚本、接口或 iframe 域名时同步扩充对应指令（图片已由 `img-src https:` 通配放开），用户可控文本（如 ICP 备案号）插入 `innerHTML` 前必须经 `escapeHtml` 转义。
 5. 语言切换维持「写 `localStorage.lang` → 整页 reload」两条路径（`I18nProvider.switchLang` 与 `index.html` 遮罩里的切换按钮），否则早期脚本读不到新值。
 6. 新增全局副作用（表单校验文案、PWA 事件、日志）时优先沿用 `main.jsx` 的模块级注册，不要在组件里重复绑定 document/window 监听。
 

@@ -64,6 +64,8 @@ sources:
     resource: repo://src/components/AdminThemes.jsx
   - id: openwiki-source-90df6398a9bdee1975095452
     resource: repo://src/components/AdminUsers.jsx
+  - id: openwiki-source-c2c0ea0f423d599c75fe6a63
+    resource: repo://src/hooks/useTranslation.js
   - id: openwiki-source-ff495d7f24153076143f0ee8
     resource: repo://src/locales/zh.js
   - id: openwiki-source-254119f695d9c1c6bc387805
@@ -72,10 +74,12 @@ sources:
     resource: repo://src/utils/apiEndpoints.js
   - id: openwiki-source-37ca2d167bb7e856d4f1a11c
     resource: repo://src/utils/axiosConfig.js
-generated: { by: "opencode", at: "2026-11-02T17:44:42.174Z" }
+  - id: openwiki-source-0772ae522304487a6af3bee6
+    resource: repo://src/utils/clearClientData.js
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 ---
 
 # 管理后台：布局、角色可见性与待办
@@ -124,11 +128,11 @@ sequenceDiagram
 | 动作 | 实现 | 说明 |
 | --- | --- | --- |
 | 折叠侧栏 | `setCollapsed(v => !v)` | 控制 `<aside>` 是否渲染，状态不持久化 |
-| 品牌/网站首页 | `<a className="yl-brand" href="/">` | 原生锚点，整页跳出后台路由树 |
+| 品牌/网站首页 | `<a className="yl-brand" href="/">` | 原生锚点，整页跳出后台路由树；品牌图读取 `useSiteSettings().settings.navLogo`（无则回退默认「兽」字），站点名读 `getLocalizedContent(settings, 'siteName')` 再回退 `t('site.defaultName')`，后台品牌随站点设置变化 |
 | 控制台首页 | `navigate('/admin/dashboard')` | 后台的"总入口" |
-| 退出登录 | `POST /api/admin/logout` → `navigate('/login', { replace: true })` | 即使接口失败也会清空本地 `admin` 状态并跳转 |
+| 退出登录 | `POST /api/admin/logout` → `clearClientData()` → `navigate('/login', { replace: true })` | 即使接口失败也会清空本地 `admin` 状态；`clearClientData` 清掉 `localStorage` 快照（`user`/`offline_queue`）与全部 Cache Storage 后再跳转 |
 
-侧栏由 `NAV_GROUPS` 驱动，按「概览 / 内容管理 / 审核与治理 / 用户管理 / 主题外观 / 数据与系统」六组渲染，每个条目自带 `roles` 数组；渲染前用 `admin.role` 过滤掉无权条目与空组，所以创作者只会看到概览、剧集、回收站、审核、创作者主页五个入口。侧栏用 `NavLink` 的 `isActive` 加 `.active`，内容区 `<main className="yl-content" key={location.pathname}>` 在换页时重挂载。
+侧栏由 `NAV_GROUPS` 驱动，按「概览 / 内容管理 / 审核与治理 / 用户管理 / 主题外观 / 数据与系统」六组渲染，每个条目自带 `roles` 数组；渲染前用 `admin.role` 过滤掉无权条目与空组。**审核与单集回收站已收紧为 admin/superadmin（`ADMIN_UP`）**，所以创作者现在只会看到概览、剧集、创作者主页三个入口。侧栏用 `NavLink` 的 `isActive` 加 `.active`，内容区 `<main className="yl-content" key={location.pathname}>` 在换页时重挂载。
 
 除校验外，外壳还持有一个 **5 分钟间隔的心跳**：`POST /api/user-sessions/heartbeat`，失败静默吞掉（`.catch(() => {})`）。它刻意不依赖 `AuthContext` 的 `user` 状态——后台只持有 admin 会话 cookie 时也要维持设备会话记录，`AdminSessions`（设备管理）里的在线设备列表才能反映后台操作者。若同一浏览器同时存在登录用户，`AuthContext` 的心跳会并行打同一个端点，二者并不互斥。挂载时还会把 `document.body` 的底部内边距临时置 0，卸载时恢复，避免前台为页脚预留的空白在浅色后台画布底部留下一道空带。
 
@@ -140,7 +144,7 @@ sequenceDiagram
 
 卡片集合由 `cards` 数组 + `isCreator`/`isAdmin`/`isSuper` 三个布尔统一驱动，不再是散落的 `admin.role === ... &&` 分支：
 
-- **creator**：剧集管理（文案切换为"创建和管理我的剧集"）+ 创作者主页 + 审核管理 + 剧集回收站。
+- **creator**：剧集管理（文案切换为"创建和管理我的剧集"）+ 创作者主页 + 审核管理 + 剧集回收站。（注意：后两张卡片的入口尚未随路由角色收紧同步移除，创作者点击"审核管理/剧集回收站"卡片会被路由层 `AdminGuard` 送回仪表盘。）
 - **admin**：剧集管理、分类、轮播图、审核管理、回收站、举报、反馈、数据分析，以及自动状态流转面板。
 - **superadmin**：以上全部，外加用户管理、创作者主页管理、公告通知、网站内容、邮件服务、操作日志、数据备份、友链、设备、API 用量、主题、主题审批。
 
@@ -170,8 +174,8 @@ sequenceDiagram
 | --- | --- | --- | --- | --- | --- |
 | 剧集管理 `/admin/episodes` | ALL | creator/admin/super | 按角色切数据源 | 正常渲染 | `episodes` |
 | 创作者主页 `/admin/creator-profile` | ALL | 仅 creator | 页面内允许三种角色 | 正常渲染 | — |
-| 审核管理 `/admin/review` | ALL | 全部 | 页面内要求 admin/super | 重定向到仪表盘 | `episodes` |
-| 剧集回收站 `/admin/episode-trash` | ALL | 全部 | 无 | 正常渲染 | — |
+| 审核管理 `/admin/review` | UP | 全部 | 页面内要求 admin/super | creator 被 AdminGuard 送回仪表盘 | `episodes` |
+| 剧集回收站 `/admin/episode-trash` | UP | 全部 | 无 | creator 被 AdminGuard 送回仪表盘 | — |
 | 分类 `/admin/categories` | UP | 非 creator | 无 | 被 AdminGuard 送回仪表盘 | — |
 | 轮播图 `/admin/banners` | UP | 非 creator | 无 | 被 AdminGuard 送回仪表盘 | — |
 | 举报 `/admin/reports` | UP | admin/super | 无 | 被 AdminGuard 送回仪表盘 | `reports` |
@@ -236,7 +240,7 @@ flowchart TD
 
 这一组的分工对应剧集从创作、送审、上架到删除的生命周期；审核状态语义（`pending`/`approved`/`rejected`）通过共享的 `ReviewStatusBadge` 组件统一呈现。剧集审核与版本变更的完整流程见 [剧集发布与审核](../workflows/episode-publishing-and-review.md)。
 
-`AdminEpisodes` 是唯一按角色分裂数据源与列的页面：creator 走 `GET /api/creator/my-episodes?limit=100` 只看自己的剧集，其他角色走 `GET /api/episodes?limit=100` 看全量；creator 视图把"审核状态"列换入、隐藏"创建者"与"授权编辑"列、没有删除按钮，且仅在 `reviewStatus === 'rejected'` 时出现"重新提交"按钮（`POST /api/episodes/:id/resubmit`）。删除操作本身是软删除——记录进入回收站，由 `AdminEpisodeTrash` 承接恢复或彻底清除。
+`AdminEpisodes` 是唯一按角色分裂数据源与列的页面：creator 走 `GET /api/creator/my-episodes`、其他角色走 `GET /api/episodes`，两者都按 `page`/`limit=100` 循环翻页拉全量（依赖响应 `totalPages`，上限 100 页）后再做本地搜索过滤；creator 视图把"审核状态"列换入、隐藏"创建者"与"授权编辑"列、没有删除按钮，且仅在 `reviewStatus === 'rejected'` 时出现"重新提交"按钮（`POST /api/episodes/:id/resubmit`）。单集管理表单新增「显示序号」字段（`episodeLabel`，选填、≤40 字符、读取回退链 `episodeLabelCustom ?? episodeLabel`），单集列表的序号列按 `episodeLabel || episodeNumber` 渲染。删除操作本身是软删除——记录进入回收站，由 `AdminEpisodeTrash` 承接恢复或彻底清除。
 
 ### 站点外观与内容
 
@@ -283,7 +287,8 @@ flowchart TD
 后台页面在实现上高度同构，改动时按这些共同点定位能少走很多弯路：
 
 - **传输层：`adminApi`**。`src/utils/adminApi.js` 只是 `axios` 的五个方法别名，刻意不加任何 `Authorization` 头——认证完全依赖 httpOnly cookie。因此所有后台请求都会经过 `src/utils/axiosConfig.js` 的全局拦截器：请求侧为写操作挂 `X-XSRF-TOKEN`；响应侧遇到 `401` 先尝试 `/api/auth/refresh` 再重试，最终失败时因为路径以 `/admin` 开头会**整页跳转** `/login`；遇到 `419` 走同一套刷新逻辑；遇到 `403` 且带 `forceEmailChange` 则触发强制改邮箱流程。对后台的直接后果是：任何一次权限失效都会导致整页卸载重载，页面上未提交的编辑内容随之丢失。
-- **列表**：主流形态是 `<table className="table">` 套在 `.table-wrapper` 里（`AdminEpisodes`、`AdminEpisodeTrash`、`AdminUsers`、`AdminAuditLogs` 等），行内操作从按钮改为 `.action-link` span（`role="button"` + `tabIndex=0` + `Enter` 键处理），状态用 `.status-tag` 系列类名；反馈与举报则是卡片列表；分页有前端切分（`AdminUsers` 一次性 `limit: 9999`）和后端 `page`/`limit`（`AdminEpisodeTrash` 20、`AdminAuditLogs` 30、`AdminReports` 10）两种。
+- **列表**：主流形态是 `<table className="table">` 套在 `.table-wrapper` 里（`AdminEpisodes`、`AdminEpisodeTrash`、`AdminUsers`、`AdminAuditLogs` 等），行内操作从按钮改为 `.action-link` span（`role="button"` + `tabIndex=0` + `Enter` 键处理），状态用 `.status-tag` 系列类名；反馈与举报则是卡片列表。分页形态：`AdminUsers`（`limit=200`）与 `AdminEpisodes`（`limit=100`）先循环翻页拉全量（≤100 页，依赖 `totalPages`）再做前端过滤；`AdminEpisodeTrash`、`AdminAuditLogs`、`AdminReports` 用后端 `page`/`limit` 分页（20/30/10）。
+- **页面头部：源力 PageHeader**。新规范是 `.yl-page-header`（左 `.yl-page-title`/`.yl-page-desc`、右 `.yl-page-actions`）骨架，举报、友链、主题审批、数据分析四页已迁移完成：标题不再带 emoji、硬编码配色替换为 CSS 变量（`--destructive`/`--btn-text`/`--warning-*` 等）。新后台页应直接沿用该骨架，不要再手写 flex + `<h2>` 头部。
 - **搜索**：列表页用后台专用的 `AdminSearchInput`（`AdminEpisodes`、`AdminUsers`），它在本地 `data` 上按 `searchKey` 过滤并给出最多 8 条候选，支持上下键与回车选中；公开站的 `SearchInput` 与它完全独立，两者不要混用。空列表用 `EmptyState`（可带插画变体与行动按钮）。
 - **弹窗与确认**：编辑表单统一用 `Modal`，破坏性操作多数再叠一层 `window.confirm(t(...))`（`AdminUsers`、`AdminSessions`、`AdminThemes`），较新的页面改用 `ConfirmModal`（`AdminEpisodeTrash`）。
 - **提示**：没有全局 toast。每个页面自管 `error` / `success`（或 `message`）state，渲染成 `.error-message` / `.success-message` 区块，成功文案多用 3 秒定时器自动清除。

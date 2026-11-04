@@ -44,10 +44,10 @@ sources:
     resource: repo://src/hooks/useEpisodes.js
   - id: openwiki-source-091078cd4f585582a9efba7a
     resource: repo://src/utils/offlineQueue.js
-generated: { by: "opencode", at: "2026-11-02T17:44:42.174Z" }
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 ---
 
 # 内容发现、剧集详情与用户内容库
@@ -123,7 +123,7 @@ flowchart TD
 
 ## 详情页：EpisodeDetail 的数据装配
 
-`EpisodeDetail` 顶部固定挂载 `ScrollProgress`：一个 2px 的顶部细线，用 `requestAnimationFrame` 节流读取 `documentElement.scrollTop / (scrollHeight - clientHeight)`，以 `scaleX` 反映阅读进度，`pointer-events: none`，不参与交互。单集列表项在鼠标悬停时还会通过 `createPortal` 在 `document.body` 上渲染 `.ep-preview` 卡片（封面、集号/标题、时长、日期、播放量、平台数），位置按视口边界夹取；`matchMedia('(hover: none)')` 的触屏设备直接不显示预览。
+`EpisodeDetail` 顶部固定挂载 `ScrollProgress`：一个 2px 的顶部细线，用 `requestAnimationFrame` 节流读取 `documentElement.scrollTop / (scrollHeight - clientHeight)`，以 `scaleX` 反映阅读进度，`pointer-events: none`，不参与交互。单集列表项在鼠标悬停时还会通过 `createPortal` 在 `document.body` 上渲染 `.ep-preview` 卡片（封面、序号/标题、时长、日期、播放量、平台数），并且**跟随鼠标移动**：`onMouseMove` 持续调用 `positionEpPreview`，基于光标 `clientX/clientY` 与 264×200 的预览窗尺寸做左右/上下翻转，对观看按钮做矩形避让（重叠时移到按钮左侧，放不下再回右侧），最后夹取在 8px 视口边距内；`matchMedia('(hover: none)')` 的触屏设备直接不显示预览。
 
 `EpisodeDetail` 是全站写操作最密集的页面。它接收 `user` prop（来自路由），同时从 `AuthContext` 取 `getAuthHeaders()`——后者当前返回空对象，认证完全依赖 httpOnly cookie（见 [HTTP 层、CSRF 与双 Token 刷新](../architecture/http-and-session.md)），因此组件里对 `localStorage.getItem('user')` 的检查只是"要不要发这个请求"的开关，不是凭证。
 
@@ -158,7 +158,7 @@ sequenceDiagram
 
 ### 单集徽章的两套数据源
 
-单集列表默认只显示 5 条，可升/降序切换，超出时可"展开全部"。每条单集最多叠加四类徽章，其中三类依赖登录态：
+单集列表默认只显示 5 条，可升/降序切换，超出时可"展开全部"。每条单集的序号徽章按 `episodeLabel || episodeNumber` 渲染——设置了自定义显示序号（如「1（上）」「番外」）时用它替换默认的「第 N 集」；在此之上最多再叠加四类徽章，其中三类依赖登录态：
 
 | 徽章 | 判定 | 数据来源 |
 | --- | --- | --- |
@@ -185,7 +185,7 @@ sequenceDiagram
 - **收藏的文件夹选择**：未收藏时先 `GET /api/folders?type=favorite` 打开一个 `createPortal` 到 `body` 的浮层（按按钮 `getBoundingClientRect` 定位），列出"默认文件夹"与各收藏夹；拉取失败则回退为直接收藏到默认文件夹，保证主流程不被文件夹服务拖垮。
 - **离线评分**：`POST /api/ratings` 抛错且 `navigator.onLine === false` 时，把请求塞进 `offlineQueue`（去重、24 小时过期、最多 3 次重试，见 [PWA、离线缓存与浏览器兼容](pwa-offline-and-compat.md)），网络恢复后统一重放。
 - **历史与通知的耦合**：历史记录成功后紧接着把该剧集相关通知标为已读——即"看了就说明这条更新通知已经被消费"。通知侧的未读数权威值仍由后端下发，见 [通知投递：SSE、轮询与 Web Push](notifications.md)。
-- **播放弹窗**：只对 `platformLinks` 的**第一个**链接尝试生成内嵌地址（bilibili 的 `BV`/`av`、YouTube 的 `v=`/`youtu.be`、niconico 的 `sm` 号）；命中则在 `iframeReady`（300ms 延时，等 Modal 动画）后挂 `sandbox` iframe，移动端对 bilibili 播放器直接显示"不支持内嵌"提示；未命中则提示"选择平台跳转"，链接列表始终完整保留。关闭弹窗先播退出动画再清空 `watchModal`，避免内容提前消失。
+- **播放弹窗**：标题按 `watchModal.episodeLabel || 第N集` 渲染；只对 `platformLinks` 的**第一个**链接尝试生成内嵌地址（bilibili 的 `BV`/`av`、YouTube 的 `v=`/`youtu.be`、niconico 的 `sm` 号）；命中则在 `iframeReady`（300ms 延时，等 Modal 动画）后挂 `sandbox` iframe，移动端对 bilibili 播放器直接显示"不支持内嵌"提示；未命中则提示"选择平台跳转"，链接列表始终完整保留。关闭弹窗先播退出动画再清空 `watchModal`，避免内容提前消失。
 
 ### 可见性、标题与 noindex
 
@@ -204,11 +204,11 @@ sequenceDiagram
 - **我的时间线**：`GET /api/activity?page=&limit=20`，带上一页/下一页分页器（`page / totalPages`）。
 - **发现（公开）**：`GET /api/activity/public`，**不带**分页参数，也不渲染分页器——`totalPages` 仍会被写入，但只在 `my` tab 使用。
 
-活动类型固定为 `new_episode`、`status_change`、`new_rating`，各自有图标与 `timeline.*` 文案模板；渲染时会优先用 `episodeTitle` / `metadata` 重建文案，标题缺失才回退到后端存下来的 `description` / `descriptionEn`。因此新增活动类型必须同时补图标映射与文案，否则落进 `default` 分支直接显示原始描述。时间用相对格式（刚刚 / n 分钟 / n 小时 / n 天），点击任意条目跳详情页。
+活动类型固定为 `new_episode`、`status_change`、`new_rating`，各自有图标与 `timeline.*` 文案模板；`new_episode` 活动带 `metadata.episodeLabel` 时改用 `timeline.newEpisodeCustom` 模板（自定义序号替换「第 N 集」）。渲染时会优先用 `episodeTitle` / `metadata` 重建文案，标题缺失才回退到后端存下来的 `description` / `descriptionEn`。因此新增活动类型必须同时补图标映射与文案，否则落进 `default` 分支直接显示原始描述。时间用相对格式（刚刚 / n 分钟 / n 小时 / n 天），点击任意条目跳详情页。
 
 ### 更新日历 UpdateCalendar
 
-数据源是 `GET /api/stats/calendar`：年视图只传 `year`，月视图传 `year` + `month`；响应形如 `{ year, month, calendar: { 'YYYY-MM-DD': { released, scheduled, premieres } } }`。组件按日期键聚合出三种条目类型：已更新（绿）、预告（黄）、开播（蓝），并把"我的关注"作为第四种视觉标记。
+数据源是 `GET /api/stats/calendar`：年视图只传 `year`，月视图传 `year` + `month`；响应形如 `{ year, month, calendar: { 'YYYY-MM-DD': { released, scheduled, premieres } } }`。组件按日期键聚合出三种条目类型：已更新（绿）、预告（黄）、开播（蓝），并把"我的关注"作为第四种视觉标记；条目的集号文本统一按 `item.episodeLabel || 第 N 集` 渲染（年视图预览、月视图网格、当日明细与移动端列表四处一致）。
 
 - **两种可达视图**：年视图（12 个月卡片，含每月统计与最多 3 条预览）与月视图（日历网格 + 当月明细列表）。点击年份标题与月份标题在两者间切换，`goToday` 返回当前年月。源码里还存在 `renderWeekView` 与 `showYearPicker` / `getYearList` 等成员，但没有任何调用点——周视图与年份选择器是**未接线的死代码**，改动日历时不应误以为它们生效。
 - **关注高亮与提醒**：挂载时若 `localStorage` 有 `user` 则 `GET /api/follows/list`，把剧集 id 收进 `followingIds`；命中的条目加主色描边。对"已关注 + 预告"的条目额外给出 🔔 提醒按钮，点击 `POST /api/notifications/subscribe-reminder`（失败静默，无乐观提示）。

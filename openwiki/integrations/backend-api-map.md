@@ -32,8 +32,12 @@ sources:
     resource: repo://src/components/AdminSiteContent.jsx
   - id: openwiki-source-95f0291f29cd95f8dfdca78e
     resource: repo://src/components/AdminThemes.jsx
+  - id: openwiki-source-90df6398a9bdee1975095452
+    resource: repo://src/components/AdminUsers.jsx
   - id: openwiki-source-4e37b1e20cb72fa7128c5bba
     resource: repo://src/components/BannerCarousel.jsx
+  - id: openwiki-source-285a5179c11e9744d8e7e9e1
+    resource: repo://src/components/DeleteAccount.jsx
   - id: openwiki-source-8e2cf47532f4659008db992a
     resource: repo://src/components/EpisodeDetail.jsx
   - id: openwiki-source-515cac064a539c5de93abe92
@@ -72,6 +76,8 @@ sources:
     resource: repo://src/contexts/SiteSettingsContext.jsx
   - id: openwiki-source-8a340c1c334700f536c603ec
     resource: repo://src/hooks/useNotifications.js
+  - id: openwiki-source-a544d9175c9e4aab37a117b0
+    resource: repo://src/hooks/usePushNotifications.js
   - id: openwiki-source-c2c0ea0f423d599c75fe6a63
     resource: repo://src/hooks/useTranslation.js
   - id: openwiki-source-6f6201efb098b41d8f54920f
@@ -88,10 +94,10 @@ sources:
     resource: repo://src/utils/offlineQueue.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "opencode", at: "2026-11-02T17:44:42.174Z" }
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 ---
 
 # 后端契约地图（API 分组与错误语义）
@@ -167,7 +173,7 @@ flowchart TD
 
 | 端点 | 方法 | 消费方 | 说明 |
 | --- | --- | --- | --- |
-| `/api/auth/login` | POST | `Login`、`DeleteAccount`（注销前重认证） | 请求体含邮箱/密码 + `deviceInfo` + `altcha`；响应分支见[错误与分支语义](#错误与分支语义) |
+| `/api/auth/login` | POST | `Login` | 请求体含邮箱/密码 + `deviceInfo` + `altcha`；响应分支见[错误与分支语义](#错误与分支语义) |
 | `/api/auth/login-2fa` | POST | `Login` | 二步验证第二步，提交 `email`/`twoFactorToken`/`twoFactorChallenge`/`deviceInfo` |
 | `/api/auth/verify-device`、`/api/auth/confirm-device-login` | POST | `Login` | 邮件链接带 `?token=` 调前者，响应 `{ verified, loginCode }`（只回显登录码、不建会话）；原浏览器回填 `loginCode` 调后者；**未注册** |
 | `/api/auth/register` | POST | `Register` | 含 altcha 载荷 |
@@ -177,7 +183,7 @@ flowchart TD
 | `/api/auth/forgot-password`、`/api/auth/reset-password` | POST | `Login` | 重置用 `token` + `newPassword` |
 | `/api/auth/change-password`、`/api/auth/change-email` | PUT | `ChangePassword`、`ForceEmailChange` | 改邮箱成功返回新 `email`，前端随后把 `isEmailVerified=false`、`forceEmailChange=false` |
 | `/api/auth/request-email-change`、`/api/auth/verify-email-change` | POST | `ChangeEmail`、`VerifyEmailChange` | 双确认换邮箱流程 |
-| `/api/auth/deletion-status`、`/api/auth/request-deletion`、`/api/auth/cancel-deletion` | GET / POST / POST | `DeleteAccount` | 注销申请与冷静期状态 |
+| `/api/auth/deletion-status`、`/api/auth/request-deletion`、`/api/auth/cancel-deletion` | GET / POST / POST | `DeleteAccount` | 注销申请与冷静期状态；request-deletion 请求体现在携带 `{ password }`，由服务端校验密码（前端已移除「先调 login 自验」的旧步骤，密码错误直接回退到输入步） |
 | `/api/auth/email-notification-prefs` | PUT | `Settings` | 请求体是 `{ [偏好键]: 新值 }` 的单字段补丁 |
 | `/api/auth/refresh`、`/api/auth/sse-ticket` | POST / GET | `axiosConfig`、`useNotifications` | **两者都不在注册表**；refresh 见 [HTTP 层](../architecture/http-and-session.md)，ticket 见下文 |
 | `/api/csrf-token` | GET | `axiosConfig` 预热与 `fetchCsrfToken()` | 注册表登记为 `AUTH.CSRF_TOKEN` 但拦截器硬编码字面量；响应 `{ csrfToken }` |
@@ -269,6 +275,7 @@ sequenceDiagram
 | `/api/notifications/:id` | DELETE | 删除单条 |
 | `/api/notifications/clear-read` | DELETE | 批量清空已读（内联，未注册；`clearRead` 与 `deleteAllRead` 走同一端点） |
 | `/api/notifications/subscribe-reminder` | POST | 更新日历里订阅单集提醒（体 `{ episodeId }`，内联） |
+| `/api/notifications/vapid-public-key` | GET | Web Push 支持探测与订阅取钥；响应 `{ publicKey }`，为空或请求失败即视为浏览器不支持推送（`usePushNotifications` 启动时探测，订阅前再取一次） |
 
 SSE 载荷里 `unreadCount` 是权威值这一点有代码注释背书（后端是实时 `countDocuments`），这属于必须保留的契约：若后端改成增量或省略该字段，徽标会与列表不一致，直到下一次 60 秒轮询。
 
@@ -328,8 +335,8 @@ flowchart LR
 | --- | --- |
 | 后台身份 | `GET /api/admin/verify`（响应 `{ admin }` 或 admin 对象本身，调用方两种都兼容）、`POST /api/admin/logout`、`POST /api/admin/verify-password`（敏感操作二次确认，`ConfirmModal`） |
 | 待办 | `GET /api/admin/pending-counts` → `{ episodes, friendLinks, themes, feedbacks, reports }` 等徽标计数 |
-| 用户 | `GET /api/admin/users?limit=9999`、`POST /api/admin/register`、`DELETE /api/admin/users/:id`、`PUT /api/admin/role/:id`、`PUT /api/admin/user-admin-access/:id` |
-| 剧集与创作者 | `GET /api/creator/my-episodes`、`GET /api/admin/creators`、`POST /api/episodes/upload`、`GET /api/admin/creator-profiles`、`PUT /api/admin/creator-profiles/:id/approve`、`PUT /api/admin/creator-profiles/:id/reject`、`GET·PUT /api/creator-profile/my-profile`、`GET /api/creator-profile/by-creator/:id` |
+| 用户 | `GET /api/admin/users`（`page`/`limit=200` 循环翻页拉全量，依赖 `totalPages`，上限 100 页）、`POST /api/admin/register`、`DELETE /api/admin/users/:id`、`PUT /api/admin/role/:id`、`PUT /api/admin/user-admin-access/:id` |
+| 剧集与创作者 | `GET /api/creator/my-episodes`（creator 专用；与 `/api/episodes` 一样由 `AdminEpisodes` 按 `page`/`limit=100` 循环翻页拉全量，依赖 `totalPages`）、`GET /api/admin/creators`、`POST /api/episodes/upload`、`GET /api/admin/creator-profiles`、`PUT /api/admin/creator-profiles/:id/approve`、`PUT /api/admin/creator-profiles/:id/reject`、`GET·PUT /api/creator-profile/my-profile`、`GET /api/creator-profile/by-creator/:id` |
 | 审核 | `GET /api/review/pending`、`GET /api/review/all`、`PUT /api/review/approve/:id`、`PUT /api/review/reject/:id`、`PUT /api/review/assign-editor/:id`、`PUT /api/review/remove-editor/:id`（均带 `{ note }` 或 `{ editorId }`） |
 | 分类/轮播 | 与"内容读取"一节同一组端点，后台以管理身份调用增删改接口 |
 | 站点内容与邮件 | 见上一节；后台超管专属（非超管被 `navigate('/admin/dashboard')` 挡回） |
@@ -409,7 +416,7 @@ flowchart LR
 2. **注册表整组空转**：`API.ADMIN.*` 没有任何组件引用，后台 20+ 页全部用内联字面量；`ICONS.UPLOAD/DETAIL/ALL`、`THEMES.UPLOAD_WALLPAPER`、`THEMES.SET_DEFAULT`、`AUTH.CSRF_TOKEN`、`SERIES`、`FAVORITES`、`FOLLOWS`、`HISTORIES`、`TRANSLATE_BATCH`、`HEALTH` 等同样空转。删条目不会破坏功能，但"改注册表 = 改接口"的假设不成立。
 3. **关键端点未注册**：`/api/auth/refresh`（会话续命）、`/api/auth/sse-ticket`（实时通知）、`/api/translate`（运行时翻译）、`/api/notifications/clear-read`、`/api/announcements/*`、`/api/categories`、`/api/banners`、`/api/review/*`、`/api/version(s)/*`、`/api/episode-trash/*`、`/api/saved-folders`、`/api/activity/*`、`/api/stats/calendar|activity-heatmap|episode-lifecycle`、`/api/2fa/*`、`/api/auto-status/*`、`/api/backup/*`、`/api/rss/api-usage`、`/api/admin/creators|register|role|user-admin-access|verify-password`。
 4. **字符串模板被当路径工厂**：`API.THEMES.LIST.replace('/list', '')` 生成 `POST /api/themes`；`API.STATS.RECOMMENDATIONS('personalized')` 把"id 参数"当魔法值。两者都把语义藏在字符串处理里。
-5. **路径前缀与缓存/离线耦合**：`vite.config.js` 的 workbox `runtimeCaching` 用正则 `^https?://.*/api/(episodes|series|categories|banners|friend-links|site-content)` 做 NetworkFirst（10s 超时、1 小时），`^https?://.*/uploads/` 做 CacheFirst（30 天）。新增"可离线读"的资源前缀必须同步该正则；反过来，把一个鉴权接口挪进这些前缀会让响应进入共享缓存。
+5. **路径前缀与缓存耦合（已反转）**：`vite.config.js` 的 workbox `runtimeCaching` 已被刻意清空——出于隐私考虑（API 响应含个人追番/历史/通知与站点配置，登出后 Cache Storage 不自动清理）不再缓存任何 `/api/` 或 `/uploads/` 响应，另用 `navigateFallbackDenylist` 排除这两个前缀；离线读取完全依赖应用层缓存（`site_settings_cache`、`translation_cache_v2`、`offline_queue`）。若未来要恢复运行时缓存，必须同时评估登出清理（`clearClientData` 会删除全部 Cache Storage）。
 6. **URL 字面量会长期存活**：`offline_queue` 存 `{ method, url, data }`；`index.html` 静态写死 `/api/rss`；`ThemeEditorModal` 用 `/^(\/uploads\/|https?:\/\/)/` 校验壁纸地址，只接受 `/uploads/...` 或绝对 http(s) 地址——后端若把上传目录改名或返回相对无前缀路径，主题壁纸会静默失效。
 7. **站点内容键与子路径同命名空间**：新增一个名为 `email`、`settings`、`upload`、`test-email`、`pwa-manifest` 的内容键会与专用子路径冲突；新增专用子路径也可能遮蔽同名键。
 8. **跨域未接线**：`VITE_API_BASE_URL` 在 README 中有说明，但源码无 `axios.defaults.baseURL`；`/uploads` 也没有对应的环境变量。

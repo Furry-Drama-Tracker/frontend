@@ -52,10 +52,14 @@ sources:
     resource: repo://src/utils/apiEndpoints.js
   - id: openwiki-source-37ca2d167bb7e856d4f1a11c
     resource: repo://src/utils/axiosConfig.js
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+  - id: openwiki-source-0772ae522304487a6af3bee6
+    resource: repo://src/utils/clearClientData.js
+  - id: openwiki-source-581dc5746c844c4ee0b781c7
+    resource: repo://vite.config.js
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 ---
 
 # 图片上传与裁剪管线
@@ -239,6 +243,8 @@ flowchart TD
 `useImageUpload` 的校验逻辑值得注意，但它目前**没有调用点**：它 POST 到 `/api/episodes/upload` 却把字段名写成 `coverImage`，而同一端点的其它三处调用（`ImageUploader`、`AdminEpisodes` 自己的 handler）都用 `image`。若将来接入这个 hook，字段名必须先核对后端，否则会得到 400/`MulterError`；反之若后端只认 `coverImage`，则现有的三处都会坏——这正是「同端点必须只有一种字段名」的价值所在。
 
 本仓库**不含后端代码**：开发态由 Vite 把 `/api` 与 `/uploads` 代理到 `http://localhost:5000`，生产态由 nginx/Caddy 同域转发。因此体积上限、MIME/魔数校验、存储路径、写入权限与文件清理全部由外部后端决定；前端的 `accept`、`file.size`、`file.type` 判断都可被绕过，只能用于减少无效请求。
+
+Service Worker 侧**不再对 `/uploads/` 做任何缓存**：`workbox.runtimeCaching` 已清空（原先对 `/uploads/` 的 CacheFirst 已移除），并以 `navigateFallbackDenylist` 排除该前缀——上传预览与已传图片一律走网络；登出时 `clearClientData` 还会删除全部 Cache Storage 条目，已上传素材的浏览器缓存不跨账号残留。
 
 ## 上传结果 URL 的消费位置
 

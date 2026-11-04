@@ -16,20 +16,14 @@ sources:
     resource: repo://package.json
   - id: openwiki-source-7e75b7923fe8a8860d28572b
     resource: repo://public/altcha.js
-  - id: openwiki-source-81d34c7cbe6e33e12c702e5c
-    resource: repo://public/workers/pbkdf2.js
   - id: openwiki-source-1fe4306a261748bda5b78973
     resource: repo://src/App.jsx
   - id: openwiki-source-a0e8087e81fad28f90591a7b
     resource: repo://src/components/AdminDashboard.jsx
-  - id: openwiki-source-05007d2cfef63d4d4aef807e
-    resource: repo://src/components/AdminEpisodeTrash.jsx
   - id: openwiki-source-3739c7ad76ebd944dc04aa97
     resource: repo://src/components/AdminReview.jsx
   - id: openwiki-source-8e2cf47532f4659008db992a
     resource: repo://src/components/EpisodeDetail.jsx
-  - id: openwiki-source-09cb0e4016a5b2a602d84f5d
-    resource: repo://src/components/Modal.jsx
   - id: openwiki-source-9793b3dd98a0e62ec68a07c3
     resource: repo://src/contexts/AuthContext.jsx
   - id: openwiki-source-7898acfb0042c03f592a292f
@@ -38,20 +32,16 @@ sources:
     resource: repo://src/contexts/IconContext.jsx
   - id: openwiki-source-a179f998ae5318f35e50729c
     resource: repo://src/contexts/ThemeContext.jsx
-  - id: openwiki-source-671c600c42b1e53b97dc9072
-    resource: repo://src/hooks/useCategories.js
-  - id: openwiki-source-db9545db1db6a07d2bbbc612
-    resource: repo://src/hooks/useEpisodes.js
   - id: openwiki-source-37ca2d167bb7e856d4f1a11c
     resource: repo://src/utils/axiosConfig.js
   - id: openwiki-source-091078cd4f585582a9efba7a
     resource: repo://src/utils/offlineQueue.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "openwiki/0.7.2", at: "2026-10-29T12:47:15.545Z" }
+generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-02T17:44:42.174Z
+    at: 2026-11-04T16:54:50.811Z
 ---
 
 # 验证与质量门禁（无测试框架）
@@ -64,8 +54,8 @@ verified:
 
 ```mermaid
 flowchart TD
-  A["改动 src 或配置"] --> B["npm run lint: ESLint 9 flat config 加 --max-warnings 0"]
-  B -->|"任一 error 或 warning 或失效的 eslint-disable"| X["阻断: 修完再来"]
+  A["改动 src 或配置"] --> B["npm run lint: ESLint 9 flat config 加 --max-warnings 0（规则面已放宽）"]
+  B -->|"任一 error 或 warning"| X["阻断: 修完再来"]
   B --> C["npm run build: 转换 打包 生成 sw.js 与 manifest.webmanifest"]
   C -->|"导入解析失败 或 JSX 语法错"| X
   C --> D["npm run preview: 托管 dist, 默认 4173, 无 API 代理"]
@@ -78,7 +68,7 @@ flowchart TD
 
 | 阶梯 | 命令 | 能证明 | 不能证明 |
 |---|---|---|---|
-| 静态 | `npm run lint` | 语法/未定义标识符/未使用变量/hook 依赖与 React Compiler 类问题、失效的 disable 注释 | 运行时行为、CSP、缓存、会话 |
+| 静态 | `npm run lint` | 语法/未定义标识符、react 基础正确性（jsx-key 等）、rules-of-hooks | 未使用变量、hook 依赖、React Compiler 类诊断与失效 disable 注释均已关闭；运行时行为、CSP、缓存、会话 |
 | 编译 | `npm run build` | 所有 `import` 可解析、JSX 可转换、产物体积与哈希资源齐全 | 类型正确性（无 TypeScript）、行为正确性、依赖白名单是否漂移 |
 | 冒烟 | `npm run preview` | `dist/` 能起、SPA 回退可用、manifest 与 SW 注册、CSP 是否拦截首屏资源 | 任何需要后端的数据流（preview 不代理 `/api`、`/uploads`） |
 | 人工 | 本页清单 | 认证/刷新、主题图标覆盖、审核流转、PWA 缓存等行为不变量 | 只能靠执行者诚实与记忆，无留痕 |
@@ -97,38 +87,27 @@ flowchart TD
 ### 命令与文件范围
 
 ```bash
-eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0
+eslint . --ext js,jsx --max-warnings 0
 ```
 
 - `eslint.config.js` 是 **ESLint 9 flat config**（`export default [...]`），规则只挂在一个配置对象上：`files: ['**/*.{js,jsx}']`。
-- 忽略名单只有三条：`ignores: ['dist', 'dev-dist', 'node_modules']`。`dist/` 与 `dev-dist` 都是构建产物（后者只在把 `devOptions.enabled` 改成 `true` 时出现），`node_modules` 本来默认就忽略。
-- **`--ext js,jsx` 在 flat config 下不是"文件范围限制"。** ESLint 9 会把 `--ext` 翻译成一条额外的 `{ files: ['**/*.js', '**/*.jsx'] }` 配置，效果等同于"把这些扩展名也纳入遍历"，而不是"只检查这些扩展名"。真正决定规则是否生效的是配置里的 `files`，决定哪些文件被枚举的还有 ESLint 内置的 `**/*.js`、`**/*.mjs` 默认项。两个直接后果：
-  - `generate-icons.mjs` 会被枚举，但 `.mjs` 不匹配配置里的 `files`，所以**它一条规则都没跑**；
-  - `public/altcha.js`（约 174 KB 的 vendored Altcha）与 `public/workers/*.js`（hash-wasm 产物）匹配 `**/*.js`，**要按项目规则接受同一套 warn-as-error 检查**，而 `public/` 不在忽略名单里。换掉/升级这些第三方文件时，lint 结果可能突然变红。
+- 忽略名单是四条：`ignores: ['dist', 'dev-dist', 'node_modules', 'public']`——**`public/` 已加入忽略**，所以 `public/altcha.js`（vendored Altcha）与 `public/workers/*.js`（hash-wasm 产物）不再被 lint，换掉/升级这些第三方文件不会影响 lint 结果。
+- **`--ext js,jsx` 在 flat config 下不是"文件范围限制"。** ESLint 9 会把 `--ext` 翻译成一条额外的 `{ files: ['**/*.js', '**/*.jsx'] }` 配置，效果等同于"把这些扩展名也纳入遍历"，而不是"只检查这些扩展名"。真正决定规则是否生效的是配置里的 `files`，决定哪些文件被枚举的还有 ESLint 内置的 `**/*.js`、`**/*.mjs` 默认项。`generate-icons.mjs` 会被枚举，但 `.mjs` 不匹配配置里的 `files`，所以**它一条规则都没跑**。
 
-### `--report-unused-disable-directives`：过期的 disable 注释直接失败
+### 失效的 disable 注释：不再报错
 
-在 flat config 下这个布尔开关被转成 `linterOptions.reportUnusedDisableDirectives: 'error'`——**不是 warn**。仓库里有 4 处 `// eslint-disable-next-line react-hooks/exhaustive-deps`（`Modal.jsx`、`AdminEpisodeTrash.jsx`、`useCategories.js`、`useEpisodes.js`）用于压制 hook 依赖告警。一旦某次改动让对应告警不再触发（例如把 effect 依赖补全），这些注释本身就会变成 lint 错误，必须同批删除。
+脚本里的 `--report-unused-disable-directives` 参数已移除，`eslint.config.js` 也显式配置 `linterOptions: { reportUnusedDisableDirectives: 'off' }`——失效的 `eslint-disable` 注释不再导致 lint 失败。仓库里有 4 处 `// eslint-disable-next-line react-hooks/exhaustive-deps`（`Modal.jsx`、`AdminEpisodeTrash.jsx`、`useCategories.js`、`useEpisodes.js`），在 `exhaustive-deps` 本身也被关闭的现在，它们已经是**无害的死注释**；清理与否都不影响门禁，但新增代码不应再依赖这种压制写法。
 
-### `--max-warnings 0`：三条 warn 规则实际是阻断级
+### `--max-warnings 0`：warn 规则已被清空
 
-`eslint.config.js` 里显式配了两个 warn，`react-hooks/recommended` 又带进来一个 warn；`--max-warnings 0` 让任意一条命中都失败：
+先前配成 warn 的三类规则全部被显式关闭：`react-refresh/only-export-components`（原来守 Fast Refresh 边界）、`no-unused-vars`（原来 `_` 前缀豁免）与 `react-hooks/exhaustive-deps`（原来由 recommended 带入）。理由写在配置注释里：本项目未启用 React Compiler，hooks 插件新增的实验性约束会大量误报现有 effect/ref 写法；现有代码大量使用空 catch/空函数作为静默失败语义。因此**当前没有任何规则会产生 warning**，`--max-warnings 0` 只是保留「一旦有人把 warn 加回来就当 error」的语义。
 
-| 规则 | 配置 | 触发场景 |
-|---|---|---|
-| `react-refresh/only-export-components` | `['warn', { allowConstantExport: true }]` | 在组件文件里额外导出非组件值（常量豁免）。这条规则守的是 Fast Refresh 的状态保持：`I18nContext.jsx` 用 `import.meta.hot?.data` 复用同一个 context 对象、只做具名导出，就是在处理这类 HMR 边界 |
-| `no-unused-vars` | `['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }]` | 未使用变量/参数；**只能靠 `_` 前缀豁免**，注释里写"暂时保留"不行 |
-| `react-hooks/exhaustive-deps` | 由 `reactHooks.configs.recommended.rules` 带来，级别 `warn` | effect 依赖数组不完整。补依赖经常引出新的无限循环，所以实际做法往往是加 disable 注释——这又与上一条互相制约 |
+### 错误级规则收窄后剩下的部分
 
-也就是说：**改一行代码留下一个"提醒级别"的小问题，lint 就红**。这让 lint 成为真门禁，也让"小改"成本变高。
+`eslint.config.js` 仍然展开 `js.configs.recommended.rules` + `react.configs.recommended.rules` + `reactHooks.configs.recommended.rules`，随后**显式关掉一整批规则**：
 
-### 错误级规则远不止"未定义变量"
-
-`eslint.config.js` 展开的是 `js.configs.recommended.rules` + `react.configs.recommended.rules` + `reactHooks.configs.recommended.rules`，其中值得记住的几组：
-
-- **`@eslint/js` recommended**：`no-undef`（错误）、`no-empty`、`no-cond-assign` 等基础正确性规则。
-- **`eslint-plugin-react` recommended（全部 error）**：`react/jsx-key`（列表缺 key 直接失败）、`react/jsx-no-target-blank`、`react/display-name`、`react/no-unknown-property`、`react/no-danger-with-children`、`react/no-unescaped-entities`（JSX 文本里裸 `>`、`"`、`'`、`}` 都会报错，写中英文案时要注意）。`react/prop-types`、`react/react-in-jsx-scope`、`react/jsx-uses-react` 被显式关掉。
-- **`eslint-plugin-react-hooks` 7.x 的 recommended 已经包含 React Compiler 那一组诊断规则**（仓库装的是 `^7.1.1`）：除 `react-hooks/rules-of-hooks`（error）与 `exhaustive-deps`（warn）外，还有 `set-state-in-effect`、`set-state-in-render`、`refs`、`static-components` 等以 **error** 级别启用的规则。这意味着 lint 实际在问"这段 React 代码是否能让 Compiler 正确推导"——而本仓库大量 `useEffect` 里 `setState` 的写法容易命中 `set-state-in-effect`。**第一次在这个仓库跑 lint 时请先把它当作基线测量**，不要预设它是绿的（没有任何 CI 记录能告诉你当前状态）。
+- **保留的 error**：`@eslint/js` recommended 的基础正确性（`no-undef`、`no-cond-assign` 等，`no-empty` 与 `no-useless-escape` 被单独关闭）；`eslint-plugin-react` recommended 的 `react/jsx-key`、`react/jsx-no-target-blank`、`react/no-unknown-property`、`react/no-danger-with-children`、`react/no-unescaped-entities` 等（`react/prop-types`、`react/react-in-jsx-scope`、`react/jsx-uses-react`、`react/display-name` 关闭）；`react-hooks/rules-of-hooks` 仍然 error。
+- **显式关闭的 react-hooks 7.x 实验组**：`set-state-in-effect`、`immutability`、`refs`、`static-components`、`preserve-manual-memoization`、`exhaustive-deps` 全部 off——effect 内同步 `setState` 这类既有写法不再让 lint 失败。这意味着 lint 不再追问"代码是否能让 React Compiler 正确推导"，风格一致性完全依赖人工评审。
 
 ### globals：两个方向都会咬人
 
@@ -204,7 +183,7 @@ oxc: { drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [
 - [ ] **普通写请求没有"403 重取 CSRF 再重试"的自动补救。** 这条补救只存在于 `refreshAccessToken()` 内部（刷新请求 403 → 重取 token → 再刷新一次）。不要把"刷新端点能自愈"误当成"所有写请求都能自愈"。
 - [ ] **419 → 刷新 → 重试只发生一次。** 让 access cookie 过期（等待或用后端工具缩短有效期）后点一次会发多个请求的页面：期望只出现**一个** `POST /api/auth/refresh`，其余请求挂起等待后各自重试一次；`_isRetry` 保证不会无限重试。
 - [ ] **并发刷新 409 视为成功。** 两个标签页同时过期时，后到者收到 409 应当被当成"cookie 已被另一标签页换新"而直接重试原请求，**不登出**。
-- [ ] **刷新成功后 `localStorage.user` 会被合并。** `auth:token-refreshed` 广播里带 `role`、`email`、`isEmailVerified`、`forceEmailChange`（以及 `_id`/`accountId`/`username`）。测试方法：在另一个标签页用管理员改掉当前用户角色，再触发一次刷新，界面权限应跟着变，无需重新登录。
+- [ ] **刷新成功后 `localStorage.user` 会被合并。** `auth:token-refreshed` 广播里带 `role`、`isEmailVerified`、`forceEmailChange`（以及 `_id`/`accountId`/`username`；`email` 已从合并白名单剔除，快照不再携带邮箱）。测试方法：在另一个标签页用管理员改掉当前用户角色，再触发一次刷新，界面权限应跟着变，无需重新登录。
 - [ ] **刷新失败则统一登出且只跳一次。** `localStorage.user` 被清、`auth:session-expired` 派发一次（1 秒窗口内的并发 401 不重复派发、不重复跳转）；`/login`、`/register`、`/reset-password` 上不会自我重定向；带 `skipRedirect` 的请求（`/api/auth/me`、会话心跳、刷新本身）不会跳转。
 - [ ] **`forceEmailChange` 的 403 会更新用户快照。** 超管未改邮箱时后端拦截写操作 → 前端写入 `forceEmailChange: true` 并广播 `auth:force-email-change`，全局拦截层出现（见[路由分区与访问守卫](../architecture/routing-and-guards.md)）。
 - [ ] **会话心跳只在前台跳。** 登录后每 5 分钟 `POST /api/user-sessions/heartbeat`，但 `document.visibilityState === 'hidden'` 时跳过。把标签页挂后台十几分钟再回来，期望先看到 `/api/auth/me` 与 `/api/csrf-token` 各一次（`visibilitychange` 处理器），会话若已过期则按上面的登出路径走。
@@ -215,7 +194,7 @@ oxc: { drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [
 - [ ] **`localStorage.theme` 的取值域是 `light` / `dark` / `system`。** 非法值（含 `null`）回退到"跟随系统"，同时监听 `prefers-color-scheme` 变化：改系统外观，页面应即时切换而无需刷新。
 - [ ] **`data-theme` 落在 `document.documentElement` 上**，并且每次主题变更会把整套 CSS 变量重写到根元素；只改 `data-theme` 不会自动改变量。新增 token 必须在暗/亮两套里同时定义（见[主题与图标](../systems/theming-and-icons.md)）。
 - [ ] **`localStorage.accent_color` 必须匹配 `^#[0-9a-fA-F]{6}$`。** 非法值被忽略并回到 `#6366f1`；`setAccentColor` 对非法输入直接 return（不写入、不更新）。
-- [ ] **所有服务端 SVG 必经 `sanitizeSvg` 才能内联。** 它要求内容以 `<svg` 开头，剥掉 `<?xml?>`/`<!DOCTYPE>`、`script`/`foreignObject`/`iframe`/`object`/`embed`/`link`、`on*` 事件属性与 `javascript:` 链接，并把显式 `fill`/`stroke` 颜色改成 `currentColor`。验证：上传一个内嵌 `<script>` 的 SVG → 图标仍能显示但脚本不执行；再切暗/亮主题 → 图标颜色跟随文字色。**任何绕过 `sanitizeSvg` 直接 `dangerouslySetInnerHTML` 的新路径都是安全回归。**
+- [ ] **所有服务端 SVG 必经 `sanitizeSvg` 才能内联。** 它要求内容以 `<svg` 开头，剥掉 `<?xml?>`/`<!DOCTYPE>`、`script`/`style`/`foreignObject`/`iframe`/`object`/`embed`/`link`/`animate`/`set`/`discard`、`on*` 事件属性与 `href`/`xlink:href`/`src` 上的 `javascript:`/`vbscript:`/`data:text/html` 值，并把显式 `fill`/`stroke` 颜色改成 `currentColor`。验证：上传一个内嵌 `<script>` 的 SVG → 图标仍能显示但脚本不执行；再切暗/亮主题 → 图标颜色跟随文字色。**任何绕过 `sanitizeSvg` 直接 `dangerouslySetInnerHTML` 的新路径都是安全回归。**
 - [ ] **`misc.logo` 不受主题覆盖影响。** 主题图标合并在遍历时会跳过 `THEME_PROTECTED_ICON_KEYS`（只有 `misc.logo`）；新增"站点身份类"资产要同步加进这个名单，否则主题作者可以替换站点 Logo。
 - [ ] **新图标 key 必须登记在 `ICON_COMPONENT_KEYS`。** 后台"图标映射"下拉与主题编辑器都从这个注册表取选项；组件侧用 `<Icon name="…" fallback="…" />` 消费。忘了登记的表现是"图标已上传但哪儿都选不到"。
 - [ ] **失败要降级成 fallback，而不是空块。** `Icon` 在无映射、SVG 拉取失败或清洗返回 `null` 时渲染 `fallback`（通常是 emoji）；单个图标拉取失败被静默忽略，不影响其他图标。
@@ -237,8 +216,8 @@ oxc: { drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [
 必须在 `npm run preview` 或真实部署上做（dev 没有 SW）。
 
 - [ ] **预缓存只覆盖 `**/*.{js,css,html,ico,png,svg,woff2}`。** 新增其他扩展名的静态资源（如 `.webp`、`.woff`、`.json`）不会进预缓存，离线不可用。
-- [ ] **运行时缓存只有两组分组。** `/api/(episodes|series|categories|banners|friend-links|site-content)` 走 `NetworkFirst`（10 秒超时、100 条、1 小时）；`/uploads/` 走 `CacheFirst`（200 条、30 天）。**新增一个需要离线兜底的接口分组却不改 `urlPattern`，它永远不会被缓存**——这是最容易漏的一处。
-- [ ] **`CacheFirst` 的 `/uploads/` 有一个真实陷阱：同名路径换图看不到新图。** 上传覆盖同一个 `/uploads/xxx.png` 后，老用户会继续看到旧图直到缓存过期或 SW 版本更新。验证：替换一张封面 → 已访问过的浏览器刷新 → 若仍是旧图，说明这是缓存行为而非上传失败。
+- [ ] **运行时缓存已清空。** `workbox.runtimeCaching` 是空数组，且 `navigateFallbackDenylist` 排除 `/api/` 与 `/uploads/`——断网时除预缓存应用外壳外，所有 API/媒体请求都直接失败；验收离线行为时不要按旧文档期待"首页数据离线可刷"。恢复任何缓存条目必须连同登出清理（`clearClientData`）一起评估。
+- [ ] **`/uploads/` 不再被缓存。** 同名路径换图立即生效（原 CacheFirst 的"30 天旧图"陷阱已随缓存清空消失）；代价是图片永远走网络。
 - [ ] **`registerType: 'autoUpdate'`，没有"有新版本"的提示。** 部署后不必等用户点按钮，但也不会主动弹出刷新：验证方式是部署新构建后重新加载页面，检查页脚 `__APP_VERSION__` 变新、DevTools 里 SW 状态为 activated and running。
 - [ ] **运行时 manifest 会覆盖构建期 manifest。** 站点设置加载成功后，`link[rel=manifest]` 的 `href` 被改指 `/api/site-content/pwa-manifest`；后端不可用时保持构建期那一套。验证安装性时先确认后端在跑，否则你测的是构建期 manifest。
 - [ ] **离线写只有评分走队列。** 队列键 `offline_queue`，24 小时过期、同请求去重、单条最多重试 3 次后丢弃，仅在浏览器 `online` 事件时由 `processOfflineQueue` 重放（没有"回前台就重放"的路径）。其他离线写操作（收藏、评论等）不会排队——别在验收里替它们假设离线可用。
