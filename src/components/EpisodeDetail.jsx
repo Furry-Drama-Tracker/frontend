@@ -337,13 +337,44 @@ const EpisodeDetail = ({ user }) => {
         episodeSortOrder === 'asc' ? a.episodeNumber - b.episodeNumber : b.episodeNumber - a.episodeNumber
       )
     : [], [episode?.episodes, episodeSortOrder]);
+  const EP_PREVIEW_WIDTH = 264;
+  const EP_PREVIEW_HEIGHT = 200;
+  const EP_PREVIEW_GAP = 16;
+  const EP_PREVIEW_MARGIN = 8;
+  const canShowEpPreview = () => typeof window !== 'undefined' && !window.matchMedia('(hover: none)').matches;
+  const positionEpPreview = (e) => {
+    const x = e.clientX;
+    const y = e.clientY;
+    const button = e.currentTarget.querySelector('button.btn');
+    const buttonRect = button ? button.getBoundingClientRect() : null;
+    let left = x + EP_PREVIEW_GAP;
+    if (left + EP_PREVIEW_WIDTH > window.innerWidth - EP_PREVIEW_MARGIN) {
+      left = x - EP_PREVIEW_GAP - EP_PREVIEW_WIDTH;
+    }
+    let top = y + EP_PREVIEW_GAP;
+    if (top + EP_PREVIEW_HEIGHT > window.innerHeight - EP_PREVIEW_MARGIN) {
+      top = y - EP_PREVIEW_GAP - EP_PREVIEW_HEIGHT;
+    }
+    if (buttonRect) {
+      const overlapsButton = left < buttonRect.right && left + EP_PREVIEW_WIDTH > buttonRect.left
+        && top < buttonRect.bottom && top + EP_PREVIEW_HEIGHT > buttonRect.top;
+      if (overlapsButton) {
+        left = buttonRect.left - EP_PREVIEW_GAP - EP_PREVIEW_WIDTH;
+        if (left < EP_PREVIEW_MARGIN) left = buttonRect.right + EP_PREVIEW_GAP;
+      }
+    }
+    left = Math.max(EP_PREVIEW_MARGIN, Math.min(left, window.innerWidth - EP_PREVIEW_WIDTH - EP_PREVIEW_MARGIN));
+    top = Math.max(EP_PREVIEW_MARGIN, Math.min(top, window.innerHeight - EP_PREVIEW_HEIGHT - EP_PREVIEW_MARGIN));
+    return { top, left };
+  };
   const showEpPreview = (e, se) => {
-    if (typeof window === 'undefined' || window.matchMedia('(hover: none)').matches) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = 264;
-    const left = Math.min(window.innerWidth - width - 16, Math.max(16, rect.right - width));
-    const top = Math.max(8, Math.min(rect.top, window.innerHeight - 220));
-    setEpPreview({ se, top, left });
+    if (!canShowEpPreview()) return;
+    setEpPreview({ se, ...positionEpPreview(e) });
+  };
+  const moveEpPreview = (e) => {
+    if (!canShowEpPreview()) return;
+    const position = positionEpPreview(e);
+    setEpPreview(prev => (prev ? { ...prev, ...position } : prev));
   };
   const hideEpPreview = () => setEpPreview(null);
 
@@ -640,6 +671,7 @@ const EpisodeDetail = ({ user }) => {
           return (
             <div key={singleEpisode._id} className="episode-item"
               onMouseEnter={(e) => showEpPreview(e, singleEpisode)}
+              onMouseMove={moveEpPreview}
               onMouseLeave={hideEpPreview} style={{
               opacity: isWatched ? 0.72 : 1,
               flexDirection: 'column',

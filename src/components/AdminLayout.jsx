@@ -3,6 +3,8 @@ import { useNavigate, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { clearClientData } from '../utils/clearClientData';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
+import { useSiteSettings } from '../contexts/SiteSettingsContext';
+import useTranslation from '../hooks/useTranslation';
 import '../admin-kit/index.css';
 
 const ROLE_CREATOR = 'creator';
@@ -85,6 +87,8 @@ const NAV_GROUPS = [
 
 const AdminLayout = () => {
   const { t, lang } = useI18n();
+  const { getLocalizedContent } = useTranslation();
+  const { settings: siteSettings } = useSiteSettings();
   const [admin, setAdmin] = useState(null);
   const [loading, setLoading] = useState(true);
   const [collapsed, setCollapsed] = useState(false);
@@ -166,8 +170,17 @@ const AdminLayout = () => {
             </svg>
           </button>
           <a className="yl-brand" href="/">
-            <span className="yl-brand-mark" aria-hidden="true">兽</span>
-            <span>兽剧通</span>
+            {siteSettings?.navLogo ? (
+              <img
+                className="yl-brand-mark"
+                src={siteSettings.navLogo}
+                alt=""
+                style={{ objectFit: 'cover' }}
+              />
+            ) : (
+              <span className="yl-brand-mark" aria-hidden="true">兽</span>
+            )}
+            <span>{getLocalizedContent(siteSettings || {}, 'siteName') || t('site.defaultName')}</span>
             <span className="yl-brand-sub">{t('adminLayout.adminBackend')}</span>
           </a>
         </div>
