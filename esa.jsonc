@@ -1,0 +1,21 @@
+{
+  // 阿里云 ESA「函数和 Pages」项目配置
+  // 文档：https://help.aliyun.com/zh/edge-security-acceleration/esa/user-guide/build-pages
+  // 注意：本文件优先于控制台配置，存在时控制台中对应的构建配置不再生效，
+  // 修改构建行为需编辑本文件并推送 Git。
+  "name": "furry-drama-tracker",
+  // 边缘函数入口：同源反向代理 /api、/uploads 到后端源站。
+  // 后端地址配在 ESA 控制台「函数变量」API_ORIGIN（生产/测试环境各自配置），
+  // 修改后重新发布版本即可换后端，无需改动前端代码或重新构建。
+  "entry": "./edge/api-proxy.js",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "assets": {
+    // Vite 构建产物目录
+    "directory": "./dist",
+    // SPA 回退：未命中静态资源时，
+    //   导航请求（Sec-Fetch-Mode: navigate）→ 返回 index.html（react-router 前端路由）
+    //   非导航请求（/api、/uploads 的 XHR/图片等）→ 交给上面的边缘函数代理
+    "notFoundStrategy": "singlePageApplication"
+  }
+}
