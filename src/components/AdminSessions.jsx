@@ -94,11 +94,13 @@ const AdminSessions = () => {
 
   return (
     <div className="admin-panel">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <h2 style={{ margin: 0 }}>{t('adminSessions.deviceManagement')}</h2>
+      <div className="yl-page-header">
+        <div>
+          <h1 className="yl-page-title">{t('adminSessions.deviceManagement')}</h1>
         </div>
-        <button className="btn btn-secondary" onClick={fetchSessions}>{t('adminSessions.refresh')}</button>
+        <div className="yl-page-actions">
+          <button className="btn btn-md btn-outline" onClick={fetchSessions}>{t('adminSessions.refresh')}</button>
+        </div>
       </div>
 
       {error && <div className="error-message" style={{ marginBottom: '16px' }}>{error}</div>}

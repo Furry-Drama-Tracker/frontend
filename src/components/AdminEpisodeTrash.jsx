@@ -97,13 +97,15 @@ const AdminEpisodeTrash = () => {
 
   return (
     <div className="admin-panel">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-        <h2>{t('adminEpisodeTrash.title')}</h2>
-        <span style={{ color: 'var(--text-secondary)', fontSize: '13px' }}>{t('adminEpisodeTrash.totalCount', { total })}</span>
+      <div className="yl-page-header">
+        <div>
+          <h1 className="yl-page-title">{t('adminEpisodeTrash.title')}</h1>
+          <p className="yl-page-desc">{t('adminEpisodeTrash.desc')}</p>
+        </div>
+        <div className="yl-page-actions">
+          <span style={{ color: '#86909c', fontSize: '13px' }}>{t('adminEpisodeTrash.totalCount', { total })}</span>
+        </div>
       </div>
-      <p style={{ color: 'var(--text-secondary)', fontSize: '13px', margin: '0 0 20px 0', lineHeight: 1.6 }}>
-        {t('adminEpisodeTrash.desc')}
-      </p>
 
       {error && <div className="error-message">{error}</div>}
 

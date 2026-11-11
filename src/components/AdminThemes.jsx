@@ -151,8 +151,10 @@ const AdminThemes = () => {
 
   return (
     <div className="admin-panel">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
-        <h2 style={{ margin: 0 }}>{t('adminThemes.title')}</h2>
+      <div className="yl-page-header">
+        <div>
+          <h1 className="yl-page-title">{t('adminThemes.title')}</h1>
+        </div>
       </div>
 
       {error && <div className="error-message" style={{ marginBottom: '15px' }}>{error}</div>}

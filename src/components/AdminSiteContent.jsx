@@ -842,9 +842,9 @@ const AdminSiteContent = () => {
   // ===== 站点内容列表渲染 =====
   return (
     <div className="admin-panel">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          <h2>{t('adminContent.contentManagement')}</h2>
+      <div className="yl-page-header">
+        <div>
+          <h1 className="yl-page-title">{t('adminContent.contentManagement')}</h1>
         </div>
       </div>
 

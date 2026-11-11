@@ -59,8 +59,10 @@ const AdminBackup = () => {
 
   return (
     <div className="admin-panel">
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
-        <h2>{t('adminBackup.title')}</h2>
+      <div className="yl-page-header">
+        <div>
+          <h1 className="yl-page-title">{t('adminBackup.title')}</h1>
+        </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>

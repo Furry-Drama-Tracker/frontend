@@ -42,11 +42,13 @@ const AdminFeedback = () => {
 
   return (
     <div className="admin-panel">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <h2>{t('adminFeedback.title')}</h2>
+      <div className="yl-page-header">
+        <div>
+          <h1 className="yl-page-title">{t('adminFeedback.title')}</h1>
         </div>
-        <span style={{ color: 'var(--text-secondary)', fontSize: '13px' }}>{t('adminFeedback.totalCount', { total })}</span>
+        <div className="yl-page-actions">
+          <span style={{ color: '#86909c', fontSize: '13px' }}>{t('adminFeedback.totalCount', { total })}</span>
+        </div>
       </div>
 
       <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>

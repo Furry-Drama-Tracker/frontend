@@ -134,10 +134,14 @@ const AdminAnnouncements = () => {
   if (editing) {
     return (
       <div className="admin-panel">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
-          <button onClick={cancelEdit} className="btn btn-secondary" style={{ padding: '6px 14px' }}>{t('adminAnnouncements.back')}</button>
-          <h2 style={{ margin: 0 }}>{editing._id ? t('adminAnnouncements.editTitle') : t('adminAnnouncements.createTitle')}</h2>
+      <div className="yl-page-header">
+        <div>
+          <h1 className="yl-page-title">{editing._id ? t('adminAnnouncements.editTitle') : t('adminAnnouncements.createTitle')}</h1>
         </div>
+        <div className="yl-page-actions">
+          <button onClick={cancelEdit} className="btn btn-md btn-outline">{t('adminAnnouncements.back')}</button>
+        </div>
+      </div>
 
         <div className="form-container" style={{ maxWidth: '760px', margin: 0 }}>
           <div className="form-group">
@@ -250,9 +254,13 @@ const AdminAnnouncements = () => {
   // ===== 列表 =====
   return (
     <div className="admin-panel">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-        <h2 style={{ margin: 0 }}>{t('adminAnnouncements.title')}</h2>
-        <button className="btn" onClick={startCreate}>+ {t('adminAnnouncements.create')}</button>
+      <div className="yl-page-header">
+        <div>
+          <h1 className="yl-page-title">{t('adminAnnouncements.title')}</h1>
+        </div>
+        <div className="yl-page-actions">
+          <button className="btn btn-md btn-primary" onClick={startCreate}>+ {t('adminAnnouncements.create')}</button>
+        </div>
       </div>
 
       {message && (
