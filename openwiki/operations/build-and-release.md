@@ -54,7 +54,7 @@ verified:
 
 # 构建、配置与部署
 
-这个仓库的发布面很窄：`package.json`（脚本与依赖）、`vite.config.js`（构建与开发服务器全部开关）、`index.html`（CSP、字体、社交元信息、两个内联启动脚本）、`generate-icons.mjs`（图标栅格化）、`README.md`（部署拓扑文档），再加上 `.github/workflows/openwiki-update.yml` 这一条 CI 工作流。构建产物 `dist/` 不入库，所以"发一个版本"= 在某个环境里跑 `npm run build`，再让 nginx 或任何静态服务器把 `dist/` 与后端一起暴露出去。
+这个仓库的发布面很窄：`package.json`（脚本与依赖）、`vite.config.js`（构建与开发服务器全部开关）、`index.html`（CSP、社交元信息、两个内联启动脚本）、`generate-icons.mjs`（图标栅格化）、`README.md`（部署拓扑文档），再加上 `.github/workflows/openwiki-update.yml` 这一条 CI 工作流。构建产物 `dist/` 不入库，所以"发一个版本"= 在某个环境里跑 `npm run build`，再让 nginx 或任何静态服务器把 `dist/` 与后端一起暴露出去。
 
 本页按"命令 → 构建期注入 → 配置开关 → 部署拓扑 → 安全与元信息 → CI"组织，重点标注那些**改错了不会报错、只会在运行时静默降级**的地方：`__APP_VERSION__` 变成 `dev`、CSP 拦掉嵌入播放器、跨域部署被 `connect-src 'self'` 挡住、依赖预打包白名单漏了新依赖。
 
@@ -222,14 +222,14 @@ server {
 
 ## `index.html`：CSP 与其他发布面
 
-CSP 以 `<meta http-equiv>` 写在 `index.html` 里，因此**它随构建产物原样保留，并且在 `vite dev` 阶段同样生效**——CSP 相关问题在本地就能复现，不必等到部署。
+CSP 以 `<meta http-equiv>` 写在 `index.html` 里，因此**它随构建产物原样保留，并且在 `vite dev` 阶段同样生效**——CSP 相关问题在本地就能复现，不必等到部署。另需记住：后端会给所有响应再附一条 CSP 响应头（后端仓库的 `internal/middleware/securityheaders.go`），浏览器对同一条目下的多条 CSP **取交集**，响应头没放行的域名即便写进 meta 也不生效——外部字体（Google Fonts）此前正是这样被整体拦掉，最终改为纯系统字体栈。
 
 | 指令 | 值 | 为什么是这个值 / 改动影响 |
 |---|---|---|
 | `script-src` | `'self' 'unsafe-inline' blob:` | 页内有两个内联 `<script>`（早期语言检测、IE/旧 Edge 遮罩），遮罩还用内联 `onclick="window.__switchCompatLang()"`；去掉 `'unsafe-inline'` 这两个脚本与语言切换按钮都会失效。注意 CSP 里**没有 `'unsafe-eval'`**，IE 分支里的 JSON polyfill 用 `new Function` 构造解析器，只有在真正缺少 `JSON` 的古董浏览器上才会撞上这条限制 |
-| `style-src` | `'self' 'unsafe-inline' fonts.googleapis.com` | 组件大量使用 React 内联 `style`，同时要放行 Google Fonts 的 CSS |
+| `style-src` | `'self' 'unsafe-inline'` | 组件大量使用 React 内联 `style`，所以必须保留 `'unsafe-inline'`；不放开任何外部样式源（曾为 Google Fonts 放行 `fonts.googleapis.com`，已随外部字体一起移除） |
 | `img-src` | `'self' data: blob: https:` | 同源、`data:`、`blob:` 之外放开了 `https:` 通配，所有 HTTPS 图片源（外部图床、页脚公安备案图标等）都能加载；纯 HTTP 图片源仍会被拦 |
-| `font-src` | `'self' fonts.gstatic.com` | 字体文件从 gstatic 取 |
+| `font-src` | `'self'` | 全站只用系统字体栈（见 `src/index.css` 的 `body`），没有任何外部字体文件，无需为 gstatic 放开 |
 | `connect-src` | `'self'` + `api.mymemory.translated.net`、`translate.googleapis.com`、`api.cognitive.microsofttranslator.com` | `'self'` 覆盖 axios 与 SSE；三个翻译域名是历史直连许可——当前翻译走后端 `/api/translate`（`useTranslation` 里 `axios.post`），`src/` 内没有任何直接请求这些域名的代码 |
 | `frame-src` | `'self'` + `player.bilibili.com`、`www.youtube.com`、`embed.nicovideo.jp` | `EpisodeDetail` 会把 B 站（含 `b23.tv`、`av`/`BV` 号）、YouTube、niconico 链接转换成恰好这三家的嵌入地址；缺一个域名该播放器就白屏 |
 | `object-src` | `'none'` | 禁用插件 |
@@ -241,7 +241,7 @@ CSP meta 之外还有两条同层的配套声明：`<meta name="referrer" conten
 
 - **早期语言检测脚本**：在 React 挂载前读 `localStorage.lang`，否则看 `navigator.language`，把 `<html lang>` 与 `content-language`、`language` 两个 meta 一起改成 `zh-CN`/`en-US`。目的是让浏览器翻译、拼写检查、读屏在首屏就拿到正确语言，而不是靠"检测到的语言"。它写的是与 `I18nContext` 同一个 `lang` 键，两边必须保持同一套取值（`zh`/`en`）。
 - **IE/旧 Edge 遮罩**：一段 ES5 脚本（含 JSON polyfill），检测到 Trident/旧 EdgeHTML 时整屏替换为"换浏览器"提示，并用 `XMLHttpRequest` 拉 `/api/site-content/about` 解析出 ICP 备案号写进 `localStorage._icp`（读缓存与 API 回填两处 `innerHTML` 拼接都先经局部 `escapeHtml()` 转义）。新增接口或改 `/api/site-content/about` 的响应结构时，这段**不经过 axios、不走 CSRF、没有类型检查**的代码也要一起看。
-- **字体**：`fonts.googleapis.com` 的 `Noto Sans SC` + `Plus Jakarta Sans`，配两条 `preconnect`（gstatic 那条带 `crossorigin`）。
+- **字体**：不加载任何外部字体。`src/index.css` 的 `body` 直接用系统字体栈（`HarmonyOS Sans` → `PingFang SC` → `Microsoft YaHei` → 各平台系统无衬线体），因此 `index.html` 里既没有字体 `<link>`，也没有 `preconnect`。要改回 webfont 必须同时改 CSP 的 `style-src`、`font-src`，并确认后端响应头也放行，否则会被交集拦掉。
 - **元信息**：`title`、`description`、`keywords`、`og:title/description/type/site_name`、`twitter:card/title/description`、`theme-color`、iOS 的 `apple-mobile-web-app-*`、`msapplication-TileColor`、`<link rel="alternate" type="application/rss+xml" href="/api/rss">`，以及中英双语 `<noscript>`。没有 `og:image`/`twitter:image`，社交平台分享时不会有预览图；`theme-color` 与 `apple-mobile-web-app-title` 会在运行时被站点设置覆盖（见下一节）。
 
 ## 图标与静态资源

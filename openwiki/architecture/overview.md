@@ -1,7 +1,7 @@
 ---
 type: architecture
 title: 架构总览：浏览器侧分层与后端边界
-description: 把兽剧前端 SPA 按职责切成启动脚本、入口副作用、全局 Provider、路由分区、领域组件、传输缓存六层，标注与 furry-drama-be-neo 的 HTTP 契约边界，并解释无外部状态库、纯 CSS 变量、纯 JSX 的架构取舍。
+description: 把兽剧前端 SPA 按职责切成启动脚本、入口副作用、全局 Provider、路由分区、领域组件、传输缓存六层，标注与 Furry-Drama-Tracker/backend 的 HTTP 契约边界，并解释无外部状态库、纯 CSS 变量、纯 JSX 的架构取舍。
 tags: [architecture, spa-layering, backend-boundary, react-context, css-variables]
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
@@ -64,7 +64,7 @@ verified:
 
 # 架构总览：浏览器侧分层与后端边界
 
-这是一个纯浏览器侧 SPA：没有服务端渲染、没有路由级数据加载器、没有 BFF，仓库里除 `index.html`、`vite.config.js` 与静态资源外没有一行服务端代码。后端 [furry-drama-be-neo](https://github.com/xiedada05/furry-drama-be-neo)（Go + Gin，`README.md` 说明它是原 Express 后端的 drop-in 重写）是独立仓库，前端对它的全部认知收束为一条 HTTP 契约。因此任何一次改动要么落在浏览器侧的某一层内，要么就是在改这条契约——两者都不是「随手加个文件」。
+这是一个纯浏览器侧 SPA：没有服务端渲染、没有路由级数据加载器、没有 BFF，仓库里除 `index.html`、`vite.config.js` 与静态资源外没有一行服务端代码。后端 [Furry-Drama-Tracker/backend](https://github.com/Furry-Drama-Tracker/backend)（Go + Gin，`README.md` 说明它是原 Express 后端的 drop-in 重写）是独立仓库，前端对它的全部认知收束为一条 HTTP 契约。因此任何一次改动要么落在浏览器侧的某一层内，要么就是在改这条契约——两者都不是「随手加个文件」。
 
 阅读这份代码库时**不要按 `src/` 目录镜像理解**：`src/components` 下 80 余个文件全部平铺（其中 20 余个以 `Admin` 开头），它们在分层图上分属「通用 UI」「领域页面」「后台页面」三种职务；`src/utils` 里既有传输层（`axiosConfig.js`）也有端点注册表（`apiEndpoints.js`）与浏览器持久化（`offlineQueue.js`、`translationCache.js`）。按职责分层才是它们真正的组织方式。
 
@@ -101,7 +101,7 @@ flowchart TD
     T2["apiEndpoints 注册表，adminApi 直通"]
     T3["localStorage 缓存、离线队列；SW 运行时缓存已清空"]
   end
-  subgraph BE["后端边界 · furry-drama-be-neo"]
+  subgraph BE["后端边界 · Furry-Drama-Tracker/backend"]
     B1["/api 业务与认证"]
     B2["/api/notifications/stream SSE"]
     B3["/uploads 静态媒体"]
@@ -133,7 +133,7 @@ flowchart TD
 | L3 路由与布局 | `src/App.jsx` 的两张 `<Routes>`、`AdminLayout`、`AdminGuard`、`getRoutePageTitleKey` | 分区、懒加载边界、标题映射、体验层拦截 | 真正的授权判定 |
 | L4 领域组件与 hooks | `src/components/*`、`src/hooks/*` | 业务 UI、交互、取数与组件内状态 | 全局副作用、直接改写主题之外的 DOM 全局样式 |
 | L5 传输与缓存 | `axiosConfig.js`、`apiEndpoints.js`、`adminApi.js`、`offlineQueue.js`、`translationCache.js`、SW workbox 配置 | 一套凭据模型、端点地址、错误事件、离线与缓存策略 | 业务判断与界面文案 |
-| 后端 | `furry-drama-be-neo` | 认证授权、数据读写、文件存储、SSE 推送、动态 manifest 与 RSS | —— |
+| 后端 | `Furry-Drama-Tracker/backend` | 认证授权、数据读写、文件存储、SSE 推送、动态 manifest 与 RSS | —— |
 
 ## L0–L1：启动与入口副作用
 
@@ -186,7 +186,7 @@ flowchart TD
 - **两层缓存**：(1) 应用层——`SiteSettingsContext` 的 30 分钟站点配置缓存、`translationCache` 的 `localStorage` 机器翻译缓存（上限 2000 条、24 小时 TTL）、`offlineQueue` 的离线写操作队列（24 小时、单动作最多重试 3 次）、`Home` 的 `sessionStorage` 滚动位置（`home_scroll_pos`）；(2) 浏览器层——`vite-plugin-pwa` 生成的 Service Worker，但 `workbox.runtimeCaching` 已被刻意清空：API 响应可能包含当前用户的追番、历史、通知状态甚至超管的站点配置，登出后 Cache Storage 不会被自动清理，会构成共享设备上的隐私泄露，因此不再缓存任何 `/api/` 或 `/uploads/` 响应，并以 `navigateFallbackDenylist` 排除这两个前缀；离线数据一律由应用层（localStorage/离线队列）承担，登出时由 `clearClientData` 兜底清空。
 - **绕过 axios 的通道**：`EventSource`（通知流）与个别原生 `fetch`（导出个人数据）不经过拦截器，必须自行处理 CSRF 与会话失效。既有做法是 SSE 先 `GET /api/auth/sse-ticket` 换一次性 ticket，再用 `new EventSource('/api/notifications/stream?ticket=…')` 连接，失败后指数退避最多重连 5 次，并以 60 秒轮询 `unread-count` 兜底。
 
-## 与 furry-drama-be-neo 的契约边界
+## 与 Furry-Drama-Tracker/backend 的契约边界
 
 前端对后端只有一种依赖形式：**HTTP**。全部调用都是根相对路径 `GET/POST/PUT/DELETE /api/...`，静态媒体引用 `/uploads/...`，实时推送走 SSE，站点品牌与 RSS 由后端动态提供。
 
@@ -209,7 +209,7 @@ flowchart LR
     Proxy["nginx 或 Caddy：SPA 回退与反向代理"]
     Dist["dist 静态资源"]
   end
-  subgraph Backend["furry-drama-be-neo（Go 加 Gin）"]
+  subgraph Backend["Furry-Drama-Tracker/backend（Go 加 Gin）"]
     Api["/api 业务与认证"]
     Sse["/api/notifications/stream"]
     Files["/uploads 静态文件"]

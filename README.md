@@ -236,8 +236,8 @@ Vite 使用 `.env` 文件管理环境变量。只有 `VITE_` 前缀的变量会�
 
 ## 相关项目
 
-- **后端**：[furry-drama-be-neo](https://github.com/xiedada05/furry-drama-be-neo) — Go + Gin 后端 API（Express 后端的 Drop-In 重写）
-- **前端**：本项目 — React 前端 SPA
+- **后端**：[Furry-Drama-Tracker/backend](https://github.com/Furry-Drama-Tracker/backend) — Go + Gin 后端 API（Express 后端的 Drop-In 重写）
+- **前端**：[Furry-Drama-Tracker/frontend](https://github.com/Furry-Drama-Tracker/frontend) — 本项目，React 前端 SPA
 
 ## 许可协议
 
