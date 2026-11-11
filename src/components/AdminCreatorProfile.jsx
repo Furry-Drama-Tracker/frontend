@@ -79,9 +79,9 @@ const AdminCreatorProfile = () => {
 
   return (
     <div className="admin-panel">
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px'}}>
-        <div style={{display: 'flex', alignItems: 'center', gap: '15px'}}>
-          <h2>{t('adminCreatorProfile.title')}</h2>
+      <div className="yl-page-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <h1 className="yl-page-title">{t('adminCreatorProfile.title')}</h1>
           {reviewStatus && <ReviewStatusBadge status={reviewStatus} />}
         </div>
       </div>

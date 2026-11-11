@@ -132,11 +132,15 @@ const AdminCreatorProfiles = () => {
 
   return (
     <div className="admin-panel">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-        <h2>{t('adminCreatorProfiles.title')}</h2>
-        <button onClick={() => setEditingId(null)} className="btn btn-secondary">
-          <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" /> {t('adminCreatorProfiles.backToList')}
-        </button>
+      <div className="yl-page-header">
+        <div>
+          <h1 className="yl-page-title">{t('adminCreatorProfiles.title')}</h1>
+        </div>
+        <div className="yl-page-actions">
+          <button onClick={() => setEditingId(null)} className="btn btn-md btn-outline">
+            <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" /> {t('adminCreatorProfiles.backToList')}
+          </button>
+        </div>
       </div>
 
       {editingId ? (

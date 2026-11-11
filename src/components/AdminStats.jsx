@@ -40,9 +40,11 @@ const AdminStats = () => {
 
   return (
     <div className="admin-panel">
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
-        <FontAwesomeIcon icon={faChartColumn} style={{ color: 'var(--primary)', fontSize: 22 }} aria-hidden="true" />
-        <h2 style={{ margin: 0 }}>{t('adminStats.chartTitle')}</h2>
+      <div className="yl-page-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <FontAwesomeIcon icon={faChartColumn} style={{ color: '#1664ff', fontSize: 20 }} aria-hidden="true" />
+          <h1 className="yl-page-title">{t('adminStats.chartTitle')}</h1>
+        </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '16px', marginBottom: '24px' }}>

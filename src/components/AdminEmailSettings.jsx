@@ -88,9 +88,9 @@ const AdminEmailSettings = () => {
 
   return (
     <div className="admin-panel">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          <h2><FontAwesomeIcon icon={faEnvelope} aria-hidden="true" /> {t('adminEmailSettings.title')}</h2>
+      <div className="yl-page-header">
+        <div>
+          <h1 className="yl-page-title"><FontAwesomeIcon icon={faEnvelope} aria-hidden="true" /> {t('adminEmailSettings.title')}</h1>
         </div>
       </div>
 
