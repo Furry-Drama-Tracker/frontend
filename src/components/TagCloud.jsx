@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const TagCloud = ({ selectedTag, onTagClick }) => {
   const { t } = useI18n();
@@ -101,7 +103,7 @@ const TagCloud = ({ selectedTag, onTagClick }) => {
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              {isSelected ? '✓ ' : ''}{tag.name}
+              {isSelected ? <><FontAwesomeIcon icon={faCheck} aria-hidden="true" />{' '}</> : ''}{tag.name}
             </span>
           );
         })}
@@ -138,7 +140,7 @@ const TagCloud = ({ selectedTag, onTagClick }) => {
               e.currentTarget.style.borderColor = 'var(--border)';
             }}
           >
-            ✕ {t('common.cancel')}
+            <FontAwesomeIcon icon={faXmark} aria-hidden="true" /> {t('common.cancel')}
           </span>
         )}
       </div>

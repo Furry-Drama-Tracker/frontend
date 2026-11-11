@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import adminApi from '../utils/adminApi';
 import { useOutletContext } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChartColumn, faCircleCheck, faEye, faFilm, faFire, faHeart, faStar, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
 
 const AdminAnalytics = () => {
   const { admin } = useOutletContext();
@@ -292,10 +294,10 @@ const AdminAnalytics = () => {
 
   const RealtimeStatsCard = () => {
     const cards = [
-      { label: t('analytics.onlineUsers'), value: realtimeData.onlineUsers, pulse: true, icon: '🟢' },
-      { label: t('analytics.todayVisits'), value: realtimeData.todayVisits, pulse: false, icon: '👁' },
-      { label: t('analytics.todayNewUsers'), value: realtimeData.todayNewUsers, pulse: false, icon: '👤' },
-      { label: t('analytics.todayNewEpisodes'), value: realtimeData.todayNewEpisodes, pulse: false, icon: '🎬' },
+      { label: t('analytics.onlineUsers'), value: realtimeData.onlineUsers, pulse: true, icon: faCircleCheck },
+      { label: t('analytics.todayVisits'), value: realtimeData.todayVisits, pulse: false, icon: faEye },
+      { label: t('analytics.todayNewUsers'), value: realtimeData.todayNewUsers, pulse: false, icon: faUser },
+      { label: t('analytics.todayNewEpisodes'), value: realtimeData.todayNewEpisodes, pulse: false, icon: faFilm },
     ];
 
     return (
@@ -310,7 +312,7 @@ const AdminAnalytics = () => {
               background: 'var(--hover-bg)', borderRadius: '10px', padding: '16px',
               textAlign: 'center', border: '1px solid var(--border)'
             }}>
-              <div style={{ fontSize: '22px', marginBottom: '6px' }}>{c.icon}</div>
+              <div style={{ fontSize: '22px', marginBottom: '6px' }}><FontAwesomeIcon icon={c.icon} aria-hidden="true" /></div>
               <div style={{
                 fontSize: '28px', fontWeight: 700, color: 'var(--primary)',
                 animation: c.pulse && c.value > 0 ? 'pulse 2s ease-in-out infinite' : 'none'
@@ -365,16 +367,16 @@ const AdminAnalytics = () => {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '24px' }}>
         {[
-          { label: t('adminAnalytics.totalUsers'), value: data.totalUsers || 0, icon: '👥' },
-          { label: t('adminAnalytics.activeUsers'), value: data.activeUsers || 0, icon: '🟢' },
-          { label: t('adminAnalytics.totalEpisodes'), value: data.totalEpisodes || 0, icon: '🎬' },
-          { label: t('adminAnalytics.totalViews'), value: data.totalViews || 0, icon: '👁' },
+          { label: t('adminAnalytics.totalUsers'), value: data.totalUsers || 0, icon: faUsers },
+          { label: t('adminAnalytics.activeUsers'), value: data.activeUsers || 0, icon: faCircleCheck },
+          { label: t('adminAnalytics.totalEpisodes'), value: data.totalEpisodes || 0, icon: faFilm },
+          { label: t('adminAnalytics.totalViews'), value: data.totalViews || 0, icon: faEye },
         ].map(s => (
           <div key={s.label} style={{
             background: 'var(--card)', borderRadius: '12px', padding: '20px',
             border: '1px solid var(--border)'
           }}>
-            <div style={{ fontSize: '24px', marginBottom: '8px' }}>{s.icon}</div>
+            <div style={{ fontSize: '24px', marginBottom: '8px' }}><FontAwesomeIcon icon={s.icon} aria-hidden="true" /></div>
             <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--foreground)' }}>{s.value.toLocaleString()}</div>
             <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>{s.label}</div>
           </div>
@@ -395,15 +397,15 @@ const AdminAnalytics = () => {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: '16px', marginBottom: '24px' }}>
         <div style={{ background: 'var(--card)', borderRadius: '12px', padding: '20px', border: '1px solid var(--border)' }}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: '16px' }}>{t('adminAnalytics.topByViews')}</h3>
+          <h3 style={{ margin: '0 0 16px 0', fontSize: '16px' }}><FontAwesomeIcon icon={faFire} aria-hidden="true" /> {t('adminAnalytics.topByViews')}</h3>
           <SimpleBarChart items={topByViews} maxValue={Math.max(...topByViews.map(i => i.value), 1)} />
         </div>
         <div style={{ background: 'var(--card)', borderRadius: '12px', padding: '20px', border: '1px solid var(--border)' }}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: '16px' }}>{t('adminAnalytics.topByFollows')}</h3>
+          <h3 style={{ margin: '0 0 16px 0', fontSize: '16px' }}><FontAwesomeIcon icon={faHeart} aria-hidden="true" /> {t('adminAnalytics.topByFollows')}</h3>
           <SimpleBarChart items={topByFollows} maxValue={Math.max(...topByFollows.map(i => i.value), 1)} />
         </div>
         <div style={{ background: 'var(--card)', borderRadius: '12px', padding: '20px', border: '1px solid var(--border)' }}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: '16px' }}>{t('adminAnalytics.topByRating')}</h3>
+          <h3 style={{ margin: '0 0 16px 0', fontSize: '16px' }}><FontAwesomeIcon icon={faStar} aria-hidden="true" /> {t('adminAnalytics.topByRating')}</h3>
           <SimpleBarChart items={topByRating} maxValue={5} />
         </div>
       </div>
@@ -413,7 +415,7 @@ const AdminAnalytics = () => {
           background: 'var(--card)', borderRadius: '12px', padding: '20px',
           border: '1px solid var(--border)'
         }}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: '16px' }}>{t('adminAnalytics.userRetention')}</h3>
+          <h3 style={{ margin: '0 0 16px 0', fontSize: '16px' }}><FontAwesomeIcon icon={faChartColumn} aria-hidden="true" /> {t('adminAnalytics.userRetention')}</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {retention.map((r, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>

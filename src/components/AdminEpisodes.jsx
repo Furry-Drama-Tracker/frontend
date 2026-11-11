@@ -8,6 +8,8 @@ import ImageUploader from './ImageUploader';
 import { useI18n } from '../contexts/I18nContext';
 import EpisodeVersionHistory from './EpisodeVersionHistory';
 import ReviewStatusBadge from './ReviewStatusBadge';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell, faFilm } from '@fortawesome/free-solid-svg-icons';
 
 const AdminEpisodes = () => {
   const { locale, t } = useI18n();
@@ -597,7 +599,7 @@ const AdminEpisodes = () => {
       </div>
       {newEpisode.status === 'upcoming' && (
         <div className="form-group">
-          <label>{t('adminEpisodes.premiereDate')}</label>
+          <label><FontAwesomeIcon icon={faFilm} aria-hidden="true" /> {t('adminEpisodes.premiereDate')}</label>
           <input
             type="datetime-local"
             value={newEpisode.premiereDate}
@@ -979,12 +981,12 @@ const AdminEpisodes = () => {
                       {se.duration || '-'}
                       {se.isScheduled && se.scheduledDate && (
                         <div style={{ fontSize: '12px', color: 'var(--warning-text)', marginTop: '2px' }}>
-                          {t('adminEpisodes.previewLabel')} {new Date(se.scheduledDate).toLocaleString(locale)}
+                          <FontAwesomeIcon icon={faBell} aria-hidden="true" /> {t('adminEpisodes.previewLabel')} {new Date(se.scheduledDate).toLocaleString(locale)}
                         </div>
                       )}
                       {se.isScheduled && !se.scheduledDate && (
                         <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '2px' }}>
-                          {t('adminEpisodes.previewLabel')} {t('adminEpisodes.noScheduledDate')}
+                          <FontAwesomeIcon icon={faBell} aria-hidden="true" /> {t('adminEpisodes.previewLabel')} {t('adminEpisodes.noScheduledDate')}
                         </div>
                       )}
                     </td>

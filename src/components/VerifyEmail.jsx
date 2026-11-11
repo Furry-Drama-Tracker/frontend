@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleCheck, faCircleXmark, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 // 邮箱验证码输入页面（取代旧的链接验证页面）
 // 通过 /verify-email?email=xxx 访问，用户输入邮件中收到的 6 位验证码完成验证
@@ -77,7 +79,7 @@ const VerifyEmail = () => {
   if (!email) {
     return (
       <div className="auth-form" style={{ textAlign: 'center' }}>
-        <div style={{ fontSize: '48px', marginBottom: '16px' }} aria-hidden="true">❌</div>
+        <div style={{ fontSize: '48px', marginBottom: '16px' }} aria-hidden="true"><FontAwesomeIcon icon={faCircleXmark} /></div>
         <h2>{t('auth.verifyFailed')}</h2>
         <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>{t('auth.invalidVerifyLinkMissingToken')}</p>
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
@@ -92,7 +94,7 @@ const VerifyEmail = () => {
   if (success) {
     return (
       <div className="auth-form" style={{ textAlign: 'center' }}>
-        <div style={{ fontSize: '48px', marginBottom: '16px' }} aria-hidden="true">✅</div>
+        <div style={{ fontSize: '48px', marginBottom: '16px' }} aria-hidden="true"><FontAwesomeIcon icon={faCircleCheck} /></div>
         <h2 style={{ color: 'var(--success-text)' }}>{t('auth.emailVerifyCodeVerified')}</h2>
         <p style={{ color: 'var(--text-secondary)', marginBottom: '24px', lineHeight: 1.7 }}>{t('auth.emailVerifyCodeVerifySuccessDesc')}</p>
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
@@ -106,7 +108,7 @@ const VerifyEmail = () => {
   // 验证码输入界面
   return (
     <div className="auth-form" style={{ textAlign: 'center' }}>
-      <div style={{ fontSize: '48px', marginBottom: '16px' }} aria-hidden="true">📧</div>
+      <div style={{ fontSize: '48px', marginBottom: '16px' }} aria-hidden="true"><FontAwesomeIcon icon={faEnvelope} /></div>
       <h2>{t('auth.emailVerifyCodeTitle')}</h2>
       <p style={{ color: 'var(--text-secondary)', marginBottom: '12px', lineHeight: 1.7 }}>
         {t('auth.verifySent')} <strong style={{ color: 'var(--foreground)' }}>{email}</strong>

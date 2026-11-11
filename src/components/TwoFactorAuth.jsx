@@ -3,6 +3,8 @@ import axios from 'axios';
 import QRCode from 'qrcode';
 import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleCheck, faLock, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const TwoFactorAuth = ({ user, setUser, onClose }) => {
   const { t } = useI18n();
@@ -105,11 +107,11 @@ const TwoFactorAuth = ({ user, setUser, onClose }) => {
       marginTop: '12px', width: '100%'
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-        <h3 style={{ margin: 0, fontSize: '16px' }}>{t('twoFactor.title')}</h3>
-        <button onClick={onClose} style={{
+        <h3 style={{ margin: 0, fontSize: '16px' }}><FontAwesomeIcon icon={faLock} aria-hidden="true" /> {t('twoFactor.title')}</h3>
+        <button onClick={onClose} aria-label={t('common.close')} style={{
           background: 'none', border: 'none', cursor: 'pointer',
           color: 'var(--text-secondary)', fontSize: '18px', padding: '4px 8px'
-        }}>✕</button>
+        }}><FontAwesomeIcon icon={faXmark} aria-hidden="true" /></button>
       </div>
 
       {error && (
@@ -213,7 +215,7 @@ const TwoFactorAuth = ({ user, setUser, onClose }) => {
             borderRadius: '6px', marginBottom: '16px',
             color: 'var(--success-text)', fontSize: '14px'
           }}>
-            {t('twoFactor.enabled')}
+            <FontAwesomeIcon icon={faCircleCheck} aria-hidden="true" /> {t('twoFactor.enabled')}
           </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '16px', lineHeight: 1.7 }}>
             {t('twoFactor.disableDesc')}

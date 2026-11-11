@@ -1,5 +1,7 @@
 import React from 'react';
 import { I18nContext } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 class AdminErrorBoundary extends React.Component {
   constructor(props) {
@@ -24,7 +26,7 @@ class AdminErrorBoundary extends React.Component {
           justifyContent: 'center', minHeight: '60vh', padding: '24px',
           color: 'var(--text-secondary)'
         }}>
-          <div style={{ fontSize: '48px', marginBottom: '16px' }}>⚠️</div>
+          <div style={{ fontSize: '48px', marginBottom: '16px', color: 'var(--warning-text)' }}><FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" /></div>
           <h2 style={{ color: 'var(--foreground)', marginBottom: '8px' }}>{t('admin.errorTitle')}</h2>
           <p style={{ fontSize: '14px', marginBottom: '16px' }}>
             {this.state.error?.message || t('admin.unknownError')}

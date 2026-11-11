@@ -3,7 +3,6 @@ import { Link, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import API from '../utils/apiEndpoints';
 import ThemeEditorModal, { computeThemeType, themeTypeBadge } from './ThemeEditorModal';
-import { SvgIconPreview } from '../contexts/IconContext';
 import { useI18n } from '../contexts/I18nContext';
 
 /**
@@ -14,7 +13,7 @@ import { useI18n } from '../contexts/I18nContext';
  * 功能：
  *   - 主题列表（全部 / 系统 / 个人 / 待审核 筛选），含设默认（开关）、
  *     系统⇄个人切换、启用停用、删除；
- *   - 卡片展示类型徽章、壁纸缩略图与图标预览；
+ *   - 卡片展示类型徽章与壁纸缩略图；
  *   - 可视化创建/编辑主题（壁纸 + 图标组合，导入导出 JSON）。
  * 壁纸与图标素材均融入主题编辑器（素材库选择/上传），不再单独管理。
  */
@@ -233,23 +232,9 @@ const AdminThemes = () => {
                       }} />
                     )}
 
-                    {/* 图标预览（最多 8 个） */}
+                    {/* 图标数量（图标引擎已下线，不再渲染图标预览） */}
                     {iconEntries.length > 0 ? (
-                      <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>
-                        {iconEntries.slice(0, 8).map(([key, url]) => (
-                          <span key={key} title={key} style={{
-                            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            width: '28px', height: '28px', borderRadius: '6px',
-                            background: 'var(--hover-bg)', border: '1px solid var(--border)',
-                            color: 'var(--foreground)',
-                          }}>
-                            <SvgIconPreview url={url} size={17} />
-                          </span>
-                        ))}
-                        {iconEntries.length > 8 && (
-                          <span style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>+{iconEntries.length - 8}</span>
-                        )}
-                      </div>
+                      <div style={{ fontSize: '11px', color: 'var(--text-tertiary)' }}>{t('themeEditor.iconsCount', { count: iconEntries.length })}</div>
                     ) : (
                       <div style={{ fontSize: '11px', color: 'var(--text-tertiary)' }}>{t('adminThemes.noContent')}</div>
                     )}
@@ -327,7 +312,6 @@ const AdminThemes = () => {
           description: editingTheme.description,
           wallpaperUrl: editingTheme.wallpaperUrl || '',
           wallpaperThumb: editingTheme.wallpaperThumb || '',
-          icons: editingTheme.icons || {},
           accentColor: editingTheme.accentColor || '',
         } : null}
         onSave={handleSave}

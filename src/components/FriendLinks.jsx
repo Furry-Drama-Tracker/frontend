@@ -5,6 +5,8 @@ import { useI18n } from '../contexts/I18nContext';
 import useTranslation from '../hooks/useTranslation';
 import { useAuth } from '../contexts/AuthContext';
 import Modal from './Modal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLink, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const FriendLinks = () => {
   const { user, getAuthHeaders } = useAuth();
@@ -191,7 +193,7 @@ const FriendLinks = () => {
                       alignItems: 'center', justifyContent: 'center',
                       fontSize: '16px', flexShrink: 0,
                       border: '1px solid var(--primary-border)'
-                    }}>🔗</div>
+                    }}><FontAwesomeIcon icon={faLink} aria-hidden="true" /></div>
                   )}
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontWeight: 600, fontSize: '14px', color: 'var(--foreground)', marginBottom: '2px' }}>
@@ -227,7 +229,7 @@ const FriendLinks = () => {
                     {app.logo ? (
                       <img src={app.logo} alt="" loading="lazy" style={{ width: '32px', height: '32px', borderRadius: '6px', objectFit: 'cover' }} />
                     ) : (
-                      <div style={{ width: '32px', height: '32px', borderRadius: '6px', background: 'var(--primary-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>🔗</div>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '6px', background: 'var(--primary-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><FontAwesomeIcon icon={faLink} aria-hidden="true" /></div>
                     )}
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontWeight: 600, color: 'var(--foreground)' }}>{app.name}</div>
@@ -253,10 +255,10 @@ const FriendLinks = () => {
       >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <h3 style={{ margin: 0, fontSize: '18px', color: 'var(--foreground)' }}>{t('friendLink.applyTitle')}</h3>
-              <button onClick={() => { setShowApplyModal(false); setApplyMsg(''); setApplyMsgType(''); }} style={{
+              <button onClick={() => { setShowApplyModal(false); setApplyMsg(''); setApplyMsgType(''); }} aria-label={t('common.close')} style={{
                 background: 'none', border: 'none', color: 'var(--text-secondary)',
                 fontSize: '20px', cursor: 'pointer', padding: '4px 8px', lineHeight: 1
-              }}>✕</button>
+              }}><FontAwesomeIcon icon={faXmark} aria-hidden="true" /></button>
             </div>
 
             <form onSubmit={handleApply} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>

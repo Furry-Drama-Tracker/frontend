@@ -1,5 +1,7 @@
-﻿import React from 'react';
+import React from 'react';
 import SearchInput from './SearchInput';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
 const RATING_OPTIONS = [
   { value: '', labelKey: 'common.all' },
@@ -120,8 +122,8 @@ const EpisodeFilters = React.memo(({ filters, onFilterChange, categories, t, onS
               {opt.label}
               {isActive && (
                 <span className="ef-sort-arrow">
-                  <span style={{ opacity: sortOrder === 'asc' ? 1 : 0.3 }}>▲</span>
-                  <span style={{ opacity: sortOrder === 'desc' ? 1 : 0.3 }}>▼</span>
+                  <span style={{ opacity: sortOrder === 'asc' ? 1 : 0.3 }}><FontAwesomeIcon icon={faCaretUp} aria-hidden="true" /></span>
+                  <span style={{ opacity: sortOrder === 'desc' ? 1 : 0.3 }}><FontAwesomeIcon icon={faCaretDown} aria-hidden="true" /></span>
                 </span>
               )}
             </button>

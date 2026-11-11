@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { Film, Clock, Users, Heart, Star, Bell, TrendingUp, FilePlus, Flame, BarChart3 } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowTrendUp, faBell, faChartColumn, faClock, faFileCirclePlus, faFilm, faFire, faHeart, faStar, faUsers } from '@fortawesome/free-solid-svg-icons';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
 
@@ -21,16 +22,16 @@ const AdminStats = () => {
   if (!stats) return <div className="admin-panel"><h2>{t('adminStats.loadFailed')}</h2></div>;
 
   const statCards = [
-    { label: t('adminStats.totalEpisodes'), value: stats.totalEpisodes, icon: Film },
-    { label: t('adminStats.pendingReview'), value: stats.pendingEpisodes, icon: Clock },
-    { label: t('adminStats.totalUsers'), value: stats.totalUsers, icon: Users },
-    { label: t('adminStats.totalFollows'), value: stats.totalFollows, icon: Heart },
-    { label: t('adminStats.totalRatings'), value: stats.totalRatings, icon: Star },
-    { label: t('adminStats.pendingReports'), value: stats.pendingReports, icon: Bell },
-    { label: t('adminStats.newUsers30d'), value: stats.newUsers, icon: TrendingUp },
-    { label: t('adminStats.newEpisodes30d'), value: stats.newEpisodes, icon: FilePlus },
-    { label: t('adminStats.activeUsers7d'), value: stats.activeUsers7d, icon: Flame },
-    { label: t('adminStats.activeUsers30d'), value: stats.activeUsers30d, icon: BarChart3 },
+    { label: t('adminStats.totalEpisodes'), value: stats.totalEpisodes, icon: faFilm },
+    { label: t('adminStats.pendingReview'), value: stats.pendingEpisodes, icon: faClock },
+    { label: t('adminStats.totalUsers'), value: stats.totalUsers, icon: faUsers },
+    { label: t('adminStats.totalFollows'), value: stats.totalFollows, icon: faHeart },
+    { label: t('adminStats.totalRatings'), value: stats.totalRatings, icon: faStar },
+    { label: t('adminStats.pendingReports'), value: stats.pendingReports, icon: faBell },
+    { label: t('adminStats.newUsers30d'), value: stats.newUsers, icon: faArrowTrendUp },
+    { label: t('adminStats.newEpisodes30d'), value: stats.newEpisodes, icon: faFileCirclePlus },
+    { label: t('adminStats.activeUsers7d'), value: stats.activeUsers7d, icon: faFire },
+    { label: t('adminStats.activeUsers30d'), value: stats.activeUsers30d, icon: faChartColumn },
   ];
 
   const maxUserTrend = Math.max(...(stats.userTrend || []).map(d => d.count), 1);
@@ -40,16 +41,15 @@ const AdminStats = () => {
   return (
     <div className="admin-panel">
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
-        <BarChart3 size={22} strokeWidth={2} style={{ color: 'var(--primary)' }} aria-hidden="true" />
+        <FontAwesomeIcon icon={faChartColumn} style={{ color: 'var(--primary)', fontSize: 22 }} aria-hidden="true" />
         <h2 style={{ margin: 0 }}>{t('adminStats.chartTitle')}</h2>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '16px', marginBottom: '24px' }}>
         {statCards.map(card => {
-          const Icon = card.icon;
           return (
             <div key={card.label} style={{ background: 'var(--card)', borderRadius: 'var(--radius-md)', padding: '20px', border: '1px solid var(--border)', textAlign: 'center' }}>
-              <div style={{ marginBottom: '8px', color: 'var(--primary)', display: 'flex', justifyContent: 'center' }}><Icon size={24} strokeWidth={2} /></div>
+              <div style={{ marginBottom: '8px', color: 'var(--primary)', display: 'flex', justifyContent: 'center' }}><FontAwesomeIcon icon={card.icon} style={{ fontSize: 24 }} aria-hidden="true" /></div>
               <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--foreground)' }}>{card.value}</div>
               <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>{card.label}</div>
             </div>
@@ -59,7 +59,7 @@ const AdminStats = () => {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(400px, 100%), 1fr))', gap: '20px', marginBottom: '24px' }}>
         <div style={{ background: 'var(--card)', borderRadius: 'var(--radius-md)', padding: '20px', border: '1px solid var(--border)' }}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: '14px', color: 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '6px' }}><TrendingUp size={15} strokeWidth={2} aria-hidden="true" /> {t('adminStats.newUsers7d')}</h3>
+          <h3 style={{ margin: '0 0 16px 0', fontSize: '14px', color: 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '6px' }}><FontAwesomeIcon icon={faArrowTrendUp} style={{ fontSize: 15 }} aria-hidden="true" /> {t('adminStats.newUsers7d')}</h3>
           <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', height: '100px' }}>
             {(stats.userTrend || []).map(d => (
               <div key={d.date} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
@@ -71,7 +71,7 @@ const AdminStats = () => {
         </div>
 
         <div style={{ background: 'var(--card)', borderRadius: 'var(--radius-md)', padding: '20px', border: '1px solid var(--border)' }}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: '14px', color: 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '6px' }}><Flame size={15} strokeWidth={2} aria-hidden="true" /> {t('adminStats.dailyActive7d')}</h3>
+          <h3 style={{ margin: '0 0 16px 0', fontSize: '14px', color: 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '6px' }}><FontAwesomeIcon icon={faFire} style={{ fontSize: 15 }} aria-hidden="true" /> {t('adminStats.dailyActive7d')}</h3>
           <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', height: '100px' }}>
             {(stats.dailyActiveUsers || []).map(d => (
               <div key={d.date} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
@@ -83,7 +83,7 @@ const AdminStats = () => {
         </div>
 
         <div style={{ background: 'var(--card)', borderRadius: 'var(--radius-md)', padding: '20px', border: '1px solid var(--border)' }}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: '14px', color: 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '6px' }}><Star size={15} strokeWidth={2} aria-hidden="true" /> {t('adminStats.ratingDistribution')}</h3>
+          <h3 style={{ margin: '0 0 16px 0', fontSize: '14px', color: 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '6px' }}><FontAwesomeIcon icon={faStar} style={{ fontSize: 15 }} aria-hidden="true" /> {t('adminStats.ratingDistribution')}</h3>
           <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', height: '100px' }}>
             {(stats.ratingDistribution || []).map(d => (
               <div key={d._id} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
@@ -95,7 +95,7 @@ const AdminStats = () => {
         </div>
 
         <div style={{ background: 'var(--card)', borderRadius: 'var(--radius-md)', padding: '20px', border: '1px solid var(--border)' }}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: '14px', color: 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '6px' }}><BarChart3 size={15} strokeWidth={2} aria-hidden="true" /> {t('adminStats.episodeStatus')}</h3>
+          <h3 style={{ margin: '0 0 16px 0', fontSize: '14px', color: 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '6px' }}><FontAwesomeIcon icon={faChartColumn} style={{ fontSize: 15 }} aria-hidden="true" /> {t('adminStats.episodeStatus')}</h3>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             {(stats.episodeStatusDist || []).map(d => (
               <div key={d._id} style={{ textAlign: 'center' }}>
@@ -109,31 +109,31 @@ const AdminStats = () => {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(400px, 100%), 1fr))', gap: '20px' }}>
         <div style={{ background: 'var(--card)', borderRadius: 'var(--radius-md)', padding: '20px', border: '1px solid var(--border)' }}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: '14px', color: 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '6px' }}><Star size={15} strokeWidth={2} aria-hidden="true" /> {t('adminStats.topRated')}</h3>
+          <h3 style={{ margin: '0 0 16px 0', fontSize: '14px', color: 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '6px' }}><FontAwesomeIcon icon={faStar} style={{ fontSize: 15 }} aria-hidden="true" /> {t('adminStats.topRated')}</h3>
           {(stats.topRated || []).map((ep, i) => (
             <div key={ep._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: i < stats.topRated.length - 1 ? '1px solid var(--border)' : 'none' }}>
               <span style={{ color: 'var(--foreground)', fontSize: '13px' }}>{ep.title}</span>
-              <span style={{ color: 'var(--warning-text)', fontSize: '13px', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}><Star size={13} strokeWidth={2} fill="currentColor" aria-hidden="true" /> {ep.averageRating?.toFixed(1)} <span style={{ color: 'var(--text-tertiary)', fontWeight: 400, fontSize: '11px' }}>({ep.ratingCount}{t('common.people')})</span></span>
+              <span style={{ color: 'var(--warning-text)', fontSize: '13px', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}><FontAwesomeIcon icon={faStar} style={{ fontSize: 13 }} aria-hidden="true" /> {ep.averageRating?.toFixed(1)} <span style={{ color: 'var(--text-tertiary)', fontWeight: 400, fontSize: '11px' }}>({ep.ratingCount}{t('common.people')})</span></span>
             </div>
           ))}
         </div>
 
         <div style={{ background: 'var(--card)', borderRadius: 'var(--radius-md)', padding: '20px', border: '1px solid var(--border)' }}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: '14px', color: 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '6px' }}><Flame size={15} strokeWidth={2} aria-hidden="true" /> {t('adminStats.popularEpisodes')}</h3>
+          <h3 style={{ margin: '0 0 16px 0', fontSize: '14px', color: 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '6px' }}><FontAwesomeIcon icon={faFire} style={{ fontSize: 15 }} aria-hidden="true" /> {t('adminStats.popularEpisodes')}</h3>
           {(stats.mostViewed || []).map((ep, i) => (
             <div key={ep._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: i < stats.mostViewed.length - 1 ? '1px solid var(--border)' : 'none' }}>
               <span style={{ color: 'var(--foreground)', fontSize: '13px' }}>{ep.title}</span>
-              <span style={{ color: 'var(--primary-light)', fontSize: '13px', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}><Flame size={13} strokeWidth={2} aria-hidden="true" /> {ep.views}</span>
+              <span style={{ color: 'var(--primary-light)', fontSize: '13px', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}><FontAwesomeIcon icon={faFire} style={{ fontSize: 13 }} aria-hidden="true" /> {ep.views}</span>
             </div>
           ))}
         </div>
 
         <div style={{ background: 'var(--card)', borderRadius: 'var(--radius-md)', padding: '20px', border: '1px solid var(--border)' }}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: '14px', color: 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '6px' }}><Heart size={15} strokeWidth={2} aria-hidden="true" /> {t('adminStats.mostFollowed')}</h3>
+          <h3 style={{ margin: '0 0 16px 0', fontSize: '14px', color: 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '6px' }}><FontAwesomeIcon icon={faHeart} style={{ fontSize: 15 }} aria-hidden="true" /> {t('adminStats.mostFollowed')}</h3>
           {(stats.mostFollowed || []).map((ep, i) => (
             <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: i < stats.mostFollowed.length - 1 ? '1px solid var(--border)' : 'none' }}>
               <span style={{ color: 'var(--foreground)', fontSize: '13px' }}>{ep.title}</span>
-              <span style={{ color: 'var(--destructive-text)', fontSize: '13px', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}><Heart size={13} strokeWidth={2} fill="currentColor" aria-hidden="true" /> {ep.count}</span>
+              <span style={{ color: 'var(--destructive-text)', fontSize: '13px', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}><FontAwesomeIcon icon={faHeart} style={{ fontSize: 13 }} aria-hidden="true" /> {ep.count}</span>
             </div>
           ))}
         </div>

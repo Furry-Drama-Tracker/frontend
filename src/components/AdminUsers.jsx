@@ -6,6 +6,8 @@ import CustomSelect from './CustomSelect';
 import PasswordToggle from './PasswordToggle';
 import AdminSearchInput from './AdminSearchInput';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDesktop, faGlobe, faMobileScreen, faMobileScreenButton, faSatelliteDish, faShieldHalved, faTabletScreenButton, faUser } from '@fortawesome/free-solid-svg-icons';
 
 const DEVICE_TYPE_KEY_MAP = {
   mobile: 'adminUsers.mobile',
@@ -17,9 +19,9 @@ const DEVICE_TYPE_KEY_MAP = {
 };
 
 const getDeviceIcon = (type) => {
-  if (type === 'mobile' || type === '移动端') return '📱';
-  if (type === 'tablet' || type === '平板') return '📟';
-  return '🖥️';
+  if (type === 'mobile' || type === '移动端') return <FontAwesomeIcon icon={faMobileScreen} aria-hidden="true" />;
+  if (type === 'tablet' || type === '平板') return <FontAwesomeIcon icon={faTabletScreenButton} aria-hidden="true" />;
+  return <FontAwesomeIcon icon={faDesktop} aria-hidden="true" />;
 };
 
 const ROLE_FILTER_OPTIONS = [
@@ -391,18 +393,18 @@ const AdminUsers = () => {
               <InfoRow label={t('adminUsers.accountId')} value={detailUser.accountId || '-'} />
               <InfoRow label={t('adminUsers.nickname')} value={detailUser.username} />
               <InfoRow label={t('adminUsers.email')} value={detailUser.email} />
-              <InfoRow label={t('adminUsers.role')} value={getRoleLabel(detailUser.role)} icon={['superadmin', 'creator', 'admin'].includes(detailUser.role) ? '🛡️' : '👤'} />
+              <InfoRow label={t('adminUsers.role')} value={getRoleLabel(detailUser.role)} icon={['superadmin', 'creator', 'admin'].includes(detailUser.role) ? <FontAwesomeIcon icon={faShieldHalved} aria-hidden="true" /> : <FontAwesomeIcon icon={faUser} aria-hidden="true" />} />
               <InfoRow label={t('adminUsers.registerTime')} value={new Date(detailUser.createdAt).toLocaleString(locale)} />
               <InfoRow label={t('adminUsers.lastLogin')} value={detailUser.lastLoginAt ? new Date(detailUser.lastLoginAt).toLocaleString(locale) : t('adminUsers.neverLoggedIn')} />
               <InfoRow label={t('adminUsers.lastLoginIP')} value={detailUser.lastLoginIp || t('adminUsers.unknown')} />
-              <InfoRow label={t('adminUsers.ipRegion')} value={detailUser.lastLoginRegion || t('adminUsers.unknown')} icon="🌍" />
-              <InfoRow label={t('adminUsers.isp')} value={detailUser.deviceInfo?.carrier || t('adminUsers.unknown')} icon="📡" />
+              <InfoRow label={t('adminUsers.ipRegion')} value={detailUser.lastLoginRegion || t('adminUsers.unknown')} icon={<FontAwesomeIcon icon={faGlobe} aria-hidden="true" />} />
+              <InfoRow label={t('adminUsers.isp')} value={detailUser.deviceInfo?.carrier || t('adminUsers.unknown')} icon={<FontAwesomeIcon icon={faSatelliteDish} aria-hidden="true" />} />
 
               <div style={{padding: '12px 0', borderTop: '1px solid var(--border)', marginTop: '8px'}}>
                 <h4 style={{color: 'var(--primary)', marginBottom: '8px'}}>{t('adminUsers.deviceInfo')}</h4>
               </div>
               <InfoRow label={t('adminUsers.deviceType')} value={getDeviceTypeLabel(detailUser.deviceInfo?.deviceType)} icon={getDeviceIcon(detailUser.deviceInfo?.deviceType)} />
-              <InfoRow label={t('adminUsers.deviceModel')} value={detailUser.deviceInfo?.deviceModel || t('adminUsers.unknown')} icon="📲" />
+              <InfoRow label={t('adminUsers.deviceModel')} value={detailUser.deviceInfo?.deviceModel || t('adminUsers.unknown')} icon={<FontAwesomeIcon icon={faMobileScreenButton} aria-hidden="true" />} />
               <InfoRow label={t('adminUsers.os')} value={detailUser.deviceInfo?.os ? `${detailUser.deviceInfo.os} ${detailUser.deviceInfo.osVersion || ''}`.trim() : t('adminUsers.unknown')} />
               <InfoRow label={t('adminUsers.browser')} value={detailUser.deviceInfo?.browser ? `${detailUser.deviceInfo.browser} ${detailUser.deviceInfo.browserVersion || ''}`.trim() : t('adminUsers.unknown')} />
               <InfoRow label={t('adminUsers.screenResolution')} value={detailUser.deviceInfo?.screenWidth ? `${detailUser.deviceInfo.screenWidth} × ${detailUser.deviceInfo.screenHeight}` : t('adminUsers.unknown')} />

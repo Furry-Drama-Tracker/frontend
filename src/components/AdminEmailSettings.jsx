@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClipboard, faEnvelope, faFlask, faGear, faUpload } from '@fortawesome/free-solid-svg-icons';
 
 // 邮件服务配置自后端重构后改由服务器端 env/ini 提供（EMAIL_HOST / EMAIL_PORT /
 // EMAIL_USER / EMAIL_PASS / EMAIL_FROM_NAME），不再存于数据库。本页面因此：
@@ -88,7 +90,7 @@ const AdminEmailSettings = () => {
     <div className="admin-panel">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          <h2>{t('adminEmailSettings.title')}</h2>
+          <h2><FontAwesomeIcon icon={faEnvelope} aria-hidden="true" /> {t('adminEmailSettings.title')}</h2>
         </div>
       </div>
 
@@ -99,7 +101,7 @@ const AdminEmailSettings = () => {
           background: 'var(--primary-bg-subtle)', border: '1px solid var(--primary-border-subtle)',
           fontSize: '13px', lineHeight: 1.7, color: 'var(--text-secondary)'
         }}>
-          <p style={{ margin: '0 0 6px 0', fontWeight: 600, color: 'var(--foreground)' }}>{t('adminEmailSettings.configSourceTitle')}</p>
+          <p style={{ margin: '0 0 6px 0', fontWeight: 600, color: 'var(--foreground)' }}><FontAwesomeIcon icon={faGear} aria-hidden="true" /> {t('adminEmailSettings.configSourceTitle')}</p>
           <p style={{ margin: '0 0 6px 0' }}>{t('adminEmailSettings.configSourceHint')}</p>
           <p style={{ margin: 0 }}>{t('adminEmailSettings.configReadonlyNote')}</p>
         </div>
@@ -109,7 +111,7 @@ const AdminEmailSettings = () => {
           padding: '18px 20px', borderRadius: '12px', marginBottom: '24px',
           background: 'var(--card)', border: '1px solid var(--border)'
         }}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: '16px', color: 'var(--foreground)' }}>{t('adminEmailSettings.currentConfig')}</h3>
+          <h3 style={{ margin: '0 0 16px 0', fontSize: '16px', color: 'var(--foreground)' }}><FontAwesomeIcon icon={faClipboard} aria-hidden="true" /> {t('adminEmailSettings.currentConfig')}</h3>
           {config ? (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '12px', fontSize: '14px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', paddingBottom: '8px', borderBottom: '1px solid var(--border)' }}>
@@ -145,7 +147,7 @@ const AdminEmailSettings = () => {
           padding: '20px', borderRadius: '12px', marginBottom: '24px',
           background: 'var(--card)', border: '1px solid var(--border)'
         }}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: '16px', color: 'var(--foreground)' }}>{t('adminEmailSettings.testEmailTitle')}</h3>
+          <h3 style={{ margin: '0 0 16px 0', fontSize: '16px', color: 'var(--foreground)' }}><FontAwesomeIcon icon={faFlask} aria-hidden="true" /> {t('adminEmailSettings.testEmailTitle')}</h3>
           <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px', lineHeight: 1.6 }}>
             {t('adminEmailSettings.testEmailDesc')}
           </p>
@@ -247,7 +249,7 @@ const AdminEmailSettings = () => {
             disabled={testing || !testForm.host || !testForm.user || !testForm.pass}
             style={{ marginTop: '4px' }}
           >
-            {testing ? t('adminEmailSettings.sending') : t('adminEmailSettings.testSend')}
+            {testing ? t('adminEmailSettings.sending') : <><FontAwesomeIcon icon={faUpload} aria-hidden="true" /> {t('adminEmailSettings.testSend')}</>}
           </button>
         </div>
 
@@ -256,7 +258,7 @@ const AdminEmailSettings = () => {
           background: 'var(--hover-bg)', border: '1px solid var(--border)',
           fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.8
         }}>
-          <p style={{ margin: '0 0 8px 0', fontWeight: 600, color: 'var(--foreground)' }}>{t('adminEmailSettings.commonSmtpTitle')}</p>
+          <p style={{ margin: '0 0 8px 0', fontWeight: 600, color: 'var(--foreground)' }}><FontAwesomeIcon icon={faClipboard} aria-hidden="true" /> {t('adminEmailSettings.commonSmtpTitle')}</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '8px' }}>
             <div><strong>{t('adminEmailSettings.qqMail')}</strong>：smtp.qq.com:465</div>
             <div><strong>{t('adminEmailSettings.mail163')}</strong>：smtp.163.com:465</div>

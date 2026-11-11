@@ -4,6 +4,8 @@ import adminApi from '../utils/adminApi';
 import ImageUploader from './ImageUploader';
 import ReviewStatusBadge from './ReviewStatusBadge';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faUser } from '@fortawesome/free-solid-svg-icons';
 
 // 把 socialLinks(Map 或对象) 转为 [{name,url}] 数组
 const linksToArr = (links) => {
@@ -133,7 +135,7 @@ const AdminCreatorProfiles = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
         <h2>{t('adminCreatorProfiles.title')}</h2>
         <button onClick={() => setEditingId(null)} className="btn btn-secondary">
-          {t('adminCreatorProfiles.backToList')}
+          <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" /> {t('adminCreatorProfiles.backToList')}
         </button>
       </div>
 
@@ -278,7 +280,7 @@ const AdminCreatorProfiles = () => {
                     {profile.avatar ? (
                       <img src={profile.avatar} alt={profile.displayName} style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover' }} />
                     ) : (
-                      <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--hover-bg-strong)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px' }}>👤</div>
+                      <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--hover-bg-strong)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px' }}><FontAwesomeIcon icon={faUser} aria-hidden="true" /></div>
                     )}
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
@@ -355,7 +357,7 @@ const AdminCreatorProfiles = () => {
                           {profile.avatar ? (
                             <img src={profile.avatar} alt="" style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', marginBottom: '6px' }} />
                           ) : (
-                            <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--hover-bg-strong)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', marginBottom: '6px' }}>👤</div>
+                            <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--hover-bg-strong)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', marginBottom: '6px' }}><FontAwesomeIcon icon={faUser} aria-hidden="true" /></div>
                           )}
                           <p style={{ margin: '0 0 4px 0', fontSize: '13px', fontWeight: 500 }}>{profile.displayName}</p>
                           <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: 'var(--text-secondary)', maxHeight: '60px', overflow: 'hidden' }}>{profile.bio || t('adminCreatorProfiles.bioEmpty')}</p>
@@ -372,7 +374,7 @@ const AdminCreatorProfiles = () => {
                           {pc.avatar ? (
                             <img src={pc.avatar} alt="" style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', marginBottom: '6px' }} />
                           ) : (
-                            <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--hover-bg-strong)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', marginBottom: '6px' }}>👤</div>
+                            <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--hover-bg-strong)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', marginBottom: '6px' }}><FontAwesomeIcon icon={faUser} aria-hidden="true" /></div>
                           )}
                           <p style={{ margin: '0 0 4px 0', fontSize: '13px', fontWeight: 500 }}>{pc.displayName || '-'}</p>
                           <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: 'var(--text-secondary)', maxHeight: '60px', overflow: 'hidden' }}>{pc.bio || t('adminCreatorProfiles.bioEmpty')}</p>

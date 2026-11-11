@@ -6,6 +6,8 @@ import { useTheme } from '../contexts/ThemeContext';
 import usePushNotifications from '../hooks/usePushNotifications';
 import API from '../utils/apiEndpoints';
 import ThemeWorkshop from './ThemeWorkshop';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faCheck, faDesktop, faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 
 const DISMISSED_KEY = 'pwa-install-dismissed';
 
@@ -82,9 +84,9 @@ const Settings = ({ user }) => {
   };
 
   const themeOptions = [
-    { mode: 'system', label: t('settings.themeSystem'), icon: '💻' },
-    { mode: 'light', label: t('settings.themeLight'), icon: '☀️' },
-    { mode: 'dark', label: t('settings.themeDark'), icon: '🌙' },
+    { mode: 'system', label: t('settings.themeSystem'), icon: <FontAwesomeIcon icon={faDesktop} aria-hidden="true" /> },
+    { mode: 'light', label: t('settings.themeLight'), icon: <FontAwesomeIcon icon={faSun} aria-hidden="true" /> },
+    { mode: 'dark', label: t('settings.themeDark'), icon: <FontAwesomeIcon icon={faMoon} aria-hidden="true" /> },
   ];
 
   const settingsGroups = [
@@ -200,13 +202,13 @@ const Settings = ({ user }) => {
             background: 'none', border: 'none', cursor: 'pointer',
             color: 'var(--foreground)', fontSize: '18px', padding: '4px 8px',
           }}
-        >←</button>
+        ><FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" /></button>
         <h2 style={{ margin: 0 }}>{t('settings.title')}</h2>
         {saved && (
           <span style={{
             marginLeft: 'auto', fontSize: '13px', color: 'var(--primary)',
             fontWeight: 600, animation: 'fadeIn 0.2s',
-          }}>✓ {t('settings.saved')}</span>
+          }}><FontAwesomeIcon icon={faCheck} aria-hidden="true" /> {t('settings.saved')}</span>
         )}
       </div>
 

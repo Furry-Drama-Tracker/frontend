@@ -5,6 +5,9 @@ import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
 import API from '../utils/apiEndpoints';
 import Modal from './Modal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faFolderOpen, faLink, faMobileScreenButton, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { SiQq, SiSinaweibo, SiWechat } from '@icons-pack/react-simple-icons';
 
 const FolderShareModal = ({ show, onClose, folder }) => {
   const [shareToken, setShareToken] = useState(null);
@@ -103,26 +106,26 @@ const FolderShareModal = ({ show, onClose, folder }) => {
   };
 
   const platforms = [
-    { name: t('share.wechat'), icon: '💬', color: '#07c160', action: handleWechatShare },
-    { name: 'QQ', icon: '🐧', color: '#12b7f5', action: handleQQShare },
-    { name: t('share.weibo'), icon: '📢', color: '#e6162d', url: `https://service.weibo.com/share/share.php?title=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}` },
+    { name: t('share.wechat'), icon: <SiWechat size={20} color="currentColor" aria-hidden="true" />, color: '#07c160', action: handleWechatShare },
+    { name: 'QQ', icon: <SiQq size={20} color="currentColor" aria-hidden="true" />, color: '#12b7f5', action: handleQQShare },
+    { name: t('share.weibo'), icon: <SiSinaweibo size={20} color="currentColor" aria-hidden="true" />, color: '#e6162d', url: `https://service.weibo.com/share/share.php?title=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}` },
   ];
 
   return (
     <Modal isOpen={show} onClose={handleClose} maxWidth="400px">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 24px', borderBottom: '1px solid var(--border)' }}>
-        <h3 style={{ margin: 0 }}>🔗 {t('share.shareFolder')}</h3>
-        <button onClick={handleClose} style={{ background: 'none', border: 'none', color: 'var(--foreground)', fontSize: '20px', cursor: 'pointer' }}>✕</button>
+        <h3 style={{ margin: 0 }}><FontAwesomeIcon icon={faLink} aria-hidden="true" /> {t('share.shareFolder')}</h3>
+        <button onClick={handleClose} style={{ background: 'none', border: 'none', color: 'var(--foreground)', fontSize: '20px', cursor: 'pointer' }}><FontAwesomeIcon icon={faXmark} aria-hidden="true" /></button>
       </div>
       <div style={{ padding: '20px 24px' }}>
-        <p style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600 }}>📂 {folder?.name}</p>
+        <p style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600 }}><FontAwesomeIcon icon={faFolderOpen} aria-hidden="true" /> {folder?.name}</p>
         {loading ? (
           <p style={{ color: 'var(--text-secondary)', fontSize: '13px', textAlign: 'center', padding: '20px 0' }}>{t('common.loading')}</p>
         ) : shareUrl ? (
           <>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '16px' }}>
               <input readOnly value={shareUrl} style={{ flex: 1, padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--input)', color: 'var(--foreground)', fontSize: '13px' }} />
-              <button className="btn" style={{ fontSize: '13px', padding: '8px 14px', whiteSpace: 'nowrap' }} onClick={handleCopy}>{copied ? t('share.copied') : t('share.copy')}</button>
+              <button className="btn" style={{ fontSize: '13px', padding: '8px 14px', whiteSpace: 'nowrap' }} onClick={handleCopy}>{copied ? <><FontAwesomeIcon icon={faCheck} aria-hidden="true" /> {t('share.copied')}</> : t('share.copy')}</button>
             </div>
             {showQR && (
               <div style={{ textAlign: 'center', marginBottom: '16px', padding: '16px', background: 'var(--hover-bg)', borderRadius: '12px' }}>
@@ -152,7 +155,7 @@ const FolderShareModal = ({ show, onClose, folder }) => {
               ))}
             </div>
             {navigator.share && (
-              <button className="btn" style={{ width: '100%', fontSize: '13px' }} onClick={handleNativeShare}>📱 {t('share.systemShare')}</button>
+              <button className="btn" style={{ width: '100%', fontSize: '13px' }} onClick={handleNativeShare}><FontAwesomeIcon icon={faMobileScreenButton} aria-hidden="true" /> {t('share.systemShare')}</button>
             )}
           </>
         ) : (

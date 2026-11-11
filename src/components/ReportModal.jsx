@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useI18n } from '../contexts/I18nContext';
 import Modal from './Modal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
 const ReportModal = ({ show, onClose, targetType, targetId, targetName }) => {
   const { t } = useI18n();
@@ -52,7 +54,7 @@ const ReportModal = ({ show, onClose, targetType, targetId, targetName }) => {
     <Modal isOpen={show} onClose={onClose} maxWidth="440px" zIndex={10000}>
       {success ? (
         <div style={{ textAlign: 'center', padding: '20px' }}>
-          <div style={{ fontSize: '48px', marginBottom: '12px' }}>✅</div>
+          <div style={{ fontSize: '48px', marginBottom: '12px' }}><FontAwesomeIcon icon={faCircleCheck} aria-hidden="true" /></div>
           <p style={{ color: 'var(--secondary)', fontSize: '16px', fontWeight: 600 }}>{t('report.submitted')}</p>
           <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginTop: '8px' }}>{t('report.willProcess')}</p>
         </div>

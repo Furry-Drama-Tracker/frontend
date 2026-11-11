@@ -4,6 +4,8 @@ import axios from 'axios';
 import ConfirmModal from './ConfirmModal';
 import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDesktop, faMobileScreenButton, faPenToSquare, faRightFromBracket, faTabletScreenButton, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 const UserDevices = ({ user }) => {
   const { t, locale } = useI18n();
@@ -41,7 +43,7 @@ const UserDevices = ({ user }) => {
   const handleLogoutSession = async (id) => {
     setConfirmModal({
       show: true,
-      title: t('devices.logoutDevice'),
+      title: <><FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" /> {t('devices.logoutDevice')}</>,
       message: t('devices.confirmLogoutDevice'),
       type: 'danger',
       onConfirm: async () => {
@@ -65,7 +67,7 @@ const UserDevices = ({ user }) => {
   const handleLogoutAllSessions = async () => {
     setConfirmModal({
       show: true,
-      title: t('devices.logoutOtherDevices'),
+      title: <><FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" /> {t('devices.logoutOtherDevices')}</>,
       message: t('devices.confirmLogoutOtherDevices'),
       type: 'warning',
       onConfirm: async () => {
@@ -108,9 +110,9 @@ const UserDevices = ({ user }) => {
   };
 
   const getDeviceIcon = (type) => {
-    if (type === 'mobile') return '📱';
-    if (type === 'tablet') return '📲';
-    return '💻';
+    if (type === 'mobile') return <FontAwesomeIcon icon={faMobileScreenButton} aria-hidden="true" />;
+    if (type === 'tablet') return <FontAwesomeIcon icon={faTabletScreenButton} aria-hidden="true" />;
+    return <FontAwesomeIcon icon={faDesktop} aria-hidden="true" />;
   };
 
   const formatTime = (dateStr) => {
@@ -137,7 +139,7 @@ const UserDevices = ({ user }) => {
               background: 'var(--destructive-bg)', color: 'var(--destructive-text)',
               border: '1px solid var(--destructive-border)', cursor: 'pointer',
               transition: 'all 0.2s'
-            }} onClick={handleLogoutAllSessions}>{t('devices.logoutOtherDevices')}</button>
+            }} onClick={handleLogoutAllSessions}><FontAwesomeIcon icon={faRightFromBracket} aria-hidden="true" /> {t('devices.logoutOtherDevices')}</button>
           )}
         </div>
       </div>
@@ -201,7 +203,7 @@ const UserDevices = ({ user }) => {
                       <button onClick={() => startEdit(session)} style={{
                         background: 'none', border: 'none', cursor: 'pointer',
                         color: 'var(--text-secondary)', fontSize: '14px', padding: '2px 4px'
-                      }} title={t('devices.editAlias')}>✏️</button>
+                      }} title={t('devices.editAlias')}><FontAwesomeIcon icon={faPenToSquare} aria-hidden="true" /></button>
                     </>
                   )}
                   {session.isActive ? (

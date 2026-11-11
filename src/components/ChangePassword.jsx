@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import PasswordToggle from './PasswordToggle';
 import API from '../utils/apiEndpoints';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const ChangePassword = () => {
   const { t } = useI18n();
@@ -72,7 +74,7 @@ const ChangePassword = () => {
             color: 'var(--foreground)', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '4px'
           }}
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+          <FontAwesomeIcon icon={faArrowLeft} style={{ fontSize: 16 }} aria-hidden="true" />
           {t('common.back')}
         </button>
         <h2 style={{margin: 0}}>{t('auth.changePassword')}</h2>

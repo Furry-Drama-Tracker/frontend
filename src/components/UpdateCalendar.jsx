@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import useTranslation from '../hooks/useTranslation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowsLeftRight, faBell, faCalendarDays, faCircleCheck, faFilm } from '@fortawesome/free-solid-svg-icons';
 
 const UpdateCalendar = () => {
   const { t } = useI18n();
@@ -144,7 +146,7 @@ const UpdateCalendar = () => {
     return (
       <>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-          <h2 style={{ margin: 0, fontSize: '24px', fontWeight: 700 }}>📅 {t('calendar.title')}</h2>
+          <h2 style={{ margin: 0, fontSize: '24px', fontWeight: 700 }}><FontAwesomeIcon icon={faCalendarDays} aria-hidden="true" /> {t('calendar.title')}</h2>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', position: 'relative' }}>
             <button onClick={prevYear} style={{ background: 'var(--hover-bg-strong)', border: '1px solid var(--border)', color: 'var(--foreground)', borderRadius: '8px', padding: '6px 12px', cursor: 'pointer', fontSize: '14px' }}>‹</button>
             <span
@@ -237,7 +239,7 @@ const UpdateCalendar = () => {
                           flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                           padding: '1px 6px', borderRadius: '3px', background: bgMap[item.type], color: colorMap[item.type],
                         }}>
-                          {item.type === 'scheduled' && '🔔 '}{item.type === 'premiere' && '🎬 '}
+                          {item.type === 'scheduled' && <><FontAwesomeIcon icon={faBell} aria-hidden="true" />{' '}</>}{item.type === 'premiere' && <><FontAwesomeIcon icon={faFilm} aria-hidden="true" />{' '}</>}
                           {getLocalizedTitle(item)}{item.episodeNumber ? ` ${item.episodeLabel || t('calendar.episodeNum', { num: item.episodeNumber })}` : ''}
                         </span>
                       </Link>
@@ -271,7 +273,7 @@ const UpdateCalendar = () => {
     return (
       <>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-          <h2 style={{ margin: 0, fontSize: '24px', fontWeight: 700 }}>📅 {t('calendar.title')}</h2>
+          <h2 style={{ margin: 0, fontSize: '24px', fontWeight: 700 }}><FontAwesomeIcon icon={faCalendarDays} aria-hidden="true" /> {t('calendar.title')}</h2>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <button onClick={prevWeek} style={{ background: 'var(--hover-bg-strong)', border: '1px solid var(--border)', color: 'var(--foreground)', borderRadius: '8px', padding: '6px 12px', cursor: 'pointer', fontSize: '14px' }}>‹</button>
             <span style={{ fontSize: '16px', fontWeight: 600, minWidth: '160px', textAlign: 'center' }}>{weekYear}{t('calendar.year')}{weekMonth}{t('calendar.month')}</span>
@@ -308,7 +310,7 @@ const UpdateCalendar = () => {
                         border: isFollowed ? '2px solid var(--primary)' : '1px solid transparent',
                         overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'
                       }}>
-                        {item.type === 'scheduled' && '🔔 '}{item.type === 'premiere' && '🎬 '}
+                        {item.type === 'scheduled' && <><FontAwesomeIcon icon={faBell} aria-hidden="true" />{' '}</>}{item.type === 'premiere' && <><FontAwesomeIcon icon={faFilm} aria-hidden="true" />{' '}</>}
                         {getLocalizedTitle(item)}{item.episodeNumber ? ` ${item.episodeLabel || t('calendar.episodeNum', { num: item.episodeNumber })}` : ''}
                       </Link>
                       {isFollowed && item.type === 'scheduled' && (
@@ -317,7 +319,7 @@ const UpdateCalendar = () => {
                           background: 'var(--primary-bg)', color: 'var(--primary)',
                           border: '1px solid var(--primary-border)', cursor: 'pointer',
                           marginTop: '2px', width: '100%'
-                        }}>{subscribing === item._id ? '...' : `🔔 ${t('calendar.reminder')}`}</button>
+                        }}>{subscribing === item._id ? '...' : <><FontAwesomeIcon icon={faBell} aria-hidden="true" /> {t('calendar.reminder')}</>}</button>
                       )}
                     </div>
                   );
@@ -340,7 +342,7 @@ const UpdateCalendar = () => {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-        <h2 style={{ margin: 0, fontSize: '24px', fontWeight: 700 }}>📅 {t('calendar.title')}</h2>
+        <h2 style={{ margin: 0, fontSize: '24px', fontWeight: 700 }}><FontAwesomeIcon icon={faCalendarDays} aria-hidden="true" /> {t('calendar.title')}</h2>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', position: 'relative' }}>
           <button onClick={prevMonth} style={{ background: 'var(--hover-bg-strong)', border: '1px solid var(--border)', color: 'var(--foreground)', borderRadius: '8px', padding: '6px 12px', cursor: 'pointer', fontSize: '14px' }}>‹</button>
           <span
@@ -383,7 +385,7 @@ const UpdateCalendar = () => {
       <div style={{ background: 'var(--card)', borderRadius: '12px', border: '1px solid var(--border)', overflow: 'hidden' }}>
         {isMobile && (
           <div style={{ padding: '8px 12px', fontSize: '12px', color: 'var(--text-tertiary)', borderBottom: '1px solid var(--border)' }}>
-            {t('calendar.swipeHint')}
+            <FontAwesomeIcon icon={faArrowsLeftRight} aria-hidden="true" /> {t('calendar.swipeHint')}
           </div>
         )}
         <div style={{ overflowX: isMobile ? 'auto' : 'visible', WebkitOverflowScrolling: 'touch' }}>
@@ -418,7 +420,7 @@ const UpdateCalendar = () => {
                     border: isFollowed ? '2px solid var(--primary)' : '1px solid transparent',
                     overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'
                   }}>
-                    {item.type === 'scheduled' && '🔔 '}{item.type === 'premiere' && '🎬 '}
+                    {item.type === 'scheduled' && <><FontAwesomeIcon icon={faBell} aria-hidden="true" />{' '}</>}{item.type === 'premiere' && <><FontAwesomeIcon icon={faFilm} aria-hidden="true" />{' '}</>}
                     {getLocalizedTitle(item)}{item.episodeNumber ? ` ${item.episodeLabel || t('calendar.episodeNum', { num: item.episodeNumber })}` : ''}
                   </Link>
                   );
@@ -471,7 +473,7 @@ const UpdateCalendar = () => {
                             <div style={{ flex: 1, minWidth: 0 }}>
                               <div style={{ fontSize: '14px', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{getLocalizedTitle(item)}</div>
                               <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-                                {item.type === 'scheduled' && `🔔 ${t('calendar.preview')}: `}{item.type === 'premiere' && `🎬 ${t('calendar.premiere')}`}{item.type === 'released' && '✅ '}
+                                {item.type === 'scheduled' && <><FontAwesomeIcon icon={faBell} aria-hidden="true" /> {t('calendar.preview')}: </>}{item.type === 'premiere' && <><FontAwesomeIcon icon={faFilm} aria-hidden="true" /> {t('calendar.premiere')}</>}{item.type === 'released' && <><FontAwesomeIcon icon={faCircleCheck} aria-hidden="true" />{' '}</>}
                                 {item.episodeNumber ? (item.episodeLabel || t('calendar.episodeNum', { num: item.episodeNumber })) : ''}
                               </div>
                             </div>
@@ -485,7 +487,7 @@ const UpdateCalendar = () => {
                               background: 'var(--primary-bg)', color: 'var(--primary)',
                               border: '1px solid var(--primary-border)', cursor: 'pointer',
                               whiteSpace: 'nowrap', flexShrink: 0
-                            }}>{subscribing === item._id ? '...' : `🔔 ${t('calendar.reminder')}`}</button>
+                            }}>{subscribing === item._id ? '...' : <><FontAwesomeIcon icon={faBell} aria-hidden="true" /> {t('calendar.reminder')}</>}</button>
                           )}
                         </div>
                       );

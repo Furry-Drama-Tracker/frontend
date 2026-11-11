@@ -5,8 +5,12 @@ import { useTheme, getAccentContrastWarning, getOnPrimaryColor } from '../contex
 import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
 import API from '../utils/apiEndpoints';
-import { THEME_SELECTION_CHANGED_EVENT } from '../contexts/IconContext';
 import { computeThemeType, themeTypeBadge } from './ThemeEditorModal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faDesktop, faImage, faMoon, faPalette, faSpinner, faStar, faSun,
+  faTriangleExclamation, faUser, faXmark,
+} from '@fortawesome/free-solid-svg-icons';
 
 /**
  * 左下角外观悬浮面板（无需登录即可使用外观设置；主题应用需登录）。
@@ -24,14 +28,12 @@ const ThemeColorPicker = () => {
   const [activeTab, setActiveTab] = useState('appearance'); // appearance / theme
   const pickerRef = useRef(null);
 
-  // 主题市场（公开系统主题 + 我的主题）与当前两槽选择。
+  // 主题市场（公开系统主题 + 我的主题）与当前壁纸槽选择。
   const [themes, setThemes] = useState([]);
-  const [typeFilter, setTypeFilter] = useState('all'); // all / wallpaper / icons / full
-  const [selection, setSelection] = useState({ wallpaperThemeId: null, iconsThemeId: null });
+  const [typeFilter, setTypeFilter] = useState('all'); // all / wallpaper / full
+  const [selection, setSelection] = useState({ wallpaperThemeId: null });
   const [applyingId, setApplyingId] = useState(null);
   const [themeMsg, setThemeMsg] = useState('');
-  // 全套主题应用时的组合选择（choiceFor 为待选择的主题 id）。
-  const [choiceFor, setChoiceFor] = useState(null);
   // 背景调整（透明度/模糊/开关，跟随用户 backgroundPrefs）。
   const [bgSaving, setBgSaving] = useState(false);
 
@@ -54,19 +56,21 @@ const ThemeColorPicker = () => {
       const system = sysRes.data || [];
       const mine = user ? (myRes?.data || []) : [];
       // 我的主题打「我的」标记（个人草稿/审核中均可应用）在前，系统主题在后；
-      // 旧版配色主题无壁纸与图标内容、无法应用，不进面板列表。
+      // 图标引擎已移除：无壁纸的主题（仅图标/旧版配色）无法应用，不进面板列表。
       setThemes([
         ...mine.map((th) => ({ ...th, isMine: true })),
         ...system,
-      ].filter((th) => (th.themeType || computeThemeType(th)) !== 'legacy'));
+      ].filter((th) => {
+        const type = th.themeType || computeThemeType(th);
+        return type === 'wallpaper' || type === 'full';
+      }));
     } catch { /* 忽略 */ }
     if (user) {
       try {
         const sel = await axios.get(API.THEMES.MY_SELECTION);
-        // 两槽回落站点默认主题不算用户的选择（不高亮，只做兜底）。
+        // 回落站点默认主题不算用户的选择（不高亮，只做兜底）。
         setSelection({
           wallpaperThemeId: sel.data?.wallpaperIsDefault ? null : sel.data?.wallpaperTheme?._id || null,
-          iconsThemeId: sel.data?.iconsIsDefault ? null : sel.data?.iconsTheme?._id || null,
         });
       } catch { /* 忽略 */ }
     }
@@ -76,25 +80,18 @@ const ThemeColorPicker = () => {
     if (isOpen && activeTab === 'theme') fetchThemes();
   }, [isOpen, activeTab, fetchThemes]);
 
-  // 应用主题到指定槽（登录）。part: 'wallpaper' | 'icons' | 'both'。
-  // 仅图标主题的背景不动、仅背景主题的图标不动，可自由组合主题A背景+主题B图标。
-  const applyTheme = async (theme, part) => {
+  // 应用主题壁纸（登录）。图标引擎已移除，只写 wallpaperThemeId；
+  // 未传 iconsThemeId 时后端保持该槽原值不变，不影响旧数据。
+  const applyTheme = async (theme) => {
     if (!user) {
       setThemeMsg(t('colorPicker.needLogin'));
       return;
     }
     setApplyingId(theme._id);
     setThemeMsg('');
-    setChoiceFor(null);
     try {
-      const body = {};
-      if (part === 'wallpaper' || part === 'both') body.wallpaperThemeId = theme._id;
-      if (part === 'icons' || part === 'both') body.iconsThemeId = theme._id;
-      const res = await axios.put(API.THEMES.SELECTION, body);
-      setSelection((prev) => ({
-        wallpaperThemeId: part === 'wallpaper' || part === 'both' ? theme._id : prev.wallpaperThemeId,
-        iconsThemeId: part === 'icons' || part === 'both' ? theme._id : prev.iconsThemeId,
-      }));
+      const res = await axios.put(API.THEMES.SELECTION, { wallpaperThemeId: theme._id });
+      setSelection({ wallpaperThemeId: theme._id });
       if (res.data?.backgroundPrefs) {
         updateUser((prev) => ({ ...prev, backgroundPrefs: res.data.backgroundPrefs }));
       }
@@ -102,7 +99,6 @@ const ThemeColorPicker = () => {
       if (res.data?.accentColor && /^#[0-9a-fA-F]{6}$/.test(res.data.accentColor)) {
         setAccentColor(res.data.accentColor);
       }
-      window.dispatchEvent(new Event(THEME_SELECTION_CHANGED_EVENT));
       setThemeMsg(t('colorPicker.applied', { name: theme.name }));
       setTimeout(() => setThemeMsg(''), 2500);
     } catch (err) {
@@ -112,31 +108,26 @@ const ThemeColorPicker = () => {
     }
   };
 
-  // 点击主题卡片：按类型分派（全套弹出组合选择，其余直接应用对应槽）。
+  // 点击主题卡片：只应用壁纸槽（仅图标主题已在列表中过滤掉）。
   const handleThemeClick = (theme) => {
     if (applyingId) return;
     const type = theme.themeType || computeThemeType(theme);
-    if (type === 'wallpaper') return applyTheme(theme, 'wallpaper');
-    if (type === 'icons') return applyTheme(theme, 'icons');
-    if (type === 'legacy') return;
-    setChoiceFor(choiceFor === theme._id ? null : theme._id);
+    if (type === 'wallpaper' || type === 'full') applyTheme(theme);
   };
 
-  // 取消主题（两槽都清空，回退站点默认）。
+  // 取消主题（清空壁纸槽，回退站点默认）。
   const resetTheme = async () => {
     setApplyingId('reset');
     setThemeMsg('');
     try {
       const res = await axios.put(API.THEMES.SELECTION, {
         wallpaperThemeId: '',
-        iconsThemeId: '',
       });
-      setSelection({ wallpaperThemeId: null, iconsThemeId: null });
+      setSelection({ wallpaperThemeId: null });
       // 同步被清除的壁纸偏好，前端壁纸立即回落站点默认主题。
       if (res.data?.backgroundPrefs) {
         updateUser((prev) => ({ ...prev, backgroundPrefs: res.data.backgroundPrefs }));
       }
-      window.dispatchEvent(new Event(THEME_SELECTION_CHANGED_EVENT));
       setThemeMsg(t('themeWorkshop.resetSuccess'));
       setTimeout(() => setThemeMsg(''), 2500);
     } catch (err) {
@@ -164,8 +155,8 @@ const ThemeColorPicker = () => {
   };
 
   const tabs = [
-    { key: 'appearance', icon: '🎨', label: t('colorPicker.tabAppearance') },
-    { key: 'theme', icon: '🖼️', label: t('colorPicker.tabTheme') },
+    { key: 'appearance', icon: <FontAwesomeIcon icon={faPalette} aria-hidden="true" />, label: t('colorPicker.tabAppearance') },
+    { key: 'theme', icon: <FontAwesomeIcon icon={faImage} aria-hidden="true" />, label: t('colorPicker.tabTheme') },
   ];
 
   // 当前主题色与当前主题背景的对比度告警（深色模式下过暗 / 浅色模式下过亮）
@@ -175,9 +166,9 @@ const ThemeColorPicker = () => {
 
   // 顺序：跟随系统第一位（也是默认值），其次浅色 / 深色。
   const appearanceOptions = [
-    { mode: 'system', icon: '💻', label: t('settings.themeSystem') },
-    { mode: 'light', icon: '☀️', label: t('settings.themeLight') },
-    { mode: 'dark', icon: '🌙', label: t('settings.themeDark') },
+    { mode: 'system', icon: <FontAwesomeIcon icon={faDesktop} aria-hidden="true" />, label: t('settings.themeSystem') },
+    { mode: 'light', icon: <FontAwesomeIcon icon={faSun} aria-hidden="true" />, label: t('settings.themeLight') },
+    { mode: 'dark', icon: <FontAwesomeIcon icon={faMoon} aria-hidden="true" />, label: t('settings.themeDark') },
   ];
 
   return (
@@ -235,7 +226,7 @@ const ThemeColorPicker = () => {
               </div>
               {/* 主题色小节 */}
               <div style={{ borderTop: '1px solid var(--border)', paddingTop: '10px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)' }}>🎨 {t('colorPicker.tabColor')}</div>
+                <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)' }}><FontAwesomeIcon icon={faPalette} aria-hidden="true" /> {t('colorPicker.tabColor')}</div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                   {presetColors.map((color) => (
                     <button
@@ -272,9 +263,7 @@ const ThemeColorPicker = () => {
                     background: 'var(--warning-bg-subtle, rgba(245, 158, 11, 0.08))',
                     border: '1px solid var(--warning-border, rgba(245, 158, 11, 0.3))',
                   }}>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{ color: 'var(--warning-text, #f59e0b)', flexShrink: 0, marginTop: '1px' }} aria-hidden="true">
-                      <path d="M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-                    </svg>
+                    <FontAwesomeIcon icon={faTriangleExclamation} style={{ fontSize: 13, color: 'var(--warning-text, #f59e0b)', flexShrink: 0, marginTop: '1px' }} aria-hidden="true" />
                     <span style={{ fontSize: '11px', lineHeight: 1.5, color: 'var(--warning-text, #f59e0b)' }}>
                       {accentWarning === 'light' ? t('colorPicker.accentWarnLight') : t('colorPicker.accentWarnDark')}
                     </span>
@@ -387,7 +376,6 @@ const ThemeColorPicker = () => {
                 {[
                   { key: 'all', label: t('colorPicker.filterAll') },
                   { key: 'wallpaper', label: t('colorPicker.filterWallpaper') },
-                  { key: 'icons', label: t('colorPicker.filterIcons') },
                   { key: 'full', label: t('colorPicker.filterFull') },
                 ].map(({ key, label }) => (
                   <button
@@ -405,14 +393,13 @@ const ThemeColorPicker = () => {
                 ))}
               </div>
 
-              {/* 主题列表：分槽标记「背景使用中 / 图标使用中」，全套主题展开组合选择 */}
+              {/* 主题列表：只标记「背景使用中」 */}
               {themes.filter((th) => {
                 if (typeFilter === 'all') return true;
                 return (th.themeType || computeThemeType(th)) === typeFilter;
               }).map((th) => {
                 const wpActive = selection.wallpaperThemeId === th._id;
-                const icActive = selection.iconsThemeId === th._id;
-                const active = wpActive || icActive;
+                const active = wpActive;
                 const isMine = !!th.isMine;
                 const type = th.themeType || computeThemeType(th);
                 const badge = themeTypeBadge(type, t);
@@ -443,20 +430,15 @@ const ThemeColorPicker = () => {
                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap', marginTop: '1px' }}>
                           {th.isDefault && !active && (
                             <span style={{ fontSize: '10px', color: 'var(--primary)', fontWeight: 600 }}>
-                              ⭐ {t('colorPicker.badgeDefault')}
+                              <FontAwesomeIcon icon={faStar} aria-hidden="true" /> {t('colorPicker.badgeDefault')}
                             </span>
                           )}
                           <span style={{ fontSize: '10px', color: badge.fg, fontWeight: 600 }}>
-                            {isMine ? `👤 ${t('themeWorkshop.myThemes')}` : `${badge.icon} ${badge.text}`}
+                            {isMine ? <><FontAwesomeIcon icon={faUser} aria-hidden="true" /> {t('themeWorkshop.myThemes')}</> : <>{badge.icon} {badge.text}</>}
                           </span>
                           {wpActive && (
                             <span style={{ fontSize: '10px', color: 'var(--primary)', fontWeight: 600 }}>
-                              🖼 {t('colorPicker.wpInUse')}
-                            </span>
-                          )}
-                          {icActive && (
-                            <span style={{ fontSize: '10px', color: 'var(--primary)', fontWeight: 600 }}>
-                              🧩 {t('colorPicker.icInUse')}
+                              <FontAwesomeIcon icon={faImage} aria-hidden="true" /> {t('colorPicker.wpInUse')}
                             </span>
                           )}
                         </span>
@@ -464,27 +446,8 @@ const ThemeColorPicker = () => {
                       {th.accentColor && (
                         <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: th.accentColor, flexShrink: 0, border: '1px solid var(--border)' }} />
                       )}
-                      {applyingId === th._id && <span style={{ fontSize: '11px' }}>⏳</span>}
-                      {type === 'full' && <span style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>{choiceFor === th._id ? '▴' : '▾'}</span>}
+                      {applyingId === th._id && <span style={{ fontSize: '11px' }}><FontAwesomeIcon icon={faSpinner} spin aria-hidden="true" /></span>}
                     </button>
-                    {/* 全套主题的组合选择（仅背景 / 仅图标 / 全套） */}
-                    {choiceFor === th._id && type === 'full' && (
-                      <div style={{ display: 'flex', gap: '4px', padding: '0 4px' }}>
-                        {[
-                          { part: 'wallpaper', label: `🖼 ${t('colorPicker.applyWpOnly')}` },
-                          { part: 'icons', label: `🧩 ${t('colorPicker.applyIcOnly')}` },
-                          { part: 'both', label: `✨ ${t('colorPicker.applyBoth')}` },
-                        ].map(({ part, label }) => (
-                          <button
-                            key={part}
-                            onClick={() => applyTheme(th, part)}
-                            disabled={!!applyingId}
-                            className="btn"
-                            style={{ flex: 1, fontSize: '10px', padding: '4px 2px', whiteSpace: 'nowrap' }}
-                          >{label}</button>
-                        ))}
-                      </div>
-                    )}
                   </div>
                 );
               })}
@@ -493,13 +456,13 @@ const ThemeColorPicker = () => {
                   {t('themeWorkshop.emptySystem')}
                 </div>
               )}
-              {user && (selection.wallpaperThemeId || selection.iconsThemeId) && (
+              {user && selection.wallpaperThemeId && (
                 <button
                   onClick={() => !applyingId && resetTheme()}
                   disabled={!!applyingId}
                   className="btn btn-secondary"
                   style={{ fontSize: '11px', padding: '6px 10px', color: 'var(--destructive-text)', borderColor: 'var(--destructive-border)' }}
-                >✕ {t('themeWorkshop.reset')}</button>
+                ><FontAwesomeIcon icon={faXmark} aria-hidden="true" /> {t('themeWorkshop.reset')}</button>
               )}
               {themeMsg && (
                 <div style={{ fontSize: '11px', color: 'var(--text-secondary)', textAlign: 'center', lineHeight: 1.4 }}>{themeMsg}</div>
@@ -527,7 +490,7 @@ const ThemeColorPicker = () => {
         onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.borderColor = 'var(--primary-border)'; }}
         onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.borderColor = 'var(--glass-border)'; }}
       >
-        🎨
+        <FontAwesomeIcon icon={faPalette} aria-hidden="true" />
       </button>
     </div>
   );

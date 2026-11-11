@@ -3,24 +3,26 @@ import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
 import PasswordToggle from './PasswordToggle';
 import Modal from './Modal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBolt, faCircleInfo, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 const typeStyles = {
   danger: {
-    icon: '⚠️',
+    icon: <FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" />,
     titleColor: 'var(--destructive-text)',
     confirmBg: 'var(--destructive-bg)',
     confirmBorder: 'var(--destructive-border)',
     confirmColor: 'var(--destructive-text)',
   },
   warning: {
-    icon: '⚡',
+    icon: <FontAwesomeIcon icon={faBolt} aria-hidden="true" />,
     titleColor: 'var(--warning-text)',
     confirmBg: 'var(--warning-bg)',
     confirmBorder: 'var(--warning-border)',
     confirmColor: 'var(--warning-text)',
   },
   info: {
-    icon: 'ℹ️',
+    icon: <FontAwesomeIcon icon={faCircleInfo} aria-hidden="true" />,
     titleColor: 'var(--primary)',
     confirmBg: 'var(--primary-bg)',
     confirmBorder: 'var(--primary-border)',
@@ -65,7 +67,7 @@ const ConfirmModal = ({ show, onClose, onConfirm, title, message, confirmText, c
   return (
     <Modal isOpen={show} onClose={handleClose} maxWidth="400px" zIndex={9999}>
       <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border)' }}>
-        <h3 style={{ margin: 0, color: style.titleColor }}>{title || `${style.icon} ${t('confirm.confirmAction')}`}</h3>
+        <h3 style={{ margin: 0, color: style.titleColor }}>{title || <>{style.icon} {t('confirm.confirmAction')}</>}</h3>
       </div>
       <div style={{ padding: '20px 24px' }}>
         <p style={{ margin: '0 0 16px 0', color: 'var(--text-secondary)', fontSize: '14px', lineHeight: 1.6 }}>{message || t('confirm.irreversible')}</p>

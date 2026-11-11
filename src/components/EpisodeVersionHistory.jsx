@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import adminApi from '../utils/adminApi';
 import Modal from './Modal';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowsLeftRight } from '@fortawesome/free-solid-svg-icons';
 
 const EpisodeVersionHistory = ({ episodeId, onClose }) => {
   const { t, locale } = useI18n();
@@ -135,7 +137,7 @@ const EpisodeVersionHistory = ({ episodeId, onClose }) => {
                 )}
                 {compareV2 && (
                   <span style={{ marginLeft: '4px', color: 'var(--primary)' }}>
-                    ↔ V{compareV2.version}
+                    <FontAwesomeIcon icon={faArrowsLeftRight} aria-hidden="true" /> V{compareV2.version}
                   </span>
                 )}
                 {compareV1 && compareV2 && (

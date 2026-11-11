@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleCheck, faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const VerifyEmailChange = () => {
   const { t } = useI18n();
@@ -38,13 +40,13 @@ const VerifyEmailChange = () => {
     }}>
       {status === 'verifying' && (
         <>
-          <div style={{ fontSize: '48px', marginBottom: '16px' }}>⏳</div>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}><FontAwesomeIcon icon={faSpinner} spin aria-hidden="true" /></div>
           <h2 style={{ color: 'var(--foreground)' }}>{t('auth.verifyingEmailChange')}</h2>
         </>
       )}
       {status === 'success' && (
         <>
-          <div style={{ fontSize: '48px', marginBottom: '16px' }}>✅</div>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}><FontAwesomeIcon icon={faCircleCheck} aria-hidden="true" /></div>
           <h2 style={{ color: 'var(--success-text)' }}>{t('auth.emailChangeSuccess')}</h2>
           {newEmail && <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>
             {t('auth.newEmailLabel')}{newEmail}
@@ -63,7 +65,7 @@ const VerifyEmailChange = () => {
       )}
       {status === 'error' && (
         <>
-          <div style={{ fontSize: '48px', marginBottom: '16px' }}>❌</div>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}><FontAwesomeIcon icon={faCircleXmark} aria-hidden="true" /></div>
           <h2 style={{ color: 'var(--destructive-text)' }}>{t('auth.verifyFailed')}</h2>
           <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>{message}</p>
           <button

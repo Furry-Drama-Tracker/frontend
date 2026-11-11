@@ -3,6 +3,8 @@ import { useNavigate, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { clearClientData } from '../utils/clearClientData';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
 import useTranslation from '../hooks/useTranslation';
 import '../admin-kit/index.css';
@@ -165,9 +167,7 @@ const AdminLayout = () => {
             aria-label={t('nav.menu')}
             aria-expanded={!isCollapsed}
           >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true">
-              <path d="M2 4h12M2 8h12M2 12h12" />
-            </svg>
+            <FontAwesomeIcon icon={faBars} style={{ fontSize: 16 }} aria-hidden="true" />
           </button>
           <a className="yl-brand" href="/">
             {siteSettings?.navLogo ? (

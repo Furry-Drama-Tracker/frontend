@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 const LanguageSwitcher = ({ style = {} }) => {
   const { lang, switchLang, supportedLanguages } = useI18n();
@@ -35,7 +37,7 @@ const LanguageSwitcher = ({ style = {} }) => {
       >
         <span>{current.flag}</span>
         <span>{current.label}</span>
-        <span style={{ fontSize: '10px', opacity: 0.6 }}>▼</span>
+        <span style={{ fontSize: '10px', opacity: 0.6 }}><FontAwesomeIcon icon={faCaretDown} aria-hidden="true" /></span>
       </button>
       {open && (
         <div style={{
@@ -78,7 +80,7 @@ const LanguageSwitcher = ({ style = {} }) => {
             >
               <span>{l.flag}</span>
               <span>{l.label}</span>
-              {l.code === lang && <span style={{ marginLeft: 'auto', fontSize: '12px' }}>✓</span>}
+              {l.code === lang && <span style={{ marginLeft: 'auto', fontSize: '12px' }}><FontAwesomeIcon icon={faCheck} aria-hidden="true" /></span>}
             </button>
           ))}
         </div>

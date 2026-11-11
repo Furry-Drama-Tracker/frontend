@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell, faBullhorn, faChartColumn, faDesktop, faEnvelope, faTriangleExclamation, faWandMagicSparkles, faWrench } from '@fortawesome/free-solid-svg-icons';
 
 const emptyForm = {
   title: '', titleEn: '', content: '', contentEn: '',
@@ -10,7 +12,7 @@ const emptyForm = {
   publishAt: '', expireAt: '', link: ''
 };
 
-const typeIcon = { info: '📢', warning: '⚠️', maintenance: '🔧', update: '✨' };
+const typeIcon = { info: faBullhorn, warning: faTriangleExclamation, maintenance: faWrench, update: faWandMagicSparkles };
 
 const toLocalInput = (dateStr) => {
   if (!dateStr) return '';
@@ -161,10 +163,10 @@ const AdminAnnouncements = () => {
           <div className="form-group">
             <label>{t('adminAnnouncements.type')}</label>
             <select value={form.type} onChange={(e) => setField('type', e.target.value)} style={{ padding: '8px', borderRadius: '8px', background: 'var(--card)', color: 'var(--foreground)', border: '1px solid var(--border)' }}>
-              <option value="info">📢 {t('adminAnnouncements.typeInfo')}</option>
-              <option value="warning">⚠️ {t('adminAnnouncements.typeWarning')}</option>
-              <option value="maintenance">🔧 {t('adminAnnouncements.typeMaintenance')}</option>
-              <option value="update">✨ {t('adminAnnouncements.typeUpdate')}</option>
+              <option value="info">{t('adminAnnouncements.typeInfo')}</option>
+              <option value="warning">{t('adminAnnouncements.typeWarning')}</option>
+              <option value="maintenance">{t('adminAnnouncements.typeMaintenance')}</option>
+              <option value="update">{t('adminAnnouncements.typeUpdate')}</option>
             </select>
           </div>
 
@@ -173,19 +175,19 @@ const AdminAnnouncements = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '8px' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', padding: '10px 12px', background: 'var(--hover-bg)', borderRadius: '8px', border: '1px solid var(--border)' }}>
                 <input type="checkbox" checked={form.showPopup} onChange={(e) => setField('showPopup', e.target.checked)} />
-                <span>🖥️ {t('adminAnnouncements.showPopup')}</span>
+                <span><FontAwesomeIcon icon={faDesktop} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminAnnouncements.showPopup')}</span>
               </label>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', padding: '10px 12px', background: 'var(--hover-bg)', borderRadius: '8px', border: '1px solid var(--border)' }}>
                 <input type="checkbox" checked={form.showBanner} onChange={(e) => setField('showBanner', e.target.checked)} />
-                <span>📊 {t('adminAnnouncements.showBanner')}</span>
+                <span><FontAwesomeIcon icon={faChartColumn} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminAnnouncements.showBanner')}</span>
               </label>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', padding: '10px 12px', background: 'var(--hover-bg)', borderRadius: '8px', border: '1px solid var(--border)' }}>
                 <input type="checkbox" checked={form.sendNotification} onChange={(e) => setField('sendNotification', e.target.checked)} />
-                <span>🔔 {t('adminAnnouncements.sendNotification')}</span>
+                <span><FontAwesomeIcon icon={faBell} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminAnnouncements.sendNotification')}</span>
               </label>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', padding: '10px 12px', background: 'var(--hover-bg)', borderRadius: '8px', border: '1px solid var(--border)' }}>
                 <input type="checkbox" checked={form.sendEmail} onChange={(e) => setField('sendEmail', e.target.checked)} />
-                <span>📧 {t('adminAnnouncements.sendEmail')}</span>
+                <span><FontAwesomeIcon icon={faEnvelope} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminAnnouncements.sendEmail')}</span>
               </label>
             </div>
             <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: '6px 0 0 0' }}>{t('adminAnnouncements.channelsHint')}</p>
@@ -276,16 +278,16 @@ const AdminAnnouncements = () => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px', marginBottom: '8px' }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '6px' }}>
-                    <span aria-hidden="true">{typeIcon[a.type] || '📢'}</span>
+                    <span aria-hidden="true"><FontAwesomeIcon icon={typeIcon[a.type] || faBullhorn} style={{ fontSize: 14 }} /></span>
                     <span style={{ fontWeight: 600, color: 'var(--foreground)' }}>{a.title}</span>
                     {a.pinned && <span style={{ fontSize: '11px', padding: '1px 6px', borderRadius: '4px', background: 'var(--primary-bg)', color: 'var(--primary-light)', border: '1px solid var(--primary-border)' }}>{t('adminAnnouncements.pinned')}</span>}
                     {!a.active && <span style={{ fontSize: '11px', padding: '1px 6px', borderRadius: '4px', background: 'var(--hover-bg)', color: 'var(--text-tertiary)', border: '1px solid var(--border)' }}>{t('adminAnnouncements.inactive')}</span>}
                   </div>
                   <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', fontSize: '11px' }}>
-                    {a.showPopup && <span style={{ padding: '2px 8px', borderRadius: '4px', background: 'var(--hover-bg)', color: 'var(--text-secondary)', border: '1px solid var(--border)' }}>🖥️ {t('adminAnnouncements.showPopup')}</span>}
-                    {a.showBanner && <span style={{ padding: '2px 8px', borderRadius: '4px', background: 'var(--hover-bg)', color: 'var(--text-secondary)', border: '1px solid var(--border)' }}>📊 {t('adminAnnouncements.showBanner')}</span>}
-                    {a.sendNotification && <span style={{ padding: '2px 8px', borderRadius: '4px', background: a.notificationSent ? 'var(--success-bg)' : 'var(--hover-bg)', color: a.notificationSent ? 'var(--success-text)' : 'var(--text-secondary)', border: '1px solid var(--border)' }}>🔔 {a.notificationSent ? t('adminAnnouncements.sent') : t('adminAnnouncements.notSent')}</span>}
-                    {a.sendEmail && <span style={{ padding: '2px 8px', borderRadius: '4px', background: a.emailSent ? 'var(--success-bg)' : 'var(--hover-bg)', color: a.emailSent ? 'var(--success-text)' : 'var(--text-secondary)', border: '1px solid var(--border)' }}>📧 {a.emailSent ? `${t('adminAnnouncements.sent')}(${a.emailSentCount || 0})` : t('adminAnnouncements.notSent')}</span>}
+                    {a.showPopup && <span style={{ padding: '2px 8px', borderRadius: '4px', background: 'var(--hover-bg)', color: 'var(--text-secondary)', border: '1px solid var(--border)' }}><FontAwesomeIcon icon={faDesktop} style={{ fontSize: 11 }} aria-hidden="true" /> {t('adminAnnouncements.showPopup')}</span>}
+                    {a.showBanner && <span style={{ padding: '2px 8px', borderRadius: '4px', background: 'var(--hover-bg)', color: 'var(--text-secondary)', border: '1px solid var(--border)' }}><FontAwesomeIcon icon={faChartColumn} style={{ fontSize: 11 }} aria-hidden="true" /> {t('adminAnnouncements.showBanner')}</span>}
+                    {a.sendNotification && <span style={{ padding: '2px 8px', borderRadius: '4px', background: a.notificationSent ? 'var(--success-bg)' : 'var(--hover-bg)', color: a.notificationSent ? 'var(--success-text)' : 'var(--text-secondary)', border: '1px solid var(--border)' }}><FontAwesomeIcon icon={faBell} style={{ fontSize: 11 }} aria-hidden="true" /> {a.notificationSent ? t('adminAnnouncements.sent') : t('adminAnnouncements.notSent')}</span>}
+                    {a.sendEmail && <span style={{ padding: '2px 8px', borderRadius: '4px', background: a.emailSent ? 'var(--success-bg)' : 'var(--hover-bg)', color: a.emailSent ? 'var(--success-text)' : 'var(--text-secondary)', border: '1px solid var(--border)' }}><FontAwesomeIcon icon={faEnvelope} style={{ fontSize: 11 }} aria-hidden="true" /> {a.emailSent ? `${t('adminAnnouncements.sent')}(${a.emailSentCount || 0})` : t('adminAnnouncements.notSent')}</span>}
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
@@ -299,10 +301,10 @@ const AdminAnnouncements = () => {
               </div>
               <div style={{ display: 'flex', gap: '8px', marginTop: '10px', flexWrap: 'wrap' }}>
                 {a.sendEmail && !a.emailSent && (
-                  <button className="btn btn-secondary" style={{ padding: '4px 12px', fontSize: '12px' }} onClick={() => handleSendEmail(a)}>📧 {t('adminAnnouncements.sendEmailNow')}</button>
+                  <button className="btn btn-secondary" style={{ padding: '4px 12px', fontSize: '12px' }} onClick={() => handleSendEmail(a)}><FontAwesomeIcon icon={faEnvelope} style={{ fontSize: 12 }} aria-hidden="true" /> {t('adminAnnouncements.sendEmailNow')}</button>
                 )}
                 {a.sendNotification && !a.notificationSent && (
-                  <button className="btn btn-secondary" style={{ padding: '4px 12px', fontSize: '12px' }} onClick={() => handleSendNotification(a)}>🔔 {t('adminAnnouncements.sendNotificationNow')}</button>
+                  <button className="btn btn-secondary" style={{ padding: '4px 12px', fontSize: '12px' }} onClick={() => handleSendNotification(a)}><FontAwesomeIcon icon={faBell} style={{ fontSize: 12 }} aria-hidden="true" /> {t('adminAnnouncements.sendNotificationNow')}</button>
                 )}
               </div>
             </div>

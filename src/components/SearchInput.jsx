@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import useTranslation from '../hooks/useTranslation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 const SearchInput = () => {
   const { t } = useI18n();
@@ -176,7 +178,7 @@ const SearchInput = () => {
                 )}
               </div>
               {episode.rating && (
-                <span style={{ fontSize: '12px', color: 'var(--warning-text)', flexShrink: 0 }}>⭐ {episode.rating?.average?.toFixed(1) || episode.rating}</span>
+                <span style={{ fontSize: '12px', color: 'var(--warning-text)', flexShrink: 0 }}><FontAwesomeIcon icon={faStar} aria-hidden="true" /> {episode.rating?.average?.toFixed(1) || episode.rating}</span>
               )}
             </div>
           ))}

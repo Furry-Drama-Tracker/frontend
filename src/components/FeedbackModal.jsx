@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useI18n } from '../contexts/I18nContext';
 import Modal from './Modal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBug, faCircleQuestion, faComment, faLightbulb, faPenToSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const FeedbackModal = ({ show, onClose, user }) => {
   const { t } = useI18n();
@@ -28,17 +30,17 @@ const FeedbackModal = ({ show, onClose, user }) => {
   };
 
   const types = [
-    { value: 'suggestion', label: t('feedback.suggestion'), desc: t('feedback.suggestionDesc') },
-    { value: 'bug', label: t('feedback.bug'), desc: t('feedback.bugDesc') },
-    { value: 'question', label: t('feedback.question'), desc: t('feedback.questionDesc') },
-    { value: 'other', label: t('feedback.other'), desc: t('feedback.otherDesc') }
+    { value: 'suggestion', icon: faLightbulb, label: t('feedback.suggestion'), desc: t('feedback.suggestionDesc') },
+    { value: 'bug', icon: faBug, label: t('feedback.bug'), desc: t('feedback.bugDesc') },
+    { value: 'question', icon: faCircleQuestion, label: t('feedback.question'), desc: t('feedback.questionDesc') },
+    { value: 'other', icon: faPenToSquare, label: t('feedback.other'), desc: t('feedback.otherDesc') }
   ];
 
   return (
     <Modal isOpen={show} onClose={onClose} maxWidth="480px" zIndex={9999}>
       <div className="modal-header" style={{ padding: '20px 24px', margin: 0, borderBottom: '1px solid var(--border)' }}>
-        <h3 style={{ margin: 0, color: 'var(--foreground)' }}>{t('feedback.title')}</h3>
-        <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'var(--foreground)', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>✕</button>
+        <h3 style={{ margin: 0, color: 'var(--foreground)' }}><FontAwesomeIcon icon={faComment} aria-hidden="true" /> {t('feedback.title')}</h3>
+        <button onClick={onClose} aria-label={t('common.close')} style={{ background: 'none', border: 'none', color: 'var(--foreground)', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}><FontAwesomeIcon icon={faXmark} aria-hidden="true" /></button>
       </div>
       <div style={{ padding: '20px 24px' }}>
         <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
@@ -48,7 +50,7 @@ const FeedbackModal = ({ show, onClose, user }) => {
               border: type === tt.value ? '1px solid var(--primary)' : '1px solid var(--border)',
               background: type === tt.value ? 'var(--primary-bg)' : 'var(--hover-bg)',
               color: type === tt.value ? 'var(--primary)' : 'var(--foreground)'
-            }} title={tt.desc}>{tt.label}</button>
+            }} title={tt.desc}><FontAwesomeIcon icon={tt.icon} aria-hidden="true" /> {tt.label}</button>
           ))}
         </div>
         <textarea value={content} onChange={e => setContent(e.target.value)} placeholder={t('feedback.placeholder')} rows={5} style={{ width: '100%', padding: '12px', borderRadius: '8px', background: 'var(--input)', color: 'var(--foreground)', border: '1px solid var(--border)', fontSize: '14px', lineHeight: 1.6, resize: 'vertical', boxSizing: 'border-box' }} />
