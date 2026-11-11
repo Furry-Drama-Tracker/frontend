@@ -1,7 +1,7 @@
 ---
 type: quality-gates
 title: 验证与质量门禁（无测试框架）
-description: 本仓库没有测试运行器、也没有 CI 质量门禁，唯一自动化检查是 npm run lint（ESLint 9 flat config，--max-warnings 0）；本页给出 lint 的真实语义与范围、生产构建与 preview 冒烟的能力边界，以及认证/会话刷新、主题与图标覆盖、审核流转、PWA 缓存的可勾选手工回归清单，并记录 playwright 依赖空转的风险。
+description: 本仓库没有测试运行器、也没有 CI 质量门禁，唯一自动化检查是 npm run lint（ESLint 9 flat config，--max-warnings 0）；本页给出 lint 的真实语义与范围、生产构建与 preview 冒烟的能力边界，以及认证/会话刷新、主题外观、审核流转、PWA 缓存的可勾选手工回归清单，并记录 playwright 依赖空转的风险。
 tags: [verification, lint, eslint-flat-config, build-smoke, manual-regression, pwa-cache]
 sources:
   - id: openwiki-source-6d4b4e707b8d60b6ccfa3425
@@ -28,8 +28,6 @@ sources:
     resource: repo://src/contexts/AuthContext.jsx
   - id: openwiki-source-7898acfb0042c03f592a292f
     resource: repo://src/contexts/I18nContext.jsx
-  - id: openwiki-source-67f450c07acbf8e852c93e69
-    resource: repo://src/contexts/IconContext.jsx
   - id: openwiki-source-a179f998ae5318f35e50729c
     resource: repo://src/contexts/ThemeContext.jsx
   - id: openwiki-source-37ca2d167bb7e856d4f1a11c
@@ -38,10 +36,10 @@ sources:
     resource: repo://src/utils/offlineQueue.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
+generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-04T16:54:50.811Z
+    at: 2026-11-11T16:33:24.381Z
 ---
 
 # 验证与质量门禁（无测试框架）
@@ -189,16 +187,13 @@ oxc: { drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [
 - [ ] **会话心跳只在前台跳。** 登录后每 5 分钟 `POST /api/user-sessions/heartbeat`，但 `document.visibilityState === 'hidden'` 时跳过。把标签页挂后台十几分钟再回来，期望先看到 `/api/auth/me` 与 `/api/csrf-token` 各一次（`visibilitychange` 处理器），会话若已过期则按上面的登出路径走。
 - [ ] **绕过 axios 的通道没有拦截器。** 通知的 `EventSource`、任何手写 `fetch` 都不会自动带 CSRF、也不会触发刷新。改动这类代码时必须自己处理（背景见[通知与实时推送](../systems/notifications.md)）。
 
-### B. 主题与图标覆盖
+### B. 主题与外观（图标引擎已删除）
 
 - [ ] **`localStorage.theme` 的取值域是 `light` / `dark` / `system`。** 非法值（含 `null`）回退到"跟随系统"，同时监听 `prefers-color-scheme` 变化：改系统外观，页面应即时切换而无需刷新。
-- [ ] **`data-theme` 落在 `document.documentElement` 上**，并且每次主题变更会把整套 CSS 变量重写到根元素；只改 `data-theme` 不会自动改变量。新增 token 必须在暗/亮两套里同时定义（见[主题与图标](../systems/theming-and-icons.md)）。
+- [ ] **`data-theme` 落在 `document.documentElement` 上**，并且每次主题变更会把整套 CSS 变量重写到根元素；只改 `data-theme` 不会自动改变量。新增 token 必须在暗/亮两套里同时定义（见[主题与外观](../systems/theming-and-icons.md)）。
 - [ ] **`localStorage.accent_color` 必须匹配 `^#[0-9a-fA-F]{6}$`。** 非法值被忽略并回到 `#6366f1`；`setAccentColor` 对非法输入直接 return（不写入、不更新）。
-- [ ] **所有服务端 SVG 必经 `sanitizeSvg` 才能内联。** 它要求内容以 `<svg` 开头，剥掉 `<?xml?>`/`<!DOCTYPE>`、`script`/`style`/`foreignObject`/`iframe`/`object`/`embed`/`link`/`animate`/`set`/`discard`、`on*` 事件属性与 `href`/`xlink:href`/`src` 上的 `javascript:`/`vbscript:`/`data:text/html` 值，并把显式 `fill`/`stroke` 颜色改成 `currentColor`。验证：上传一个内嵌 `<script>` 的 SVG → 图标仍能显示但脚本不执行；再切暗/亮主题 → 图标颜色跟随文字色。**任何绕过 `sanitizeSvg` 直接 `dangerouslySetInnerHTML` 的新路径都是安全回归。**
-- [ ] **`misc.logo` 不受主题覆盖影响。** 主题图标合并在遍历时会跳过 `THEME_PROTECTED_ICON_KEYS`（只有 `misc.logo`）；新增"站点身份类"资产要同步加进这个名单，否则主题作者可以替换站点 Logo。
-- [ ] **新图标 key 必须登记在 `ICON_COMPONENT_KEYS`。** 后台"图标映射"下拉与主题编辑器都从这个注册表取选项；组件侧用 `<Icon name="…" fallback="…" />` 消费。忘了登记的表现是"图标已上传但哪儿都选不到"。
-- [ ] **失败要降级成 fallback，而不是空块。** `Icon` 在无映射、SVG 拉取失败或清洗返回 `null` 时渲染 `fallback`（通常是 emoji）；单个图标拉取失败被静默忽略，不影响其他图标。
-- [ ] **应用/取消主题后图标会刷新。** 依赖 `THEME_SELECTION_CHANGED_EVENT`（`theme-selection-changed`）事件；新增的"应用主题"入口若忘记广播，图标会停留在旧覆盖，直到整页刷新。
+- [ ] **accent 派生变量在切换明暗后同步重算。** `applyAccentColor` 按 `isDark` 分叉 alpha；切暗/亮后检查 `--primary-bg-strong`、`--selection-bg` 这类分叉变量是否跟上了新明暗。
+- [ ] **UI 图标是 Font Awesome / Simple Icons 编译期组件。** 自研图标引擎（IconContext、`<Icon name=...>`、`/api/icons/*`、`sanitizeSvg`）已整体删除：新增图标直接导入图标常量（`@fortawesome/free-*-svg-icons` 或 `@icons-pack/react-simple-icons`），装饰性图标带 `aria-hidden="true"`；仓库中不应再出现 `IconContext`、`sanitizeSvg` 或 `<Icon name=` 的引用，locale 文案中的 emoji 前缀已剥离（在渲染点补图标）。
 
 ### C. 审核流转与可见性
 
@@ -247,7 +242,7 @@ oxc: { drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [
 - [快速上手与任务路由](../quickstart.md)——先起后端再谈验证。
 - [构建、配置与部署](../operations/build-and-release.md)——`__APP_VERSION__`、`oxc.drop`、CSP、nginx 拓扑与发布检查表。
 - [HTTP 层、CSRF 与双 Token 刷新](../architecture/http-and-session.md)——清单 A 的机制来源。
-- [主题与图标](../systems/theming-and-icons.md)——清单 B 的优先级与 `sanitizeSvg` 细节。
+- [主题与外观](../systems/theming-and-icons.md)——清单 B 的优先级与 accent 派生细节。
 - [PWA 与离线兼容](../systems/pwa-offline-and-compat.md)——清单 D 的缓存策略全貌。
 - [剧集创作、审核与版本流转](../workflows/episode-publishing-and-review.md)——清单 C 的状态机与前后台数据源差异。
 - [后端契约地图](../integrations/backend-api-map.md)——接口改动后的冒烟范围。

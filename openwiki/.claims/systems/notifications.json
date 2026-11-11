@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:b91f5c8b007e03e8613d49e9755b441d2599527cc9e28b5259fcfe9ccb4df1b2",
+  "pageVersion": "sha256:c76a4c176e21b32bc9f39f3cc2ddcae15025f7b65deadeccf9441cb2f9a7b72b",
   "claims": [
     {
       "id": "claim_ea95d5c6510c4bc2ada9d61a70ed9428",
       "statement": "通知链路的宿主只有 NavBar：它通过 useNotifications 建立 SSE 并持有未读数/列表，通过 usePushNotifications 管理推送；AppContent 在 /admin 路由分支只渲染 AdminLayout 而不渲染 NavBar，因此后台页面没有任何 SSE 连接、通知徽标或 PWA 角标更新。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L521-L552",
+          "resource": "repo://src/App.jsx#L523-L554",
           "version": "repo-lines-v1:sha256:034128860c66f2b4399b6a64181dc55285ed32b1fc99e74608af257889d0b130:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhNTE3MDgyNzM4MjFiNDY4MThmYjYxYjM3Yjc5NTY5MWE4ODY2YjlmOGMyMWQyZmNlMDQ4NWQ5Y2UxMTA4ZTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiY2U2ZWVkOTQxYjQ4YmZlYzMxMTEwMjYyNjExZjYwYTI4MDIxNTAyMDY1NjY1OTkzY2MyOGU2ZDhkZGE2MmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkYjNlN2NkMGMzYTYyMzA0NzY2ODE2MWQxMDRlOTlkODYyMDljYTNlNzc1NGEyNWIxMTlhNDkwNzg3ODA0MjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmN2ZiYzcyZjc2ZmUxZThmZDQ3ZGEzODdlOGVlZmMwZmFiYzM4ZTI0YTNhYWI0ZmZhOGFlNDlhMDE0ZTk5ZjMifQ"
         },
         {
-          "resource": "repo://src/components/NavBar.jsx#L44-L54",
+          "resource": "repo://src/components/NavBar.jsx#L45-L55",
           "version": "repo-lines-v1:sha256:35d0438930a1c5f5fb2fb7a6c50ff636739ff1c8ae04bacb67d303f71f7d585d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwNDlmY2NmZDBiNDc4MjAyNDhlMWFlMDIxZmY4NTcyMjZmOTdlNGRjMDcwNDQwYThmNzZhMTJhMDk1Y2JhNzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMxODY0M2U0ODMyNWY2YjU1ODE1NGZhZDY4MWU4MTg2ODFjMGI1YjY2ZGU4ODY1YTNhNjk1Y2JhYjk3YWZkOGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFmMmNiYmMwZmYyNDg5NjRjYTczNzUyNzBmNWViYTE3MmM4M2ZhMjY5ZDY3N2MwNzgyZDQzYmRkNWIzZWIwNDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3MzZkY2E3YWUyNWJjYWVjNzdiZDkxN2E2NDY3NzBkN2RmMzg5NDA4NmNlYTA3YzE2MDRhOWJkOTg0MjA4MzkifQ"
         }
       ]
@@ -113,7 +113,7 @@
       "statement": "通知列表按需拉取：NavBar 用依赖 [showNotifPanel, user] 的 effect 在面板打开时调 refreshNotifications，实际请求 `${API.NOTIFICATIONS.LIST}/list`，响应兼容 { list } 与裸数组两种形状，前端不做排序也不做条数截断。",
       "evidence": [
         {
-          "resource": "repo://src/components/NavBar.jsx#L111-L115",
+          "resource": "repo://src/components/NavBar.jsx#L112-L116",
           "version": "repo-lines-v1:sha256:c0ef22bb9c719511ac2cdae09dbc826abaeca852210f70c928bcb209b03efe18:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzRmNTM3YzAxZWY0M2MxNmQyYTIwZmY0OTEwNDZjZjJiZDkxYTc3MzllNmQwODZlNmUzZDczM2Y4MGEyOGQ4NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDBhNjdhOTlkMTUwNDI3ZWFlYjk5Mjc5MTc0MzFlOTcxMjczNWYwODFlN2M1NzE1MmU0YWI1MWJmNTQ1YTIwOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWEwMjNmYzI3MDk5OTM5NmM0YTk4MWIzZjM3NTU4YmNjMmQxYmQ1MTk3ODQzMDVhZGVhMjZmYTgyYTAyMGZjZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTg2ZjYyYTExZTlhMTljODMyNjhhOGQwOTQ2NGJkYmZjMDcxYmI2YTdhYTU4NmY3MjZiYjFhNmU4ZDlmOTFhNCJ9"
         },
         {
@@ -137,11 +137,11 @@
       "statement": "点击通知条目只做导航不置读：优先 navigate(n.link)，其次在存在 episodeId 时跳 /episode/:id；NavBar 也未解构 hook 导出的 markRead 与 deleteNotification，单条已读/删除能力在仓库中没有调用点。",
       "evidence": [
         {
-          "resource": "repo://src/components/NavBar.jsx#L44-L53",
+          "resource": "repo://src/components/NavBar.jsx#L45-L54",
           "version": "repo-lines-v1:sha256:e154e00a5890beaab9f39ea11a2d1fbf2cf80a88adbc8952c12ecbdcc6a5cb46:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwNDlmY2NmZDBiNDc4MjAyNDhlMWFlMDIxZmY4NTcyMjZmOTdlNGRjMDcwNDQwYThmNzZhMTJhMDk1Y2JhNzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlN2IxYTU3YWUzMTFkMDA5MTVhMmY0MmExYTRiY2FjNmEyM2MwYzdhY2UzMzcyY2RkYjljNjI2M2NmYWRkZTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFmMmNiYmMwZmYyNDg5NjRjYTczNzUyNzBmNWViYTE3MmM4M2ZhMjY5ZDY3N2MwNzgyZDQzYmRkNWIzZWIwNDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBhYmQ0ODMwMWJmYTM0NWQ4YzllYTEyYmVmN2Y0NWY5YTc5NmNmNTc3OGJlZDM2MWI2MWQ1ZDViYjRlYzY1MzYifQ"
         },
         {
-          "resource": "repo://src/components/NavBar.jsx#L513-L526",
+          "resource": "repo://src/components/NavBar.jsx#L514-L527",
           "version": "repo-lines-v1:sha256:b17387ab35db7c9da850100cdc65361e565dfcd5dc12adc22c2c0b0cc18d5d4c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5MGYzOGY4YjExZWMzMWIzZmUwN2MyNjg2OGFlYzI5NDQ5NmM1MTcyMTY3Y2YwZWU4N2NlY2E4MGVmNDk0MjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhODdmNTEwZTEwMDhiYzU0YjlhYWU5ZGE0ZmVkNzQ5ODdmY2NhMTNiZTJjNjdiMTI0NTEwNDE4NjVjMTgxM2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0YWQxOWEwNjk1MGI2OTEzYjhhYjUyOWI3NGYyYjdmM2ZlZTA5NjM1ODYwYTU4ZjM0ZmJlMjk0ODQxYzI5ZWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM1YzM3N2M1MTU4Y2ZhNThmOTA2YmRkN2JmMjAyMGIyYmUxZTdiMzk4MWEwYjNkYzNkZjg0NDU3OWZiODEzNjQifQ"
         }
       ]
@@ -151,12 +151,8 @@
       "statement": "面板里的显式已读操作有两种语义：markAllRead 打 PUT /api/notifications/read-all 后直接把 unreadCount 置 0 并把列表项置读；clearRead 与 deleteAllRead 都打 DELETE /api/notifications/clear-read、只剔除已读项而不动未读数；单条 markRead 与 deleteNotification 则因端点不返回计数而做 Math.max(0, prev - 1) 的本地递减。",
       "evidence": [
         {
-          "resource": "repo://src/components/NavBar.jsx#L495-L507",
-          "version": "repo-lines-v1:sha256:c1eb5f090b8d30bee8fe5694e99a4a761a74c7f5b1cbe18cf453eb63ba43d92b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1ODFlNGYzNjBiYWVhZjY5YTUwNmIxZDIxODlkMzIwODYxNGIxYjM1NmM2N2Y0NDk4NGM4NTdiNDY4NGU5ZmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0MmIwZDIxNjc2ZjhhNmUzOGY1NGE2ZWE1NGRiNDVmNGQyMmJiNzU3MTVjNmUxNTUxODIxNGQyZmI1OWI3MjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdjZWI0NjlmMjVmODFjMzZmNWUzOTdhMjQwMjE1N2QxNjNhOWU4OWViMTc5MGU1ZDYyNGU1NWFhMjk2ZmY5MjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE3MjI0YjE2ZTZlNTQ5OGExMDNjNGVkZDA5ZWU4MzU0MDgzNjAxNDBiYzAyNzViOWVjYThiNzc3NzNmODMxZmUifQ"
-        },
-        {
-          "resource": "repo://src/hooks/useNotifications.js#L125-L170",
-          "version": "repo-lines-v1:sha256:d6082317ddb8e7020d878f9d547758650dced52814126ff7a1bf40a72a5f624b:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmOTVhMGViMzBhZjI3YWUyOGMxNzQ2YTZiZjk2MjBhYmJmOWRjNzE3ZjM4ZWVmNzZhYjUxYzM5ODcyMWQ4MGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxODc0ZDAxNTBhOWVmNjVjNzQ1MDAyNjczMmExZTA4ZTI5M2U2MTNlYTI5MGZjMmE4OWM0N2IyN2YwOGI1MzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjViNTE1MWU1OGZiMjg3ZGM0YjNmYTk4ZjhkZGJiMmRhNWNhMGRhZmIwMWU4MGRiZTcyZTRkMmIyMGNjYWY2M2MifQ"
+          "resource": "repo://src/components/NavBar.jsx#L495-L520",
+          "version": "repo-lines-v1:sha256:428f2c481fb8a42b52b2ec3a787af6fb9a55c439f3b38c1c701469665146acd9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1MGRjN2VhNDFkZGVhMzM0Nzg2NjY0YTI2YTE5YzIwMjY3NGE4YWE2M2ZkZmU3MzU4YWUwYWI4MmUxYjY4YzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiNjIyZmU4NDliZmEwODBiM2NmOWVhOGM2MGYwYWQwMDA1ODExYjRkMjU5YmEzNmY4Mzc2YTY2NjM1OWE4NjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlZGVkZmI3MjlkMWIyMTE3YTk1NjZlMTM3MWFhY2VmOTM2YjE3MjkzYTcwZjBiZDRkN2RkMDA5YTMyN2UyYjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhZWVhNDlhOTFmN2QzY2NjYTM4NDYzNGMzNWIwYTA0OGViNDY0ODZlMzYzNGQ2MmVlMjdkMmMwMjJjMGViMjgifQ"
         }
       ]
     },
@@ -165,11 +161,11 @@
       "statement": "除 NavBar 之外还有两处跨模块的通知写入点：EpisodeDetail 记录观看进度后顺带 PUT /api/notifications/read-episode/:episodeId 把该剧集相关通知置读，UpdateCalendar 的订阅提醒调 POST /api/notifications/subscribe-reminder（体 { episodeId }）。",
       "evidence": [
         {
-          "resource": "repo://src/components/EpisodeDetail.jsx#L316-L331",
+          "resource": "repo://src/components/EpisodeDetail.jsx#L320-L335",
           "version": "repo-lines-v1:sha256:65c1d3af54248e6997aaa664a3bf2f2e8508286a9281a21e1eb3656f736adb92:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhMTc3NDUwZDk5NGExZDQ4N2JlMjcwMGY0NWMxOWMxODRlNDE4ZWYyMTNlY2FiOThjMTVlZjkxYjgwM2M5NmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzNWE5ZDMyZjA0ZWU5Mjc3MzI3ZmFkNWYyODM2NmUzYjJmNWNkZDFmODUyYzBhYmZmYzNlMmFkNWY0MzA3ZDgifQ"
         },
         {
-          "resource": "repo://src/components/UpdateCalendar.jsx#L94-L103",
+          "resource": "repo://src/components/UpdateCalendar.jsx#L96-L105",
           "version": "repo-lines-v1:sha256:8b7d11133a6a415e068d1a0a8c8725c7ca2df6a41505bde4653f48b1764b8450:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0MzI4MTQxNjM5YWY5ZTg4ZDhiYzI3MzgzZDRkYWMwMzBkMTY3MDA1YjE1M2RhN2IxNTQyZWFmMGQ4NTAyZDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYwNDMyOWQzMjhlYWEzN2RhMzljZjUyNjNkMzVhZTZhZjVhNGJkOTg2YjAyNzgxZjIyNDhmMjQxMzNiMWViMDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJlNDljODYwZjFjMzk5NDIwNDU3Nzc5NGIzNzAzYzhlYjA0NTdjZDFjYjU5MWUxY2ViM2Y1MjI3YmU3ZWJkMGIifQ"
         }
       ]
@@ -179,7 +175,7 @@
       "statement": "面板文案由 getNotificationMessage 的 switch (n.type) 决定，标题经 getLocalizedTitle({ title, titleEn }) 做双语解析；new_episode 依 metadata.episodeLabel（存在时用 newEpisodeCustom 系模板）、metadata.isPreview 与 previewUpdateType 分八种文案，episodeLabel 缺失且 episodeNumber 缺失时用 /第(\\d+)集/ 中文正则从 message 回填集数；未命中类型返回 null，由 TranslatableText 渲染后端 message 作为回退。",
       "evidence": [
         {
-          "resource": "repo://src/components/NavBar.jsx#L127-L190",
+          "resource": "repo://src/components/NavBar.jsx#L128-L191",
           "version": "repo-lines-v1:sha256:b293ca33b9ceaf7257cb368fd6aa63b3315adbb1075f252d4a8bde48a6097611:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0MDBiZTkwMWU0MDk2ZWIwZDMxNzQ3MjkzNThhYzdjNTM4OGUyMmRmOTUwMzIyZGNiZDk1MGZmMmJhNzc5ZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxNzYzOWQ1NWIzODAzNDljMjExZjhmYzJiOGI3ZDJlZjRhOGM5MzZmOGI3NTdkY2Q5MzA2MzgxNDM1YzRmZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjN2YwNDZmNDk5YzFlMGU1NjEzN2RhY2FmNDFmZmVhMGM1OTc5ODI5NjY4NjQ2MThmODRiZGRiZWFjYTlmMjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIxYmY5OGI5ODVjY2ZiZjcxODAzYWRhY2U2NDA0OWUyZDI5NWRhZmUxNmVjNGExZWIxODdkM2RmNjY1MTliNmQifQ"
         }
       ]
@@ -189,7 +185,7 @@
       "statement": "映射已覆盖的类型为 new_episode、status_change、feedback_reply、friend_link_apply、friend_link_status、review_result、reminder、report_result；其中 review_result 依 metadata.status 区分通过并拼接 metadata.note，report_result 依 metadata.status === 'resolved' 区分已采纳/未采纳。",
       "evidence": [
         {
-          "resource": "repo://src/components/NavBar.jsx#L160-L189",
+          "resource": "repo://src/components/NavBar.jsx#L161-L190",
           "version": "repo-lines-v1:sha256:981c24662dee272b401a9bed4176fade8ac9f0a567cd86a03a31e9accb66b208:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiZjVhZDBhMjBkYTlhNjQ0NGFmNmUwNmM4YWUxMGE1OTc1MDc5NTY3YWE0YTM4NDEzMzg2YTUxZjFmNGNkOTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliNjJmNjBkODU5MGE1NzljZjQ2ZjhkNjczNzhjNGM1NzJiOTYyY2VjY2RiOTBjN2E1ZjdiNDJiOTYwNzgyYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmOGVlODQ5MTRmMDcyOGI4YzVmMmQ4OGI1MjJjNjAwMTMzNDEyMDMzYzNmYzMyODYzMDc2ZGI3ZmFjNDI2YmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzYjllNmU0MjkzY2E1NTNkYjM3YWYzYjA0OTVjODUzMDYwYjhjYmI2ZjJmOGQzYWQ5NWFhYWU1ZDE4ZjlhMjQifQ"
         }
       ]
@@ -243,11 +239,11 @@
       "statement": "设置页的通知开关与 hook 状态不同步：初值取 Notification.permission === 'granted'；关闭分支只 setNotificationEnabled(false) 而不调用 unsubscribe，浏览器订阅与后端记录都保留；开启分支在 await push.toggle() 后读取的是上一次渲染的 push.subscribed，可能与真实订阅结果相反。",
       "evidence": [
         {
-          "resource": "repo://src/components/Settings.jsx#L21-L24",
+          "resource": "repo://src/components/Settings.jsx#L23-L26",
           "version": "repo-lines-v1:sha256:eb962f972e567adaf597db9fea55faa900322e53dd2cc3e99d167d8740e3c9d3:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzBlMDQ0NmQ0ZGQ0NzIzY2Y1Njg4ZWQ5NjQwOWQxOWM2MDliM2IzMjY5YTEwN2JkMDQ4Y2E2MzI5ODVmMjM0MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzkxZTk0ODc4NDBjOTg4NThiYzZlNmFiMDgxNjliNjc1YjNhOTM1NWI1Yjk1OWRkZDYzNDkxYzAxNGE1ZWViYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzBhNDkzOGI5ZTVhMGIyNGIyOTA1Y2EyOTNlZTRkNGYxYjZmNzJhOTZiZTQ1YjM1ZWE1ZmQ2ZDBiMjk3MDBiMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmU1MmZmY2NjYThjZDZjYjcwMjVkM2RmODE5NzZiMTFiYjRlZWYyMThlNzgyNzU2M2YxMGFmMzQ3MWMwNGRkMiJ9"
         },
         {
-          "resource": "repo://src/components/Settings.jsx#L63-L78",
+          "resource": "repo://src/components/Settings.jsx#L65-L80",
           "version": "repo-lines-v1:sha256:4a27fd862399d3d86ee98e672616fe7bbf5a7ba1ec7408f907d5ec8e8331b26e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwNWM2ODk3OTI3MDg0ZmY3NzkwZGZhOGNhYzc4ZWQwNzI5MDA2YTU2NmU4NmU3ZWQ2NGIxYmI0YzA0NzI3OGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ4Y2E1NDFmMzUwYTQ5YWQwZTE2NmU5MmUwNzk0YjZkNmM3NmQ2NTYyNTFkNDZlMzIwMzkwZmQ0YTM2ZjFhODAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkM2YyMzU3YmQ0YTFkZTE2Nzc3MjlmZGNiY2QxMjlhN2E2OGZiOTRlZDc0Zjk0NWJjYWYwZmFiZjQ5YWM4NzcifQ"
         }
       ]
@@ -275,7 +271,7 @@
           "version": "repo-lines-v1:sha256:1ced03ed821c748963b408ff79fe78056c809669771db9717286bd639f5fcbb6:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjlhN2U2NTA0NzRhZWY0ZTlmODUwMjQwZjkzODMzOTA3M2IxZGM5NDE1ODY5MjQ2YzlhYzk2ZDc4N2RkNjRkMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzMxODRlYTUxYzMyZTRlNzEzNTZkNmI1Y2RmMTNjMWY2Mjg0MDA3M2UxOGU3YTI4NjMyMmEzMjhlMTFjMmY0OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDZjNjY5ZDE4NTJlZWU5Mjc1MjUzYmRhYTExYjI2M2JhYTY4ZjIwNTgyNzM2NWNmOGVkYmI5ODYzMzljODFjZCJ9"
         },
         {
-          "resource": "repo://src/utils/apiEndpoints.js#L69-L78",
+          "resource": "repo://src/utils/apiEndpoints.js#L61-L70",
           "version": "repo-lines-v1:sha256:7d7dd5927998daa89dd060676dd6fc0ebba4a82de3254e3dadaa57f0bf5f8772:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3NDQ1OTkxMWM5ZjYyZjkxNGM0MGJjNTllYTg1YzAyYTYzMDdmNzYxYjlmMjkwZGEyZjE3YmNlNjhlYWEzNzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwNTk1MzZjMWNhNWVlZjNhNzQzZjBhYTc2OWJjZGJjN2VlMTA1MDE3NGM1NmY0MzYzODg5YmUzM2NkNTllZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2ZTdmYzVhMjNiOTBkMDhkZGZjMmE1YjcyYzM4YzM2MzUyNjhmMTg1YjA0NWI3N2M0MmM0NjIxMTgzYTQzMzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU2ZTI3ZWNlMjRkYTM1ZjA0NjRmNWRhMDQ2MzM3OGUyZTlmZGQwM2Q5YTYxNzQ0NmFlZjE5MGM1MThlZjEzMzAifQ"
         }
       ]
@@ -285,7 +281,7 @@
       "statement": "仓库没有自动化测试脚本：package.json 的 scripts 只有 dev/build/lint/preview/generate-icons，playwright 只是 devDependency，因此通知链路的验证依赖手测加 lint 静态门禁。",
       "evidence": [
         {
-          "resource": "repo://package.json#L7-L14",
+          "resource": "repo://package.json#L10-L17",
           "version": "repo-lines-v1:sha256:8c9ac56b88e52a26308029474548168524d5dc0ac548e79957b4c728c1af7e84:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmEzYjQ2OWQ5ZTA5NzU3MjI0NjY2NzM0YzllZjdiMjU0ZDg4NTM0ZjVkNWJiNzA5ODk2MDgwNWM1NTNkYzMwNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzUyMDMzNGJlN2IxYjUyMmU5YzNjNzU0N2Y4OWZkMDk0ZjE1MTAxNjMwOWY3NDk0YTdkYmMzNjg2MzIwMmJmYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjgyODNlNjM2ZmRkYWY5OWQxZjExZDk3MmRmYWI0MWU5NjUwNzVkZDNlODQyOTQ0YWQ4MWViMjA1NTQ2ZDU1NSJ9"
         }
       ]
@@ -295,7 +291,7 @@
       "statement": "Settings 的通知开关在 push.supported 为 false（浏览器不支持或后端未配 VAPID）时禁用，初值取 Notification.permission === 'granted'；开启走 push.toggle() 后用 push.subscribed 同步 UI，关闭只改本地 state 不调用 unsubscribe。",
       "evidence": [
         {
-          "resource": "repo://src/components/Settings.jsx#L120-L136",
+          "resource": "repo://src/components/Settings.jsx#L122-L138",
           "version": "repo-lines-v1:sha256:3ef4070d571910c106f65ad862e2dfecc77614a4545dd7d7630849027462dbd0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiZjU2Mjk2ZjA0ODQxOGIzMTk5YzUxYmNmODAwNTQwOGY3ZjgyNTkxNGY5NTA2ZjdjYzEwYTE3NmNkZDEzNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwZTE3NTZlYmI1MDNhMDc0ODg1ZTgxYWYyMDllY2E2MmJkNDNiYzg4ZTcxMzQ2MDYzN2JkMzM3YWYwMjMwOTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0ZDA5NGNmZmU3YTI4ZjkzNDE5YmRjNjI2MzYyODA2NTkxNGU0NGQ2N2I5YzE1NGM4OGE3MTc5NjhkOTVhMjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhZGRlNDY5NmE1OGE2YzMyMmM3MmQ3MjkxZjFlNGRiYTI3MzQ2Y2E4Njc0YmE4MTgwNThkZmMxNWRiNDA0NTcifQ"
         }
       ]
@@ -303,6 +299,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-04T16:54:50.811Z"
+    "at": "2026-11-11T16:33:24.381Z"
   }
 }

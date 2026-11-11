@@ -30,8 +30,6 @@ sources:
     resource: repo://src/components/AdminLayout.jsx
   - id: openwiki-source-c4a2ade1820d6e35c826fcde
     resource: repo://src/components/AdminSiteContent.jsx
-  - id: openwiki-source-d27eefb45eb714b85112e9ac
-    resource: repo://src/components/AnnouncementBanner.jsx
   - id: openwiki-source-8e2cf47532f4659008db992a
     resource: repo://src/components/EpisodeDetail.jsx
   - id: openwiki-source-52f73cb87517cf05f876b0b4
@@ -46,10 +44,10 @@ sources:
     resource: repo://src/utils/polyfills.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
+generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-04T16:54:50.811Z
+    at: 2026-11-11T16:33:24.381Z
 ---
 
 # 构建、配置与部署
@@ -68,7 +66,7 @@ verified:
 | `npm run lint` | `eslint . --ext js,jsx --max-warnings 0` | 唯一自动化门禁。`--max-warnings 0` 让任何警告变成失败；但规则面刻意放宽——react-hooks 插件的实验性规则（`set-state-in-effect`、`immutability`、`refs`、`exhaustive-deps` 等）、`no-unused-vars`、`no-empty`、`no-useless-escape`、`react-refresh/only-export-components`、`react/display-name` 均关闭，`reportUnusedDisableDirectives` 置 off（脚本参数一并移除）；`public` 与 `dist`、`dev-dist`、`node_modules` 一起在 `eslint.config.js` 里被忽略 |
 | `npm run generate-icons` | `node generate-icons.mjs` | 手动步骤，从 `public/icon.svg` 重生成 PNG 图标，见"图标与静态资源" |
 
-**Node 版本没有仓库内约束。** `package.json` 没有 `engines` 字段，唯一的书面要求出现在 `README.md` 的"环境要求"（Node.js >= 20、npm >= 9），而 `.github/workflows/openwiki-update.yml` 固定用 Node 22。也就是说 Node 20.0 这类低于工具链实际下限的版本不会被 npm 拦下，只会在安装或启动时炸；给 `package.json` 补 `engines` 是唯一能让 CI/本地统一的地方。
+**Node 版本已有仓库内约束。** `package.json` 现在声明 `"engines": { "node": ">=20.19" }`（Vite 8 要求；ESA 构建时优先读取该声明来选择 Node 版本），README 的书面要求仍是 Node.js >= 20、npm >= 9，`.github/workflows/openwiki-update.yml` 固定用 Node 22。低于 20.19 的版本会在支持 `engines` 的安装环境被拦下；CI 与 ESA 构建各自的 Node 版本要求以这三处声明为准。
 
 **仓库没有测试运行器。** `AGENTS.md` 明确写着 "No test runner is configured"，`package.json` 里也没有 `test` 脚本；`devDependencies` 里的 `playwright` 在源码与脚本中没有任何引用，不要以为存在端到端测试套件。发布前能自动化的检查只有 lint（质量门禁的整体视图见[验证与质量门禁](../testing/verification-and-quality-gates.md)）。
 
@@ -121,7 +119,7 @@ oxc: {
 
 `optimizeDeps.noDiscovery: true` 关掉了 Vite 的依赖扫描，只有 `include` 里列出的包会被预打包：`react`、`react-dom`、`react-dom/client`、`react/jsx-dev-runtime`、`react/jsx-runtime`、`react-router-dom`、`axios`、`qrcode`。这份名单是**显式 allowlist**，新增运行时依赖时必须同步加进去，否则首次请求会走按需优化路径（通常表现为开发期一次整页刷新）。
 
-白名单本身已经漂移：`src/main.jsx` 直接 `import 'altcha'`，多个组件 `import { ... } from 'lucide-react'`，两者都不在 `include` 里。它们靠"按需发现"能跑，但这正是不该依赖的路径。
+白名单本身已经漂移：`src/main.jsx` 直接 `import 'altcha'`，而图标迁移（ac3e6c8）引入的 `@fortawesome/*`、`@icons-pack/react-simple-icons`、`simple-icons` 也没有列入 `include`（原 `lucide-react` 已移除）。它们靠"按需发现"能跑，但这正是不该依赖的路径；新增运行时依赖时应同步更新这份显式名单。
 
 ### 开发服务器：代理与缓存头
 
@@ -162,10 +160,11 @@ flowchart TD
   S -.->|"vite dev 端口 3000"| D["开发服务器：/api 与 /uploads 代理到本机 5000、no-store、无 SW"]
   O --> T{"部署拓扑"}
   T -->|"同域（推荐）"| S1["nginx：try_files 回退 index.html，/api 与 /uploads 反代本机 5000"]
+  T -->|"ESA 函数和 Pages"| S3["esa.jsonc：SPA 回退加边缘函数 api-proxy.js，函数变量 API_ORIGIN 指定后端"]
   T -->|"跨域"| S2["需改代码设 axios baseURL、放宽 CSP connect-src 与 img-src 加后端 CORS"]
 ```
 
-上图给出本仓库支持的三条拓扑：开发代理、生产同域反代、以及需要额外代码改动的跨域。三者的共同前提是**前端假设自己与后端同源**。
+上图给出本仓库支持的四条拓扑：开发代理、生产同域反代、ESA 边缘函数反代、以及需要额外代码改动的跨域。三者的共同前提是**前端假设自己与后端同源**。
 
 ### 同域部署（推荐）
 
@@ -213,6 +212,16 @@ server {
 1. `index.html` 的 CSP `connect-src` 只允许 `'self'` 与三个翻译域名，跨域 API 请求会被浏览器直接拒绝；
 2. CSP `img-src 'self' data: blob:` 不含后端域名，跨域后所有 `/uploads` 图片加载失败；
 3. `withCredentials: true` 是全局默认，跨站 cookie 与自定义 CSRF 头（`X-XSRF-TOKEN`、`X-Requested-With`）会触发预检，后端必须放行对应源与头；`/api/rss` 这类写死在 `index.html` 里的同源链接也会指向错误域名。
+
+### ESA「函数和 Pages」部署（阿里云边缘）
+
+除 nginx 同域外，本仓库还支持部署到阿里云 ESA 的「函数和 Pages」平台，仓库内由三个文件承载（权威操作手册是 `docs/esa-deployment.md`）：
+
+- **`esa.jsonc`（项目声明，优先级高于控制台）**：声明 `installCommand: npm install`、`buildCommand: npm run build`、产物目录 `./dist`、SPA 回退 `notFoundStrategy: singlePageApplication` 与边缘函数入口 `./edge/api-proxy.js`。该文件存在时控制台里对应的构建配置不再生效，修改构建行为必须编辑此文件并推送 Git。
+- **`edge/api-proxy.js`（边缘函数）**：把同源的 `/api/*` 与 `/uploads/*` 反向代理到后端源站。请求头按白名单透传（`accept`、`authorization`、`cookie`、`content-type`、`x-xsrf-token`、`origin` 等 17 个头）——不遍历复制全部请求头，因为 ESA 黑名单头（`host`/`connection` 等）读取会抛异常，`content-length` 交给运行时按流式请求体自行编码；响应对象**原样返回**（`redirect: 'manual'` 透传 3xx，Set-Cookie 多值与流式响应体不经手重组，401/403/419 与错误 JSON 逐字透传，前端拦截器语义不变）。非代理前缀的未知路径明确返回 404，避免探测请求透传到后端。
+- **函数变量 `API_ORIGIN`（核心配置）**：后端地址配在 ESA 控制台的「函数变量」，键 `API_ORIGIN`、值仅填协议 + 域名（可带端口、不带路径，结尾斜杠自动去除）；生产/测试环境各自独立配置，**修改变量后需重新生成版本并发布才生效**。变量缺失时函数返回 502 并报出原因，避免误判为后端故障。
+
+运行时限制（ESA 官方）：fetch 仅支持域名源站（不支持裸 IP）且仅 80/443 端口，因此后端必须挂在域名后；每次调用最多 4 个子请求（本代理每次只用 1 个）；网关等待 10 秒，超时向客户端返回 504，慢接口（如批量导入）需后端在 10 秒内首字节返回。后端看到的客户端 IP 是边缘节点 IP（代理透传入站 `X-Forwarded-For`），依赖 IP 的限流策略需评估。浏览器直接打开 `/api/rss` 属于导航请求，会命中 SPA 回退返回 `index.html`（RSS 阅读器不带导航头，取到的是正确 XML，不影响订阅）。
 
 ## 环境变量与密钥边界
 
@@ -300,8 +309,9 @@ Service Worker 本身由构建产物提供：`registerType: 'autoUpdate'` + `mai
 | 引入新的第三方域名（字体、接口、嵌入播放器） | `index.html` 的 CSP 对应指令（`connect-src`/`font-src`/`frame-src`/`script-src`；图片由 `img-src https:` 通配放开，一般无需改） |
 | 换成跨域部署 | CSP `connect-src` 与 `img-src`、`axios.defaults.baseURL`（当前需改代码）、后端 CORS 与 cookie 策略、`/api/rss` 链接 |
 | 换域名或子路径部署 | `base`、`index.html` 里的根绝对路径、manifest 的 `start_url`/`scope`、nginx `try_files` |
+| 换后端地址（ESA 部署） | ESA 控制台「函数变量」`API_ORIGIN`（仅域名+端口），修改后重新发布版本；代理头部白名单在 `edge/api-proxy.js` |
 | 换应用图标 | `public/icon.svg` → `npm run generate-icons`；运行时图标在后台"站点内容"里配 |
-| 换 Node 版本 | `README.md` 环境要求、CI `node-version`，并考虑补 `package.json` `engines` |
+| 换 Node 版本 | `package.json` 的 `engines.node`（>=20.19，ESA 构建优先读取）、`README.md` 环境要求、CI `node-version` |
 | 升 Vite 大版本 | `oxc`/`esbuild` 选项位置、`build.target`、`optimizeDeps` 行为都可能变，先跑 `npm run build` 与 `npm run lint` |
 
 相关页面：[架构总览](../architecture/overview.md)、[HTTP 与会话](../architecture/http-and-session.md)、[PWA 与离线兼容](../systems/pwa-offline-and-compat.md)、[站点设置与公告](../systems/site-settings-and-announcements.md)、[后端契约地图](../integrations/backend-api-map.md)、[验证与质量门禁](../testing/verification-and-quality-gates.md)。

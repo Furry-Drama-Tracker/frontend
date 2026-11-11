@@ -1,7 +1,7 @@
 ---
 type: concept
 title: 领域模型与术语表
-description: 前端实际消费的领域实体与约定——剧集与单集字段、reviewStatus 审核态、收藏/文件夹/他人收藏夹、关注与观看历史、评分、创作者档案、通知类型、主题两槽与图标组件键、站点内容键，以及 user/creator/admin/superadmin 四种角色的权限含义。
+description: 前端实际消费的领域实体与约定——剧集与单集字段、reviewStatus 审核态、收藏/文件夹/他人收藏夹、关注与观看历史、评分、创作者档案、通知类型、主题单壁纸槽模型、站点内容键，以及 user/creator/admin/superadmin 四种角色的权限含义。
 tags: [domain-model, glossary, episodes, favorites, themes, roles, frontend]
 sources:
   - id: openwiki-source-1fe4306a261748bda5b78973
@@ -48,8 +48,6 @@ sources:
     resource: repo://src/components/ThemeWorkshop.jsx
   - id: openwiki-source-9793b3dd98a0e62ec68a07c3
     resource: repo://src/contexts/AuthContext.jsx
-  - id: openwiki-source-67f450c07acbf8e852c93e69
-    resource: repo://src/contexts/IconContext.jsx
   - id: openwiki-source-52f73cb87517cf05f876b0b4
     resource: repo://src/contexts/SiteSettingsContext.jsx
   - id: openwiki-source-1bb9443a3780dc66b032606b
@@ -60,10 +58,10 @@ sources:
     resource: repo://src/hooks/useNotifications.js
   - id: openwiki-source-ff495d7f24153076143f0ee8
     resource: repo://src/locales/zh.js
-generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
+generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-04T16:54:50.811Z
+    at: 2026-11-11T16:33:24.381Z
 ---
 
 # 领域模型与术语表
@@ -273,45 +271,39 @@ stateDiagram-v2
 - 提醒订阅是独立端点：`POST /api/notifications/subscribe-reminder`（`{ episodeId }`），用于更新日历里「更新提醒」。
 - 阅读相关通知的另外两个批量动作：`PUT /api/notifications/read-all`、`DELETE /api/notifications/clear-read`（清除已读）。
 
-## 主题两槽模型：壁纸槽 + 图标槽
+## 主题模型：单壁纸槽
 
-主题（theme）是「壁纸 + 图标」的组合包，用户的选择被拆成**两个互不影响的槽**：
+主题（theme）在新版前端里是「壁纸包」：用户的选择只有一个**壁纸槽**。原「壁纸槽 + 图标槽」的双槽模型与图标映射引擎已随自研图标引擎（ac3e6c8）整体删除。
 
 | 概念 | 前端标识 | 说明 |
 | --- | --- | --- |
 | 壁纸槽 | `wallpaperThemeId` | 决定页面背景，写入 `user.backgroundPrefs` |
-| 图标槽 | `iconsThemeId` | 决定 `Icon` 组件的映射覆盖 |
 | 站点默认主题 | `GET /api/themes/active` | 未登录或槽为空时的兜底 |
 
-- 选择读：`GET /api/themes/my/selection` 返回 `{ wallpaperTheme, iconsTheme, wallpaperIsDefault, iconsIsDefault }`；`*IsDefault` 为真表示该槽在吃站点默认主题，界面上**不算用户的选择**，不高亮。
-- 选择写：`PUT /api/themes/selection`，请求体可只带一个槽（`{ wallpaperThemeId }` 或 `{ iconsThemeId }`），也可两槽同写；传空字符串表示清空该槽。响应可能带 `backgroundPrefs`（需同步到当前 `user`）与 `accentColor`（主题色，合法 `#rrggbb` 才应用）。
+- 选择读：`GET /api/themes/my/selection` 的 `wallpaperTheme` 与 `wallpaperIsDefault` 被前端消费；`wallpaperIsDefault` 为真表示在吃站点默认主题，界面上**不算用户的选择**，不高亮。响应中可能仍存在的 `iconsTheme`/`iconsIsDefault` 字段是历史遗留，前端不再读取。
+- 选择写：`PUT /api/themes/selection`，前端只传 `{ wallpaperThemeId }`（空字符串表示清槽）。后端对缺失的键保持原值，因此历史数据中的图标槽不会被清空。响应可能带 `backgroundPrefs`（需同步到当前 `user`）与 `accentColor`（主题色，合法 `#rrggbb` 才应用）。
 - 背景生效优先级（`App.jsx`）：用户 `backgroundPrefs.image && enabled` → 用用户壁纸；用户壁纸槽为空 → 回落站点默认主题壁纸；用户**显式关闭**（`image` 存在但 `enabled === false`）→ 不回落。透明度与模糊通过 CSS 变量 `--bg-opacity`、`--bg-blur` 下发。
-- 背景微调是独立端点 `PUT /api/themes/background-prefs`，只影响壁纸槽，不动图标槽。
+- 背景微调是独立端点 `PUT /api/themes/background-prefs`，只影响壁纸。
 
 ### 主题内容与类型
 
-主题文档的前端可见字段：`name`、`description`、`wallpaperUrl`、`wallpaperThumb`、`icons`（`{ 组件键: svgUrl }`）、`accentColor`、`themeType`、`status`。类型由内容推导（`computeThemeType`），`themeType` 缺失时才现算：
+主题文档的前端可见字段：`name`、`description`、`wallpaperUrl`、`wallpaperThumb`、`accentColor`、`themeType`、`status`（`icons` 字段只存在于历史数据）。`computeThemeType` 仍由内容推导类型，但只服务于徽章展示：
 
 | 类型 | 判定 | 能否应用 |
 | --- | --- | --- |
-| `full` | 有壁纸且有图标 | 能，需选择应用到哪一部分（`wallpaper` / `icons` / `both`） |
-| `wallpaper` | 只有壁纸 | 能，直接进壁纸槽 |
-| `icons` | 只有图标 | 能，直接进图标槽 |
-| `legacy` | 两者都没有（旧版配色主题） | **不能**，前端直接拒绝应用 |
+| `wallpaper` | 有壁纸 | 能，直接进壁纸槽 |
+| `legacy` | 无壁纸（旧版配色主题） | **不能**，前端直接拒绝应用 |
+| `full` / `icons` | 仅历史数据可能带 `icons` | 徽章仍会显示，但编辑器只编辑壁纸，应用走壁纸槽 |
+
+主题编辑器（`ThemeEditorModal`）只编辑壁纸与主题色：保存 payload 不再写 `icons`（后端对缺失键保持原值，不会清空旧数据）；导入 JSON 时忽略旧版导出文件中的 `icons` 字段。
 
 主题审核与剧集审核同构但字段名不同：用 `status` ∈ `pending` / `approved` / `rejected`，审核入口 `POST /api/themes/:id/review`（`action: approve|reject`，驳回必须填 `note`）。**`status` 缺失的历史主题视为已上架**（归入「已通过」列表）。通过后主题升级为系统主题上架市场，结果由后端向作者发站内通知。把主题设成站点默认走 `PUT /api/themes/:id/default`。
 
-两槽与图标引擎的完整机制见[主题与图标](../systems/theming-and-icons.md)。
+主题机制的完整说明见[主题与外观](../systems/theming-and-icons.md)。
 
-## 图标组件键与映射
+## UI 图标：编译期组件
 
-图标引擎的核心契约是「组件键」：`<Icon name="nav.home" />` 不直接引用文件，而是查一张 `组件键 → SVG URL` 的映射表。
-
-- 注册表 `ICON_COMPONENT_KEYS` 是唯一的真源，按前缀分五组：`nav.*`（导航入口）、`action.*`（按钮动作）、`status.*`（播出状态徽章）、`tab.*`（首页栏目标题）、`misc.*`（站点身份与零散图示）。主题编辑器 `ThemeEditorModal`（管理后台 `/admin/themes` 与用户主题工坊共用）的图标选择器过滤掉保护名单后逐项渲染这个数组，`IconLocationPreview` 也按 key 取位置说明；新增可换图位置必须同时加入该数组并在使用点补 `<Icon name=... />`，否则无法被绑定。
-- 运行时映射是两层合成：全局映射（`GET /api/icons/list` 的 `mappings`）+ 主题图标覆盖（登录取 `my/selection` 的 `iconsTheme.icons`，未登录取 `/api/themes/active` 的 `theme.icons`）。覆盖是逐键替换，不是整体替换。
-- **保护名单 `THEME_PROTECTED_ICON_KEYS = ['misc.logo']`**：主题不得覆盖站点 Logo，前端合成时跳过、后端同样校验拒绝。这是唯一一类「主题不能改」的组件键。
-- SVG 会先清洗再内联渲染：去掉 XML 声明/DOCTYPE、`script`/`style`/`foreignObject`/`iframe`/`object`/`embed`/`link`/`animate`/`set`/`discard` 节点、`on*` 事件属性，并按协议移除 `href`/`xlink:href`/`src` 上的 `javascript:`/`vbscript:`/`data:text/html` 值（含未加引号的属性写法），再把显式 `fill`/`stroke` 颜色统一改成 `currentColor`，使图标跟随主题色。清洗失败或加载失败的键回退到调用方给的 `fallback`（通常是 emoji）。
-- 主题选择变化通过 `window` 事件 `THEME_SELECTION_CHANGED_EVENT`（`'theme-selection-changed'`）广播，`IconProvider` 监听后重拉覆盖；增删图标后管理页调用 `refreshIcons()` 重建缓存。
+前端已无运行时图标映射。UI 图标统一为 Font Awesome（`@fortawesome/react-fontawesome` + `free-solid/free-regular/free-brands-svg-icons` 图标常量）与 Simple Icons（`@icons-pack/react-simple-icons`，覆盖 GitHub、Bilibili、YouTube、Niconico、X、微信、QQ、微博等品牌标志），在 JSX 中以 `<FontAwesomeIcon icon={...} />` / `<SiGithub />` 等**编译期绑定**的组件渲染，不再有 `组件键 → SVG URL` 映射表、`sanitizeSvg` 清洗入口或主题图标覆盖。图标颜色通过 `currentColor` 跟随文字色，`aria-hidden="true"` 标注装饰性图标；新增图标直接导入对应图标常量即可。
 
 ## 站点内容键 SiteContent
 
@@ -374,11 +366,9 @@ stateDiagram-v2
 | 评分 | Rating | `/api/ratings`、`score`、`averageRating`、`ratingCount` | `episode.myRating` |
 | 创作者档案 | Creator profile | `/api/creator-profile/*`、`pendingChanges` | `adminCreatorProfile.title` |
 | 通知 | Notification | `/api/notifications/*`、`type`、`isRead` | `notification.newEpisode` 等 |
-| 主题 | Theme | `/api/themes/*`、`wallpaperUrl`、`icons` | `themeEditor.typeFull` |
-| 壁纸槽 / 图标槽 | Wallpaper slot / Icon slot | `wallpaperThemeId` / `iconsThemeId` | `themeWorkshop.applied` |
+| 主题 | Theme | `/api/themes/*`、`wallpaperUrl` | `themeEditor.typeFull` |
+| 壁纸槽 | Wallpaper slot | `wallpaperThemeId` | `themeWorkshop.applied` |
 | 站点默认主题 | Site default theme | `GET /api/themes/active` | — |
-| 组件键 | Icon component key | `ICON_COMPONENT_KEYS`、`name="nav.home"` | — |
-| 图标映射 | Icon mapping | `mappings`、`/api/icons/list` | — |
 | 站点内容键 | Site content key | `settings`、`about`、`privacy`… | — |
 | 角色 | Role | `user`、`creator`、`admin`、`superadmin` | `adminUsers.superAdmin` |
 
@@ -387,5 +377,4 @@ stateDiagram-v2
 - 改剧集字段：`AdminEpisodes` 表单、`EpisodeDetail` 展示、`EpisodeCard` 摘要、审核差异表 `PENDING_DIFF_FIELDS`、审核列表展示五处都要动；`EpisodeFormModal` 与 `useEpisodeForm` 目前是死代码。
 - 改审核取值：`ReviewStatusBadge` 的样式/标签映射、`AdminReview` 的 tab、`EpisodeDetail` 的 noindex 判定，以及上文提到的三处默认值分歧。
 - 改收藏/文件夹：`Profile`（增删改、移动、计数本地增减）与 `EpisodeDetail`（收藏按钮 + 文件夹选择器）是两条独立实现，容易只改一处。
-- 改图标可绑定位置：必须同时更新 `ICON_COMPONENT_KEYS`、使用点的 `<Icon name=... fallback=...>`，并确认该键是否属于 `THEME_PROTECTED_ICON_KEYS`。
 - 改站点内容结构：`AdminSiteContent` 的编辑器、`SitePage` 的宽松解析、`SiteSettingsContext` 的缓存 TTL 三者要一起评估，否则会出现「后台已保存、前台仍旧值」。

@@ -1,21 +1,21 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:fc7146a9679692d87caf1a6b5319465a4ec86b7baa3f46964f88e9914bf97a73",
+  "pageVersion": "sha256:56d1ad036ceca5546dc5e8527c2a5daf0ea7ff12a241d03513453727859c2970",
   "claims": [
     {
       "id": "claim_39bdc7ad3732456ea4fde1cf40ec58d0",
       "statement": "AppContent 以 location.pathname.startsWith('/admin') 得出 isAdminRoute，在渲染前把路由二分：后台分支与公共分支各自声明独立的 <Routes> 并互斥返回，因此后台页面不经过前台的 NavBar/container 骨架，前台页面也不会出现在后台分支里。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L386-L386",
+          "resource": "repo://src/App.jsx#L388-L388",
           "version": "repo-lines-v1:sha256:4987c88b151bc7feacab34b4a648463c759b055c53206beb73f01f649dc25bec:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDk4N2M4OGIxNTFiYzdmZWFjYWIzNGI0YTY0ODQ2M2M3NTliMDU1YzUzMjA2YmViNzNmMDFmNjQ5ZGMyNWJlYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDk4N2M4OGIxNTFiYzdmZWFjYWIzNGI0YTY0ODQ2M2M3NTliMDU1YzUzMjA2YmViNzNmMDFmNjQ5ZGMyNWJlYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTUyY2MwN2Q1ZWI4NTIxZjkwMzk3YTZhYThhMDFlYzcxMjVkY2I0M2YzNTIyMDU0NTU1Mjg3MjM4ZGVmNTU1YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWI4OGFlZmI4MzJlODA4ZTM4ZTg3N2FkN2FkOWM1Y2Y0ODNlZDk0YjEzNGQ5YzY0OGM4YTRiYzA3YjdhZjFhOCJ9"
         },
         {
-          "resource": "repo://src/App.jsx#L521-L552",
+          "resource": "repo://src/App.jsx#L523-L554",
           "version": "repo-lines-v1:sha256:034128860c66f2b4399b6a64181dc55285ed32b1fc99e74608af257889d0b130:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhNTE3MDgyNzM4MjFiNDY4MThmYjYxYjM3Yjc5NTY5MWE4ODY2YjlmOGMyMWQyZmNlMDQ4NWQ5Y2UxMTA4ZTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiY2U2ZWVkOTQxYjQ4YmZlYzMxMTEwMjYyNjExZjYwYTI4MDIxNTAyMDY1NjY1OTkzY2MyOGU2ZDhkZGE2MmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkYjNlN2NkMGMzYTYyMzA0NzY2ODE2MWQxMDRlOTlkODYyMDljYTNlNzc1NGEyNWIxMTlhNDkwNzg3ODA0MjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmN2ZiYzcyZjc2ZmUxZThmZDQ3ZGEzODdlOGVlZmMwZmFiYzM4ZTI0YTNhYWI0ZmZhOGFlNDlhMDE0ZTk5ZjMifQ"
         },
         {
-          "resource": "repo://src/App.jsx#L558-L620",
+          "resource": "repo://src/App.jsx#L560-L622",
           "version": "repo-lines-v1:sha256:42c2c19167c1f5b54a186f9af2605ff4ec37abea8182429114e68be2c97033e6:eyJzZWxlY3RlZExpbmVDb3VudCI6NjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3MjE2ZThlOWMwYTFhNjhkMDZjMmZiYWE1ZmQyMTM5NDgyYjhlZmQwYTE5MzE1YjkxNWU2Y2NlODQ5ZDg5ZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmYzMzZGE1MTNkZWZjMmZkZjg3YzNiNjY2OTkyYmMwZTUyMmZhZTA5N2YxMjYxZDg3MDIxOGUxNGY5ZTY5NzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkYjNlN2NkMGMzYTYyMzA0NzY2ODE2MWQxMDRlOTlkODYyMDljYTNlNzc1NGEyNWIxMTlhNDkwNzg3ODA0MjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBlZWZhNDYzODAyNmIxMzRhYWJhM2U1YzMyODUwZmVlOWU5MGRhMDlhNGE0MmJlMjQzMzg3MWYwNmZmZWU5YjQifQ"
         }
       ]
@@ -25,7 +25,7 @@
       "statement": "两个分区之前还有共同前置：AuthContext 的 initializing 为真时 AppContent 直接返回 common.loading 占位页，因此访问 /admin/* 同样要等到 GET /api/auth/me 初始化结束才开始渲染路由。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L499-L506",
+          "resource": "repo://src/App.jsx#L501-L508",
           "version": "repo-lines-v1:sha256:a6f48747e022d81eced9516268acd6d3d0f7d8d5f33de9c1da870111d4c62203:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDZkYTZkNDMxYWMzOGZiYWRhYzE2MWZkMjMxZDkzNmQ1NDJlMzY2MGYzMGUzMmU1MWZiODIxNTVmNDVjZDNlYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ5ZTEyNTQ2NDI1NTc2ZDNkZWFlOGM5YjlkYmYxMjhkNWQ2ZGRhZjVkN2ZlODU3OTM0OTI3ZGVmZmEzYjlkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWQ3ODY5YjlhYzM5MjRiMDk2YzQ4MWU3ODlmMzRiOGM4OGFkMDZiZmZhYmFjNmFhZjhjOTZjNWViNDg3NjkyZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDlmMTZhNjUwZjdhMmUxZmRmZWM5ZTk5YWJhNTQ3YWRjMTk2NjA5MDBhM2QwYjQ3ZGUxZmIwY2NjZjllNmM3NyJ9"
         },
         {
@@ -39,11 +39,11 @@
       "statement": "公共树的骨架是 skip-link、AnnouncementBanner、被 NavBarErrorBoundary 包裹的 NavBar、.container#main-content 内以 location.pathname 为 key 的 .page-enter 包装层，Suspense 只包住 Routes；FooterBeian 与全部前台浮层只出现在公共树，后台树不再渲染它们。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L540-L541",
+          "resource": "repo://src/App.jsx#L542-L543",
           "version": "repo-lines-v1:sha256:77523761467bb47abe26793e8aacce4035c9c23536dd1f172175d2fc1dad3b14:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzcyODk0ZDExNGMwOTc4ZTAxMjNhNjQ2YTdkNzBhYWE0OWViNjhiZDQ4MGE2MjFlZTc2OTQ0ZTc3NWMxZGQ0YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmYyYTIzNTExMDdhOGVmM2M3MjM3ZWE3Y2YzYzQ0ZTQ4M2I3ZjdjODZhZTRhMDNjMjZjZTdiZjBiYjBiNDVmOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODA1YmJlYzRjNDJjYWMxNWJiMmQ5MmI3YzZmYzMwYmYxMjE5Mjc4YzRiYmVmMGIxZjQ1MWUzY2E4NzYzMDEzYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWExMWM1OTZkODY2MmE2Y2U3NGE2MDBiMjVkNDY4ZGNlMmNlMjI4NjRmZTE3MTQ4ZWYzODdmNjBlYmY5NWY4ZSJ9"
         },
         {
-          "resource": "repo://src/App.jsx#L545-L587",
+          "resource": "repo://src/App.jsx#L547-L589",
           "version": "repo-lines-v1:sha256:db4db7784db7d04893bd4a3c8f801118ea0f81e57a9841634101f412e470ff90:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmYjEyNDU2ZTRiMTljN2EwMzViNGI2MjU1NzI4Y2M0N2Y2MDljMDc1MzFkYjc2NDgzODliZTRkNjFlNzkyNTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyNWRiMGI3ZmMzZTRiMjE3MDYxZWU2NGJiNzlhYWU4YjI2NjY5NDQ1OTg0OWIxMzUyZGE1MDAxYmU1Mzc2YWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhMTFjNTk2ZDg2NjJhNmNlNzRhNjAwYjI1ZDQ2OGRjZTJjZTIyODY0ZmUxNzE0OGVmMzg3ZjYwZWJmOTVmOGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlOGExOWE0OGUyNTAxMDkyY2E5MWEyM2MzZTQ1ZTc2MTZkM2ZjZjE2ODBlNzJlZTEyMWRiYzc5OTZmMmU5NGEifQ"
         }
       ]
@@ -53,11 +53,11 @@
       "statement": "FeedbackModal、ThemeColorPicker、OfflineIndicator、InstallPrompt、AnnouncementPopup、ForceEmailChange、apiError 提示条与 FooterBeian 只写在公共分支的返回值中，后台分支提前 return，所以在 /admin/* 上这些浮层（包括 5xx 提示与强制改邮箱弹窗）不会显示。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L521-L552",
+          "resource": "repo://src/App.jsx#L523-L554",
           "version": "repo-lines-v1:sha256:034128860c66f2b4399b6a64181dc55285ed32b1fc99e74608af257889d0b130:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhNTE3MDgyNzM4MjFiNDY4MThmYjYxYjM3Yjc5NTY5MWE4ODY2YjlmOGMyMWQyZmNlMDQ4NWQ5Y2UxMTA4ZTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiY2U2ZWVkOTQxYjQ4YmZlYzMxMTEwMjYyNjExZjYwYTI4MDIxNTAyMDY1NjY1OTkzY2MyOGU2ZDhkZGE2MmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkYjNlN2NkMGMzYTYyMzA0NzY2ODE2MWQxMDRlOTlkODYyMDljYTNlNzc1NGEyNWIxMTlhNDkwNzg3ODA0MjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmN2ZiYzcyZjc2ZmUxZThmZDQ3ZGEzODdlOGVlZmMwZmFiYzM4ZTI0YTNhYWI0ZmZhOGFlNDlhMDE0ZTk5ZjMifQ"
         },
         {
-          "resource": "repo://src/App.jsx#L599-L604",
+          "resource": "repo://src/App.jsx#L601-L606",
           "version": "repo-lines-v1:sha256:29ece9fc2cc3a1892995925ecb5c3a3c7fe5308357280dca2a62042a20aaa254:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGE1NDAzOGQyMDY0Mzk4MjhiZmM4MDRkZDdjNGRkYzBmYjc4MDU2ZWU3M2NhMmM3MmZlZDk2ZTQ2N2UzYjljZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGY1ZjA3MDFiOTA3YmY0MzRlM2Y4MzNmOWMwYjljMmNhMTQwN2YyNjVjYTY0Mzc0ZDEzNmQ5MThhZDliMzRjNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Y0NzNiZGEzODU4Mjg3MzJjNGMwZjJhNDE5NTZkMzdkOTlkZDU1MjRkNmRiYjQwOTAyNWM2ZDM4ODg4ZmM3NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDFjYTg1MWJlMGY0ZjA0NjMyN2YxNTdjODNjZTljYTY2YTViODhlNzcwNjMyNzk1ODBkM2EzNDI5MzQxNzdjOCJ9"
         }
       ]
@@ -67,11 +67,11 @@
       "statement": "前台需要登录的页面使用内联的 user ? <Page /> : <Navigate to=\"/login\" /> 判空（不带 replace），而 Login 不读取来源路由、成功后固定 navigate('/')，因此不存在“登录后回到原页面”的流程。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L560-L568",
+          "resource": "repo://src/App.jsx#L562-L570",
           "version": "repo-lines-v1:sha256:c09e5e7e8be119b7f42c47d480832c04d9175741991256d087b751bfbe3710f5:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmI5NjMyY2ZkYzljYTU1NmFlYzUzYTM5Y2YwOGMxMTg1MWEwZjY4NGM5NWYxMTY5MjZiOTA2YzM1MDM5ZDA2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGYwYWFiOWQzZDM5MjliOGMzNTdkNjkzZTEzNzZlOWEzNGYwN2IwOTc5NTcyN2IyMDRmMzkyODU2OWViM2E3NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGFlOGM5NDBkMjJkZTNmNmQyYWFmZGVlYThhZjQ2OWFkMzg1MGNlY2FhOGIxN2RmYjllMTE3NmRlOWY0MzMzOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDZlNTQ2N2JmOWY4YWZjNTM1OGUzNTBkNjBlMGJjMWIwNGQyMTAxODE2NjM0ZDlhMmI5NmU0NzNkMGJhZTMzZCJ9"
         },
         {
-          "resource": "repo://src/components/Login.jsx#L190-L219",
+          "resource": "repo://src/components/Login.jsx#L192-L221",
           "version": "repo-lines-v1:sha256:ab6121702042baf80954a811623b30492c2ed52e55148684e609dac4615a31d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyYWE5MDk1NDhmOTRmMzAxYjkwNDQzYTk1MDI2NTM2ZGFhNjQ3YzgxMTA0NjA1NmI4MzE4MDBjMGU3ODdkM2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxYjlhNjZmNWU0MDliYmVkZDFjY2Q1ZDdjNDA3YzIyNjU5NDNjZjAwNWY2ZDhlZTdhZjdiMTlkMjVmNjc4YWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVkN2JiNmE4ODNlNzk2OWRkZDMzYTM0ZGJhZTM1YzQyMDBhN2ZlN2IyYTMxNWIwZTQ4ZDM1Yjk2Zjk5MzAyNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyY2JhMmM4NjdlNzk2NDNjYWY2NWViOGNlZjEzMGMyZmJmODU0ZTdjZjE3ZjQ2NmQzY2JmODdlYmNiZjlkYzQifQ"
         }
       ]
@@ -81,7 +81,7 @@
       "statement": "精确访问 /admin 由跳板组件 Admin 处理：它不渲染 UI，只调用 GET /api/admin/verify，成功后 replace 到 /admin/dashboard，失败则 replace 到 /login；同一路径上另有一条 AdminLayout 布局路由为子页面提供外壳。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L511-L514",
+          "resource": "repo://src/App.jsx#L513-L516",
           "version": "repo-lines-v1:sha256:e1a62e81fbffe659ab41707f632a3f6124a1e8d34139064f8fdc29338e1cfc61:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWJhODhlYjAxYTgyNmFmMzEyOTBhMjQ3YzFkZDBlMGUxNTY5YTIwOGYyOTQyNTdkMzZmZDExNjliNzBjNjIyNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzM3NmJjZmU3YzhkN2VlYzg1NWUwMTk3MmM5NTBjMjJlYmYwODhiNzQzMThkNDUxNDBjMTBlZGM4ZjQzMGNmNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGQ1YjYyMmQ3YTIyNTcxNjgwY2YzOWQ1ZDc2ZThmMDBmZTA2NTRhZDAwODQwYWFlZDI0MGI5YjRiYmY2MjQ2OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjVmYmI4OTI3MmNiMDIzODhlNzEzOTY1Yzc3ZWEyYjhmNGM3OGY4OTRiNmI0YjY3ZDNmNjFmYWZkMTQzMjZlNiJ9"
         },
         {
@@ -95,11 +95,11 @@
       "statement": "AdminGuard 对每个后台子路由各包一层，组件校验期间渲染 LoadingFallback；verify 失败（未登录/无后台权限）渲染 <Navigate to=\"/login\" replace />，角色不在 roles 白名单时渲染 <Navigate to=\"/admin/dashboard\" replace />，catch 无差别捕获网络错误、离线与 401/403。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L146-L175",
+          "resource": "repo://src/App.jsx#L148-L177",
           "version": "repo-lines-v1:sha256:fcff968e436655d2688190b8df3a0fd61d03ebd19efd3afaab2e14efb5440010:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViMWQ0MmI3NzE3ODEyYjEzMjZhMGZmNTQ1NGYzYWRiMzlmNGVjMDdhOWUxNmQ1MDk1YzRlNDIwNzg4MmVhNzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3ZDgyNmI1NzMzZWM1ODI0MTNjYjM4NWU3YzY2Yjg5MDg1MmM4OTk3YWMwOTJhMjZiZTdlNjFmNWRkZWViNGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1NDRhMTE2YmQ4ZDE1YWZkOTY3MjBmZWE5ZTJiYmViNzdmMWVjNmY1ZWZiMTNmODgwNTlmMzY2ODY1YjYzOTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA0YTgxNzIxNjc4Y2Q0NjE5NTRhY2U4ODFmNjRlZGRjOWEwYTZkY2I3YWUxY2E1NDgzYjQ0NTY5MGZlNDlhYTgifQ"
         },
         {
-          "resource": "repo://src/App.jsx#L527-L550",
+          "resource": "repo://src/App.jsx#L529-L552",
           "version": "repo-lines-v1:sha256:32a60679ff1fbfde83d864989385eb455886759a82551cfcb793a7aba95154c9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4ZDQ0YjlmM2M4M2I5N2NiNTY5MGU0NTljMmI5ZTdiZDc0OWE4ZGU5MDIwODY5MmQwZjU4ZGZjMjViYjRhMDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0YWZiOGUyM2VkOTlmNzExNTZjODllMjg3NjljMGJlZTA5OGZiODkxNzA5ZTE0MTY1YzM5NGYwMDA4ZWE0YmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxNGU0ODNkMDA3YzdjZGY0NjNjMjJjNDk3ZTU2NzJhNWM3NDlkZWI2YWRkZjVmNjIzOWRlNDQ5YmVhNDE2NTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI3NjcwZmIwMzNhZjMxZTIyYmU3MjE4ZGJlMDMxOTY4YmYxNjUyMGNjNjlmNjRlNjViODJjZWY2NTVjNmJlNGEifQ"
         }
       ]
@@ -109,11 +109,11 @@
       "statement": "后台校验是重复的：AdminLayout 挂载时先做一次 GET /api/admin/verify 并在成功后才渲染 Outlet，随后子路由的 AdminGuard 再做一次同样请求，因此首次进入后台页会连续发生两次 verify，之后每次切换后台子页面再追加一次。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L146-L175",
+          "resource": "repo://src/App.jsx#L148-L177",
           "version": "repo-lines-v1:sha256:fcff968e436655d2688190b8df3a0fd61d03ebd19efd3afaab2e14efb5440010:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViMWQ0MmI3NzE3ODEyYjEzMjZhMGZmNTQ1NGYzYWRiMzlmNGVjMDdhOWUxNmQ1MDk1YzRlNDIwNzg4MmVhNzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3ZDgyNmI1NzMzZWM1ODI0MTNjYjM4NWU3YzY2Yjg5MDg1MmM4OTk3YWMwOTJhMjZiZTdlNjFmNWRkZWViNGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1NDRhMTE2YmQ4ZDE1YWZkOTY3MjBmZWE5ZTJiYmViNzdmMWVjNmY1ZWZiMTNmODgwNTlmMzY2ODY1YjYzOTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA0YTgxNzIxNjc4Y2Q0NjE5NTRhY2U4ODFmNjRlZGRjOWEwYTZkY2I3YWUxY2E1NDgzYjQ0NTY5MGZlNDlhYTgifQ"
         },
         {
-          "resource": "repo://src/components/AdminLayout.jsx#L96-L104",
+          "resource": "repo://src/components/AdminLayout.jsx#L98-L106",
           "version": "repo-lines-v1:sha256:b534ae22f4c971885e3ad8be8d0e7dc51b925175d045407a11053519fc1376c1:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTI1OWUwYzhjMzM1MjllYjAzNjU3NmNlZGMwMWZmMTgwNmQ2YzMwYWM2MTRkYzJhZTczNWFhOGY2MmU0MzNlMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGI0MGU2YzFmZDk1ZTBkMTkzNzhmYWFmY2Y3M2E1OGY4OWQ4MDAzODIwOGU1YmQ4OWE4ZmNiOGJhN2E1MjkwYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjExODQ4NTA5Mzk1OWE2ZWI2N2JiNzQ0Yzc5NmNkNDc0MDE3Y2EzNmI5NzNlMGM0NWFkMGEzZmJmZGQ3MDc5NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzZlZWZiYjJkYWM0OGI2NjFiNjUzYTFhYTkwNDY2YzRhODAxMGJiZWMxNjNkNjA1MzQ2NzIxZWQ5NWE3NzRmMiJ9"
         }
       ]
@@ -123,16 +123,16 @@
       "statement": "AdminLayout 通过 <Outlet context={{ admin }} /> 下发 verify 得到的 admin 对象，所有后台页面都用 useOutletContext() 读取它，因此新页面必须声明为该布局路由的子路由，否则解构 null 会直接抛错。",
       "evidence": [
         {
-          "resource": "repo://src/components/AdminApiUsage.jsx#L6-L9",
-          "version": "repo-lines-v1:sha256:f812cc405ee61d50e41826a1e901e2a6884983501e731399b827e21a7550ae4f:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWRmZDlkNTA1OGU0NDdlODJmN2NmNTMxMDYyYjI0MmFlNDlmMmE5MWIzMGFkZjc5MWQ0NmU4MDhlNGQxNzU0MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWI2YTEzNTU3YWM1NDZjYjI4ZDk3MGMwNjc4OTFhNTMyNDdjZWZiNmIwNDgyMGJhM2EwNDJjZmY5MjA3OTM0MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTkzYTc0ODYyOGYzYjI3YWIwZTY0OTZlMDZmY2FjZTM3OTk5OWQzMWZiZmMyOTBiYTAyNDdjNmFjZTk3ODFjOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmIxZmZjNjk0YjBiYWUyMGI0MTczMjMzNGJkZGZiNDQxZmM4MTkwZWQxNWQ4YWM5NmMzYjY0NTFhZDVkZTc5YSJ9"
+          "resource": "repo://src/components/AdminApiUsage.jsx#L6-L10",
+          "version": "repo-lines-v1:sha256:c17c88b0987f91e00be08c28ce75af40b614650e81a525bf4344b3641ad12c40:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWRmZDlkNTA1OGU0NDdlODJmN2NmNTMxMDYyYjI0MmFlNDlmMmE5MWIzMGFkZjc5MWQ0NmU4MDhlNGQxNzU0MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjU4MDNhOGUwMWE0MGJkMDg4NmNkOGQwMThhNjlmZGM5NTVmN2ZmZmUwNWUxOGFlYmYzMTc1ZjMxYTg0YzBkMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTkzYTc0ODYyOGYzYjI3YWIwZTY0OTZlMDZmY2FjZTM3OTk5OWQzMWZiZmMyOTBiYTAyNDdjNmFjZTk3ODFjOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzhjMWMxYTMzY2FjZTg5ODNiMWUxZDg2Nzk5OGIxODgyMjNjODNjNWY0YWRhNTg1YTFmOGE3YmFlYmNlMWYwYSJ9"
         },
         {
-          "resource": "repo://src/components/AdminDashboard.jsx#L20-L22",
-          "version": "repo-lines-v1:sha256:2bea43ed79dda3e0ea3fa9bf63956368351a3b359b4cda8af43b0270494c92ce:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTQzY2QzYTAwNGNlYzJhNjhkMzRkODhjYWNlMjBkNDgwOWU2ZjgyYTM0ZmZmNGI1MzFkODM4OTM5NjBkNGYyNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2NhMzQ3NTcyMmM1MmNhYzNmMWQyODYzZGViNTliMGY5YTJkNjYzOThiYjkxNjIzYjZmYjk2MTRjMTE2MTkzMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODI4ODdmMGY3OWEyYTFlYzY1MzUwYjc3NjU2MGNlODZhYjYzZWNhYWNhMDhlNmFmZmJkOWIwNjU1MGEyMzNiZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2JkMjI5MmQ3NTE4MTdhMjAzNmQ1MTQyMDQ5YWEyZWQxMGFjMzg4ZDdkMjRkOWFkY2E5Mzc3NjZjOTJlYmU5OCJ9"
+          "resource": "repo://src/components/AdminDashboard.jsx#L34-L36",
+          "version": "repo-lines-v1:sha256:250c26eea20ea709a2d453be033bbb89940dcea3668eac9abc92c088f2156009:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGM2NWMyZDAxZTkzNWM3NzJiYzQyOGE3MmZiMWU5MjMzNTM1NmY4Mjk3YWEyNmJkNmUwYjg0OTVjNzc5ZmZjYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2ZiYzAxMDliNzM5ZWEzMjIzNDJiYzdiMTUyNDkwOGE2ZGJiMTM1ZmNlN2M0OTQxYjEzYWIxMDJkOGY3YmM5OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDk3NzNhNmFjNTk5YzU3MjIwZDZkZDk1NDhiNDcwOTlkMjQ5OWY1MmExYzBkMzNlZjM0NjkzYjk1NWEwMmYyMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTFmNzM0YjhhOWY2Y2EzMTA1ZGNiZmQzZDM2NjIxN2Q2NDUwMWFiZTkxYWZlYjFkMDk5YmYyMGY3Y2IxM2FjNSJ9"
         },
         {
-          "resource": "repo://src/components/AdminLayout.jsx#L105-L108",
-          "version": "repo-lines-v1:sha256:63d7b0eec3f45e8496cb1e7c049e722648d4199571c73b74529f1c85d1be9365:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2M3NGUyNzAxZDNmNDkwY2M3MzhiMWRiMDhmZjZkMDljNzUzNmEyNGEyNzhiNWVhNDQzMjIyNmZmMjU3NmYyOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ5ZTEyNTQ2NDI1NTc2ZDNkZWFlOGM5YjlkYmYxMjhkNWQ2ZGRhZjVkN2ZlODU3OTM0OTI3ZGVmZmEzYjlkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODk4ZGIxZWQ1ZGFkYjZjYmJmN2VmNDg0NTVkZGY5MGRmYjgwM2E0NTE3MjRjYjExZGQ5M2U5YmY5ZjAxZWEwYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODFlNWU2NzQ0NjMwZjEzYmQ5MzkxMzk4MTRjNjFhZGU3ZGU2OTBjYWJjNTQ2YThiYzBhYWI5NGE0ZjJhNTViMyJ9"
+          "resource": "repo://src/components/AdminLayout.jsx#L224-L226",
+          "version": "repo-lines-v1:sha256:6ecb01e9a2a503e67ab6c6ded07139f4ee44db803d4534f7f339bdfad181810c:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDg0MDk0YmQwNmZmN2JiMzgyYjQ4MTAxYTkyZmEzM2UwYmVhZjgwYzhkMzJmYzVhMGNlNTQ3ZWM5ZTQ4NzNjOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmM4MjQwZDNhY2YyZGMyNTA1ZDllNzdjN2I3OTE4YmY1NGE4YjUyM2Q3M2YxNjIyYzlhNzJhNjVhYmYwZDU0NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTYyYTU4Nzk3ZDZmYzg1NTExMmJjZjQ0ZGMxZDMxMTAzOWEyNzFjN2I4MjEyZWM4Njg3YjJhYTExOWE0NmVhYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODVlMjkwY2UxNDE2ZTI2OTJjZTg5OTAxOGIxYzE1NDFlMzFjZTIyZTBjNWYzZDY3NGYzOWE1M2UxYmE4NWY5YSJ9"
         }
       ]
     },
@@ -141,11 +141,11 @@
       "statement": "AdminLayout 负责后台会话维持与登出：每 5 分钟 POST /api/user-sessions/heartbeat 保活，登出调用 POST /api/admin/logout 后清空 admin、经 clearClientData() 清掉 localStorage 快照与全部 Cache Storage（与前台 AuthContext.logout 共用同一工具）再 replace 到 /login；挂载时还把 document.body 的底部内边距临时置 0，避免前台页脚预留的空白出现在后台画布上。",
       "evidence": [
         {
-          "resource": "repo://src/components/AdminLayout.jsx#L110-L134",
+          "resource": "repo://src/components/AdminLayout.jsx#L112-L136",
           "version": "repo-lines-v1:sha256:c897e75ae3074a30b4ab65eac7777ec3e081103d52523e257006bc25dfb41311:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkYWJkYTNhYjZiNDJkN2ZiMGZjNGQzNGZlMDgzMzg3OTg2MzM0OGZhNDAyOWQ1OTYzYTczNDI5MGIyNmM5OGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiYjg2MzdlZTQxYTQyYWEzYTEyZmJhOTFhMzM0ZWVhNDQ2NGFmNzkxODE5ZGVkNTBlM2YzYzljOGJiMTVjZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZkNjNmOWEyYWYxMGUwMTA1MTAwZDZhMWExZTVlZmUyMjk5N2NlMWY1YmU1ZDc4NzAyY2RlZmFkODQxN2JlNWEifQ"
         },
         {
-          "resource": "repo://src/components/AdminLayout.jsx#L118-L123",
+          "resource": "repo://src/components/AdminLayout.jsx#L120-L125",
           "version": "repo-lines-v1:sha256:6f69ae801c92bba2244d4a16c03122bcc9abcd5cdcd87f8477614637878dd1ef:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk2NmZiZmE4ODk5OGRhNzQ2NTZjNTAxOTQ5NTZjMjVmMDg0OTQ1NzY2MGMwMDlmZTYzZDFlOWZhOWRjOTMxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ5ZTEyNTQ2NDI1NTc2ZDNkZWFlOGM5YjlkYmYxMjhkNWQ2ZGRhZjVkN2ZlODU3OTM0OTI3ZGVmZmEzYjlkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODYxMDU5OGUzZDdkZDFmMWJmY2I0NDcxYzUwYTg3ODA1ODM4NmJmZDcwNDg1Yjg0M2JmZTQ5ZGU5MjI0MWRmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMThjOGQ5OTlhYThiNzg5YThlY2VmZDIwNzQ4OGFlMWJlZWRmYTkzM2UxNWE3YTM5YTI2NThlOWE1ZmQ4MWZiMyJ9"
         },
         {
@@ -163,11 +163,11 @@
           "version": "repo-lines-v1:sha256:bd992daa9146245fff942e59945e0829bb76d60bd0089b4000b61af412148c55:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk2NmZiZmE4ODk5OGRhNzQ2NTZjNTAxOTQ5NTZjMjVmMDg0OTQ1NzY2MGMwMDlmZTYzZDFlOWZhOWRjOTMxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmIxZmZjNjk0YjBiYWUyMGI0MTczMjMzNGJkZGZiNDQxZmM4MTkwZWQxNWQ4YWM5NmMzYjY0NTFhZDVkZTc5YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWRlZmZhODlhODkxYjAxNTFiZjlkNTQwZGJlNmQ5YjM5MzdkMzkzZjRjNjJkMTZmOGRiMzQ2OTEzZjJhN2QwNyJ9"
         },
         {
-          "resource": "repo://src/components/AdminThemeReview.jsx#L55-L63",
+          "resource": "repo://src/components/AdminThemeReview.jsx#L56-L64",
           "version": "repo-lines-v1:sha256:87047d099cc631ac0df92d9747f16ff8294a6ebb4e2a18a4aa85a9cf4c3fe002:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk2NmZiZmE4ODk5OGRhNzQ2NTZjNTAxOTQ5NTZjMjVmMDg0OTQ1NzY2MGMwMDlmZTYzZDFlOWZhOWRjOTMxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjFiZjI2ODhhZTZkMTFkMTJiZTgyOWUwM2IwNzgzNGI0YTVmZGEyYzM0ZjdhMzY1NWMxMTdhMDdjMzRkNTU2MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGUxNTQ3NTdhNzIzNDQ5NmQ3MzA5ZTY4OWMxYTM4Y2NjNjNiZTNiODZiNzY4N2I3NTE5YTBlMGFhODdmNzIwMCJ9"
         },
         {
-          "resource": "repo://src/components/AdminUsers.jsx#L57-L63",
+          "resource": "repo://src/components/AdminUsers.jsx#L59-L65",
           "version": "repo-lines-v1:sha256:f996f04287d3f255a9aeed632af4546328f775358436fb02d2a11fba51515449:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk2NmZiZmE4ODk5OGRhNzQ2NTZjNTAxOTQ5NTZjMjVmMDg0OTQ1NzY2MGMwMDlmZTYzZDFlOWZhOWRjOTMxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODE2M2U3NWY0NTIyODZmYmE5YTAwOWMwNzZmYjM2ZTIwN2E5ZDVlMjE3MDA1MDE4MGZkMWFjMzEzZDBmNzk0ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjdlZTQzODg1N2IzNjk4MmE5OWNhMzAwM2JlM2I2ZTZlMzNmNTAxYTA1ZWE5ZjEyMzNjMDg1ODc2NTIyZTE1ZSJ9"
         }
       ]
@@ -177,11 +177,11 @@
       "statement": "后台入口的可见性由角色过滤：NavBar 的“更多”菜单仅在 user.role 属于 admin/superadmin/creator 时给出 /admin/dashboard 链接；AdminDashboard 用卡片数组按 isCreator/isSuper/isAdmin 决定展示哪些入口，并覆盖 review、episode-trash、feedback、theme-review 等新增入口。",
       "evidence": [
         {
-          "resource": "repo://src/components/AdminDashboard.jsx#L61-L76",
+          "resource": "repo://src/components/AdminDashboard.jsx#L51-L66",
           "version": "repo-lines-v1:sha256:dff5c118bd0d2a42e9bddbdaff5ac03c79d25500f8d5d34a93fd988087d4778b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZkZWQ0OTgxOTgyYzA4ZDQ2NzlkZGU3YmM1Njk0NGUzN2U2NGU4OWQ1N2Q0NmFmYWQ4NjUwYWQyNTc3Y2NkYjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjNzZjMWNmODY0ZmZkNDJiZmQ4NzFmNDJlNDM5MDZmNWVmOTdkYTUwNjgzN2ZiNGVlNjNhYzYzY2Y5NGJlMzcifQ"
         },
         {
-          "resource": "repo://src/components/NavBar.jsx#L200-L208",
+          "resource": "repo://src/components/NavBar.jsx#L201-L209",
           "version": "repo-lines-v1:sha256:552926334602a94604b9229981c0b4683bc916392aebbc14533a5f976d7c4cd7:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTQzZjk0M2Q1ZDNmNmQwMmE3MTdhYjljMWUwNjAzZDRjODQ2ZGVhMTIxMmFlYWM4ZTIxMWQ4Y2VjYzNmZTliMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODZjMGY4MjM5YTMzOGViNzhhMjkwMjkyZjNiZjkxYmY0NDZkNTkzMTFmMGUxZWZlNDc3NmRlMGQ0ZTQ3MDQ1MyJ9"
         }
       ]
@@ -209,11 +209,11 @@
       "statement": "getRoutePageTitleKey 把路径映射为 i18n key 供 document.title 使用：后台条目按前缀匹配（子路径继承列表页标题），公共条目多为精确匹配，参数化路径用 /episode/、/shared-folder/、/creator/ 等前缀；无匹配返回 null 时标题只写站点名，且更具体的前缀（如 creator-profiles 先于 creator-profile、theme-review 先于 themes）必须声明在更宽规则之前。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L384-L401",
+          "resource": "repo://src/App.jsx#L386-L403",
           "version": "repo-lines-v1:sha256:6591d3606c9b8cbbc16733da9b4b5840d0756d06613350eb45f2c60eb595d3df:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyNTllMGM4YzMzNTI5ZWIwMzY1NzZjZWRjMDFmZjE4MDZkNmMzMGFjNjE0ZGMyYWU3MzVhYThmNjJlNDMzZTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE5MGIzOTE4NWU3ZTc5YWRlNmI1YWIwNDlkNGY5NGNmOGJlOTQ4ZjUwNmVlNTRlYmFiNTZjYTgyYTEyYTQ1MTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUyNzE3NzRlOGYxMGNhMzMzNTFlODI5OThkMWMyZWU2ZjI0ODhkNjgxYjE3MGU5NzhkMTEwMjcyNThjOWU0YjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJlMzMxZjY0ZDVmMTIyNTYwMjkxNWJmMDU2NGM1OWVlNjljMmM0ZWMwMWE3ZjlmNjgyOGIzMWE4YWFmNzgxNTAifQ"
         },
         {
-          "resource": "repo://src/App.jsx#L73-L128",
+          "resource": "repo://src/App.jsx#L75-L130",
           "version": "repo-lines-v1:sha256:4838b77478c72cd900d32f4463df9646b095e889384f9b1ee45ff5fe4035f0a5:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzZWIyYzlkZjE3NTc0MzdmZjQyNjY5NzMwY2I0YzA1ZTZlMDAyMzg5MmFhMWQ3NDExNDIwYWE4ZWQ2ZDdiMWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxYTMxNjVlNDI4Yjc0OTk1MjEwNGM5MTlkZWNmZjc3N2RmMzIyYWYwNGMzMGI0MGY3MWNkZjg5MGY5NmNkMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiODA0NzAzYjZlMmNmZjk5YmFhMWE3ZTk5ODMzMThmNzIyZDc0MDI3YmQwYTlmYzBjZGMyODM2MDVjZDAzZDIifQ"
         }
       ]
@@ -223,11 +223,11 @@
       "statement": "标题映射是与路由表相互独立的清单（模块内函数，无共享常量或派生关系），新增路由而不补映射不会报错，只会让浏览器标签退化为站点名。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L555-L582",
+          "resource": "repo://src/App.jsx#L557-L584",
           "version": "repo-lines-v1:sha256:c62a2f3f689e5fc40e5cc88d77253b6978db0ceff8706a35cd8722c37bdbe5a3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzODg2MzQ1MjU1MjE0ZmEyOTllMjkzYThiZTViZjBlNzNiMTI2ODVkMGUyNThkYzQ2MmMzNDM0NDgxMTI0M2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY5NzA4YzA4Njg4YWIyN2I0N2IzMDdlMjgxYWQ2Y2JlY2Y4OTBiNTkzMDQyMWU4Y2JkN2Y2ZmQ2ZmYzOWZhZjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM2OTYyOGZhNzFjMTdhZDE2YjYyZDYwYmM4MTE0MGI2ZjUzYzBkZTVmNTRmYjVlNTY0ZDYwNDI1YjhlNmI0OWQifQ"
         },
         {
-          "resource": "repo://src/App.jsx#L73-L128",
+          "resource": "repo://src/App.jsx#L75-L130",
           "version": "repo-lines-v1:sha256:4838b77478c72cd900d32f4463df9646b095e889384f9b1ee45ff5fe4035f0a5:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzZWIyYzlkZjE3NTc0MzdmZjQyNjY5NzMwY2I0YzA1ZTZlMDAyMzg5MmFhMWQ3NDExNDIwYWE4ZWQ2ZDdiMWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxYTMxNjVlNDI4Yjc0OTk1MjEwNGM5MTlkZWNmZjc3N2RmMzIyYWYwNGMzMGI0MGY3MWNkZjg5MGY5NmNkMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiODA0NzAzYjZlMmNmZjk5YmFhMWE3ZTk5ODMzMThmNzIyZDc0MDI3YmQwYTlmYzBjZGMyODM2MDVjZDAzZDIifQ"
         }
       ]
@@ -237,15 +237,15 @@
       "statement": "除首屏组件外页面均通过 React.lazy 动态加载，两条 Suspense 边界各自包住自己的 Routes，fallback 为依赖 I18nProvider 的 LoadingFallback；SitePage 的命名导出用 .then(m => ({ default: m.X })) 转成默认导出后再 lazy。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L129-L140",
+          "resource": "repo://src/App.jsx#L131-L142",
           "version": "repo-lines-v1:sha256:0ff18c9ce891aff8e87947b237562812c1f54850a2ec453161b88af8b052f79c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwODU2NDcxZDNkYjU0NzhhNmNhOTlhOTE0MzUyYzBmNDc0NzZkZGVkNDYxNmY5YzRiNmNkNjQ5NWY0YzNhYjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3NzFhYzAwZWRlZjE2NDNiMzgxOWM2ODgyYWE5NDZmNzlhOWQ2ZWZiNzM4YzMzZjRlZWY0NWQxNjYzZDlhNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU2Y2ZkNDY2YzNhNDI1YzY5YWM2MmUxZWE0YjA2MWRmNGJmOGJkMTc5Njg2MmUwZDYwMDE4MjRmYmMzNGVjNWMifQ"
         },
         {
-          "resource": "repo://src/App.jsx#L25-L72",
+          "resource": "repo://src/App.jsx#L27-L74",
           "version": "repo-lines-v1:sha256:823e648ff22202c5022a2c94c4aeaf2ba949cd6a6d0fb928756d2733d660727d:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkY2RjNDIyOGYwMzAxYTU1MGNjZWNkZTA4NjdiNGE1MzZlZDAyMzE3NjRiZThkZjc1NWIzNDFhYTgzZGM2MzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2MWY1Y2YzODIzMTcyMzVhYWM1ZjY2MDg5NzU1NWYyNzFiYmQyOGIwZDI3ODViNDQwN2ZmNGFjZTFmYjY1MGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY1Y2YzNzg3Yzc0OWUzNzgyOGMyYWMyNWIxZDUzYjUzZDQ1YTQyZDFmZDg1ODEyZDg4YjgwMDA3MGI4ZmY0YTAifQ"
         },
         {
-          "resource": "repo://src/App.jsx#L43-L47",
+          "resource": "repo://src/App.jsx#L45-L49",
           "version": "repo-lines-v1:sha256:2376989289ff9aa3abf2388435f5c9e10d1e6ede073fa22bc61a22a01e3d066a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmY4ZmNmNDNlODU2ZDdjOTc0ZmQzMGQyNTIyMGI5OGYyYmY5MmY4ZjQ2ZTEwODFjNTg1Zjk4MGE3MjhkMzJiYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjJkZGU0ZGExYTZkMjFhMDBmMzg4YjU4MjlkYTZlODJkZTU1MGY3NjAyZDM0ZjIxNmIwY2JlYmRmZWQ4YzE4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDM3YmMzZWVmOTQxMGZiM2MwNWMzM2M1NTdhOGU3NjcwYjkzNTIxYmNjZDFiZmUwZWU1ZjllYmNmYjcwYmQ2OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjdmNjU2YjhhMWJjZDM0NDY0MDY0NjAxYzgxMDc0OTU1NGQzMjQ2ZDU3MDgxMjJkNzRjYjhhMmQ3OWIzYTBmZiJ9"
         }
       ]
@@ -255,11 +255,11 @@
       "statement": "forceEmailChange 的全局拦截链路是：后端写操作返回 403 且响应体含 forceEmailChange → axiosConfig 标记 localStorage.user 并派发 auth:force-email-change → AuthContext 把 user.forceEmailChange 置真 → AppContent 在公共分支渲染不可关闭的 ForceEmailChange Modal → 提交 PUT /api/auth/change-email 成功后把该标记清为 false。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L592-L595",
+          "resource": "repo://src/App.jsx#L594-L597",
           "version": "repo-lines-v1:sha256:6d7bcebf01f7a59e675dbaea256242caa726d41c2d667d8d33a00dcd3a201fb0:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2RhNDUwNTdiNzQyMDI0M2M5YTIyYjFlYjBiZDQ4MWQwM2RhODY3NjlhNzYwZTU4OTljMmY2MGU1N2EzMzE2NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmJjZTZlZWQ5NDFiNDhiZmVjMzExMTAyNjI2MTFmNjBhMjgwMjE1MDIwNjU2NjU5OTNjYzI4ZTZkOGRkYTYyYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTgwOTQyY2U1ZTNjMTM3MzVlNDRkOGU0OWI4NzMxMWY4OTZjNzA5ZWZkNDUyZWY5MTdhZjk2NGUzMzdiMDQyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2Y0NzNiZGEzODU4Mjg3MzJjNGMwZjJhNDE5NTZkMzdkOTlkZDU1MjRkNmRiYjQwOTAyNWM2ZDM4ODg4ZmM3NiJ9"
         },
         {
-          "resource": "repo://src/components/ForceEmailChange.jsx#L16-L52",
+          "resource": "repo://src/components/ForceEmailChange.jsx#L18-L54",
           "version": "repo-lines-v1:sha256:bb1b7779ec9dd3ce371e0990cfe664b749de4db2257a96871bf7a7068d102247:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmMTQ2ZmM3NWU3NTUzNDQwMDJhYzQ0YTVmYmVkZTBiMjRjMDI4YmY4NTcxY2FmZjQwOThhMjEwYTI3MzgzNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjNDFjMjlkYWIzNmIwODFmMzk1ODNkODM0MTYzMjJkNmY1ZTdiOTkwZjYyYjJlMWY1MzMzMGNhNDcxOTJmMGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQwYTg4ZDlkOGE3ZDA2ZGIzNjc1ZjE4MjkyZTUzNDQ0NTk2MWRkYTg4OGE3MmY4MmM1NTJlMzAzYTJlMTVmODAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNjVmOWZiNmE4ZmFiMWYxNmFkYjk0OTEzNmFhOWE3NzZiNmE5ZWM3MjgyZjM4NmJhNGZkZmQ0OWFhMTA5YjIifQ"
         },
         {
@@ -277,11 +277,11 @@
       "statement": "后台路由树没有 path=\"*\" 兜底（NotFound 只注册在公共树），未声明的 /admin/... 路径既不显示 404 也不渲染后台内容。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L521-L552",
+          "resource": "repo://src/App.jsx#L523-L554",
           "version": "repo-lines-v1:sha256:034128860c66f2b4399b6a64181dc55285ed32b1fc99e74608af257889d0b130:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhNTE3MDgyNzM4MjFiNDY4MThmYjYxYjM3Yjc5NTY5MWE4ODY2YjlmOGMyMWQyZmNlMDQ4NWQ5Y2UxMTA4ZTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiY2U2ZWVkOTQxYjQ4YmZlYzMxMTEwMjYyNjExZjYwYTI4MDIxNTAyMDY1NjY1OTkzY2MyOGU2ZDhkZGE2MmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkYjNlN2NkMGMzYTYyMzA0NzY2ODE2MWQxMDRlOTlkODYyMDljYTNlNzc1NGEyNWIxMTlhNDkwNzg3ODA0MjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmN2ZiYzcyZjc2ZmUxZThmZDQ3ZGEzODdlOGVlZmMwZmFiYzM4ZTI0YTNhYWI0ZmZhOGFlNDlhMDE0ZTk5ZjMifQ"
         },
         {
-          "resource": "repo://src/App.jsx#L594-L594",
+          "resource": "repo://src/App.jsx#L596-L596",
           "version": "repo-lines-v1:sha256:ad8a23329ae6ddb4c44d4479533c58cad6d5775e4f8470e9b0c299e561d20a56:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ4YTIzMzI5YWU2ZGRiNGM0NGQ0NDc5NTMzYzU4Y2FkNmQ1Nzc1ZTRmODQ3MGU5YjBjMjk5ZTU2MWQyMGE1NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ4YTIzMzI5YWU2ZGRiNGM0NGQ0NDc5NTMzYzU4Y2FkNmQ1Nzc1ZTRmODQ3MGU5YjBjMjk5ZTU2MWQyMGE1NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWYzNDUwMWMzNjFkZGE1OTg0MmQ5ZGM0ZTRlNGEyMTM5M2IxNmM5ZDNjZTYyZDYzOTgzN2U0ZGQ3MTdjNGViMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGIwYTQ3MGEzMTg3OWQ0MTU1NTk2MGY1YjdkYWZkZTY1NGZmNmZjZTUzZjZkZTlmMTQwZjA4NGM1MTI1OTI0ZiJ9"
         }
       ]
@@ -295,7 +295,7 @@
           "version": "repo-lines-v1:sha256:8b7663572d9239056580a559ea042b5fbd1eaa6d2e0246ea658c2883e5e6f2de:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2Y4ZGFkNTllZjU2MTRmNTk1OTc1NWY3MjEyZTA1YmM4YzI5YmVkY2M5NTE1YjhiYjU0NDdlNWRjNjM4NDU5NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGFhNjdkNGE0OTUwYWEzOTMxMDI4NDliMmVmY2Y0MzEzYWM0YmYwMTIwNzdmYjBiMDZmNDg1NjVlYTQ2MDU4OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTcwYWRmZTI3ZGNlNjJkNGE2ZmU0YzUyZmNhNmM1MGU3MzI3YjM3NjhiYTgzMjQzY2Y2MTM5NDE4ZjUxODQ3NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTYyNGIyOWU5ZGNlODYwOTQ2OTllZTM5YjMwZTQ1NDk4YmJjY2YwZGM0YTgyZjE1ODcwZDYxM2U3MDBmODk4ZiJ9"
         },
         {
-          "resource": "repo://src/App.jsx#L521-L552",
+          "resource": "repo://src/App.jsx#L523-L554",
           "version": "repo-lines-v1:sha256:034128860c66f2b4399b6a64181dc55285ed32b1fc99e74608af257889d0b130:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhNTE3MDgyNzM4MjFiNDY4MThmYjYxYjM3Yjc5NTY5MWE4ODY2YjlmOGMyMWQyZmNlMDQ4NWQ5Y2UxMTA4ZTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiY2U2ZWVkOTQxYjQ4YmZlYzMxMTEwMjYyNjExZjYwYTI4MDIxNTAyMDY1NjY1OTkzY2MyOGU2ZDhkZGE2MmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkYjNlN2NkMGMzYTYyMzA0NzY2ODE2MWQxMDRlOTlkODYyMDljYTNlNzc1NGEyNWIxMTlhNDkwNzg3ODA0MjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmN2ZiYzcyZjc2ZmUxZThmZDQ3ZGEzODdlOGVlZmMwZmFiYzM4ZTI0YTNhYWI0ZmZhOGFlNDlhMDE0ZTk5ZjMifQ"
         },
         {
@@ -309,11 +309,11 @@
       "statement": "App.jsx 用三个常量声明后台角色集合：ADMIN_ROLES_ALL 覆盖 dashboard/episodes/creator-profile，ADMIN_ROLES_UP 覆盖 categories/banners/review/episode-trash/reports/stats/feedback/analytics（review 与 episode-trash 由 ALL 收紧为 UP），ADMIN_ROLES_SUPER 覆盖 users/creator-profiles/announcements/site-content/email-settings/audit-logs/backup/api-usage/friend-links/sessions/themes/theme-review；AdminGuard 以 roles.join(',') 作为 effect 依赖避免数组字面量反复触发，并在卸载时用 cancelled 标志阻止 setState。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L142-L175",
+          "resource": "repo://src/App.jsx#L144-L177",
           "version": "repo-lines-v1:sha256:b73163395e9a57a50c4f61b789e9d1af067a3568f1ef6df278c4cbeb45eb5454:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjM2EzMGI3ZmFiM2ZmZDMzNDMxM2QwYjlmY2FiMTczMmJkYzYxYmRhOTIwNDVhMzEwZmQ4OTBkZmRlMzA4MTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3ZDgyNmI1NzMzZWM1ODI0MTNjYjM4NWU3YzY2Yjg5MDg1MmM4OTk3YWMwOTJhMjZiZTdlNjFmNWRkZWViNGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk1Y2ZjMDlmMGI5MjJlZTgzMTliOTU3ZDdlNzliZGNiN2JkOGM1ZGMxOTFiODhmMjc4YzM3MWY2MWMyMGZmYjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA0YTgxNzIxNjc4Y2Q0NjE5NTRhY2U4ODFmNjRlZGRjOWEwYTZkY2I3YWUxY2E1NDgzYjQ0NTY5MGZlNDlhYTgifQ"
         },
         {
-          "resource": "repo://src/App.jsx#L527-L550",
+          "resource": "repo://src/App.jsx#L529-L552",
           "version": "repo-lines-v1:sha256:32a60679ff1fbfde83d864989385eb455886759a82551cfcb793a7aba95154c9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4ZDQ0YjlmM2M4M2I5N2NiNTY5MGU0NTljMmI5ZTdiZDc0OWE4ZGU5MDIwODY5MmQwZjU4ZGZjMjViYjRhMDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0YWZiOGUyM2VkOTlmNzExNTZjODllMjg3NjljMGJlZTA5OGZiODkxNzA5ZTE0MTY1YzM5NGYwMDA4ZWE0YmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxNGU0ODNkMDA3YzdjZGY0NjNjMjJjNDk3ZTU2NzJhNWM3NDlkZWI2YWRkZjVmNjIzOWRlNDQ5YmVhNDE2NTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI3NjcwZmIwMzNhZjMxZTIyYmU3MjE4ZGJlMDMxOTY4YmYxNjUyMGNjNjlmNjRlNjViODJjZWY2NTVjNmJlNGEifQ"
         }
       ]
@@ -323,7 +323,7 @@
       "statement": "AdminLayout 用 NAV_GROUPS 把后台入口分成概览、内容管理、审核与治理、用户管理、主题外观、数据与系统六组，每项带 roles 数组（ALL_ROLES/ADMIN_UP/SUPER_ONLY），渲染前按当前 admin.role 过滤条目与空组；外壳导入 src/admin-kit/index.css，使后台设计 token 只作用于后台（.yuanli-admin 作用域）。",
       "evidence": [
         {
-          "resource": "repo://src/components/AdminLayout.jsx#L12-L76",
+          "resource": "repo://src/components/AdminLayout.jsx#L14-L78",
           "version": "repo-lines-v1:sha256:89b7de0dc926e6e8aa15c117ebfd26edecc9e717b3c6630fe7bda0249c2b71c6:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5YWIxZWYyNWZmY2Y3OTA3ZTc1N2ZiYmM1OGE5ZjAzODc0YWJlNDE1NThlZWU2YmZjNGUxMzhkZDdiYTY4MDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2Y2Y1YTYwMDIwOGU4NjRiMjgwNWQ3YTRmNzI0MWRmZjg2MWZkNmVkZTIwOGNiZmNiMjgwZjc4MDc4MTVkYjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZlYjhlMjg4MGJlZjQ0M2IxOGM2NjM2MDI2Y2E2NTYzODVhN2E3NWQ1YTFhMDdhMTFkNmE1YjlhNTQwOTExMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkyYzAzYTYwZDdlMjEwM2E5MjlhYmZlZTc2OGU2MDExYzFlNGVmZWY0YjEzN2YxMzBlYmVkN2Q5ODRjMmIxYTQifQ"
         },
         {
@@ -331,7 +331,7 @@
           "version": "repo-lines-v1:sha256:fe6a103eecafe17a9ab16cee91488ffc2e2489bdaeded42429f5682e83afaf3d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1YWJhOTM1ZTE5ZDk5M2Y0OGM0MWY2ZGE1ZDc2OWU3NDE4NzhiMWE5YmJjMWMxM2Q2NDA0MDQ0N2I2MjNiYjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5OWE0MGYzY2JkY2M4MDU1ODEzMjEyMDBjOTM4Y2U0NzI2MDRmNDZhMjg0YTQyYTg2OTMzMjZjOGI0ZGU2MDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE3NGE4ZDI0Y2ViNWMyZmQ5ZWMzMDVlNjBhNjkzNTZkM2ZkZDcyYzJhZDFjYjg1OTRiNGUxM2MwOWIzMjgzNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2MzNjNDNmNDRmYmFmNjk5MTNmMWRiODliMmM4ZmJmOGQ5MGU5YTQyYjQ2OWI2NzBjNTY2MzFmNDI1ZWM2MDgifQ"
         },
         {
-          "resource": "repo://src/components/AdminLayout.jsx#L8-L8",
+          "resource": "repo://src/components/AdminLayout.jsx#L10-L10",
           "version": "repo-lines-v1:sha256:88764241d9b5dc3138f7b644cd47c827c310bc8a751193b97b9ba69051c8efa8:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODg3NjQyNDFkOWI1ZGMzMTM4ZjdiNjQ0Y2Q0N2M4MjdjMzEwYmM4YTc1MTE5M2I5N2I5YmE2OTA1MWM4ZWZhOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODg3NjQyNDFkOWI1ZGMzMTM4ZjdiNjQ0Y2Q0N2M4MjdjMzEwYmM4YTc1MTE5M2I5N2I5YmE2OTA1MWM4ZWZhOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2YyOTQyZjAyNDJjNTA3Y2Y2NGQxYzlmZDE5NTcwMzY0OGUwNDMzNjVkNDEyNWY4ZGE4MGFlMGRhYjg3ZjAyZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmViOGUyODgwYmVmNDQzYjE4YzY2MzYwMjZjYTY1NjM4NWE3YTc1ZDVhMWEwN2ExMWQ2YTViOWE1NDA5MTExYiJ9"
         }
       ]
@@ -339,6 +339,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-04T16:54:50.811Z"
+    "at": "2026-11-11T16:33:24.381Z"
   }
 }

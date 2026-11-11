@@ -39,7 +39,7 @@ sources:
 generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-04T16:54:50.811Z
+    at: 2026-11-11T16:33:24.381Z
 ---
 
 # 运行时站点配置、公告与静态页

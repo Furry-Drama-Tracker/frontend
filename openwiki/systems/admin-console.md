@@ -76,10 +76,10 @@ sources:
     resource: repo://src/utils/axiosConfig.js
   - id: openwiki-source-0772ae522304487a6af3bee6
     resource: repo://src/utils/clearClientData.js
-generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
+generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-04T16:54:50.811Z
+    at: 2026-11-11T16:33:24.381Z
 ---
 
 # 管理后台：布局、角色可见性与待办
@@ -288,9 +288,10 @@ flowchart TD
 
 - **传输层：`adminApi`**。`src/utils/adminApi.js` 只是 `axios` 的五个方法别名，刻意不加任何 `Authorization` 头——认证完全依赖 httpOnly cookie。因此所有后台请求都会经过 `src/utils/axiosConfig.js` 的全局拦截器：请求侧为写操作挂 `X-XSRF-TOKEN`；响应侧遇到 `401` 先尝试 `/api/auth/refresh` 再重试，最终失败时因为路径以 `/admin` 开头会**整页跳转** `/login`；遇到 `419` 走同一套刷新逻辑；遇到 `403` 且带 `forceEmailChange` 则触发强制改邮箱流程。对后台的直接后果是：任何一次权限失效都会导致整页卸载重载，页面上未提交的编辑内容随之丢失。
 - **列表**：主流形态是 `<table className="table">` 套在 `.table-wrapper` 里（`AdminEpisodes`、`AdminEpisodeTrash`、`AdminUsers`、`AdminAuditLogs` 等），行内操作从按钮改为 `.action-link` span（`role="button"` + `tabIndex=0` + `Enter` 键处理），状态用 `.status-tag` 系列类名；反馈与举报则是卡片列表。分页形态：`AdminUsers`（`limit=200`）与 `AdminEpisodes`（`limit=100`）先循环翻页拉全量（≤100 页，依赖 `totalPages`）再做前端过滤；`AdminEpisodeTrash`、`AdminAuditLogs`、`AdminReports` 用后端 `page`/`limit` 分页（20/30/10）。
-- **页面头部：源力 PageHeader**。新规范是 `.yl-page-header`（左 `.yl-page-title`/`.yl-page-desc`、右 `.yl-page-actions`）骨架，举报、友链、主题审批、数据分析四页已迁移完成：标题不再带 emoji、硬编码配色替换为 CSS 变量（`--destructive`/`--btn-text`/`--warning-*` 等）。新后台页应直接沿用该骨架，不要再手写 flex + `<h2>` 头部。
+- **页面头部：源力 PageHeader**。规范是 `.yl-page-header`（左 `.yl-page-title`/`.yl-page-desc`、右 `.yl-page-actions`）骨架，现已覆盖全部后台页面（统计、创作者主页、公告、内容管理、邮件、日志、备份、反馈、API 用量、设备、主题、回收站等）：标题不再带 emoji、硬编码配色替换为 CSS 变量（`--destructive`/`--btn-text`/`--warning-*` 等），操作按钮收进 `.yl-page-actions`。新后台页应直接沿用该骨架，不要再手写 flex + `<h2>` 头部。
+- **内容编辑是整页表单，不是弹窗**。剧集新增/编辑、轮播图新增/编辑、分类新增/编辑、管理员新增账号已从 `Modal` 改为整页表单：进入表单态时页面返回值切换为 `.admin-page` + `.yl-page-header`（标题 + 提示文案 + `.yl-page-actions` 里的返回按钮）+ `.yl-panel` 包裹的表单；`.yl-panel > form` 限宽 720px，表单按钮不再被强制 100% 宽，进入表单页会自动 `window.scrollTo(0, 0)`。校验交互上，后台必填字段默认不标红，仅在用户交互后经 `:user-invalid` 才变红；复选框/单选框通过 `admin-scope.css` 的专门规则豁免输入框高度与内边距。这两条样式约定写在 `src/admin-kit/admin-scope.css`，属于 `.yuanli-admin` 作用域的一部分。
 - **搜索**：列表页用后台专用的 `AdminSearchInput`（`AdminEpisodes`、`AdminUsers`），它在本地 `data` 上按 `searchKey` 过滤并给出最多 8 条候选，支持上下键与回车选中；公开站的 `SearchInput` 与它完全独立，两者不要混用。空列表用 `EmptyState`（可带插画变体与行动按钮）。
-- **弹窗与确认**：编辑表单统一用 `Modal`，破坏性操作多数再叠一层 `window.confirm(t(...))`（`AdminUsers`、`AdminSessions`、`AdminThemes`），较新的页面改用 `ConfirmModal`（`AdminEpisodeTrash`）。
+- **弹窗与确认**：内容编辑表单已迁移为整页表单（见上），仍在用 `Modal` 的是版本历史（`EpisodeVersionHistory`）与少数只读详情；破坏性操作多数再叠一层 `window.confirm(t(...))`（`AdminUsers`、`AdminSessions`、`AdminThemes`），较新的页面改用 `ConfirmModal`（`AdminEpisodeTrash`）。
 - **提示**：没有全局 toast。每个页面自管 `error` / `success`（或 `message`）state，渲染成 `.error-message` / `.success-message` 区块，成功文案多用 3 秒定时器自动清除。
 - **i18n**：所有可见文案走 `useI18n()` 的 `t()`，日期用 `new Date(...).toLocaleDateString(locale)` 适配中英格式。核心命名空间为 `adminDashboard`（卡片标签与描述）、`pageTitle`（浏览器标题）与各页自己的命名空间（`adminEpisodes`、`adminUsers`、`adminThemeReview`…）。
 - **错误边界**：`src/components/AdminErrorBoundary.jsx` 实现了后台专用的错误面板（⚠️ + 错误信息 + 刷新按钮，通过 `static contextType = I18nContext` 取文案），但 `App.jsx` 只 `import` 了它、**从未挂载**；后台实际由 `App.jsx` 底部的通用 `ErrorBoundary` 包裹。也就是说当前后台任何一个页面抛错都会让整棵 App 树落到通用错误页，而不是后台局部面板。若需要"后台单页崩溃不影响外壳"，必须显式把 `AdminErrorBoundary` 包到 `AdminLayout` 的 `Outlet` 外层。

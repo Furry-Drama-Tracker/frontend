@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:b3770b1d67410d03e24bfbcc74250a37b563e8f006711b082bdbaadfbccd886e",
+  "pageVersion": "sha256:5d52ba0b6b7971b23856f7e17bf57ccf1ec409bc70d64827221c414f3095d4ad",
   "claims": [
     {
       "id": "claim_df439e2cd4164d62ae99b68b617731ce",
@@ -63,7 +63,7 @@
       "statement": "浏览器缓存层不再给任何 API 数据离线答案：/api/auth/*、/api/notifications/*、/api/ratings、/api/histories/* 乃至全部 /api/ 与 /uploads/ 请求断网都直接失败（denylist 排除回退、runtimeCaching 为空），离线可用的只剩预缓存应用外壳、应用层缓存（site_settings_cache/translation_cache_v2）与 offlineQueue 评分补偿；若恢复某条缓存必须连同登出清理一起评估。",
       "evidence": [
         {
-          "resource": "repo://src/components/EpisodeDetail.jsx#L287-L294",
+          "resource": "repo://src/components/EpisodeDetail.jsx#L291-L298",
           "version": "repo-lines-v1:sha256:31e8233736546f094e6083863c30d60129ee8e2d52bf939e1b53b3ef8306d6b7:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTljMTM1OTA2NjU2MzIzZDFjNWVhNDE2NTRlZTY2YWZiNTg1YWNkY2ZhZWFjYTEyMWQ1ZTMwYmYxOTNlZWRkNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTljMTM1OTA2NjU2MzIzZDFjNWVhNDE2NTRlZTY2YWZiNTg1YWNkY2ZhZWFjYTEyMWQ1ZTMwYmYxOTNlZWRkNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2RmY2I4ZDcyMTdlZmQ1YmI2MDMxMWUxZTEyM2VjNjE5MGRlODVhZDc0ZGJiYWQ5YWQwYzk4MTRmZTM1YTk3NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTU5YjBhNWRkYWZhMWU2MTcyNDM3ZTZiMGRhNDA2M2RhMTM5MWIxYmQ5ZTU1OGNhMmQ3YjZjYjdmMTFmYjYxMiJ9"
         },
         {
@@ -81,7 +81,7 @@
       "statement": "站点设置就绪后 AppContent 会把 link[rel=manifest] 的 href 改指后端端点 /api/site-content/pwa-manifest（仅当尚未指向时），并同步更新 apple-touch-icon、apple-mobile-web-app-title、application-name、theme-color、msapplication-TileColor；源码注释明确记录了不采用 blob: URL 的原因——浏览器无法验证 blob manifest，安装提示不弹出。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L450-L498",
+          "resource": "repo://src/App.jsx#L452-L500",
           "version": "repo-lines-v1:sha256:ec247462d139f3ea47660e8c6b62cb41c62c1c8dfa64468d3238e30dbfb8ab91:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1YmRkYmQxZThlNGZkNzhiN2ExY2EwMDQ3MWY5YzljN2ZjYjVhYjQ3ZDViNzNlN2IxZjdkZDU4YjAxZGUzZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1MWIyZTExNDYyNmU1NTgzYTVlZjE1Y2VlMWU2ZTJmNzUzZWZkZDgzYjZiZDUxYTgwYjA1OGU2YTI2NWRjZTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0NjY1Nzk1NjU4OTZiMWYwZTFkNmUxMDgxOWQ5NTFiOWEyNmU4NWY3ZTEyMzlmMjNkMmNmZmQ2NzRiYTA5ZGIifQ"
         }
       ]
@@ -91,7 +91,7 @@
       "statement": "运行时 manifest /api/site-content/pwa-manifest 不再被 SW 缓存（runtimeCaching 清空且被 navigateFallbackDenylist 排除）：后台改完名称/图标后客户端立即拉到新值，不再有 api-data 里最长 1 小时的旧副本；代价是断网时动态 manifest 一定拿不到（安装提示不弹），唯一兜底是构建期预缓存的 /manifest.webmanifest。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L457-L470",
+          "resource": "repo://src/App.jsx#L459-L472",
           "version": "repo-lines-v1:sha256:cc6f0cc2b03147eb82fbdd420385cf6ec52f8154fd6df830edb8cda8015b9cb6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5NTU1ZjU5Y2I1OTNjYjJlMDBkZmU4YTMzMWQ0MjgxM2NlMTA5ZTFiNjI0YjllZmUzZWI5ZGEzMmQ4ODUwODUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhNDdiMDA2Mjk4MDU2NmQ3ODBiZDdmYTlmZDc2OGFiZmY4YmIxODY4YjFjN2YyNzlkYzg0MzlkNTMxNGZkNjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNiZDZmNDQ3MTFjYWJkNDhjZTM4NTUzYmZkMGMyNGY2MDVmYmYxNzQzYjlmODc4ZjA3MzI4OTNhZWQzMTM0ZDgifQ"
         },
         {
@@ -105,7 +105,7 @@
       "statement": "构建期 manifest 里的 shortcuts（/?tab=latest、/?action=search）与 share_target（GET / 带 title/text/url）都没有消费方：Home 只读取 category、sort、status、tag、rating、year、order、search 这几个查询参数，没有 tab/action/分享参数分支，所以快捷方式落回默认首页、分享进来的值被忽略。",
       "evidence": [
         {
-          "resource": "repo://src/components/Home.jsx#L39-L55",
+          "resource": "repo://src/components/Home.jsx#L40-L56",
           "version": "repo-lines-v1:sha256:44cd617037c5ec42ba5863cc3a21e826f31f67be7b080c10e465f4237d6878ba:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjZjdmYTUxN2Y5YTFiOTc5ODY2YmZkZGEzZTcxZWVmM2ZkZTQ2N2U2MGVkZTI1OTI4NTk2Y2M4YzAwMjYyOTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlYWUwNDFiN2Q1ZWMwZGQ4YTA1YmI3Yjk4MGY3NGY1ODgyMGUyMjI2NTVmMTNmMzVkNzNiNGJmMzRmYWZmYTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5NjE2OWJmM2E5OGYyODhmMmNhOTQzZjI5MTBlODBhZTg4OWM0ZjAyMDUzNGZjOWQ4ODA3M2YzMDExZDBmOGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjViZWMwOWYzZTYyNDc3ZjNiM2Y4MzBhMzBhYTFmN2Q0YWFiNjc5ODQ3NGMwOTBiMjE0NTNiMzRkMjI1MDJkODgifQ"
         },
         {
@@ -129,11 +129,11 @@
       "statement": "InstallPrompt 的提醒控制基于单个 localStorage 键 pwa-install-dismissed：挂载时该键为 'true' 就直接不显示，否则先读 window.__pwaDeferredPrompt 再订阅 pwa-install-available；点安装后无论用户选择如何都会清空组件内的 deferredPrompt 与全局变量，所以用户取消安装后卡片仍在但安装按钮变成空操作；设置页的“安装提示”开关读写同一个键，但组件只在挂载时读一次，因此重新开启后需刷新页面才会再次弹出。",
       "evidence": [
         {
-          "resource": "repo://src/components/InstallPrompt.jsx#L4-L57",
+          "resource": "repo://src/components/InstallPrompt.jsx#L6-L59",
           "version": "repo-lines-v1:sha256:f8e253f34e12b275385cadf5e781e496e2c4848d56247b2d7f1df5447dd1bd12:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiZjNiODQ5MzY4YzIzYTI3ZDE2MjllNjM1OTZjZWYwYzU3YjEwMmUxZjgxNDk3ZGIxY2MyNzA0MTliZmMwZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJlOGE0MTlhOGVmODczYWUxYjIzNjVjZjAyYTI2Y2U3Mzc3MGRiMmJlOTcyOWJhYjg1OGEyNzM4ZDYwMzNjYTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3YjlhZjYxNmY3MDkyZjcyNDU3MTNiYTQyYWRmMmU3MDJiNjJlYTFlN2UyOTc4ODVlMjUzMWM1NWZmNTQzNDEifQ"
         },
         {
-          "resource": "repo://src/components/Settings.jsx#L10-L62",
+          "resource": "repo://src/components/Settings.jsx#L12-L64",
           "version": "repo-lines-v1:sha256:256711d5a12674b08dd94180b071f2c03de742f8057065bcd071dd428e079392:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiZjNiODQ5MzY4YzIzYTI3ZDE2MjllNjM1OTZjZWYwYzU3YjEwMmUxZjgxNDk3ZGIxY2MyNzA0MTliZmMwZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2Y2FhMDM1NTNjOTgxMDFkNjNlNjZlYjkxMDc4NmM2NDQ1MzFmMTdlYThlMTljYjBlZjk0YTg3OTg4YTc0MzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwNTZkNThkZTY5Njk4MzZlZjgxZmRmYmZhMjdlMjAyOWRhYWZhMmUyZjI0YmFhNjMwOWE4NzUxZTRmNGE3YWEifQ"
         }
       ]
@@ -143,7 +143,7 @@
       "statement": "NavBar 里还有一份独立的 beforeinstallprompt 监听与安装 state，但 handleInstallClick 和 isInstalled 在 JSX 中没有被引用（死代码），appinstalled 也只在这里监听；因此实际的安装入口只有 InstallPrompt，通过浏览器自身 UI 完成安装也不会关闭这张卡片。",
       "evidence": [
         {
-          "resource": "repo://src/components/NavBar.jsx#L57-L110",
+          "resource": "repo://src/components/NavBar.jsx#L58-L111",
           "version": "repo-lines-v1:sha256:00742f8da2eb22367e6dcc0a6513eace5e299875b0bf2ff4af2bfe6c32e9e9bc:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliYjk2OWEyOGQ4YmFkNmIxZDM0NDIyYThmZTI0OTc5OTk2NmIwYjM2YTRmYmRjY2E3N2JhM2JmMmIyOTI2YWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBhYmQ0ODMwMWJmYTM0NWQ4YzllYTEyYmVmN2Y0NWY5YTc5NmNmNTc3OGJlZDM2MWI2MWQ1ZDViYjRlYzY1MzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1NzdkZTZiZDFiZjlkODdlMjVjMWVkOGQwZTk0YzNiZjFhNzE0MWM3MjVkMzc4Y2M2MzM4NjdiMTJiZDQ3YmQifQ"
         }
       ]
@@ -177,18 +177,18 @@
       "statement": "唯一的离线入队点是 EpisodeDetail 的 handleRate：只有 POST /api/ratings 抛错且 navigator.onLine 为 false 时，才以 { method: 'post', url: '/api/ratings', data: { episodeId, score } } 入队；收藏、观看历史、评论等其他写操作都没有离线补偿。",
       "evidence": [
         {
-          "resource": "repo://src/components/EpisodeDetail.jsx#L273-L296",
+          "resource": "repo://src/components/EpisodeDetail.jsx#L277-L300",
           "version": "repo-lines-v1:sha256:b5ac26a0751b18b6602fe0466ff927a401abceb3b89c7efd56c0c5024567e0a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZlM2ZjNjNkNDA3N2ZlMjIwNTI0YTliYzAzZjk5MzgwNzVkNjdhNjU5OTVjOWQ0NWQ0YWNlMmY3YmM1ZTY0ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczZmUyZDgwZTc4OWE1MDBkMjViZDJkYTMxODhmZWRjZjQ5MTIzNmE5YzBkZTg2NTkzODNiMDI0ODU4NzFkNGIifQ"
         }
       ]
     },
     {
       "id": "claim_e9239287ae8647fd9bda08533e6ce9e8",
-      "statement": "OfflineIndicator 用 online、offline 与自定义事件 auth:session-expired 三个监听驱动三态横幅：离线常驻、恢复提示 2 秒后滑出再 300ms 清状态、会话过期提示 3 秒后滑出；渲染优先级为 sessionExpired > 恢复 > 离线，z-index 9999；它设置的 setTimeout 在 effect 清理和状态切换时都不取消，快速 online→offline 抖动时旧定时器会把离线横幅停在屏幕外（visible 为 false 而 isOffline 仍为 true）。",
+      "statement": "OfflineIndicator 用 online、offline 与自定义事件 auth:session-expired 三个监听驱动三态横幅：离线常驻、恢复提示 2 秒后滑出再 300ms 清状态、会话过期提示 3 秒后滑出；渲染优先级为 sessionExpired > 恢复 > 离线，z-index 9999；它设置的 setTimeout 在 effect 清理和状态切换时都不取消，快速 online→offline 抖动时旧定时器会把离线横幅停在屏幕外（visible 为 false 而 isOffline 为真）。",
       "evidence": [
         {
-          "resource": "repo://src/components/OfflineIndicator.jsx#L11-L77",
-          "version": "repo-lines-v1:sha256:6c99aa86f73dc6b934ec13164e84779ceb93657fd9c48e170c7f7def9bb5cfc9:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1MWJjZDY2NDI2NjQ2YTE2M2M2MGUwNWViMjBjNTAwYTBiODE4MjJjNzlmYWY0MzNmZGU3MzhjMjc5ZTgyOTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxYTE3NTE5ZDM0NTdkNzRlMDQzMDY0YjE3OTcxMzc3ZjJlZTI4NjU4YmRjMWYyOGVjMjRjZjVlZDE4ZTdhNjQifQ"
+          "resource": "repo://src/components/OfflineIndicator.jsx#L11-L80",
+          "version": "repo-lines-v1:sha256:04d5a1b7851af900fa034c9de4e18a23f16596e6e605f80b4c402838159f160f:eyJzZWxlY3RlZExpbmVDb3VudCI6NzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhNzg3YjMwMzQwOGZmYjQ3ODg3Y2U2OGNlZjAwMGQwY2Y4YmNlZmJkOTA0NTY2OWFlNzNjYjliYWQ3ZTMwMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3MjE2ZThlOWMwYTFhNjhkMDZjMmZiYWE1ZmQyMTM5NDgyYjhlZmQwYTE5MzE1YjkxNWU2Y2NlODQ5ZDg5ZGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIzMDExZTRkZWIxZmU1Zjk5ODE1MzcyZTdjYTJkOGM5NzBiMzc4ODcyNTRhZTU0ODYxZGYyODAwYTQ2NGExZjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBlZTkyZTdhZDdmY2U0MzA2ZmI3MTc1MGIyZDA1MTllOWU3NmI3ZjlkZTNkYjExZjMzNjc1NDcxMjViZGUwODAifQ"
         }
       ]
     },
@@ -211,30 +211,26 @@
       "statement": "index.html 里的兼容遮罩刻意只用 ES5（先为缺失环境补 JSON.parse/stringify），仅用 UA 判定 MSIE|Trident 与 Edge 但不含 Edg 两类目标，命中后构造 z-index 2147483647 的全屏遮罩、语言切换只写 localStorage 后就地重绘、并用 XMLHttpRequest（IE 下回退 ActiveXObject）取 /api/site-content/about 的 ICP 写入 localStorage._icp（读缓存回显与回填两处 innerHTML 拼接都先经局部 escapeHtml 转义）；它不做版本阈值或特性检测、也不读 bypass 记录，并且不能真正阻断启动。",
       "evidence": [
         {
-          "resource": "repo://index.html#L134-L138",
+          "resource": "repo://index.html#L131-L135",
           "version": "repo-lines-v1:sha256:8fd0cda9fe8742afc6ff67471d986af77b0ce47031f70f65f9247e2781c27f34:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzFiNzRkYjdmMGU2M2Q3ODMyMzYwZWQ3MDdmOTkwMjlhYWUxZTFhM2YwNjIzZjdjODYyZjE4OWJlZWY5MTI2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZiMDQ0OTE0Njk3MjJlODM2M2E5NGU0MDQ0NTM4ZTAxM2EyYTIxN2UzNmIxZTU2OGJhNjBhY2I3YjRjOGYyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTI3MzAxYzYyMTA4YWRlZGMzYmEzNmQxZWI5ZGI2MDViYjM0YzdmMGRmYjA2NTI5NGExMjFlOGEyOGE4OTAyOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDRhNTBmMGE0ODk0MzVmMjUzODEwZjNlYjhlOTZlNzUyZTViOTY2M2RkYzZhMTMxNzZiNGI3YmNiM2ZmNjVmOCJ9"
         },
         {
-          "resource": "repo://index.html#L60-L237",
+          "resource": "repo://index.html#L57-L234",
           "version": "repo-lines-v1:sha256:7c85c7f4e25a21dc23579d29b66003230cf5f53a017ba2c8667e9dc43de77c09:eyJzZWxlY3RlZExpbmVDb3VudCI6MTc4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI4NmI4ZjRlMDA4NDM5MDk3ODM4MWY1YzhiMzJhMzVhMDM3NjdjNTExNjM2NGJmOGEyYjMwNjg5OTY2MDRhYjY5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJiNmJmODFjOWZlZWM4OGI4MDExYzE4ODM3YzVlYjVjNGI3ODIxNDY5ZTUyNTNmZDQ4ODcyODJhOTBlNzFiM2IwIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkMjc5ZTY5ZmZlZTNmMDdlNTAwMjFjM2NiOTUzN2VlNGNmZTcyNmMzNzQyYjNiM2ZhNjYxODI2MWNlNTU1YjVjIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI1NTQyZjQzNThiMWIxZGI5YTQ3ZmFjZDNlOWNkNmQ4ZTU0OWZmYzIwYzUxY2JkZDg1NzU0Y2M4ODFmNzBiYTJjIn0"
         }
       ]
     },
     {
       "id": "claim_790155f692944644913da64cc5657a42",
-      "statement": "BrowserCompat 是 React 层的第二道闸门，包在 ErrorBoundary 与 AppContent 之间：effect 内先查 browserCompat_bypass_<UA 哈希> === 'ok' 直接放行，否则依次做 UA 阈值判定（IE、EdgeHTML、Chrome<60、Firefox<55、Safari<12）、六项特性探测（Promise/fetch/IntersectionObserver/ResizeObserver/Object.assign/Array.from）与 CSS 自定义属性元素探针；判定不兼容时用 IncompatibleOverlay 替换整棵子树，AppContent 因此完全不挂载。",
+      "statement": "BrowserCompat 是 React 层的第二道闸门，包在 ErrorBoundary 与 AppContent 之间（Provider 链为 Router → Theme → I18n → SiteSettings → Auth → ErrorBoundary → BrowserCompat → AppContent，原图标层 IconContext 已随自研图标引擎删除）：effect 内先查 browserCompat_bypass_<UA 哈希> === 'ok' 直接放行，否则依次做 UA 阈值判定（IE、EdgeHTML、Chrome<60、Firefox<55、Safari<12）、六项特性探测（Promise/fetch/IntersectionObserver/ResizeObserver/Object.assign/Array.from）与 CSS 自定义属性元素探针。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L607-L629",
-          "version": "repo-lines-v1:sha256:de0990200c42d93e714fabd3c860e5a8122d258b566891495993bac5ed073cee:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxMzAwNDg0N2UwNGQ4ODQxMmY5NGVhYjZiMDU2NDlkNjJiMDQyM2QwNDliYjRiMzI3YTgxNjMxNmQ2NDQzY2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2M2I4N2M0ODJlNzBmODVmZThhMGNlMjc1NzFmYzU3Y2I2OTllMTFjZDM2NjBmNDk5YzI0MzdjZjIzMGRlN2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE1YTg1OWQ1M2RlODAzYzkxY2Q2N2IwNzI4MmE1YzdiMmQzYTVmN2I2MjkwYjQzNWU3MTcyYzU4ZDJhMjgxMTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM0YTE0NTUzNjAxNmJiZjIxYWZkNjYyZGVkNzU2YTg2ODZkMDY5ZTBlYWViZjFmZjQ2ZDlkMWM1YjM4ZTgxN2IifQ"
+          "resource": "repo://src/App.jsx#L622-L637",
+          "version": "repo-lines-v1:sha256:ffbe3b41b651bfc02676085a0931be10a5dc52b510927b92d9ffc100a37e90a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmYzMzZGE1MTNkZWZjMmZkZjg3YzNiNjY2OTkyYmMwZTUyMmZhZTA5N2YxMjYxZDg3MDIxOGUxNGY5ZTY5NzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmZTE0MDhjNWRjMzcyM2M2MGRhMmM0YTA3MmM0ZjBmNzc2ZjRkOTM5ZTc0YmIzOTFhNTI5ODAyMzM5ODhmODYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljZjcxZTI1Nzk0ZmMxNTA4NzA3OTMxOWI0MWFmZTk5ZjJjZjliMzFjMDdlZmEyZTFjYzEzYjQ1MzE1OWRmOTUifQ"
         },
         {
-          "resource": "repo://src/components/BrowserCompat.jsx#L16-L27",
-          "version": "repo-lines-v1:sha256:86978079bc4be81560bee914dcad9a87e6b0a2ea827b0fa713b587548ccd0d27:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI4M2ZiZjkzNDY1ZjNhOWIxZGY4MWU1YWExMTk0Y2ZkMmFkZGY2NzQ3YzA0NThhYzZlNTQ4ZDg3OWJkYTQyNWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIwZjNlOGRmM2RjNjBjYjJjYTgxZDJhYjY3NGM3OGI5YjdjMWI2MDU3OWUyMThjM2FkYjI5MTMyMWVhOWQ4OGEifQ"
-        },
-        {
-          "resource": "repo://src/components/BrowserCompat.jsx#L90-L183",
-          "version": "repo-lines-v1:sha256:d9b16c4afa1fcc5f21021b4b33932c1e86fb52a7a2d7e7dfc3ca76bff6f3b949:eyJzZWxlY3RlZExpbmVDb3VudCI6OTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4ZWQ4MjBkYzk2NDQxNDljNjI3NWE0OTcyNjlkMThkYmYxZjMzNWNhNzJlNDFlZjU2ZGFjOGUyYmExNDRiYTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlOWJiYzhhMzY4MTQ4MTZhMzVhZmFjNTM4YThlZDFmMmM5YzYxMDE2MjlmMzgyY2YzNmZmYjhiNjdjOWQxNGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwNTUzZTU3OGI4NjAyMjkzMWE5NzZjNjdjYzczNzZlYTkzNmJkN2ZjNzY5MTc5NTZhNmNmMDU5N2QwMWQxY2YifQ"
+          "resource": "repo://src/components/BrowserCompat.jsx#L1-L60",
+          "version": "repo-lines-v1:sha256:7a2e00f6c6d32c8fe1efff3a14db8dde20714f44957d04ec54a1ef14e5c069e7:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyOWVmNzk1MmUyZjUxOTgxNjhlYmJhNmFlODNhNzlmYzJjYzgwZTczNDU1MzJjOWY2NjA2OTU3MWVjNDM5ZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBhZThjOTQwZDIyZGUzZjZkMmFhZmRlZWE4YWY0NjlhZDM4NTBjZWNhYThiMTdkZmI5ZTExNzZkZTlmNDMzMzkifQ"
         }
       ]
     },
@@ -243,7 +239,7 @@
       "statement": "绕过记录的闭环是单向的：点“继续访问”后子树渲染并在 60 秒后弹 FeedbackDialog，选“使用正常”才把 browserCompat_bypass_<UA 哈希> 写成 'ok'（下次启动在检测前放行），选“有问题”只关闭对话框、不落盘也不上报；哈希来自 navigator.userAgent 的 32 位整数，与账号无关，浏览器升级改变 UA 后记录失效、提示会重新出现。",
       "evidence": [
         {
-          "resource": "repo://src/components/BrowserCompat.jsx#L28-L85",
+          "resource": "repo://src/components/BrowserCompat.jsx#L30-L87",
           "version": "repo-lines-v1:sha256:5ac03694957e0307713c72f139ea6b7c57dbbb36b03dfc7d11b1241786eb4715:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlN2VkZDU0ZTBlZGE4OGIxY2FhYzJlZWQwZjFkNmQwZGFkMjlmNjUwYjExNDA5ZmM2ZDhiZTQ0OTdiMWE5YTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY5YmM2MDkzNWY2Njk1Y2U1NjAzYzBlYWM3MjM5YTY2NDExOWUwNTk3NGM1MzI4OWY2OTY2M2Q3ODJkYTc3N2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlZTA5ODIxMzliMDhjM2EzMmVjZGFiZWFlZGY4MmRlMWNlMjFkYWMxMTU1ZTUyZGIxOTYyMTNlOWYzN2RkYzkifQ"
         }
       ]
@@ -253,11 +249,11 @@
       "statement": "浏览器支持范围（Chrome 60+/Firefox 55+/Safari 12+/Edge 79+）在仓库里存在三份互不引用的副本：checkCompatibility 里的实际阈值、index.html 内联遮罩 I18N 中的双语 supportedVersions 与 reason 文案、以及 src/locales/{zh,en}.js 的 browserCompat.* 文案，改动必须三处同步。",
       "evidence": [
         {
-          "resource": "repo://index.html#L85-L92",
+          "resource": "repo://index.html#L82-L89",
           "version": "repo-lines-v1:sha256:5d641ee03b87beb1d5e2ee6d8bf24211918d7b6c194dc6e679ff574f2d88c5b2:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzE4ZTU1N2Q2ZjFkY2NhZDhiYzFjMzMwNGNkMzI1YzZlZjk4YzY4NWNiYjA0NzNmOTNhZTQyMGM2NDEwNjA3MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmFhZTM5MzE2NmE0MTc1OTc2NzNjMGZkZWJjNzIyZWUzMDFlZDI4ZDJhMTIzMWFjMmNhODZiZGE5NGNiNWE3ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTFkOTQ3N2Q4NjcxODU2OWQ2NDc1NmQ5YTBmZjQ3NDhjNTkyNzQ3ZDVhMGM5ODg5YTEyYmMxMTE1MTA1OTBkYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjAzMGVhZmMzNzg0NmUwMjEzNzk3MTg3OGZjOGQ0OTAzNjFlNTVjZDdjZWQ5NTBhMDRiOTJmNDlkYjk1MDZhYSJ9"
         },
         {
-          "resource": "repo://src/components/BrowserCompat.jsx#L125-L151",
+          "resource": "repo://src/components/BrowserCompat.jsx#L127-L153",
           "version": "repo-lines-v1:sha256:d06c85a21ea0f17204c5cf4e8d559f9aa1ddb1151c1da8e2053b610d49eeb929:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmZmU0MmZmZmU3NTA4OTQwZTcwNzQ3NGYwN2E5MDhkNDIyZTYxZDNiYmNmYTZkYTNkZTQ3ODQyZjdmNzQ4NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI5NTk5YmM2N2E0ODgyZGI2MTE1ZmI4NTEwNGE5ZjVkODQ3NTQ1ZDE4ZGRmMzMyZTJiMGE4YmM4OGRhMDY0M2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk5Njc5MzQ3MDRjM2UzY2UxOGVmMjY4NjEwYjEzNjdlOTI5Njc4ZGVmZDQwYzBiYzAwMTMxNTVkMzk2ZTQzMjcifQ"
         },
         {
@@ -271,7 +267,7 @@
       "statement": "兼容检测与 polyfill 覆盖的 API 集合并不重合：build.target 为 es2019 只降语法，运行时 API 由 polyfills.js 手补 Object.fromEntries、Promise.allSettled、Array.prototype.flat/flatMap、String.prototype.matchAll、globalThis；而 checkCompatibility 要求的 Object.assign 与 Array.from 没有 polyfill（缺则判为不兼容，用户仍可“继续访问”），反之 polyfills 补的几个 API 也不在检测列表里。",
       "evidence": [
         {
-          "resource": "repo://src/components/BrowserCompat.jsx#L152-L182",
+          "resource": "repo://src/components/BrowserCompat.jsx#L154-L184",
           "version": "repo-lines-v1:sha256:32fefd496af6c5467db11dd67754b25e93eb6dbc906f57d313c0dca0810f8088:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjMjVjZDc4OWM2MTk3ZDcxZjdmOTgwNjNkYTk5NTFhODgxY2FlOTVhOWJhYzAxODliNDZkZWM2MGU5MWE0ZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3ZDg2MzJlNTRlOTI5OGFiYjk1ODcyN2UyZDUxNDA4YWJhZjEzNjYwMzUzNzkxMDE0MGFiZjY1YjMwYWI2MTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyOTE3ZmEwODE3ZTlkMzI3MGM2OWI4ZjJiMTQ2ZmMzNjVlZDU1MzA5Mzg2NmZmMDFjZTRhOGUxMzY5ZTAyYWYifQ"
         },
         {
@@ -285,11 +281,11 @@
       "statement": "OfflineIndicator 与 InstallPrompt 只渲染在普通站点外壳里（与 NavBar、FooterBeian、AnnouncementPopup 同层），AppContent 的 /admin 分支直接返回后台路由，因此后台页面既没有离线/恢复/会话过期提示，也没有安装卡片。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L507-L513",
+          "resource": "repo://src/App.jsx#L509-L515",
           "version": "repo-lines-v1:sha256:595f7562cc4f84369f400fbbee900603426edf6adbff4bcd914f56aeb9650acb:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWY5MzBmOWYyNzhlZmU2YWE0ZWI0YmI4YjBlYTllYTE5ZjgxNTgzZGM4ODlmOTRiODUxMjM3YTRiZGMxMDYzYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2MwOGUyMzNiYjJmYjQwMmEyYmQxYzJkYzc5YzQ2NGVmODA3OTEyODFlZTFhNWFhNzMwZmEzZDU4YTgyMjMwMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjJkZmMyODQwMWM5YzM3NGQwMWQ1NGYxN2E2ZDIwNDJlZjA5MDAyN2JjNTQ0YzI4MzNkZmI5ZDE4NzMxMWJjOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzE2ODI0Y2YyN2FkMjNlYTZiYjg0ZjI5MDA4ODllNzcxN2M0ZGU5Y2VhZjYyMjZmYjQyYWYxODMwNDY3NzA1NSJ9"
         },
         {
-          "resource": "repo://src/App.jsx#L586-L592",
+          "resource": "repo://src/App.jsx#L588-L594",
           "version": "repo-lines-v1:sha256:c94e4d373281896ab490df9fa71dce427c0622358cd39745ac25ad8d15f46f8a:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGFiMjQxYzJjYmQzNzNiZWJmMjIwOWY1NzMwMzMzNTUwMzRlMTIwOTIxMWQ0NGExNDk0OThkYzM0MjdjYjQ3YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2RhNDUwNTdiNzQyMDI0M2M5YTIyYjFlYjBiZDQ4MWQwM2RhODY3NjlhNzYwZTU4OTljMmY2MGU1N2EzMzE2NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzY5NjI4ZmE3MWMxN2FkMTZiNjJkNjBiYzgxMTQwYjZmNTNjMGRlNWY1NGZiNWU1NjRkNjA0MjViOGU2YjQ5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGQwY2FiNWMxNTAxY2YyNWIzYmQ5NmEzNmUyYmUxMTQ3MTQyOGNjYTI5ZDVkM2UyMGY4NGFlYzgzY2E5MDg0MCJ9"
         }
       ]
@@ -297,6 +293,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-04T16:54:50.811Z"
+    "at": "2026-11-11T16:33:24.381Z"
   }
 }

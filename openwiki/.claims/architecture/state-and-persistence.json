@@ -1,24 +1,24 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:d5ab58bfd321418bbd255566be7eb4c5569b8b9df296d4708485ada74495c396",
+  "pageVersion": "sha256:c33c65d16c28d543f17d2b507cd04d2214d16802acd2f5fec60c879b7e839c9c",
   "claims": [
     {
       "id": "claim_16dd3a0d22174b259245ef778ec0b67d",
-      "statement": "前端不依赖任何全局状态库（依赖中只有 React 生态与 axios），全局客户端状态由 App.jsx 中 Theme/I18n/SiteSettings/Auth/Icon 五个 Context 持有，跨组件同步依赖 localStorage 键与 window 自定义事件两条通道。",
+      "statement": "前端不依赖任何全局状态库（依赖中只有 React 生态、axios、altcha、qrcode 与图标库），全局客户端状态由 App.jsx 中 Theme/I18n/SiteSettings/Auth 四个 Context 持有（原第五个 IconContext 已随自研图标引擎删除），跨组件同步依赖 localStorage 键与 window 自定义事件两条通道。",
       "evidence": [
         {
-          "resource": "repo://package.json#L16-L23",
-          "version": "repo-lines-v1:sha256:4b367fd78f509062d9d5f9979d367f26f6e5df27a4009a420c073a83be4d405f:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGY1ZmE5NDlhYjIzMDdkMzk4ZjAyODNhNDczY2E2OTczZjI3ZjA5NzA4NmM5NDExY2U2Y2EwODg2MjJlMzAyMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWRjNGRlN2VkMzVhMjMzNjQ1Mzk4NjRkYWRiOTM4Yjg3MjMzMzc5MTc5ZDYyOTJiOWZmNWY2MTlhNmMxMzE2NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2IwMDBmZjc3ZGEzMDBlMjk2MDgwMDQyYzRiN2YyYmU4NzhhNmQ4MWU2Yzc0ZTFmMmU0YjMwNTQzMmMxNjUzZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjg3MjQ1YTQ1ZDgwZWU1NDZjZmQ2ZGI4NWMzY2MxYmVlMjhhODA3YTYzODg1YTUzZGJiZDc0NTcwZTE2YzA4OSJ9"
+          "resource": "repo://package.json#L17-L31",
+          "version": "repo-lines-v1:sha256:624a670982625e62b3a51b59fcd7f43018fedb29ae58b239e7aa09ed1334efd5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhM2I0NjlkOWUwOTc1NzIyNDY2NjczNGM5ZWY3YjI1NGQ4ODUzNGY1ZDViYjcwOTg5NjA4MDVjNTUzZGMzMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyODhhZTE5NjcxMWE0M2U1ZTJjMGI0ZDBlOTUzZTgyZjg5Yzg3ZjI1ZWZiN2U5NTQxNmYyMzIwNjU1MDIwZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM2Y2IwN2NiMmM3MzMxZWE1OGI0Mzc0NzAwNDNiNzg4NjY5ZDZlMTExNDVmYmQ3N2ZkOWJlMWIxOWUxZTIxOWIifQ"
         },
         {
-          "resource": "repo://src/App.jsx#L621-L641",
-          "version": "repo-lines-v1:sha256:37a60f480c0d66a0b961b32067d2ec34f1945fa8f7984d8656af8689aa3c0244:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3MjE2ZThlOWMwYTFhNjhkMDZjMmZiYWE1ZmQyMTM5NDgyYjhlZmQwYTE5MzE1YjkxNWU2Y2NlODQ5ZDg5ZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0MmYxNTYyMjkyMzE1ODE0Y2IwZGQwODRhNDk4M2U0M2JjNzNkY2M2M2IxYjM4ZjM2YWI2ZDk4YjMxNTM1ZjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI5NTRmNTU4YTZkMzY2YWQ1ZTg2ZTFiZDhiNDVkYzYzYWY3ZTVkYTc5ZmNmM2Q1MzdjYTBlNDQyYjFiMzJhNGEifQ"
+          "resource": "repo://src/App.jsx#L622-L637",
+          "version": "repo-lines-v1:sha256:ffbe3b41b651bfc02676085a0931be10a5dc52b510927b92d9ffc100a37e90a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmYzMzZGE1MTNkZWZjMmZkZjg3YzNiNjY2OTkyYmMwZTUyMmZhZTA5N2YxMjYxZDg3MDIxOGUxNGY5ZTY5NzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmZTE0MDhjNWRjMzcyM2M2MGRhMmM0YTA3MmM0ZjBmNzc2ZjRkOTM5ZTc0YmIzOTFhNTI5ODAyMzM5ODhmODYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljZjcxZTI1Nzk0ZmMxNTA4NzA3OTMxOWI0MWFmZTk5ZjJjZjliMzFjMDdlZmEyZTFjYzEzYjQ1MzE1OWRmOTUifQ"
         }
       ]
     },
     {
       "id": "claim_bd217c98886344f8be9da3d4fc65bd03",
-      "statement": "五个 Context 各拥有明确的存储归属：ThemeContext 拥有 theme 与 accent_color，I18nContext 拥有 lang，SiteSettingsContext 拥有 site_settings_cache，AuthContext 拥有 user（并经 offlineQueue 间接拥有 offline_queue），IconContext 不持久化任何键。",
+      "statement": "四个 Context 各拥有明确的存储归属：ThemeContext 拥有 theme 与 accent_color，I18nContext 拥有 lang，SiteSettingsContext 拥有 site_settings_cache，AuthContext 拥有 user（并经 offlineQueue 间接拥有 offline_queue）；原 IconContext 不持久化任何键，已随自研图标引擎整体删除。",
       "evidence": [
         {
           "resource": "repo://src/contexts/AuthContext.jsx#L18-L29",
@@ -27,10 +27,6 @@
         {
           "resource": "repo://src/contexts/I18nContext.jsx#L22-L105",
           "version": "repo-lines-v1:sha256:f58026fd2db7f88ebc25ec8957447f84bab78c8c50671e3ae9306cae4c3923db:eyJzZWxlY3RlZExpbmVDb3VudCI6ODQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3ZmE4ZjJiMDlmMGE2NmNiM2RiZDg2NDJjY2JiNjE4OTU5OTk2N2I0MDZkZWFkZmNkMTY5NmNjY2I2ZWM0MTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3MjE2ZThlOWMwYTFhNjhkMDZjMmZiYWE1ZmQyMTM5NDgyYjhlZmQwYTE5MzE1YjkxNWU2Y2NlODQ5ZDg5ZGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRjYjNmY2VmM2FlMjI3NGE1OGQxYjVlM2U2ODQ5NTE4NDhlMTllNTFhYTQ3ZGZhYjYzMzM2YmQyYWQ4NmU0NDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5YWJmYmQwNjRlZTczZjEwNjE4Yzk5YjUyZWVmMWExYzA4OWNkY2NkNzE5ODlhZWJkZDkyNzFlOTRiODdkYzcifQ"
-        },
-        {
-          "resource": "repo://src/contexts/IconContext.jsx#L97-L159",
-          "version": "repo-lines-v1:sha256:f9239f56a3fd107fed2b3fb185ddb8aa598bca441df987e4beeddaf050de6bf6:eyJzZWxlY3RlZExpbmVDb3VudCI6NjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkM2I4ZTg3ZjE4NTI4NTNjNzc1ZmUzM2UxMTRlNmFhMjRhNDgxNGE4ODAxODdkMjMyNmRiOWIxOTI2YTI3ZDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxM2M5YWY2OGFmNWJhYzQ1NDViNDdmMmRlNGI1YWVjZmRkZDdiNDI3YWY2YTFmZjFjZjMxMDVjNTcyODJiOGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk3MzUwNTYzZDExMGNjMzk0ODlmNWY0ZjY4MWIxZTZmYTliN2Q0NWViMWNhOWYwMmEyZjRhYjdjMTFjZmIwMTYifQ"
         },
         {
           "resource": "repo://src/contexts/SiteSettingsContext.jsx#L6-L67",
@@ -47,7 +43,7 @@
       "statement": "AuthProvider 冷启动从不用 localStorage.user 预填 user state：initAuth 忽略传入的 storedUser，而是 fetchCsrfToken 后请求 GET /api/auth/me 覆盖 user 并重写快照，再串行 POST /api/user-sessions/create（失败 1 秒后重试一次）；initializing 结束前 AppContent 只渲染加载文案。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L499-L506",
+          "resource": "repo://src/App.jsx#L501-L508",
           "version": "repo-lines-v1:sha256:a6f48747e022d81eced9516268acd6d3d0f7d8d5f33de9c1da870111d4c62203:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDZkYTZkNDMxYWMzOGZiYWRhYzE2MWZkMjMxZDkzNmQ1NDJlMzY2MGYzMGUzMmU1MWZiODIxNTVmNDVjZDNlYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ5ZTEyNTQ2NDI1NTc2ZDNkZWFlOGM5YjlkYmYxMjhkNWQ2ZGRhZjVkN2ZlODU3OTM0OTI3ZGVmZmEzYjlkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWQ3ODY5YjlhYzM5MjRiMDk2YzQ4MWU3ODlmMzRiOGM4OGFkMDZiZmZhYmFjNmFhZjhjOTZjNWViNDg3NjkyZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDlmMTZhNjUwZjdhMmUxZmRmZWM5ZTk5YWJhNTQ3YWRjMTk2NjA5MDBhM2QwYjQ3ZGUxZmIwY2NjZjllNmM3NyJ9"
         },
         {
@@ -133,7 +129,7 @@
       "statement": "离线队列的存储契约是：条目按方法、URL 与请求体的拼接哈希去重，超过 24 小时的条目在读写时被过滤，单个动作重试超过 3 次后不再回写；入队目前只有一个来源——EpisodeDetail 在离线且评分请求失败时加入。",
       "evidence": [
         {
-          "resource": "repo://src/components/EpisodeDetail.jsx#L287-L295",
+          "resource": "repo://src/components/EpisodeDetail.jsx#L291-L299",
           "version": "repo-lines-v1:sha256:5285c5fd0f32c872e349e2e1444e6a24d0cf2c587e0c969a456004fb231b30db:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTljMTM1OTA2NjU2MzIzZDFjNWVhNDE2NTRlZTY2YWZiNTg1YWNkY2ZhZWFjYTEyMWQ1ZTMwYmYxOTNlZWRkNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWI2MmY2MGQ4NTkwYTU3OWNmNDZmOGQ2NzM3OGM0YzU3MmI5NjJjZWNjZGI5MGM3YTVmN2I0MmI5NjA3ODJhNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2RmY2I4ZDcyMTdlZmQ1YmI2MDMxMWUxZTEyM2VjNjE5MGRlODVhZDc0ZGJiYWQ5YWQwYzk4MTRmZTM1YTk3NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTFlMzcyNWRhMDAyYjQ2ZWQ4YjRkZTg4MDAzYWQ5NzEwZGNhZjE4ZDU3YzQ3MDFkYzNiZWZmMGIyYzVjYjEzZiJ9"
         },
         {
@@ -193,7 +189,7 @@
       "statement": "I18nContext 的 lang 解析顺序为 localStorage.lang（需存在于 translations 表）→ navigator.language 前两位 → zh；switchLang 不更新 state，而是写入 localStorage.lang 后整页 reload，以便 index.html 的早期内联脚本在 React 之前完成语言判定。",
       "evidence": [
         {
-          "resource": "repo://index.html#L34-L55",
+          "resource": "repo://index.html#L31-L52",
           "version": "repo-lines-v1:sha256:1ed3d7ea56190c5a0cfd8a7fe2a4a94d68d769723b5ef111aa4ba3cbb8d743b5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2YjhmNGUwMDg0MzkwOTc4MzgxZjVjOGIzMmEzNWEwMzc2N2M1MTE2MzY0YmY4YTJiMzA2ODk5NjYwNGFiNjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmODczZmMzYjJlMGRhMDk4ZDQxYWRkZmNiNmUzYTViNWQ0ZWRiZjZhMjYxMDE1MWM0ZDFlODFkMDZkOTg2ZjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE0OTRjNWU5MjRkMTE4MmIyN2ExNzY1ZTdjMTZkMTlhMDUwMmE1YmVjMmEyMjkyM2QwYjAwNTczYzM2N2I5MjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3OGUzYmZkOGJjZDE3ZDUzMTYwZTY5YmRmZWJhNTZmYzM3ZGQ4ZmEzMjNkMjU1MjZhMGM1OTc2MDdkYmJjNmUifQ"
         },
         {
@@ -231,7 +227,7 @@
       "statement": "site_settings_cache 的唯一主动失效入口是 refreshSettings（复位 ref、置 loading 后重拉），目前只有 AdminSiteContent 在保存站点内容后调用，因此其它标签页或管理员看到的是最多滞后 30 分钟的缓存。",
       "evidence": [
         {
-          "resource": "repo://src/components/AdminSiteContent.jsx#L175-L183",
+          "resource": "repo://src/components/AdminSiteContent.jsx#L177-L185",
           "version": "repo-lines-v1:sha256:f78c0716eba9b9bf18cb4968d7263706801d9095aa3f8ae2bc36154b385c3e5a:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWI1Nzc2MDQzNDc1NDYyYjYyNDMyMTJhYjk4YmY0MGE3ODE3NWE2NDc3ZWEyYmZlZTljYTI2OGViYjQyY2JiNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTI4ZTFiYzM4ZjZlMTU0YjJlMmIwMzBmMzcyZTRiZmRhODA5ZmViMzVmNDJjMTc5MjQzMWYyNDYzM2Y5ODdjNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmUzNjY0NzQyOWU4ZmZjY2EzMGVlNDkwOTcxODY4ZTg4MGE3M2RlNTJhNTkxMTQxNDJkYzc3OGM4NWI0NTM1ZiJ9"
         },
         {
@@ -241,30 +237,16 @@
       ]
     },
     {
-      "id": "claim_b3721efc2b704048a1c7bb504206fa9d",
-      "statement": "IconContext 完全无持久化：图标列表与映射来自 GET /api/icons/list，主题图标覆盖按登录态取 /api/themes/my/selection 或 /api/themes/active，并在 user 变化或 theme-selection-changed 事件时重新拉取；合并时 THEME_PROTECTED_ICON_KEYS（misc.logo）永远保留全局映射。",
-      "evidence": [
-        {
-          "resource": "repo://src/contexts/IconContext.jsx#L14-L21",
-          "version": "repo-lines-v1:sha256:6539ac5a78743454006d4f2baeb7cdb3cfe1eda9debc471928acb8a85ed9f523:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjQ5ZDNmZDQ1MzViZWJiNzE1ODU2MTZkMzIyYmM4ZjJhZWJhYWFlYjQzMzMwOWU2NjlkMGNlODUzYzM5ZjU0NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDdmZDNjYmY4NTNkZjEyZWU3ODc1MGQ1ODUwNjZmYzAxNWEwNmE5MTAzOGNjMzcxMDQ2YTk0YzA2ZjNhN2Q3ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzYzZTc3OTRiODJkODE3MzE4NWIwZTIwODY0Yzg0ZjExZDE3NWM4YzQ1M2JmMWY5ZGZmN2FmYjM3MTA0OTkyOSJ9"
-        },
-        {
-          "resource": "repo://src/contexts/IconContext.jsx#L97-L178",
-          "version": "repo-lines-v1:sha256:1b0eaba840b2bc8e3b0d1e3a72003d8d363664592dec32479f291e2f1ceacaac:eyJzZWxlY3RlZExpbmVDb3VudCI6ODIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkM2I4ZTg3ZjE4NTI4NTNjNzc1ZmUzM2UxMTRlNmFhMjRhNDgxNGE4ODAxODdkMjMyNmRiOWIxOTI2YTI3ZDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxM2M5YWY2OGFmNWJhYzQ1NDViNDdmMmRlNGI1YWVjZmRkZDdiNDI3YWY2YTFmZjFjZjMxMDVjNTcyODJiOGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3YmU1YWZhNjVlZTBlMDFmYjFhY2RhNDIwOGUyMzdlYWRhNWZjZjQzMzNlNzA3ZmUyY2I5MzNjYzQxMjVhMGUifQ"
-        }
-      ]
-    },
-    {
       "id": "claim_852e1e38f53f4c25852440922e90df16",
-      "statement": "应用或取消主题的写入顺序是契约：PUT /api/themes/selection → 用响应的 backgroundPrefs 调 updateUser 使壁纸立即生效 → 响应带合法 accentColor 时 setAccentColor（写 accent_color）→ 最后 dispatch theme-selection-changed 让图标刷新。",
+      "statement": "应用或取消主题的写入顺序是契约：PUT /api/themes/selection → 用响应的 backgroundPrefs 调 updateUser 使壁纸立即生效 → 响应带合法 accentColor 时 setAccentColor（写 accent_color）。图标引擎删除后不再派发 theme-selection-changed 事件。",
       "evidence": [
         {
-          "resource": "repo://src/components/ThemeColorPicker.jsx#L81-L114",
-          "version": "repo-lines-v1:sha256:6983bb1b81cdb202e1e73f590807f24ccaa4a52ec6d0e2d7f21f165a24730078:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhNzBjNDlmMjkxNGE0OTFmMjcyN2FlYWI3OGM4ZDQ4ZDcxMGU5NzVjZWNiNTVhZTQ1MjMxMTkyYzUwNDI4NjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2NDVmZDc5ZjRjM2JhMzdjYzJhNGE0NzUwZmJlZjM3NjZiYWU3MWM1MDE3MjQ1ZDZmNTkzYjJiZGI2ZmMyNjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3YWZkNTM2MjE3ZjRlMjMyMGIwZjYxZDQzN2U4ODcwZTI3ZDA2NzcxYmFhNzZhM2QwZTUxNTE2OTkxMmUyMTcifQ"
+          "resource": "repo://src/components/ThemeColorPicker.jsx#L83-L95",
+          "version": "repo-lines-v1:sha256:73fba61f8205eb4b4605ffd40ed4569095113b5a14e171bc916e4798bf2a2a1c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwNTFiYWI2ODNmODlkN2ZmNzEwNDZmNmViMDUxNDFkOTdiNDZiZTk1NmQ3Y2I0ZmVhMzFlNTZiZjk5YTZkNzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlOTI0OWZlODIzNTg3NWJlYjYyZmFiM2U0YTMwODkwZWNiODAwNjdhZDFiMzQwOGJkZWJlZGU2YWVlNGExYzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjOTQ5NmMyY2I2Y2E2OGU3ZjVkYjQzMWMxMDZmZTBmODgxNTExZGRjNTZkM2I4OTdhNDc1MGZkNjViNDcwOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2MjJjZWZlZDYwMzNjNTBkZmE5NThlMGJjZTA3ZjAxYjI0ZjlmNDJjYzZjYzA0NjM4MjBlNmQxMTEyMGNmOTQifQ"
         },
         {
-          "resource": "repo://src/components/ThemeWorkshop.jsx#L93-L116",
-          "version": "repo-lines-v1:sha256:50bc96d49d97c7f66b2d79e9dda135573211606a960ea7cd159498b9d601752a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjNWEwNmQyNGMzMmQ0NzVhOTc0ZWQ3N2QzNGZiMGNmZTk4MjJkYjg0N2QzMDU5Y2I4ZjA4NDI0ZWQzZWUyMzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2NjE3YzU5NWQxYzc0NjA2MDlmMGMyZGMxMDVlNDg1MmU0OWIwMWY4OWI2NTQzNDhhYWU1YWVmYjE0ODVmYzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYwYTQyMjFkOGY5YzdiYzY1YzA2ZGEzMDUzOWU3YjVjOTgyY2E1YjVjNjE3ZTBmN2FkM2E4NmE0NmE0MjBhN2YifQ"
+          "resource": "repo://src/components/ThemeWorkshop.jsx#L86-L96",
+          "version": "repo-lines-v1:sha256:9f3cc09e8fc01edf494386addbf4876e2875ede5bacf3230d88b9268c9355c15:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNDgwY2I4ZWZhODg5YzQ2NTA0MWNkZDI5MjEzNjcwMzEyZmNlZTM4MTM4MDY1OWUyODQzYjk4OGY2OGI3MWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA3ZmZkZDkwN2M0ZDY5YWVkMjE5ZWY0NjBhZmFjYWUyZjczZWM5MmI4M2E3NzU4NzliMDcwZmI4YjAyOTVhNTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU2NjgxMjJiMDgxZmE3YThkNDE5YmI5NTRiNGE4MTlhYjZmYzgxMGFiYTI1NjE3ZWZiMTM1ODI5ZWRkNTFlM2UifQ"
         }
       ]
     },
@@ -273,27 +255,27 @@
       "statement": "组件级 UI 记忆键由单个组件自读自写、不进 Context：search_history 上限 10 条、fdt_dismissed_banners 与 fdt_dismissed_announcements 各保留最近 50 个 id、pwa-install-dismissed 由 InstallPrompt 与 Settings 共写，home_scroll_pos 则放在 sessionStorage 并只恢复一次。",
       "evidence": [
         {
-          "resource": "repo://src/components/AnnouncementBanner.jsx#L6-L25",
+          "resource": "repo://src/components/AnnouncementBanner.jsx#L7-L26",
           "version": "repo-lines-v1:sha256:2a8a0908775bc960db69ca5fd92116db88ef5f798b8581ab8dde66c94b501202:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3NGQzOWRkZTliZWJjMDkwZjVjOGZjZjc5ZGVkYzRlNTBjYTM2OGY4Y2IwM2NjODAwM2Y1OTZlYjI1ZmUwN2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIwMWMyODgyODk4ZTRjNjIwNjNkYzE5MzdkZjMxYTEzYzAyMWFiMTgzNGQzNzg4NWM4YmZkZWMyYzk3ZGM5MTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE0MWZmZWMzMDQ2YjA3MzZmOGRkZTk0NjkxMGRlZjBmZTY3YmNmOWE1ZTY5ZTE2MTgzMmEwNmQ0ZWFmZDQ4NjUifQ"
         },
         {
-          "resource": "repo://src/components/AnnouncementPopup.jsx#L7-L28",
+          "resource": "repo://src/components/AnnouncementPopup.jsx#L8-L29",
           "version": "repo-lines-v1:sha256:7da4793454e2e250d259f3969a78482fa3739abadae211f903e4527c504c8954:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0YWU1YzBjOWZmMWMwNjI1MGY5MDFmNGUyZDU1MWIxOWNkNDBiOGUxNTBlZDhlYWM0YjliZTQ4ZjY5MjlmNmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJiZmQyZGFjZjU0OGI1ZTI5NGZmOTY0ZTg4MTU3Mzk1ZjI0YjA4YjZlYmMxYTAwMDZhODkyOTVmNGE3OGRmYTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyN2ZkNDNlM2IyM2M2Zjk5ZDk1MGM2MjlkMTdhZDQzYmE4MWE5MWNkNjg3ZGQwMDU5MDU2MTVkZTk1OThlOTcifQ"
         },
         {
-          "resource": "repo://src/components/EpisodeSearch.jsx#L7-L30",
+          "resource": "repo://src/components/EpisodeSearch.jsx#L9-L32",
           "version": "repo-lines-v1:sha256:43c0478d31964855b8d0e746e10f2962399c3297b05d5def5e7543c3592c737a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1NjVjNDNmMjE4MmVjMzZkZjFjZDBmYmY2MjI2ZGU5MjY3YTM3ZDllZWNkOWZkZmQ3NjFmNTllMjdjYzQxNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiYzdkODc5Y2MzZjY2MjY3ZGFkYzY0MGNmMjY2NzIxYmViMmY5N2U3NzZkOWZhYTlkYmZmZTMwNGI1OWY2OGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjViY2Y0YzY0ZWMwNWUyYTBjMzBlODU2MjgwNjE1YzdlMzEyMjkyYjk2MDk4NDJiNjhkMDRmODBjODJhOTAxZTAifQ"
         },
         {
-          "resource": "repo://src/components/Home.jsx#L73-L99",
+          "resource": "repo://src/components/Home.jsx#L74-L100",
           "version": "repo-lines-v1:sha256:3322b62a664bbc58b8393a55c9896b3385a1462aaa7561f9ce4e8ffd253c861f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhMmMxM2IzOTYzNzBkYWFjYTRkNTZiZjUwOTJiNzUxMDU4NzEwMGJjNDRjM2E4Nzk0MThlNGJiNmNmN2UwMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM1MGRiYzQyZGMwNDU4MTQwYmRhZTE4OGE0MDgyODJhYjczMThiM2ZkNzJlMjk2ZWM4OTQzZmUyNzhjNjVjODQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2YmM4MDNmZmRjYzRiMzhiOTEyOThkYzcyM2I1ZWM4MzBmZjVhMzAzYjIyOTkxZGEzMjBiMTI0YTBhNDdlNGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0YzFjNjc3MmRiNWY0ODViNDVmYzVjYTE1ZTkyOTk4N2E4MDFmZTJjOTNiNzExNmNkODRhZTI5MWJhMjZmNDkifQ"
         },
         {
-          "resource": "repo://src/components/InstallPrompt.jsx#L12-L55",
+          "resource": "repo://src/components/InstallPrompt.jsx#L14-L57",
           "version": "repo-lines-v1:sha256:0f6702aa5cf466ba8d0284efdd486b5cd50999a0c77843cda23268e5ef978354:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFiZDczZjA4NmMwOTdhZWZhZDZlNjUzYTA0NzA1Yzk5ZWExMGQwNjRjY2M4YTRmYzU2ZWY0MjZmMDg2NGExMjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhMWI2MWUyMjY4NWU1N2Q0NmMxNWI5MWFlN2NjMWNiZmQzNjFiMTBjNjhjNGIwNjAyYWYyZWM2NmIxNzg3MTcifQ"
         },
         {
-          "resource": "repo://src/components/Settings.jsx#L52-L62",
+          "resource": "repo://src/components/Settings.jsx#L54-L64",
           "version": "repo-lines-v1:sha256:a46dc9a3d1275804eb009603b996cf208c8d8ced0b0ec772022590fbfb510eec:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjN2ExYmNhYzA1OGQ2NzJhN2ExZDIzNGFjMjc2NjEwZWJmODU1OTI5Njc1YWQzNjM0Y2Y1OGZmZjIyNWYxZmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUxZTM3MjVkYTAwMmI0NmVkOGI0ZGU4ODAwM2FkOTcxMGRjYWYxOGQ1N2M0NzAxZGMzYmVmZjBiMmM1Y2IxM2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwNTZkNThkZTY5Njk4MzZlZjgxZmRmYmZhMjdlMjAyOWRhYWZhMmUyZjI0YmFhNjMwOWE4NzUxZTRmNGE3YWEifQ"
         }
       ]
@@ -303,11 +285,11 @@
       "statement": "浏览器兼容性绕过的键是 browserCompat_bypass_ 前缀加 navigator.userAgent 的 32 位哈希，与用户身份无关（同浏览器所有账号共享）；键存在时直接视为兼容并跳过全部检测，写入发生在继续访问 1 分钟后反馈确认使用正常时。",
       "evidence": [
         {
-          "resource": "repo://src/components/BrowserCompat.jsx#L16-L45",
+          "resource": "repo://src/components/BrowserCompat.jsx#L18-L47",
           "version": "repo-lines-v1:sha256:ed03baad9aff17f80a087db57006811b38314aa224dae745f108cb4896348381:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI4M2ZiZjkzNDY1ZjNhOWIxZGY4MWU1YWExMTk0Y2ZkMmFkZGY2NzQ3YzA0NThhYzZlNTQ4ZDg3OWJkYTQyNWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY0ZjM5ZTI2NzdjNDg3MjQzZGIzMGJmZDQ1MjUyYmRjYzM4NTgwYjMzNzE0OTdkZDUyNzdiOGQ2MWIxMzA0MDQifQ"
         },
         {
-          "resource": "repo://src/components/BrowserCompat.jsx#L74-L85",
+          "resource": "repo://src/components/BrowserCompat.jsx#L76-L87",
           "version": "repo-lines-v1:sha256:8e99db091aa255edc6db32a964db05bc765fb3b5be10abbb43493a7ac0209680:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlNTgzNDRjNWE2NWEzNjNmNmM5Y2Y2YmNhMjM1ZTlhYjI4MWE3NTI4ZmJlNWUxY2JjZTk2YzdlYzU4ZTY0YzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlZTA5ODIxMzliMDhjM2EzMmVjZGFiZWFlZGY4MmRlMWNlMjFkYWMxMTU1ZTUyZGIxOTYyMTNlOWYzN2RkYzkifQ"
         }
       ]
@@ -377,15 +359,15 @@
       "statement": "_icp 是 ICP 备案号的跨层缓存：index.html 的旧浏览器遮罩用 XHR 拉取后写入并在渲染时读取（读/写两侧都先经 escapeHtml 转义再拼 HTML），React 侧的 BrowserCompat 在 API 成功时同样写入、失败时从该键回退。",
       "evidence": [
         {
-          "resource": "repo://index.html#L159-L166",
+          "resource": "repo://index.html#L156-L163",
           "version": "repo-lines-v1:sha256:1a4e60f7df1fb32736423de3fca11596ff415cb49cd6fafad56ad3f1360e07a5:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDI1ZWNjNDViZGRjNzFlNDMzMTAzMzFjNTg1ZDBmM2E4ODRiODNiYWVhYWQ1OGRjZDZjY2FiNzVhNzg1OWRjOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODgwMDVkNTcxMDZhMzYyZWIwMDBkYWYzZGE0Njc0YzgyYjUxOGZmNWEyZTJmNjdlZThlNzU3YTMzM2MyYWY2NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGM5MDI2ZTFkYmYyZGM5NzY2MTMzNmJhOTI0OGE3NjYwZGIxMmM5ZWU1MTcxZTdiOWYwNzU3ZWI0NTYzM2ZkZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjBmZDNmYzY2YjVjY2MzZjQ5MzJlNjYwNTI5NmY3N2U0OGE4NDI4ZDdkZTc2OTliN2ExOWRjYTc3ZjE4MzZmNyJ9"
         },
         {
-          "resource": "repo://index.html#L206-L235",
+          "resource": "repo://index.html#L203-L232",
           "version": "repo-lines-v1:sha256:cdb5ac5290cefc03954cf0781c655df114c6d0612f4e8c08cdf3d93737dd5349:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1YmEyMGI2MDgxMzFiNTUyZjViYmY1MTI1N2QzNTY4NTQzNTc1MmExYmMxN2ViOTBiZjMzNDY2MDBkNGJmNTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiY2U3ZDdmNjMzNGU0Nzk2NDFhZDA2NDhjMTFhN2YxZDM0OGI1YTYwMTNkZDVmMjE0ODVhYWE2ZmU5MzFmN2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmMzBiNDAyYjI0MzJkMjMzNDQ3YjY1YjE0NzlmYTAxYWNmZjllN2M1YTQxYWU4M2Q4NzJmOTIxMjUwZDVjODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2MDM2N2Q0ZjQxZjFhY2NjNDExMmVhYzM1N2IzMDU3Zjc2MjcwMzE1NjFmMjIzZWQzNThjNjgwZTUwYTZjM2MifQ"
         },
         {
-          "resource": "repo://src/components/BrowserCompat.jsx#L213-L232",
+          "resource": "repo://src/components/BrowserCompat.jsx#L215-L234",
           "version": "repo-lines-v1:sha256:c865571de24bd923224835582999abf5a3d43745144972da3bbf003e259690ff:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzZWE4YTI5MDc1NmM2M2UzYTdkZjMwZTQ4MDUzODE5OWUyZTI4ZGUwYmI0NDZhMDgzNjQzNzhjYjA1NjgzMWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJiNTE0NjNhMzAwMmMxMDY1N2UwOTIzOGM1OWJkOTAyMGE3OGQ5YWE0MDZiMmNlODMzZDk0NTUxZWU3Yjg1OTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA5OGRmOGU1YmQ5ZWQ5MDNjYjNhMGZiMjVlM2FkMGJjOTY4NGM2ZmU3MGZkN2ExMWIwN2ZlMzU0ZTk5ZDMyNTkifQ"
         }
       ]
@@ -395,7 +377,7 @@
       "statement": "仓库没有配置测试运行器（脚本仅有 dev/build/lint/preview/generate-icons），状态与持久化契约的验证只能依靠 npm run lint 加手动场景，例如登出后刷新、断网评分后恢复网络、切换 system 主题后修改系统外观。",
       "evidence": [
         {
-          "resource": "repo://package.json#L7-L14",
+          "resource": "repo://package.json#L10-L17",
           "version": "repo-lines-v1:sha256:8c9ac56b88e52a26308029474548168524d5dc0ac548e79957b4c728c1af7e84:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmEzYjQ2OWQ5ZTA5NzU3MjI0NjY2NzM0YzllZjdiMjU0ZDg4NTM0ZjVkNWJiNzA5ODk2MDgwNWM1NTNkYzMwNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzUyMDMzNGJlN2IxYjUyMmU5YzNjNzU0N2Y4OWZkMDk0ZjE1MTAxNjMwOWY3NDk0YTdkYmMzNjg2MzIwMmJmYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjgyODNlNjM2ZmRkYWY5OWQxZjExZDk3MmRmYWI0MWU5NjUwNzVkZDNlODQyOTQ0YWQ4MWViMjA1NTQ2ZDU1NSJ9"
         }
       ]
@@ -409,20 +391,10 @@
           "version": "repo-lines-v1:sha256:28013a1c196c7d1e7bc559337bac353776838309871128d574363658cc2692cf:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwMWIzYmU1ZGZkNjZjMzZlMDEwZDZjM2RmZDNjZDk1NzliZGJmODQ5NjU0ZmUzMDk0YzcxNjY2Y2NhMWQxMGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU4MjAxNzlmMGMwZmZhZTRiMmM4YTg2MjYyYjUxZWIxOGQyMTAxMGRjODYwOGRjNTFkZDc3MTJhOWMwNjM3ZWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ2N2ZlNzZiMGI1MzI1NDU1MzRjMjZkYjBhYmQ4MDk0YzA2MDU3ZjZlZDllMDUyMmYzYzNlNzVkNDZjNmQzMzgifQ"
         }
       ]
-    },
-    {
-      "id": "claim_6a6991b6efbb4951b203fe64add9b2a9",
-      "statement": "IconContext 的 sanitizeSvg 清洗规则已强化：移除 script/style/foreignObject/iframe/object/embed/link/animate/set/discard 节点、on* 事件属性，并按协议移除 href/xlink:href/src 上的 javascript:/vbscript:/data:text/html 值（含未加引号属性写法）。",
-      "evidence": [
-        {
-          "resource": "repo://src/contexts/IconContext.jsx#L61-L90",
-          "version": "repo-lines-v1:sha256:cad333343dbf01f125a3d777acd523f6854c5104796a1fe77e4f0d722c49538c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1Mjk3ZGUyZWI3NDFhNjlkZWQ2OTRkZWFmMzY4ZGEyMWQ2MjliNDJjZTZjNDkyNjc4MWZhYzY2ZTQ0NmZlYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2YTMwZDZjYmI2YzgwZDgwYWM3M2NhYTEzYTQyOGU1ZmQ1NmE3OTZjNWVhYzVkMjQxMzgwNTNkZDc2Mjc3YjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhNzU4MjIzMDRhYzBlYzg5Y2I4NTU3NWRhNDI3ZTFhMGUwNGI5ZTI0YTRhYzUzZDk5MmZhZDYxNWJhOWIyMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU2YWU3MzBkOGJmNTdiNGNlYmVhMDYxNWRhMTRjMzFmNGE2YzYyMzBhYmVkYTExZTBiNzZjNGJhNDMzYTBlOTQifQ"
-        }
-      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-04T16:54:50.811Z"
+    "at": "2026-11-11T16:33:24.381Z"
   }
 }

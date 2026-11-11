@@ -30,8 +30,6 @@ sources:
     resource: repo://src/components/TwoFactorPage.jsx
   - id: openwiki-source-a43f536adabeb8d0bed5bda9
     resource: repo://src/components/UserDevices.jsx
-  - id: openwiki-source-d2b2001ac5199c100cadf66d
-    resource: repo://src/components/VerifyEmail.jsx
   - id: openwiki-source-76eb2a4ce40825158dfe7bc2
     resource: repo://src/components/VerifyEmailChange.jsx
   - id: openwiki-source-9793b3dd98a0e62ec68a07c3
@@ -47,7 +45,7 @@ sources:
 generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-04T16:54:50.811Z
+    at: 2026-11-11T16:33:24.381Z
 ---
 
 # 认证与账号体系

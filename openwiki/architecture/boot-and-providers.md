@@ -5,7 +5,7 @@ description: 前端从 index.html 内联脚本、main.jsx 模块副作用到 App
 tags: [boot-sequence, entry-point, react-context, provider-tree, error-boundary, csp, security-headers]
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-04T16:54:50.811Z
+    at: 2026-11-11T16:33:24.381Z
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
@@ -27,8 +27,6 @@ sources:
     resource: repo://src/contexts/AuthContext.jsx
   - id: openwiki-source-7898acfb0042c03f592a292f
     resource: repo://src/contexts/I18nContext.jsx
-  - id: openwiki-source-67f450c07acbf8e852c93e69
-    resource: repo://src/contexts/IconContext.jsx
   - id: openwiki-source-a179f998ae5318f35e50729c
     resource: repo://src/contexts/ThemeContext.jsx
   - id: openwiki-source-7c8446b7383bfa65b6d9e1b7
@@ -41,7 +39,7 @@ sources:
     resource: repo://src/utils/polyfills.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
+generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
 ---
 
 # 启动链与全局 Provider 树
@@ -71,7 +69,7 @@ flowchart TD
 
 **旧浏览器兜底遮罩。** body 末尾第二段内联脚本刻意只用 ES5：先给缺 `JSON` 的环境补一个 `parse`/`stringify`，再用 UA 判定 `MSIE|Trident`（IE）与 `Edge/\d+` 且非 `Edg/`（EdgeHTML 旧 Edge）；命中就构造一个 `z-index: 2147483647` 的全屏遮罩，内置中英双语字典、语言切换按钮（写回 `localStorage.lang` 并重绘）与浏览器下载入口，并通过 XHR（IE 下回退 `ActiveXObject`）请求 `/api/site-content/about` 取 ICP 备案号，写入 `localStorage._icp` 供后续复用。`localStorage._icp` 回显与 API 返回值回填这两处 `innerHTML` 拼接，都先经过脚本局部定义的 `escapeHtml()`（`&<>"'` 全量转义）再插入，防止站点配置里的 ICP 字符串破坏遮罩结构。注意它并不能真正「中止」启动：对 IE 起作用只是因为 IE 不执行 `type="module"`；旧 Edge 可能会照样加载并挂载 React，只是被遮罩盖住。真正的第二道闸门是 React 层里的 `BrowserCompat`。
 
-**CSP 与运行期安全头。** head 里的 `Content-Security-Policy` meta 是这份前端唯一的运行期安全策略，以 `default-src 'self'` 兜底、再逐项放开：`script-src 'self' 'unsafe-inline' blob:`（内联早期脚本与 `blob:` 依赖 `'unsafe-inline'` / `blob:`）、`style-src 'self' 'unsafe-inline' fonts.googleapis.com`、`img-src 'self' data: blob: https:`（`https:` 通配放开所有 HTTPS 图片源）、`font-src 'self' fonts.gstatic.com`、`connect-src 'self'` 加上三家翻译 API、`frame-src 'self'` 加上 B 站 / YouTube / niconico 播放器、`object-src 'none'`，并以 `base-uri 'self'`、`form-action 'self'` 收尾。同层的两条配套 meta 构成运行期安全声明的其余部分：`<meta name="referrer" content="no-referrer">` 让全站出站请求不携带 Referer，`permissions-policy` 显式禁用 camera / microphone / geolocation / payment。这意味着新增任何第三方资源都要同步改这条 meta：新的翻译/接口域名要加进 `connect-src`，新的播放器域名要加进 `frame-src`，新的脚本域名要加进 `script-src`；图片因 `img-src` 已放开 `https:` 通配，一般不需要再动（此前页脚引用外部 HTTPS 图标会被拦截的问题因此消除）。
+**CSP 与运行期安全头。** head 里的 `Content-Security-Policy` meta 是这份前端唯一的运行期安全策略，以 `default-src 'self'` 兜底、再逐项放开：`script-src 'self' 'unsafe-inline' blob:`（内联早期脚本与 `blob:` 依赖 `'unsafe-inline'` / `blob:`）、`style-src 'self' 'unsafe-inline'`、`img-src 'self' data: blob: https:`（`https:` 通配放开所有 HTTPS 图片源）、`font-src 'self'`、`connect-src 'self'` 加上三家翻译 API、`frame-src 'self'` 加上 B 站 / YouTube / niconico 播放器、`object-src 'none'`，并以 `base-uri 'self'`、`form-action 'self'` 收尾。曾经的 Google Fonts `preconnect`/`<link>` 与对应的 `fonts.googleapis.com`/`fonts.gstatic.com` 放行已随「全站改用系统字体栈」一并从 `index.html` 删除，CSP 里不再有任何字体外域。同层的两条配套 meta 构成运行期安全声明的其余部分：`<meta name="referrer" content="no-referrer">` 让全站出站请求不携带 Referer，`permissions-policy` 显式禁用 camera / microphone / geolocation / payment。这意味着新增任何第三方资源都要同步改这条 meta：新的翻译/接口域名要加进 `connect-src`，新的播放器域名要加进 `frame-src`，新的脚本域名要加进 `script-src`；图片因 `img-src` 已放开 `https:` 通配，一般不需要再动（此前页脚引用外部 HTTPS 图标会被拦截的问题因此消除）。
 
 ## 阶段二：main.jsx 的模块级副作用
 
@@ -91,7 +89,7 @@ React / ReactDOM → App → './utils/polyfills' → './index.css'
 5. **`beforeinstallprompt` 提前捕获**：React 挂载前该事件就可能触发，一旦错过就无法再次唤起安装提示。这里全局 `preventDefault()` 后把事件存到 `window.__pwaDeferredPrompt`，并派发 `pwa-install-available` 自定义事件；`InstallPrompt` 挂载时先读全局变量、再订阅事件，两路兜底，安装成功后会把全局变量清空。
 6. **原生表单校验提示拦截**：文档级 `invalid` 监听（capture 阶段）`preventDefault()` 掉浏览器的原生气泡，改从内置的 `VALIDATION_MSG_MAP`（`valueMissing` / `typeMismatch`(email/url/default) / `tooShort` / `patternMismatch`，中英两份）取文案，语言取自 `document.documentElement.lang` 前缀而非 React i18n；随后 `setCustomValidity(msg)` 让元素保持 `:invalid` 样式，并在元素后面插入 `<span class="validation-msg">`（样式见 `index.css` 的 `.validation-msg`）。`input` 监听用 `requestAnimationFrame` 合并高频输入，清 `customValidity` 并移除提示。两个隐含耦合：提示依赖 `nextElementSibling` 的 DOM 结构，且这套文案表是独立于 `src/locales/` 的第二套字典，新增约束类型需要两处同时补。
 
-`main.jsx` 末尾用 `createRoot(...).render(<React.StrictMode><App /></React.StrictMode>)`。StrictMode 会在开发环境双挂载 effect，这也是 `AuthContext` / `IconContext` 普遍使用 `AbortController`、`SiteSettingsContext` 用 ref 守卫重复拉取的原因。
+`main.jsx` 末尾用 `createRoot(...).render(<React.StrictMode><App /></React.StrictMode>)`。StrictMode 会在开发环境双挂载 effect，这也是 `AuthContext` 普遍使用 `AbortController`、`SiteSettingsContext` 用 ref 守卫重复拉取的原因。
 
 ## 阶段三：App.jsx 的 Provider 嵌套
 
@@ -101,8 +99,7 @@ flowchart TD
   T --> I["I18nProvider"]
   I --> S["SiteSettingsProvider"]
   S --> AU["AuthProvider"]
-  AU --> IC["IconProvider（useAuth）"]
-  IC --> EB["ErrorBoundary（static contextType = I18nContext）"]
+  AU --> EB["ErrorBoundary（static contextType = I18nContext）"]
   EB --> BC["BrowserCompat（useI18n）"]
   BC --> AC["AppContent（useAuth / useI18n / useSiteSettings / useLocation）"]
   AC --> NEB["NavBarErrorBoundary（static contextType = I18nContext）→ NavBar"]
@@ -116,12 +113,11 @@ flowchart TD
 | `ThemeProvider` | 主题模式、accent 色、CSS 变量 | 不消费任何其他 context，只读写 `localStorage` 与 `document.documentElement`，可放最外 |
 | `I18nProvider` | `lang` / `t` / `switchLang` | 所有文案消费方、两个 class 错误边界的 `contextType`、`BrowserCompat` 都在其内 |
 | `SiteSettingsProvider` | 运行时站点配置（localStorage 缓存 30 分钟） | 顶层设置消费方（NavBar、Home、页脚、`AppContent` 的标题/manifest 副作用）需要它 |
-| `AuthProvider` | `user` / `initializing` / `login` / `logout` / `updateUser` | `IconProvider` 与 `AppContent` 都用 `useAuth()`；放在 `SiteSettingsProvider` 内侧是既有约定 |
-| `IconProvider` | 图标映射 + 主题图标覆盖 | **硬约束**：内部直接调用 `useAuth()`，移到 `AuthProvider` 外面会立刻抛 "useAuth 必须在 AuthProvider 内使用" |
+| `AuthProvider` | `user` / `initializing` / `login` / `logout` / `updateUser` | `AppContent`、`useNotifications` 等大量消费方都用 `useAuth()`；放在 `SiteSettingsProvider` 内侧是既有约定 |
 | `ErrorBoundary` | 渲染期错误兜底 | 必须包住所有可能崩溃的 UI，但又必须在 `I18nProvider` 之内才能拿到 `t` |
 | `BrowserCompat` | 兼容性闸门 | 用在 `useI18n`；不兼容时直接替换掉子树 |
 
-调整嵌套顺序会直接改变「谁先拿到 `user` / `settings` / `lang`」以及每个 Provider 的重渲染范围：例如把 `SiteSettingsProvider` 挪进 `AuthProvider` 内侧，站点配置的消费方会多受一次 auth 状态变化影响；把 `ErrorBoundary` 提到 `I18nProvider` 之外，兜底页会退化成打印 key（`this.context` 为 `undefined` 时的 fallback `t`）；把 `ThemeProvider` 挪到内层则会让 `IconProvider` 等更早渲染的节点先经历一次无主题变量的提交。**改序前先确认目标 Provider 的 hook 依赖和兜底渲染是否仍被满足。**
+调整嵌套顺序会直接改变「谁先拿到 `user` / `settings` / `lang`」以及每个 Provider 的重渲染范围：例如把 `SiteSettingsProvider` 挪进 `AuthProvider` 内侧，站点配置的消费方会多受一次 auth 状态变化影响；把 `ErrorBoundary` 提到 `I18nProvider` 之外，兜底页会退化成打印 key（`this.context` 为 `undefined` 时的 fallback `t`）；把 `ThemeProvider` 挪到内层则会让更早渲染的节点先经历一次无主题变量的提交。**改序前先确认目标 Provider 的 hook 依赖和兜底渲染是否仍被满足。**
 
 另外两个与顺序相关的首帧事实：`AppContent` 在 `initializing` 为真时只渲染 `t('common.loading')` 文案，而 `initializing` 要等 `AuthProvider` 的 `fetchCsrfToken()` + `GET /api/auth/me` 完成后才置假，所以任何页面的第一帧都是这段加载文案，NavBar 与路由内容都在其后。颜色类 CSS token 只由 `ThemeProvider` 的 effect 写入 `document.documentElement`（`index.css` 的 `:root` 只声明间距、圆角、字号、阴影、动效与 z-index），因此首次提交到 effect 执行之间存在一个 没有颜色变量的窗口，组件必须依赖 `var(--token, fallback)` 的回退值。
 
@@ -152,8 +148,8 @@ sequenceDiagram
 
 两个边界都是 class 组件，`getDerivedStateFromError` 只置 `hasError`，兜底 UI 都在 `render` 里内联写死：
 
-- **`ErrorBoundary`**（包住 `BrowserCompat` 与 `AppContent`）兜底是一块居中文案：标题取 `t('common.pageLoadError')`，正文在生产构建里是同一句通用文案、在开发环境才显示 `error.message`，按钮先 `setState({ hasError: false, error: null })` 再 `window.location.reload()`。它能接住子树在渲染与生命周期里抛出的同步错误；**接不住**事件处理器、Promise 异步失败，也接不住它上层的 `ThemeProvider` / `I18nProvider` / `SiteSettingsProvider` / `AuthProvider` / `IconProvider` 渲染时抛出的错误——那些错误没有边界，表现为白屏。
-- **`NavBarErrorBoundary`**（只包 `NavBar`）兜底是一个极简 header：品牌 `<Link to="/">`（文案复用 `admin.brand`）加刷新按钮。它存在的意义是隔离导航栏这块依赖最多的组件（`useAuth` + `useI18n` + `useSiteSettings` + 图标 + 通知 hook），使导航栏崩溃时页面主体、路由与页脚仍可正常渲染与导航。
+- **`ErrorBoundary`**（包住 `BrowserCompat` 与 `AppContent`）兜底是一块居中文案：标题取 `t('common.pageLoadError')`，正文在生产构建里是同一句通用文案、在开发环境才显示 `error.message`，按钮先 `setState({ hasError: false, error: null })` 再 `window.location.reload()`。它能接住子树在渲染与生命周期里抛出的同步错误；**接不住**事件处理器、Promise 异步失败，也接不住它上层的 `ThemeProvider` / `I18nProvider` / `SiteSettingsProvider` / `AuthProvider` 渲染时抛出的错误——那些错误没有边界，表现为白屏。
+- **`NavBarErrorBoundary`**（只包 `NavBar`）兜底是一个极简 header：品牌 `<Link to="/">`（文案复用 `admin.brand`）加刷新按钮。它存在的意义是隔离导航栏这块依赖最多的组件（`useAuth` + `useI18n` + `useSiteSettings` + 翻译 + 通知 + 推送 hook），使导航栏崩溃时页面主体、路由与页脚仍可正常渲染与导航。
 
 **遗留模式（勿改）：** 两者都用 `static contextType = I18nContext` 读取翻译，而不是 hooks——这是仓库里唯一保留的 class 组件读取 context 的方式，`AGENTS.md` 也明确要求不要转换成 hooks。相关约束：它们必须留在 `I18nProvider` 内部；`I18nContext` 必须以具名导出形式存在（不提供 default export，以兼容 Fast Refresh）；并且 `I18nContext.jsx` 会通过 `import.meta.hot.data` 在热更新间复用同一个 context 对象，正是为了避免「旧 Provider / 新 Consumer 不匹配导致 `this.context` 为 `undefined`」的崩溃——class 的 `contextType` 在类定义时就绑定了 context 引用，这类崩溃只能靠稳定 context 身份来消除。
 
@@ -172,7 +168,7 @@ sequenceDiagram
 ## 不变量与安全修改清单
 
 1. `main.jsx` 里 `import './utils/axiosConfig'` 是**副作用导入，不可移除、不可下移进懒加载 chunk**；它必须在任何 Provider effect 发请求之前执行。
-2. Provider 顺序保持 `Router → Theme → I18n → SiteSettings → Auth → Icon → ErrorBoundary → BrowserCompat → AppContent`。新增 Provider 时按 hook 依赖插入：用 `useAuth()` 的必须在 `AuthProvider` 内，用 `useI18n()` 或 `static contextType = I18nContext` 的必须在 `I18nProvider` 内，不要在 `IconProvider` 之上换掉 `AuthProvider`。
+2. Provider 顺序保持 `Router → Theme → I18n → SiteSettings → Auth → ErrorBoundary → BrowserCompat → AppContent`。新增 Provider 时按 hook 依赖插入：用 `useAuth()` 的必须在 `AuthProvider` 内，用 `useI18n()` 或 `static contextType = I18nContext` 的必须在 `I18nProvider` 内。
 3. `ErrorBoundary` 与 `NavBarErrorBoundary` 保持 class + `static contextType = I18nContext` 的遗留写法，并保留 `I18nContext` 的具名导出与 HMR 身份复用。
 4. 早期内联脚本必须维持 ES5 且不新增外链依赖；CSP meta 是白名单，新增第三方脚本、接口或 iframe 域名时同步扩充对应指令（图片已由 `img-src https:` 通配放开），用户可控文本（如 ICP 备案号）插入 `innerHTML` 前必须经 `escapeHtml` 转义。
 5. 语言切换维持「写 `localStorage.lang` → 整页 reload」两条路径（`I18nProvider.switchLang` 与 `index.html` 遮罩里的切换按钮），否则早期脚本读不到新值。
