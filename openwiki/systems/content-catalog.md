@@ -18,8 +18,6 @@ sources:
     resource: repo://src/components/EpisodeDetail.jsx
   - id: openwiki-source-bb203f24d99963d576a92fc5
     resource: repo://src/components/EpisodeSearch.jsx
-  - id: openwiki-source-a66c99cb4af007aef4a2b7ca
-    resource: repo://src/components/FolderShareModal.jsx
   - id: openwiki-source-4fe1d4794a529775b2f37ec1
     resource: repo://src/components/Home.jsx
   - id: openwiki-source-1da4a02941128bfa6b293d67
@@ -28,8 +26,6 @@ sources:
     resource: repo://src/components/ReviewStatusBadge.jsx
   - id: openwiki-source-9c0beea17c89917449efc118
     resource: repo://src/components/SearchInput.jsx
-  - id: openwiki-source-d3a55d81ddd0837a36ac0285
-    resource: repo://src/components/SharedFolder.jsx
   - id: openwiki-source-30bd62f5fd6623d324513d0d
     resource: repo://src/components/SingleEpisodeManager.jsx
   - id: openwiki-source-8a32f967f5a336ad854fcac3
@@ -40,14 +36,12 @@ sources:
     resource: repo://src/components/UpdateCalendar.jsx
   - id: openwiki-source-9793b3dd98a0e62ec68a07c3
     resource: repo://src/contexts/AuthContext.jsx
-  - id: openwiki-source-db9545db1db6a07d2bbbc612
-    resource: repo://src/hooks/useEpisodes.js
   - id: openwiki-source-091078cd4f585582a9efba7a
     resource: repo://src/utils/offlineQueue.js
 generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-04T16:54:50.811Z
+    at: 2026-11-11T16:33:24.381Z
 ---
 
 # 内容发现、剧集详情与用户内容库

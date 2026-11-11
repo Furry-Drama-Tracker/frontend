@@ -1,7 +1,7 @@
 ---
 type: architecture
 title: 状态管理与浏览器持久化契约
-description: 五个 React Context（Theme/I18n/SiteSettings/Auth/Icon）的状态所有权与生命周期，localStorage 与 sessionStorage 中各个键的写入、过期与清理时机，以及无全局状态库时依赖 window 自定义事件完成跨组件同步的机制。
+description: 四个 React Context（Theme/I18n/SiteSettings/Auth）的状态所有权与生命周期，localStorage 与 sessionStorage 中各个键的写入、过期与清理时机，以及无全局状态库时依赖 window 自定义事件完成跨组件同步的机制。
 tags: [react-context, client-state, localstorage, persistence, custom-events]
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
@@ -40,8 +40,6 @@ sources:
     resource: repo://src/contexts/AuthContext.jsx
   - id: openwiki-source-7898acfb0042c03f592a292f
     resource: repo://src/contexts/I18nContext.jsx
-  - id: openwiki-source-67f450c07acbf8e852c93e69
-    resource: repo://src/contexts/IconContext.jsx
   - id: openwiki-source-52f73cb87517cf05f876b0b4
     resource: repo://src/contexts/SiteSettingsContext.jsx
   - id: openwiki-source-a179f998ae5318f35e50729c
@@ -56,15 +54,15 @@ sources:
     resource: repo://src/utils/offlineQueue.js
   - id: openwiki-source-a40ec8eba1327ab0c96f271f
     resource: repo://src/utils/translationCache.js
-generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
+generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-04T16:54:50.811Z
+    at: 2026-11-11T16:33:24.381Z
 ---
 
 # 状态管理与浏览器持久化契约
 
-前端**没有引入任何全局状态库**：`package.json` 里只有 `react`/`react-dom`/`react-router-dom`/`axios` 等运行时依赖，没有 Redux/Zustand/Jotai/MobX，也没有任何订阅式 store。全局状态只由 `src/App.jsx` 那棵 Provider 树上的五个 Context 持有，其余跨组件通信用两种更原始的手段——`localStorage` / `sessionStorage` 键，以及 `window.dispatchEvent(new CustomEvent(...))`。启动顺序本身见[启动链与全局 Provider 树](./boot-and-providers.md)，认证与会话的 HTTP 细节见[HTTP 层、CSRF 与双 Token 刷新](./http-and-session.md)；本页只回答三个问题：**状态归谁、落在哪个键上、什么时候被写/被清**。
+前端**没有引入任何全局状态库**：`package.json` 里只有 `react`/`react-dom`/`react-router-dom`/`axios` 等运行时依赖，没有 Redux/Zustand/Jotai/MobX，也没有任何订阅式 store。全局状态只由 `src/App.jsx` 那棵 Provider 树上的四个 Context 持有（原第五个 IconContext 已随自研图标引擎移除而删除），其余跨组件通信用两种更原始的手段——`localStorage` / `sessionStorage` 键，以及 `window.dispatchEvent(new CustomEvent(...))`。启动顺序本身见[启动链与全局 Provider 树](./boot-and-providers.md)，认证与会话的 HTTP 细节见[HTTP 层、CSRF 与双 Token 刷新](./http-and-session.md)；本页只回答三个问题：**状态归谁、落在哪个键上、什么时候被写/被清**。
 
 ```mermaid
 flowchart TD
@@ -75,7 +73,6 @@ flowchart TD
   AX["axiosConfig 拦截器"] --> K3
   AX -->|"auth:token-refreshed / auth:session-expired / auth:force-email-change"| A
   AX -->|"api-error"| AC["AppContent 顶部错误条"]
-  TW["ThemeWorkshop / ThemeColorPicker"] -->|"theme-selection-changed"| IC["IconContext"]
   MJ["main.jsx"] -->|"pwa-install-available"| IP["InstallPrompt"]
   NA["navigator online / offline"] --> A
   NA --> OI["OfflineIndicator"]
@@ -86,17 +83,16 @@ flowchart TD
 
 该图刻画状态所有权与跨组件同步通道：Context 与 storage 键一一归属，非 React 来源只能靠事件把变化送回 React。
 
-## 五个 Context 的职责与持久化归属
+## 四个 Context 的职责与持久化归属
 
 | Context | 持有的状态 | 暴露 API | 主要消费者 | 自己拥有的存储键 |
 | --- | --- | --- | --- | --- |
 | `ThemeContext` | `theme`（解析后的 `dark`/`light`）、`themeMode`（`dark`/`light`/`system`）、`accentColor` | `setThemeModeTo`、`setAccentColor`、`presetColors` | `Settings`、`ThemeColorPicker`、`ThemeWorkshop`（三者都是写方）；颜色只通过 CSS 变量被全站读 | `theme`、`accent_color` |
 | `I18nContext` | `lang`（`zh`/`en`）、`t`、`switchLang`、`locale`、`supportedLanguages` | `t(key, params)`、`switchLang` | 几乎每个组件、两个 class 错误边界的 `static contextType`、`BrowserCompat` | `lang` |
 | `SiteSettingsContext` | `settings`（站点运行时配置对象）、`loading` | `refreshSettings` | `AppContent`（标题/favicon/manifest/meta）、`NavBar`、`Home`、`EpisodeDetail`、`CreatorPage`、`AdminSiteContent` | `site_settings_cache`（30 分钟 TTL） |
-| `AuthContext` | `user`、`initializing` | `login`、`logout`、`updateUser`、`getAuthHeaders` | `AppContent`、`NavBar`、`IconProvider`、`useNotifications`、十余个页面组件 | `user`、并经 `offlineQueue` 间接拥有 `offline_queue` |
-| `IconContext` | `icons`、`baseMappings`、`themeIcons`、`svgMap` | `refreshIcons`、`loadSvgContent`、`Icon` 组件 | 所有用 `<Icon name="..." />` 的位置 | **无**（纯服务端派生状态） |
+| `AuthContext` | `user`、`initializing` | `login`、`logout`、`updateUser`、`getAuthHeaders` | `AppContent`、`NavBar`、`useNotifications`、十余个页面组件 | `user`、并经 `offlineQueue` 间接拥有 `offline_queue` |
 
-这张表同时是「新增共享状态该放哪」的判据：属于外观的进 Theme，属于文案的进 I18n，属于站点级配置的进 SiteSettings，属于当前登录身份的进 Auth，属于图标/主题资源的进 Icon。
+这张表同时是「新增共享状态该放哪」的判据：属于外观的进 Theme，属于文案的进 I18n，属于站点级配置的进 SiteSettings，属于当前登录身份的进 Auth。原第五个 `IconContext`（图标映射 + 主题图标覆盖）已随自研图标引擎（ac3e6c8）整体删除：UI 图标现在是 Font Awesome / Simple Icons 的编译期组件导入，不再有运行时图标映射状态。
 
 ## AuthContext：服务端会话的本地快照
 
@@ -169,14 +165,6 @@ ThemeContext 另外导出三个纯函数供 UI 复用：`relativeLuminance(hex)`
 
 `useSiteSettings()` 在 Provider 之外被调用时不会抛错，而是返回 `{ settings: null, loading: true, refreshSettings: noop }`——这与其他四个 Context 的「越界即抛」风格不同，改消费方时不要依赖抛错来发现位置错误。
 
-## IconContext：零持久化的派生状态
-
-图标引擎没有任何 storage 键，状态全部来自服务端：`GET /api/icons/list`（`icons` + `mappings`）、登录用户 `GET /api/themes/my/selection` 取 `iconsTheme`、未登录 `GET /api/themes/active` 取默认主题。拉到的 SVG 会被 `sanitizeSvg()` 清洗（去掉 `<?xml?>`/DOCTYPE、`script/style/foreignObject/iframe/object/embed/link/animate/set/discard` 节点、`on*` 属性，并按协议移除 `href`/`xlink:href`/`src` 上的 `javascript:`/`vbscript:`/`data:text/html` 值），并把 `fill`/`stroke` 的显式颜色改写为 `currentColor`，以 inline 方式渲染。
-
-**它的生命周期被 `user` 与一个事件驱动**：`useEffect` 依赖 `[user, fetchThemeIcons]`，因此登录/登出会重新解析主题图标；同时监听 `theme-selection-changed` 事件，`ThemeWorkshop`/`ThemeColorPicker` 应用或取消主题后广播，它重新拉取覆盖。
-
-**合并规则是覆盖 + 保护名单**：`mappings = { ...baseMappings, ...themeIcons }`，但 `THEME_PROTECTED_ICON_KEYS`（当前只有 `misc.logo`）内的 key 永远取全局映射——主题是用户个人外观包，不允许篡改站点品牌资产，后端同样会拒绝。因此 `IconProvider` 是「服务端配置 + 用户选择」的两层求值，不是本地可编辑状态。
-
 ## 存储键总表
 
 ### localStorage：全局/基础设施键
@@ -216,12 +204,11 @@ ThemeContext 另外导出三个纯函数供 UI 复用：`relativeLuminance(hex)`
 | `auth:session-expired` | `axiosConfig`（`401` 与 `419` 刷新失败） | `AuthContext`（`detail.type === 'user'` 时置空 `user`）、`OfflineIndicator`（3 秒会话过期横幅） | `detail.type` 必须存在，否则 `AuthContext` 不处理 |
 | `auth:force-email-change` | `axiosConfig`（`403` 且 body 带 `forceEmailChange`） | `AuthContext` 打标 → `AppContent` 渲染强制改邮箱弹窗 | 无 `detail` |
 | `api-error` | `axiosConfig`（任何 `>= 500` 响应） | `AppContent` 顶部红色提示条，3 秒后自动消失 | `detail` 含 `status`、`message`、`messageKey`；`419` 不会触发 |
-| `theme-selection-changed` | `ThemeWorkshop`、`ThemeColorPicker`（应用/取消主题、恢复默认） | `IconContext` 重新拉取主题图标覆盖 | 常量由 `IconContext` 导出，用 `new Event(...)` 而非 `CustomEvent` |
 | `pwa-install-available` | `main.jsx` 的 `beforeinstallprompt` 兜底捕获 | `InstallPrompt` 读取 `window.__pwaDeferredPrompt` 并显示提示 | 原生事件可能在 React 挂载前就触发，故配合全局变量两路兜底 |
 | `online` / `offline`（原生） | 浏览器 | `OfflineIndicator`（横幅）、`AuthContext`（`online` 时冲刷离线队列） | — |
 | `visibilitychange`（原生） | 浏览器 | `AuthContext` 回前台时重取 `me` 与 CSRF；心跳在后台跳过 | — |
 
-**应用主题时的写入顺序是契约**，不是实现细节：`PUT /api/themes/selection` → 用响应的 `backgroundPrefs` 调 `updateUser()` 让壁纸立即生效 → 若响应带合法 `accentColor` 则 `setAccentColor()`（写 `accent_color`）→ 最后 `dispatchEvent(theme-selection-changed)` 让图标跟上。顺序颠倒会让图标先于壁纸/主题色刷新，或让 accent 覆盖掉刚拉回的壁纸态。
+**应用主题时的写入顺序是契约**，不是实现细节：`PUT /api/themes/selection` → 用响应的 `backgroundPrefs` 调 `updateUser()` 让壁纸立即生效 → 若响应带合法 `accentColor` 则 `setAccentColor()`（写 `accent_color`）。图标引擎删除后不再有随后的事件广播步骤；顺序颠倒会让 accent 覆盖掉刚拉回的壁纸态。
 
 ## 改键与删键的影响面
 
@@ -241,7 +228,7 @@ ThemeContext 另外导出三个纯函数供 UI 复用：`relativeLuminance(hex)`
 | --- | --- | --- |
 | 真相是否在服务端？ | 进对应 Context，用 `GET /api/auth/me` 这类接口在启动时复核，本地只留缓存/快照 | 继续 |
 | 是否「当前登录用户」的属性？ | 进 `AuthContext`；若需随刷新保留，先决定是进快照还是靠 `me` 取回（默认后者） | 继续 |
-| 是否站点级配置/文案/主题/图标资源？ | 分别进 `SiteSettingsContext` / `I18nContext` / `ThemeContext` / `IconContext` | 继续 |
+| 是否站点级配置/文案/主题资源？ | 分别进 `SiteSettingsContext` / `I18nContext` / `ThemeContext` | 继续 |
 | 是否仅一个组件自用（抽屉开合、草稿、历史记录）？ | 组件内 `useState` + 可选 storage 键，不进 Context | 继续 |
 | 是否需要跨组件即时同步？ | 用 Context；若写方不在 React 树内（拦截器、`index.html`、Service Worker），再用 `window` 自定义事件广播 | 组件局部状态 |
 
@@ -255,4 +242,4 @@ ThemeContext 另外导出三个纯函数供 UI 复用：`relativeLuminance(hex)`
 - **`push-notifications-enabled` 会失真**：它只在 `subscribe`/`unsubscribe` 成功时更新，浏览器侧被系统设置撤销或服务端清理订阅后，本地仍显示已开启。
 - **`user` 快照字段不完整**：`AuthContext` 收窄写（含 `avatar`、不含 `email`/`forceEmailChange`），`axiosConfig` 刷新合并补写 `forceEmailChange`（同样不写 `email`/`avatar`），两者对同一键的 schema 不一致；`email` 现在完全不入快照，依赖它的读取方必须改走服务端。
 - **`site_settings_cache` 不随管理端改动作废**：只有 `AdminSiteContent` 自己调 `refreshSettings()`，其它标签页/其它管理员的缓存最多滞后 30 分钟。
-- **无测试防护网**：`package.json` 只有 `dev/build/lint/preview/generate-icons`，没有测试运行器。状态契约的验证只能靠 `npm run lint` 加手动场景：登出后刷新（`user` 已清）、断网评分后恢复网络（队列冲刷）、切换 `system` 主题后改系统外观（`matchMedia` 生效）、清空 `site_settings_cache` 后首帧（站点名回退）、以及应用主题后图标是否即时刷新（事件是否派发）。
+- **无测试防护网**：`package.json` 只有 `dev/build/lint/preview/generate-icons`，没有测试运行器。状态契约的验证只能靠 `npm run lint` 加手动场景：登出后刷新（`user` 已清）、断网评分后恢复网络（队列冲刷）、切换 `system` 主题后改系统外观（`matchMedia` 生效）、清空 `site_settings_cache` 后首帧（站点名回退）、以及应用主题后壁纸是否立即生效（`backgroundPrefs` 是否同步进 `user`）。

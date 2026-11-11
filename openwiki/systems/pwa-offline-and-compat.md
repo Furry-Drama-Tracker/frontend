@@ -38,10 +38,10 @@ sources:
     resource: repo://src/utils/polyfills.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
+generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-04T16:54:50.811Z
+    at: 2026-11-11T16:33:24.381Z
 ---
 
 # PWA、离线缓存与浏览器兼容
@@ -249,7 +249,7 @@ stateDiagram-v2
 
 ### 第二层：`BrowserCompat`
 
-`App` 把 `BrowserCompat` 包在 `ErrorBoundary` 与 `AppContent` 之间（`Router → Theme → I18n → SiteSettings → Auth → Icon → ErrorBoundary → BrowserCompat → AppContent`），因此它可以用 `useI18n()`，并且在对不兼容时**用遮罩替换整棵子树**——`AppContent` 不挂载，也就不会发出鉴权、站点设置、壁纸等任何请求。
+`App` 把 `BrowserCompat` 包在 `ErrorBoundary` 与 `AppContent` 之间（`Router → Theme → I18n → SiteSettings → Auth → ErrorBoundary → BrowserCompat → AppContent`；原图标层 IconContext 已随自研图标引擎删除），因此它可以用 `useI18n()`，并且在对不兼容时**用遮罩替换整棵子树**——`AppContent` 不挂载，也就不会发出鉴权、站点设置、壁纸等任何请求。
 
 挂载时的判定顺序（`src/components/BrowserCompat.jsx`）：
 

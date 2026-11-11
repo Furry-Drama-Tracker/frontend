@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:1359e96076eeed371fedf7e21265caacae21d5abaea074413111c25878dd2413",
+  "pageVersion": "sha256:252d4880b61d1d124589691eee1469bf58e5360cb353b2a1ae061821f84a98c4",
   "claims": [
     {
       "id": "claim_85060bcca16a45068377512cdb8ceaa0",
@@ -79,11 +79,11 @@
       "statement": "Register 在提交前本地校验密码至少 8 位且同时含字母与数字、accountId 为 3–20 位 [A-Za-z0-9_]、必须勾选协议（未勾选时提交按钮禁用），请求体为四字段表单加 altcha 与 getDeviceInfo()。",
       "evidence": [
         {
-          "resource": "repo://src/components/Register.jsx#L248-L342",
+          "resource": "repo://src/components/Register.jsx#L250-L344",
           "version": "repo-lines-v1:sha256:6909bafb2047babeee73a8c811c023f196774c381b3080248af1b786ff2ec9f6:eyJzZWxlY3RlZExpbmVDb3VudCI6OTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmZjc4NDg5NDExOGM2MGE1MzgyZmNiYWU1MDA4NzNiMmI3MzdkODdlNzlmZGM2MDU0ZTIxZGE1MzgwNDA3ZDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NWZiM2Q3OWRjOGQyNzg1YTM2NDNlNmQ4ZTk3YzEyOWY0MzRjODI2N2NjM2ZmNzQ1NWE3MmU0YjEzYTU0YWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1MjI3YTRjNjgyM2IxMmU0YmQzODFmZmQ0NTM3ZjczMzc4OGE0ZjRlMzczNDNiYTA0MzA2NjIwZTA2OGUyNzYifQ"
         },
         {
-          "resource": "repo://src/components/Register.jsx#L92-L125",
+          "resource": "repo://src/components/Register.jsx#L94-L127",
           "version": "repo-lines-v1:sha256:0da10cfa5157be5af8f0b7e5464aed601707908bdb6ddf41f3f9e29033a4d54e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmMTQ2ZmM3NWU3NTUzNDQwMDJhYzQ0YTVmYmVkZTBiMjRjMDI4YmY4NTcxY2FmZjQwOThhMjEwYTI3MzgzNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkMWNlODRmYTc0NTY3MDMwZmQ1YTRmMjliMmIxYzAyNzA4YTkwMDI3ZjJjNzRlYTZhOTJjYmZmYTlkMDRlMTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI3Y2ViZGNjMjVmZWYxYjMyNzU3YzBhNzYyYjAxNzgyY2UwMDY3NDRiODM0MTU4YTkyNGQyZDIzYTJiYWJkZTYifQ"
         }
       ]
@@ -93,19 +93,19 @@
       "statement": "注册失败且响应带 emailTaken 时，Register 用「去登录」引导条取代普通错误条并带着已填邮箱跳 /login?email=；登录侧对称地用 accountNotFound 引导去注册并跳 /register?email=。",
       "evidence": [
         {
-          "resource": "repo://src/components/Login.jsx#L141-L160",
+          "resource": "repo://src/components/Login.jsx#L143-L162",
           "version": "repo-lines-v1:sha256:920cff795243cb1b4afd6e53e3a2fd3e048ec3f443b878a4335a6b89d61f3300:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4ZGI3NDYwODE4MmNiN2NhNGQ5ZmJhNDlhMzk0OTlhN2YzOTA3YjRlYTAzM2IxNDkyYWQ1Y2YwYmVlZWVjZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0YmQ4MDcwM2U0YzQ4NzE0MDdiYzY0MzJiYTVjYWE3MmQ3YWUxYjc0ZmYyMDcwMzEyZDUwMzZlMTRhMmI0OWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4YThjOWQwZWZiMzU2NWE5MDkwNzExNzRmYThhYzU2ZGNmZDA2YTJmYzhmMzcyM2NmMTZhNzk0MDJjYTg5NjUifQ"
         },
         {
-          "resource": "repo://src/components/Login.jsx#L560-L581",
+          "resource": "repo://src/components/Login.jsx#L562-L583",
           "version": "repo-lines-v1:sha256:4a0df3c58ec6782b504813f3c99162913ea701c78959fef50ff7d1abacffb8f5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhYmNmZDk1ZmE1YmE3ZGI2N2JiY2QxNDA4MGYzNzFjNmQyNzBjYTg0NTQ4Zjg3NTQwZTRkODdlOTFmZjE4ZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1NTE0NWE1NWExNzZkZmU0MWU5ZDVmMjMwNjgzMjFjYTcyMTk2MTQyODYzNjQyZTY5ZWMyNmFjNzM1YjhhZDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmMmUzMzZjNTczZmQwYWViYWM0YjRmZGM0ZGNlNDRhMzNiZTliOGRmN2FhNTRlZDhiNTg4ZDNjNTI3ZWRlYmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjMjc2NDIwM2VhMzAzMDA4NWZiYjlkOWI0OWY3NTY2MTA2NTkyNzkyNTlmMDk0YTU4ODkyNDI4ZjNkNDUyOWMifQ"
         },
         {
-          "resource": "repo://src/components/Register.jsx#L118-L123",
+          "resource": "repo://src/components/Register.jsx#L120-L125",
           "version": "repo-lines-v1:sha256:ad09d1e6875b5b9aa456cef52fa794cf6c12f70346be5fcb5f1942746fe5068e:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDhkYjc0NjA4MTgyY2I3Y2E0ZDlmYmE0OWEzOTQ5OWE3ZjM5MDdiNGVhMDMzYjE0OTJhZDVjZjBiZWVlZWNlZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmQ2OWMxNTliNDRhNWY2YmU1NTUwNjZlYzE1YjNjOTgyMWY2NWFiYjI0MWI1NmUzMTE1MTczYWMzMGY2MzhjNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDRjYzIwNDgxZTdmNWRlZDJlNmI5Y2M1MDgzZTcxNDU0MWRkNTc2ZjQ1NzUzNDdjY2E1YTZiZWIzZWZmMjIyNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTg5NTVkNDQ1NDY2YTk4NWJiNzJhOGMzOWUwYWZlNzc1MTA4ODFlYzE5ZTkyYWEzYmNlNzgxZGM3NGQxYTUzMCJ9"
         },
         {
-          "resource": "repo://src/components/Register.jsx#L228-L248",
+          "resource": "repo://src/components/Register.jsx#L230-L250",
           "version": "repo-lines-v1:sha256:305398b47cce18cd8e3a22d68306c33f92be637a96eb8fbd77ccc148c4769629:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzNGQ4NWE2YWFjZDRiM2FhMmZmMTMxODg1NzkyMGI3ZjYwYzg2M2YzNmVmNDE4M2FjMzU3NzkyYTQ1MGIyZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmZjc4NDg5NDExOGM2MGE1MzgyZmNiYWU1MDA4NzNiMmI3MzdkODdlNzlmZGM2MDU0ZTIxZGE1MzgwNDA3ZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2MmFlMzQ1ZjVlYmFmNjdiNmYxOWQ5OTcyZDYwOWU3MWEzNzJjOTAyMmFkZTgwNzhlMDM3OWEzNTZiMDkxZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBlYTRiMzFiZjJhYTlhZTQyZjQ5MWFiZDRkMjRiNTZhNzZlNjMzNDliZTQ0OGU3MmM4NDg4YzBhY2RlMmRkYjMifQ"
         }
       ]
@@ -115,16 +115,12 @@
       "statement": "注册成功后不创建登录态：Register 切到 registered 视图，用 6 位邮件验证码调 POST /api/auth/verify-email {code, email}，成功后展示成功页并提供去登录/回首页；该页面没有重发验证码入口，重发在 /verify-email 页且需 altcha。",
       "evidence": [
         {
-          "resource": "repo://src/components/Register.jsx#L110-L140",
-          "version": "repo-lines-v1:sha256:8b8a114a4c3aa4cdbc6e69afee49b88f1b03f61d749ab782ae17ec73b0fce2fc:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExZGY4N2E0NzMxNmM3MDhjNTUwMjA5OGU5YWY2YzQ0NTM0ZWI4MGJlYWRjZjYwNjMwMjhlZmNhODU5MzdhYmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmOTI2NDA2ZWUwYTQzODAxOGIxMjY5OTFiYmQ3M2YzOGRjNGYzMmU3ZjcwZmU2YTkwOGEzYzIyNDRkNWE5ZGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2ZTg5M2ZjZjBkZTA0N2Q0ZmNmZTNiNjEwNWFiMTIxNjNjNjk0OGQxZGZjZjU1OTA1Yzg0Y2ZkMGFmZTdhYjgifQ"
+          "resource": "repo://src/components/Register.jsx#L130-L145",
+          "version": "repo-lines-v1:sha256:1e4ae9dd8ed29a06aec44328aa5e610d7c117f4957b32a00c6f11c8606b0dd12:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4YTRjNGQ5MzA0ZTJlNDcwYWQ0MjE4YmNiM2JjMDdlNWRlMWNlNDE0Mzg5ZjEwZTdiODYyMDhjMWQ0OWNhMTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2NGU3ODdhMGVmMWJiMzBkYzYzNjY2MzBkYmU0YmY3Yjc5MzQ3YjgyZDdmMjkxM2E3MGI5OTJiMDRlYjlhNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA3N2VlNjllYTFiMDdjOTAwNzY3ZWRhZDhmMGFkMjg5N2NmYjQ1YjVlZmYyYjY0NzlkMjZkMTI3NjBiMzhjNDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhNDVjYjE0ZGVjM2I1M2JlZjcxNmIyYzcxNmQ1N2U1YWU2M2EzMTFhZjI0NzBkZThlNDIwZDYyODJiMDMyZjQifQ"
         },
         {
-          "resource": "repo://src/components/Register.jsx#L141-L216",
-          "version": "repo-lines-v1:sha256:d36fc2b54a476727b153e7cf53742ca99877a15dffc5d1f0485617c5258a1b87:eyJzZWxlY3RlZExpbmVDb3VudCI6NzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2ZTQxNzgzZGE5NWFmZGM5NjZjZjA1NzMwYWU1MzgwZDQ3NzVkMDhmM2ZlMTk4NGI3YTMxNGE1OGU4OTY3YzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmOTFmNWQzMWM2MTFjOTA3YzI5ZjQ2YjJkOGRkMmRiMmFkZjNiZGE0MWFkN2VjMjRlMDFkNDVkOTJkNzczOTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY5YTgyMmU5MGM3OWRkNjZjOWEyYTQ2OTg5M2Y0YWNmZTk4OTY5YmZiZDBkNTI0MmRmMGY2NzYxMjI0ZTNlMjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUwODZiYTE2MTEyMDUzMTk3OWI3YWY3ZWZjMmU3Y2M3ZmY2MjNmMmE5NTgyOGJkZmIxY2I0YjExYTU3NDY3NDYifQ"
-        },
-        {
-          "resource": "repo://src/components/VerifyEmail.jsx#L59-L75",
-          "version": "repo-lines-v1:sha256:4ba0d016f67c6946c1e144d51aee81a8720f29466ad779f18bf567b00c6da847:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1MTc5YTVkODM1YjMxNmZkZGQ1ZWZmMzUxNTkzMzI1ZTdkMTcwYTM0ZTI2ZTY0MDE2NWIzMDZiMDhhNWY2ZjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzYjgzZDExMWJiN2IzZDg3YjM2YjQ0ZGYwODI1MDIyMTIzYThlNThkOGI3NDRlM2MxMWQ1YWM1OTc0OGE3ZWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4NWJmMjk2ODg1N2I1NWFlYzc4OTkwZWRlMzU4MmU0YWJkNjlkMGFlODc3OWYwZjFmNDJlNDQ4ZmU2ODRiZDQifQ"
+          "resource": "repo://src/components/Register.jsx#L23-L30",
+          "version": "repo-lines-v1:sha256:f10bf0b4ea68267e47df2de411a58c83a3e2125bd996bf1f32a749092af20421:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODkzMGMxM2FmOTcxOWI2OWY0YWVjZDllZjc0MWNkNGM5MGU4OWQxNDhiNmIwYTQ2MmMwZDAyOTNkYmMyYmIyYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmZjMWJhNWI3YmIxZTE5NDVjYmUwZjA3MWVlMTIyZDk2YmExOGExNmNiYzU4ZDFmNDQ2YmIyNjkwNmQyM2ZhMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODdjMzU1OTE5YzhjOGU0NzYxYzBhZjg3ZmQzYmNkYjUzNmU1MDJhZmExMGU2MjBiNzM2OWM0OWFhMThhZGIxZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzlkOWYzZDI4MDNlNmFhNWY4NzJkZDAxNWY1NTBkZGJiOTM2ODcxNzVmMmIxMWVkYzQzODBmNDRlZmZkMzNjYSJ9"
         }
       ]
     },
@@ -133,7 +129,7 @@
       "statement": "POST /api/auth/login 的分支是全站唯一由响应体驱动多视图的契约：2xx 带 need2FA 时切到 2FA 视图并保留 twoFactorChallenge，2xx 无标志时 login(res.data) 并固定 navigate('/')，4xx 依次判 needVerification、needDeviceVerify（携带 email 与 deviceInfo）、否则取 message 并用 accountNotFound 决定是否给注册引导。",
       "evidence": [
         {
-          "resource": "repo://src/components/Login.jsx#L114-L160",
+          "resource": "repo://src/components/Login.jsx#L116-L162",
           "version": "repo-lines-v1:sha256:1c1d84cceae0bf4161a06715d8861f53f0f404204b9ff32afd2a77e053553ca9:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmMTQ2ZmM3NWU3NTUzNDQwMDJhYzQ0YTVmYmVkZTBiMjRjMDI4YmY4NTcxY2FmZjQwOThhMjEwYTI3MzgzNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkMWNlODRmYTc0NTY3MDMwZmQ1YTRmMjliMmIxYzAyNzA4YTkwMDI3ZjJjNzRlYTZhOTJjYmZmYTlkMDRlMTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4YThjOWQwZWZiMzU2NWE5MDkwNzExNzRmYThhYzU2ZGNmZDA2YTJmYzhmMzcyM2NmMTZhNzk0MDJjYTg5NjUifQ"
         }
       ]
@@ -143,23 +139,23 @@
       "statement": "altcha payload 只能从 altcha-widget 的 statechange 事件 detail.payload 获得，challenge 统一指向 /api/auth/captcha；Login 与 Register 的提交都以 if (!altchaPayload) return; 开头且提交按钮不因未完成校验而禁用，因此人机校验未通过时点击提交没有任何反馈。",
       "evidence": [
         {
-          "resource": "repo://src/components/Login.jsx#L114-L118",
+          "resource": "repo://src/components/Login.jsx#L116-L120",
           "version": "repo-lines-v1:sha256:482e1eb760e31e6f780900c53002c05ae925da89c3acea8ce843fba00703e6be:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmYxNDZmYzc1ZTc1NTM0NDAwMmFjNDRhNWZiZWRlMGIyNGMwMjhiZjg1NzFjYWZmNDA5OGEyMTBhMjczODM1MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjVjNDNiZmJiZDY5Y2U0Y2JlMjYxZjVmZDA2OGI1MDBkNTI5ZDU1ZWYxMWQ2NDM1YmRhMGM2ZWRmZGEwZTYyYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmQxY2U4NGZhNzQ1NjcwMzBmZDVhNGYyOWIyYjFjMDI3MDhhOTAwMjdmMmM3NGVhNmE5MmNiZmZhOWQwNGUxNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzJjYTk3ZDI0Mjk0MWI4YzY1YzJkM2NkYTJkOGVlZjQ5YWM1NTIyMTljMTk5NjE1NDkyYTAzMjVkODYzZmNlNCJ9"
         },
         {
-          "resource": "repo://src/components/Login.jsx#L50-L63",
+          "resource": "repo://src/components/Login.jsx#L52-L65",
           "version": "repo-lines-v1:sha256:4cc0a315005c1cfcdf826af900e925bffc74aea487f436a895feecd74bb63a4e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhYzAyY2IzZTM2MjNiNzVkOTczN2Q1YTdiMzhiM2NjYjIxZGQ1YjAzODYyOWI2ZmUwNDZiMWUyNjFkMDI2MGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyNGEyOTQ5ZDViNTNhZjhiMzNiYWZhYWFhYWM2MWZhYWM4ZTcwZjcyY2U4ZjhkN2ZkYmRlMzkyMWVkZjM5ODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE0ZGMwMWRiMzQ2ZDQ0NTkyNjEzZGZjMTc4MDI1MzU2ZDdjYjk4ZGRlNGIwODA0ZDJjNjI4NDM2Nzg3ZmM5ZjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM4YzFjMWEzM2NhY2U4OTgzYjFlMWQ4Njc5OThiMTg4MjIzYzgzYzVmNGFkYTU4NWExZjhhN2JhZWJjZTFmMGEifQ"
         },
         {
-          "resource": "repo://src/components/Login.jsx#L599-L608",
+          "resource": "repo://src/components/Login.jsx#L601-L610",
           "version": "repo-lines-v1:sha256:5a0f493572411a91ab6ee6bfab9ee92618d5bac5169af262d466884ac3e5b731:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxYThjNDQ4MDY0NzEwYWEyYTFhMDVhZDMyYjU1OTNhYzk2NDRjMDk0MGRlOTRkNjI3OTk1YmJmMWQ4YTJhODUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBhMzYxMGU5Y2Y1MWM4ZjRiYmM4NjYzYTRjMGQ0NDIyZWJiMzNhMGMyNTM5MmUwNjIzMDE2MWMzMTgyYjg4NmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUwYjk1NWU3ZWY3M2U5MGI0NTY2MGU5MzIyNWU2ODEyYmIwOTVkNGVlZTY3MjY3MzcxZjE0ZTgzMzhjZjgzMzkifQ"
         },
         {
-          "resource": "repo://src/components/Register.jsx#L38-L47",
+          "resource": "repo://src/components/Register.jsx#L40-L49",
           "version": "repo-lines-v1:sha256:c834c9c0558f48f491f07012539c0ace0a5bce923fa9875edf4415bfe6743ee9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjYjc5MTNmZmZhODE0NTE3NTFjMzg3MDNiYzI5YmJmYzNlMmVmMzQ3MmI2ZjQ1YTMxMzhlYzFkMWJiMzhlY2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA2Nzc4Nzc0MGFjMTQ3N2U2NGE4ZWVhMzBlZThmMDFkMWVlNWEzMzE5MDY0OTc3M2Q2NjBjYThiNTI5MmRlYmEifQ"
         },
         {
-          "resource": "repo://src/components/Register.jsx#L92-L96",
+          "resource": "repo://src/components/Register.jsx#L94-L98",
           "version": "repo-lines-v1:sha256:61d505a9b268aea1d739eb5b4ab21e5f4adf793ace5a51564332e3457f69e6d6:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmYxNDZmYzc1ZTc1NTM0NDAwMmFjNDRhNWZiZWRlMGIyNGMwMjhiZjg1NzFjYWZmNDA5OGEyMTBhMjczODM1MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDJiMDZhN2QxMGQ2OTYyOTlkMDQ4MDc0ODQyOGM0NTgwM2Q0OGNkMGM2ODdmZTBlN2MwOGY5YWI5ZDE0NDRjNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmQxY2U4NGZhNzQ1NjcwMzBmZDVhNGYyOWIyYjFjMDI3MDhhOTAwMjdmMmM3NGVhNmE5MmNiZmZhOWQwNGUxNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjY1ZmZiOTYxZDkzMDgwZDQwYjAyMDVhNDVlNjRiYmU3M2JhZjYzODY0MTA5YjdjMGYzYWMxY2QyZWQ0MTJiZiJ9"
         }
       ]
@@ -183,24 +179,12 @@
       "statement": "新设备验证用跨浏览器登录码而非共享 cookie：邮件链接（?token=）挂载即 POST /api/auth/verify-device，响应带 loginCode 时只渲染 6 位登录码页面、不建会话；原浏览器的 needDeviceVerify 视图回填该 6 位码后 POST /api/auth/confirm-device-login，若返回 need2FA 则携带 twoFactorChallenge 转入 2FA，否则直接 login() 并跳首页。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L572-L573",
-          "version": "repo-lines-v1:sha256:f094c569bf2bb0c06f0a85e7932213363d247de2385ac116105632ff99502a55:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTVjOTliNGU3MzlhMDMzMmYzNTE2NzYyM2Q0NDM0ZDFmMjkwNDIwODIzNmRhZDBiYmY4MjQyYmRmNDBlNjM4NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzMyYmU2ZTZhMTUwMzUxNzY4NGI5ZTNmMzFlMmViNDZhZGI5Yjg3NmYzNzNlY2NmNDJiNzkyNDk3YzlkYjZkNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDZlNTQ2N2JmOWY4YWZjNTM1OGUzNTBkNjBlMGJjMWIwNGQyMTAxODE2NjM0ZDlhMmI5NmU0NzNkMGJhZTMzZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2E1ODkyMzZiMmVkOTdhNDM1NTE0MmUxZDNhYjYwOWRjMjc0NTIyM2M4NzY1NjMzYTQxNDdjODJjMTliZGVkMCJ9"
+          "resource": "repo://src/components/Login.jsx#L185-L200",
+          "version": "repo-lines-v1:sha256:0c2190dc4a076e9208de678af56121d304fbb41ecdd0efcd7c81597cfe83d267:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwZTQ5ZDU2YmMzMTQ4MGI4MDY3NmVjYWE4NWUxODU2ZTEyYjI5ZmNiNWE3ZTE2ZWRjNTkwN2QyNzEwZWMzYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiNWZmOWE0Y2IxMzY2ZWVjMzNjZGVhZjM5YzUwNmI3NzY4OWUzMDQxOTczMDg2M2UwM2FhMGNlMjk2NjNjMzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlZDk0MjAyODQ0YTY2ZjM5NjUwNDMyZTFkZWRmMzYyMzRiOTc0MzBmYmJlNWQzOGEwMTZiYWI2YTZjOGYxZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjZjM3ZGQ2ZDhhMzAzMGY5ZTc0MGQzM2IzYzgxZDc2YTczYzNlMzEyZGNlN2Q2MmY4YjNiZjY1MWFmNDMxZjkifQ"
         },
         {
-          "resource": "repo://src/components/Login.jsx#L180-L205",
-          "version": "repo-lines-v1:sha256:e1a0a1e964644a47be98c6bdf0091551d3806699659a07139a6e980bcbb727c1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhYmIzOTMwNmFiNDQ2M2VhM2E2N2VmMTgxZDhkYjgwYmJjMjZlYmI3YzNkYjcwYzBmZjg5YTZkYjhkNmJmZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkOGJmNDYyM2E2YTY0YTMxZTgzZjk5YjkzMjAyMzQzMWU1OTdhMjdkMWI0YjliYTc1Njc1NTQ4ZWNhMTZkM2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU2Y2Y1ODdhMTRmNjEwNzRmMDE0ZjA1YThlYTc4MTNlNWFhNmJmYWZiMzhhNThjMmFiZDcyNzIzYWI0N2ZkZTEifQ"
-        },
-        {
-          "resource": "repo://src/components/Login.jsx#L261-L297",
-          "version": "repo-lines-v1:sha256:e911320b3654d3acc944e4642a3f39ad6825d964b65e1126149bb534e310f72f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3ZGI4MDE0YjBmMDE5NTM1MTg5ODllZTkwMDQxMjQ0Y2VjMjUwODdiMDczZjBjNTU5MjdjMzFmZGM1YzMyYTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNzZiY2ZlN2M4ZDdlZWM4NTVlMDE5NzJjOTUwYzIyZWJmMDg4Yjc0MzE4ZDQ1MTQwYzEwZWRjOGY0MzBjZjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjNTNjMTliMzA4YjJiYmYyMjQ4ZjQ2M2Q4MTAxMTY1NDE0OTc5MTMxMmFiNDkwMmJmNTM4Yzc0ZThmMjA1NzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4OWJlNWU2ZTliY2RkZDViZWViNzBlOTUyZDBjMjI3ZDBmMjc5YTRjNDE5MTcwODBhYjVlYTQyODliMWZiMjkifQ"
-        },
-        {
-          "resource": "repo://src/components/Login.jsx#L298-L388",
-          "version": "repo-lines-v1:sha256:81d8c579273d8573520bd2da8421b0e87b212301860f58fa154a2d42d00dce46:eyJzZWxlY3RlZExpbmVDb3VudCI6OTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzOTkwOTVlMWJiYWMyMTU5MzZhZWQyMGNiOWQzNzE4ZmI4ZmQ1ZjJmZWQ5ZDk1ZjZjMDlkYzU0NDUwMzc3OGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzNmIxYWUxNDA4MThmYTA2YmU2ZjNlOTA5ZWZkOWNjN2U4ZWU1NTM0NDkwNzhmNTk4NjhhZjhiNTM2OWI0ZTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1OTdiMzA0MDU0MTI3ZWNiMzQ3ZWJmOTA1ZTAzMDcxM2Q4ZDQ2NjIyNTEyYWYyZDQ1MTAwOGRkODM5MTIzZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQxZDAxMWM2ZDhjNWQ3YWYwOTBjODNiNzgzYmUzYWUxMzZjYTU1MWVjZDg5Y2ZlZjhlZjA3YjQxZGQ5YjA3ZjAifQ"
-        },
-        {
-          "resource": "repo://src/components/Login.jsx#L66-L82",
-          "version": "repo-lines-v1:sha256:74dc4dbe4ed5f44dbf9a97de16f30299f009ae73786d4b391ed48c0cd5916e9f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjOTIzMjVjYmIyMWRhYTM1ZjNlM2E2YjVhNTJmZDdhZjdkM2YwZWUyM2JiNmUzODY1MTY4NDA4MzdlYjJhOTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjZWUzMzQwZTRhZjljZWU1OWNmMzkwYjM2NjM4M2MzZjhkYzlkOGY3OTM4ZDhmZWY1OTcyMDEzYTNmMTAwZjMifQ"
+          "resource": "repo://src/components/Login.jsx#L70-L90",
+          "version": "repo-lines-v1:sha256:1c9142665533083ee8480b711839c5783baad4915b637cd4e7d5fe7ef9e768eb:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhNThjMDJiNTI3NDJmNzcxNmExMDVhMDUxZDRlYjUzZjNjZDZlMDMwMzFjYWEzZjEyODkzNTYxYzAyZmRmNmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQyNjg4MTVmOGRmMDYyZjIwMDhlMmZhYjczMzUyN2FkMTcyZmFjZGQ5NjRhZTFmZWZhZTM3MzQ1N2U1ZmRmZjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZlMzliYTA1NjUxYzVlZWE1MWM5ODUyMmJkNTk0YWFiYjQyMjNhY2IyOTg5NmRmY2UxYjYwMWZhNTQ3MDkwNWUifQ"
         }
       ]
     },
@@ -209,7 +193,7 @@
       "statement": "2FA 第二步是 POST /api/auth/login-2fa，请求体为 email、twoFactorToken、twoFactorChallenge 与 deviceInfo，成功后走与普通登录相同的 login() 与 navigate('/')。",
       "evidence": [
         {
-          "resource": "repo://src/components/Login.jsx#L206-L224",
+          "resource": "repo://src/components/Login.jsx#L208-L226",
           "version": "repo-lines-v1:sha256:5024559e26c6244e9c4b3af3710bc2a8db251fce6663679a6d67ab5b4b8723ea:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1NWI0ZDFiNmNmYWQyNDQwY2Q4NTFkMDU1YmI0OGM3YWM3MThmZTUzODA1M2NkMzY5YmI3YzhhZDIxZmU1NzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhNzM0MTU0MGVjZTU0MjZlZWU2MWJjZmRkNTA2MDM3NzEwMGU2Nzc1ZTZiZjY5MDdmY2Y1OWJhMDhjNDk0OTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYzMmNiYzZjNjAwZDAxMWNlNGVmYzI4ZDc4NjhkZmQyYTlkNTRhOThhYWRkYmFlNTk4ZTMyNTEyYjI1ZmEyMTQifQ"
         }
       ]
@@ -219,16 +203,8 @@
       "statement": "/two-factor 的 TwoFactorPage 通过 /api/2fa/enable（返回 secret、otpauthUrl、backupCodes，二维码由 qrcode 在浏览器本地生成 data URL）、/api/2fa/verify-enable 与 /api/2fa/disable 管理 2FA，成功后用 setUser 合并 twoFactorEnabled；初始步骤只在挂载时按 user.twoFactorEnabled 计算一次。",
       "evidence": [
         {
-          "resource": "repo://src/components/TwoFactorPage.jsx#L12-L13",
-          "version": "repo-lines-v1:sha256:27c895a675f2960124980b74d9a12fdb04e260eff26550dcd1068a53811c375f:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTNhYmZiMDZlNWU0YTk3NTRjODcwZWRjODkwMzRlYTMwOGMwOGQ1NGM0ZjMyYTNiODYzOGJjNWE0NWRhOWIwNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk4NzI2ZWFhM2Y0ZDE1NGUwMGE3ODk4YjQyMzBmZmNlYzZjNjdhOWM4ZDcxNDUxOWZmMDdjMDJmZmMzNzg0MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODUxYzY4YjI2ZmJmN2U0OWI5MmI1YWNlMTgyZWQ4NzYxMjRkNDA2MDA2YTYzMzhmZmQ4NDZiY2EwZTI3YzJhYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjViYTAxOGE5Y2FhMzhmMjdiODFlMjdmZmU3NDhmNTA5MTZjZmYzMjk1YmMzZjVmNGFlODVmODJkMmQ5YTI5OCJ9"
-        },
-        {
-          "resource": "repo://src/components/TwoFactorPage.jsx#L129-L249",
-          "version": "repo-lines-v1:sha256:bb802ecd0ec68ea64ca79a2afb478350b19c9b8fae70f32c38af5c40a29958d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIxLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI0OTBlZmIyY2EwNGUxMTg2MDA1MDhkMDIxNGY1MWZjNDEwYTQ5ZmUyMGNjYThhMGMwZjU1OTNkNWM2YTk3ZDE2IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI5NWVmMDFiYzA4ZGJjM2I2M2U0ZTc1ZWEzZDI2YTViOTQxODkxODc3ZTI3YWQ4OTEzMjljODQxMWQ3ZDhkYzRkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIyY2I1NjJlZWI3YjkyMzI3YzM3NDcxMWYxNThkZGEyNGViNDhmM2E3MTk3MDI5NDZkMjQ1MDUxYmU0YmQ2MTRhIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIwNTM5ZDZkMWNhMzM0NjdhNGViN2FmMWNlMWU2ZDg3MGQxNzI5Njg1NzcxNWVjOGI4OGZiYzE3Njg3ODY5M2ZlIn0"
-        },
-        {
-          "resource": "repo://src/components/TwoFactorPage.jsx#L22-L90",
-          "version": "repo-lines-v1:sha256:bbcdd9fff4630f8d0fa0504ba965f471958e896c7218d20a0d5dfc7bb95c0492:eyJzZWxlY3RlZExpbmVDb3VudCI6NjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1Njk4YjNjNjU3ZWFhMDExMjc0MmNiNzliNDUxMjIyMTZlOTExZTJlNjkxNmZmNjNiZTU4MTU1ZmM0MmY5M2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlhMmMyMDBkOGY4NGRkMzBkNTZiMjk3ZWYxMGIwMGUwMWY1ZGVkMDM3YjA4OGIzNDgyOWRiZmMwMDQ2ZGU3NDkifQ"
+          "resource": "repo://src/components/TwoFactorPage.jsx#L14-L90",
+          "version": "repo-lines-v1:sha256:a11381ac761249161df4808fbebe8662ff2e182f6d937b8a79aed4d054b22d16:eyJzZWxlY3RlZExpbmVDb3VudCI6NzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzYWJmYjA2ZTVlNGE5NzU0Yzg3MGVkYzg5MDM0ZWEzMDhjMDhkNTRjNGYzMmEzYjg2MzhiYzVhNDVkYTliMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjMGMwN2Y0NmI3MWQ2YWVjNDFjNTMxN2Y1MjdkMzFkNWVlMWQ3MzU3YjUxOTIwY2Q3NzAxNTE4OWM3ZjhiNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1MWM2OGIyNmZiZjdlNDliOTJiNWFjZTE4MmVkODc2MTI0ZDQwNjAwNmE2MzM4ZmZkODQ2YmNhMGUyN2MyYWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVmMTAzMzM2ZWExMDEwY2RlNjQyYmYzZWEwOTc5YzU2NWZjNGI0MTE1YzQyZTE0MGFhOGRhYTA2NzBjZGI0NGMifQ"
         }
       ]
     },
@@ -237,11 +213,11 @@
       "statement": "components/TwoFactorAuth.jsx 未被任何路由或组件引用，/two-factor 路由实际渲染的是 TwoFactorPage.jsx。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L565-L566",
+          "resource": "repo://src/App.jsx#L567-L568",
           "version": "repo-lines-v1:sha256:8fef8a317a26e455d7440c966ed5caeb07e4530bef7eac709dbad17b7b5ed6bf:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjRiZjBkYjU5ZmU3MjVmNzcwODM4YWU1NjY1ZGI4NWUwMTkxMDdjNjlhYTA1M2ZkYzFjNzE3ZDI0ZDRhNWYwZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQxMDk5YjQwNDIyNTYyYjhlZDc4OTE4YTY2ZDY4NWEyN2IxM2VhMGE2NzM5MjE0YjQ3Njc1OTIxNjdhNzhjYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTg3M2Q4YTNhMmE1NGJjOTMxMWQyMDFlOGZjZGYyZjgwMTgzZmQ5MjNlODVmMjdmZWYzMGNhZmI5ODAwYTA2YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDI5N2M2Y2UwZWM3ODA2YjAyMjQxNDk0NTBmNmY3MWU1Zjc4Zjg3MWVhNjRjNGNiOWYwZGNkNTFhY2ZkZjJhYSJ9"
         },
         {
-          "resource": "repo://src/components/TwoFactorAuth.jsx#L7-L8",
+          "resource": "repo://src/components/TwoFactorAuth.jsx#L9-L10",
           "version": "repo-lines-v1:sha256:6dbb2d06a4edc45f788f79c2601b9a0f2dba4f8e06b3868202af0289d7c558a5:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjFkZjgzMTYxMTgxNmFmMzZiNzYzNWU3NWJmYjdhNGZhZjg5NWU2M2VhODA4MDM5M2Q0YTAzZWJhM2M4NTlmZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDQyOGRjY2NjYmVhNGYwNDdmZTBhYzAyZjdjMDQ5ZGRmNzYwYTk3YzQ3YzgwODQwNjlhZDYzNGQ0MDg1NTdkYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjk5ZWYxMjdjMjU1ZWFmMmU3ZTgzZjMxMjhjOWI3NGZkNWUwZTRhNDUxMDQwYzNjOTI2YTIxNWE2OWY5ZDNiNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjg3MDYyNGIwY2UxOGY2ODg1ODllNTBiYzA3ZTU2MDNkZTEwNzk0OTI5ODU3MGJhNzBjNmFhY2I5MTdiNDUyNSJ9"
         }
       ]
@@ -251,11 +227,11 @@
       "statement": "密码找回是「登录页 forgot-password（含 altcha）→ 邮件链接 /reset-password?token= → ResetPassword 提交 reset-password {token, newPassword} 成功后 2 秒跳登录」；Login 里内嵌的 showReset/resetToken 重置分支不可达（setShowReset(true) 从未被调用、resetToken 从未赋值）。",
       "evidence": [
         {
-          "resource": "repo://src/components/Login.jsx#L225-L259",
+          "resource": "repo://src/components/Login.jsx#L227-L261",
           "version": "repo-lines-v1:sha256:afeaae3d3c840f2bfdbdc36376255aee31d3c05d906de35199441a66ef927076:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlNGRkOWExYzc1NzlmZjk3MTk2NDdmNTM3NjVkY2YzOWYwMTgxNTczNGM4NGJlYTFlOWE0ODM1MGI4ZjZhNWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiNWNjYTU4N2ZmMTFjZDg5MjEyZTA0MDVjYWYzOGUzMjJlMzJjNTNhM2I2OTg1NjBiNWIxMTM4ZmJkMTRkYjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyOWY5NDBiM2RiZjRlMDhkN2RkZTJkNGY5OTAyOTAwOTViNzdhNDdhZDdiYzA3MmNjOTJmNTkxMGU2MDE4YWUifQ"
         },
         {
-          "resource": "repo://src/components/Login.jsx#L490-L529",
+          "resource": "repo://src/components/Login.jsx#L492-L531",
           "version": "repo-lines-v1:sha256:be2c96a43dae7a608bbf79b71fe62e40a578ed2e2395a83aa5df97387c8f9749:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4N2VmZDQwZWM3NWJjYjc0MWQ3NjM5MDczMjliNjNmYmYyZTZlN2YyN2YwNGE5ZDhiOGFhYmRmYTY2NDA3NWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2YWJmZTRhNDA4OTA0ODI5ZDliOTQyNzAwM2UxYjJkZWM4ZTQzY2M2NzI3NmNiYmVhMDc4YmRhMWUyMTNjNjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk0ZDk2N2IyMjZjMjAxZGM0Y2VlYjUyZTA1ZDJiODMwMjY2MWRiN2YyZDEzMDJmNTY5MjAyN2I1NjA4YjE1YjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFmYmNkYjIwNDE4ZWJkNzYxOTk1M2NmNjI0ZTc1NGM2MzMwYmZlZTZlYzE2OTU5ZWFhOWQ0YmZiYjIyNjJhMjgifQ"
         },
         {
@@ -269,19 +245,19 @@
       "statement": "邮箱变更分双确认与强制两条：ChangeEmail 只发 POST /api/auth/request-email-change {password, newEmail} 而不直接生效，VerifyEmailChange 在 /verify-email-change?token= 挂载时 POST /api/auth/verify-email-change 完成切换；强制改邮箱由后端 403 + forceEmailChange 触发，AuthContext 打标后由 AppContent 在公共分支渲染不可关闭的 ForceEmailChange 弹窗，PUT /api/auth/change-email 成功后 onUpdate({email, isEmailVerified:false, forceEmailChange:false})。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L592-L595",
+          "resource": "repo://src/App.jsx#L594-L597",
           "version": "repo-lines-v1:sha256:6d7bcebf01f7a59e675dbaea256242caa726d41c2d667d8d33a00dcd3a201fb0:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2RhNDUwNTdiNzQyMDI0M2M5YTIyYjFlYjBiZDQ4MWQwM2RhODY3NjlhNzYwZTU4OTljMmY2MGU1N2EzMzE2NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmJjZTZlZWQ5NDFiNDhiZmVjMzExMTAyNjI2MTFmNjBhMjgwMjE1MDIwNjU2NjU5OTNjYzI4ZTZkOGRkYTYyYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTgwOTQyY2U1ZTNjMTM3MzVlNDRkOGU0OWI4NzMxMWY4OTZjNzA5ZWZkNDUyZWY5MTdhZjk2NGUzMzdiMDQyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2Y0NzNiZGEzODU4Mjg3MzJjNGMwZjJhNDE5NTZkMzdkOTlkZDU1MjRkNmRiYjQwOTAyNWM2ZDM4ODg4ZmM3NiJ9"
         },
         {
-          "resource": "repo://src/components/ChangeEmail.jsx#L20-L48",
+          "resource": "repo://src/components/ChangeEmail.jsx#L22-L50",
           "version": "repo-lines-v1:sha256:96dc405199179dbe5e8a2eb89c2686b75125a7ba633b81273ff2460a4889aadc:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmMTQ2ZmM3NWU3NTUzNDQwMDJhYzQ0YTVmYmVkZTBiMjRjMDI4YmY4NTcxY2FmZjQwOThhMjEwYTI3MzgzNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyZjdjODZiOTQ2ODhhMTVmYWZkNGM1NGI1NmEyMjIyZmJjY2Q5OTdmZTIzYmRmYjlmZjk1NzgwYThmMmZmOTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxOTQ5NzZhMzZhNjQ4YjczNTZiM2NmNWRlMjhmOTBmZjQ1NDQxZDc0Y2Y5MGQ3ZTU2ZGNlYTliYzE4MzE2MTYifQ"
         },
         {
-          "resource": "repo://src/components/ForceEmailChange.jsx#L16-L52",
+          "resource": "repo://src/components/ForceEmailChange.jsx#L18-L54",
           "version": "repo-lines-v1:sha256:bb1b7779ec9dd3ce371e0990cfe664b749de4db2257a96871bf7a7068d102247:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmMTQ2ZmM3NWU3NTUzNDQwMDJhYzQ0YTVmYmVkZTBiMjRjMDI4YmY4NTcxY2FmZjQwOThhMjEwYTI3MzgzNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjNDFjMjlkYWIzNmIwODFmMzk1ODNkODM0MTYzMjJkNmY1ZTdiOTkwZjYyYjJlMWY1MzMzMGNhNDcxOTJmMGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQwYTg4ZDlkOGE3ZDA2ZGIzNjc1ZjE4MjkyZTUzNDQ0NTk2MWRkYTg4OGE3MmY4MmM1NTJlMzAzYTJlMTVmODAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNjVmOWZiNmE4ZmFiMWYxNmFkYjk0OTEzNmFhOWE3NzZiNmE5ZWM3MjgyZjM4NmJhNGZkZmQ0OWFhMTA5YjIifQ"
         },
         {
-          "resource": "repo://src/components/VerifyEmailChange.jsx#L14-L33",
+          "resource": "repo://src/components/VerifyEmailChange.jsx#L16-L35",
           "version": "repo-lines-v1:sha256:75cd55a50200257ce3a3687ad2e72399a116adfc52bf752096b1d3ffd6c280df:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM4OTllMGE4NzNkZTEzNGZkYTNhM2U5NGIxZTU0NDgzNjQyNjI1MzkzODAxMjVmMWE2ODRhZDM0YWYzMWFkZmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmMzMyMDQ0OWI2ZmZkZDk0MWRlMDY2MzkzNWFlNDFiMGRmODU1NDg0ZTZlZTY1YmIyYTVhNWNmMTM5MDZmMjIifQ"
         },
         {
@@ -295,16 +271,8 @@
       "statement": "UserDevices 从 GET /api/user-sessions/my 渲染会话卡片（别名、系统、分辨率、IP、登录与最后活跃时间，加 isActive/isCurrent 徽标）；单设备下线仅对 isActive 且非 isCurrent 的会话显示、批量下线按钮仅在 activeCount>1 时出现，两类删除都先经 ConfirmModal，且批量下线成功后不重新拉取列表。",
       "evidence": [
         {
-          "resource": "repo://src/components/UserDevices.jsx#L122-L142",
-          "version": "repo-lines-v1:sha256:e0d102c0fa5d9c9cfc76d3279f40849bf9fbbbb98cc5609da4415b4eda840021:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmYzM3MjFhODFiYmY4M2JkMWZlOTFkZjFhYmRhZGNiMDcwNjU4NDJmYTJlMTMwYzMwNGU0NzE2M2RhMWUxZmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMjE1ZmQwM2NmYzJiZWViZjgwNGExN2FjNWU5NDc5NTFmN2NkMmRjMDU2MDUyMjQ5OWM2MDZmZGJjZDcxODUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI2ZjYyNDZmZDdmYTNkOTNmZTdkNzFkODM3M2QzNDZhMDczYzk4ODEzMjk3NzA3ODhiMjUzNzRmMGI5YmFiYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxNTFlNjJhZGIzNjAyMDBlYmJiM2Q1MTFlMTE4Y2UyYWEzMWY3NjYzNTliMzJmMDhlZTI3YWRkOGExNzY2MjAifQ"
-        },
-        {
-          "resource": "repo://src/components/UserDevices.jsx#L164-L256",
-          "version": "repo-lines-v1:sha256:7228cc2ecb0acd6641c9960bffd7e9bc0bfef3185be00ffb955e9d24726ca57d:eyJzZWxlY3RlZExpbmVDb3VudCI6OTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjZmY5NGQ4MjY4YTAzNmJmN2RiNzgzNDk4MTQwZjhjOGM2ODFiYmI1MWM5NTFmZTllYzU4ZmZlYzdlOGYyMzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMjE1ZmQwM2NmYzJiZWViZjgwNGExN2FjNWU5NDc5NTFmN2NkMmRjMDU2MDUyMjQ5OWM2MDZmZGJjZDcxODUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQwMjE1Njc0MGE3ZGRhYjc5Zjk4ZDE0YWE0NzZjNDU3YzNmOWYzYzg0MTRjYTE5MmY5ODZlMWI4Njg5Mjc4YTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzYzk1MmVlNzY0ZWQ2ZTJhZWE4YmFmMjA1YjUwMDBhNzEzMmRlNDEyY2M4Nzk4NmJhMzYzMjI1OTdjZDllZjAifQ"
-        },
-        {
-          "resource": "repo://src/components/UserDevices.jsx#L20-L104",
-          "version": "repo-lines-v1:sha256:5788370e8817b3ef05fb623c5a56b36ed52749f4e0f92987290fff84277161cb:eyJzZWxlY3RlZExpbmVDb3VudCI6ODUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMyM2FhODcwMmFlYmI2MTA1MjZmMzY4ODA0MWUyMTcyODY5MGQxN2M3ZmVkODIzYzhjZDhjYzNiZmU0YTY3OTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzMGRjZmM1MmJiMTM4ZmFjNWU2Mzk3ZDhmMTBlZTc4Y2U0MzdiOTA5YTcyYzhiZWYzZDJiYjNkNmY5NDhkZmYifQ"
+          "resource": "repo://src/components/UserDevices.jsx#L17-L140",
+          "version": "repo-lines-v1:sha256:ea95fc28fcb7b0b1cc7ce8fecfc78c921a409e6d492252e5652fef038f2b102f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI2ZjkwYjg1YWU1NDg5YjIwYjgwNmU1ODAwYWE3Nzc2ZDdjMzI2NGRmYjY0NzcwYzIxY2Q4YzY0NGJlM2FkZDEzIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI4MjA1ZmM2OGUxYjBhZmQ4MzJlZTY5NmFkMTViYmQwMmVhZGVkNWY4MzkzMmYyMjJiYzc1ZjEzZDZiMGUxNjM2IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzY2ZmZGVkZGQ1MWFkM2ExNTBkMDExYmRiYjYxMTQ1MWI0N2Y0YTI1MWYyMTM3MTQ0NGQ1NmRhYjU5Zjg0ZTk0IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJmZTIyMmY0NjdiOTFiM2U1NjdjMTZjMzRlZWMzYWNmM2Y1OTJkOTAyYmMwMzczZTU4YzE1MGRlZTM2MTYyMzI0In0"
         }
       ]
     },
@@ -323,12 +291,12 @@
       "statement": "AccountSecurity 聚合邮箱（默认掩码、可切换显示完整值、带验证徽标）、密码、设备、2FA、导出与注销入口；数据导出用原生 fetch(API.USERS.EXPORT, {credentials:'include'}) 下载 my_data_YYYY-MM-DD.json，因此不经过 axios 拦截器、不享受 401 自动刷新与 419 重试。",
       "evidence": [
         {
-          "resource": "repo://src/components/AccountSecurity.jsx#L7-L45",
-          "version": "repo-lines-v1:sha256:8979c542fd509b9d9b82e99ab00bb898d8aafdec07cb81bc259d5b62b682d1b3:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhODEyMmZhNDZiYmM1NDNmNTlmMjcxNjNjNGNlZThlYTJjMjQ3YzE4MjQyOTJmYTZlOWM2MzcxZWNkODhiMDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBlYTBiOTM5MTkzOWE2NWJhYWQ0Nzc3MjRiYWFjNzM1YjExYzM4MTVlMzQzMTNlNmMzZjYzMzc0ZDM4NTlkMzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2MDg3NTI1OGMxMTBhZDY1NzZiNDAyOWZlYjg3MzE3YzRlNDgzYzdiNDkzM2NiMzM1OTgwNGFjZmFlNDg4MGYifQ"
+          "resource": "repo://src/components/AccountSecurity.jsx#L25-L50",
+          "version": "repo-lines-v1:sha256:fac30f5310b8709adae015f0b13c69fbdc1a0cb419f91dac8e0bd31570a7a1fb:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzY2FkMjkxMmVhYmMwYTQyYzU3ODFhOGFmODk0MTA5NTdhODEyNjNkZjBkMDg3MGY2OThjNDgzYjUzY2U4MmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVjNTlhMGU2OTMxNTYzMDgzZTgwYjFiM2E4NmJmNGM5NjJlMzU1ZDRmZmQ3MTRmN2VjYTEwMGQ0NDVhZmY5MDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzZDc5ZGM2MjFlNmE5NDYyYzAxYTViODIxYTc4Njg0NjU3YzBmMjkyNjc5NzU3OTViZTAxNTEyYjVkYjI1NzIifQ"
         },
         {
-          "resource": "repo://src/components/AccountSecurity.jsx#L98-L234",
-          "version": "repo-lines-v1:sha256:5f5bf2de62363a8fcd7c7f055f2849f3f8662aec2684754e49b489db500fcfca:eyJzZWxlY3RlZExpbmVDb3VudCI6MTM3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlZTI0MDg1YTdiYTcyZTIyZmJiNmQ2NWNlYzc2MzhkMGIwNTgyZTRlMmYxMmJjNjM1YWM1ZjBkMTdiMGMzM2RmIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJlMDU2MzA0YjBlZWFiZDg4YWQ0Y2JkZDYwYmRmNDY2NTFhZDg1N2FkMWUwMTA0ZTQyYWJmZjZiMDQzYWU4ZWEwIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIyZWZkNjQ2MzBlYmZhNzQzNTc3MmRhNWRjYWRmZDVmYjJiYjVjY2Q2MGUyMzg0ZWVjMmYwZmMwMzVmYTQ4ZjE1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJkZTU4MzQ0YzVhNjVhMzYzZjZjOWNmNmJjYTIzNWU5YWIyODFhNzUyOGZiZTVlMWNiY2U5NmM3ZWM1OGU2NGM1In0"
+          "resource": "repo://src/components/AccountSecurity.jsx#L95-L234",
+          "version": "repo-lines-v1:sha256:df39c73fd1442396242d976321b648f96fc3ce7c5e30dd11c73d71ec33c02639:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmNDAzYmQyN2M4ZWY0OWQ3YTVmMzZjN2MyZWJlYWI3ZThiMmRkMjMzMGEwMjRiOGM4Yzc3ZDM1N2M1ODZhMjgyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJhZjIxNWZkMDNjZmMyYmVlYmY4MDRhMTdhYzVlOTQ3OTUxZjdjZDJkYzA1NjA1MjI0OTljNjA2ZmRiY2Q3MTg1IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5YjVjOTY5YWJjYjJiOWI4OGVjMWVhNjE4YzcwOTQ2YmE5YmUzYThjYjgwYmRiODQwODE4OTI0NDhlZWMwNzljIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI4NWUyOTBjZTE0MTZlMjY5MmNlODk5MDE4YjFjMTU0MWUzMWNlMjJlMGM1ZjNkNjc0ZjM5YTUzZTFiYTg1ZjlhIn0"
         }
       ]
     },
@@ -337,15 +305,15 @@
       "statement": "账号注销是三步对话：风险清单 → 输入密码（前端不再调 POST /api/auth/login 自验——旧实现在邮箱变更后会失真且 2FA 账号会被 need2FA 误放行，已移除；「验证密码」仅本地推进到下一步）→ 最终确认后 POST /api/auth/request-deletion 且请求体携带 { password } 由服务端校验，校验失败显示错误并回退步骤 1；倒计时面板由 deletion-status/request-deletion 返回的 deleteAt 驱动，可用 cancel-deletion 撤销。",
       "evidence": [
         {
-          "resource": "repo://src/components/DeleteAccount.jsx#L181-L194",
+          "resource": "repo://src/components/DeleteAccount.jsx#L183-L196",
           "version": "repo-lines-v1:sha256:53119ea856f1947edaee673f4ba18501f1e8a25856465cdb00c420173ee0d358:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzNWM3MTJhYjZjMTIwZjRlNWE0MWU0MjEyNThlNTU4ZTE2ODUwMGM0ZmYwYWViZDU2OWM1MjgxNTU5YzYxODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1ODFlNGYzNjBiYWVhZjY5YTUwNmIxZDIxODlkMzIwODYxNGIxYjM1NmM2N2Y0NDk4NGM4NTdiNDY4NGU5ZmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM2NTAyM2I0OWI1Y2NlZGNjNDQ5ZjdhMDYxZDA3ZDc1MjVjNGRhN2ZhYTdhZGI3ZjdkOGY0NWNmNWRmNjg5ZjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ2YjU1MjZkZGM5NzQ5NDMzMzQwYjdkYjcwMzM4NzkyNWRmYzE1OTZmNjE5ZWZmNjAzYWU4NmMxMDZlODk2NjEifQ"
         },
         {
-          "resource": "repo://src/components/DeleteAccount.jsx#L195-L215",
+          "resource": "repo://src/components/DeleteAccount.jsx#L197-L217",
           "version": "repo-lines-v1:sha256:162d655896a189f1c36329bbb6ff31c0ee55ed8ff704492401d4839769dd9cdc:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlN2Y2NGNkYmIyYmY3ZTM2MzEwNTZlOWZhY2RmOTc4OGIxNzdmMzc2NDI0ODhmNWVkYWFiZWQ2MGI2NzQxOGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMjE1ZmQwM2NmYzJiZWViZjgwNGExN2FjNWU5NDc5NTFmN2NkMmRjMDU2MDUyMjQ5OWM2MDZmZGJjZDcxODUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY5YzYyZjI4MGExOWJkNWEyNzkxNzhkODE3NzkzMDE5MDBmOWVhOTc4MTgwNzk5MWY2NzMzZGU2Yzc0NTg2NjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwYzZkMmM1NWIxZmU5ODZiYjMwOGMwMGY5ODNhMjM0NjUyNDg1NGQ0NzYxNTk2Njk4YzljNTNjMWFlNjUyYjYifQ"
         },
         {
-          "resource": "repo://src/components/DeleteAccount.jsx#L35-L53",
+          "resource": "repo://src/components/DeleteAccount.jsx#L37-L55",
           "version": "repo-lines-v1:sha256:411c80ab813f0ae5d497138f1d5146ab0fb8dea44a440e814f090d3ec1c48cf7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2ZDA2Mzk4NTBmODhlN2I1NGUzNWQyMDA0MmUzNTlhZTQ1MzUxOTcyZTFjZWJhNGZhMjk3YjMzMzBjMzdlNjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkYTBmZGI5NTk1MTE2NGFhM2E4NzQ2ZjcxMjliZjJkN2I5MGM1MzdmODliMjY5NGFhNzU5YjNjOGMyNTYwNDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmOTA4YTk2NDlmOWRlZTlhOGYwMDI1ZTdmMTU0M2FkYzRmY2ZjYzY3NzY1MzJiMzUyMzQ3MTNiODgzZDA1ZWYifQ"
         }
       ]
@@ -355,11 +323,11 @@
       "statement": "账号相关页面沿用 user ? <Page /> : <Navigate to=\"/login\" /> 的内联判空（/devices、/change-password、/change-email、/account-security、/two-factor、/delete-account），/login 与 /verify-device 共用同一个 Login 组件，登录成功固定 navigate('/') 因此没有登录后回跳。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L556-L581",
+          "resource": "repo://src/App.jsx#L558-L583",
           "version": "repo-lines-v1:sha256:91d5cf4d48ba04d9b8aa2d9ab95865ce8ae5d677a943ddbf20fb035d58d0273f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyZWE2OTRlY2VmNTEzY2U2MTk4MmE4OTljODUzYzUxOWEyYmYxNWM0ZjMwY2QyZDM3NGQ4OWU2OGM4YzFkMDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmN2ZiYzcyZjc2ZmUxZThmZDQ3ZGEzODdlOGVlZmMwZmFiYzM4ZTI0YTNhYWI0ZmZhOGFlNDlhMDE0ZTk5ZjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4MjgxZDdlZGM3ZWU0N2M4YzE1ZjFmMjgxZTQ3NmZjNGI0Y2Q3MGNhZDY4NzJmZjQ0ZmI0NDc4OGEwYWZkMDYifQ"
         },
         {
-          "resource": "repo://src/components/Login.jsx#L139-L141",
+          "resource": "repo://src/components/Login.jsx#L141-L143",
           "version": "repo-lines-v1:sha256:22360d5484081dd299e4d00c39182c848b6c20be02353aa42d42a40bdd723bde:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTU5OWMxZDJmNjYwYWExNTY0NzA4MzQzMDI4NGY1Y2ZlODViMzBiMzljZTQ0NTUxZTkzYjMzMjQ3ZDc5MjJlZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDhkYjc0NjA4MTgyY2I3Y2E0ZDlmYmE0OWEzOTQ5OWE3ZjM5MDdiNGVhMDMzYjE0OTJhZDVjZjBiZWVlZWNlZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjVkZmQyMzg4Njk0N2MyNzQ4MDViMjM0NjliZDlkZGIxNmE1MDcxNzIyYjQ3ODI4YTZhYmE0Y2U1NzY0YjU4NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzc5ZDU1MjNiOTIxZjM0NTAzMjQ3ZTk3YTViODAwOWYyYjlmM2M3MjM5NWI1NzE0ODI4OWVjYzhkM2Y4YzY3ZSJ9"
         }
       ]
@@ -369,15 +337,15 @@
       "statement": "Login 的 fromDeviceVerify 与 Register 的 codeResendLoading/codeResendMsg/codeResendSuccess 都是只写不读的死状态，属于账号流程演进后的残留。",
       "evidence": [
         {
-          "resource": "repo://src/components/Login.jsx#L191-L192",
+          "resource": "repo://src/components/Login.jsx#L193-L194",
           "version": "repo-lines-v1:sha256:5ed720be3faba352a81bcbe15f4617ac1e9ace5b6f0d925942d16339707165da:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWIzZjVhYzg1ZDdiYjI5NjllMzVlNzk2MTIzODlkMzZlZmRlM2RiMmUyY2FlZDdjYWEyNjJiMTBkNmI3MzRiYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGZiYTE5MDRjNDEwY2FiZDRlMjkxY2ZmMmMzYjljN2I5MmIwNTI5NzVmMGFlZDZlOWZiYjhmYTcwNjQyNjQ0YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDQ1ZTU5MmM3OTNiODNmZTg4MGYwNGQwNWU5NDhmY2Y4OTVmYjVlZGY1YzQwNjFjODgxYjVjOTY1NmNmNTc5NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTIyNWI1NDAzMGZmNDNmNjFmYjgyMzI2YTI2NGYzYjA0MDFhZmU4ZThjNDg5MzU5NTUyNGY2NGRjNDhhN2FjMyJ9"
         },
         {
-          "resource": "repo://src/components/Login.jsx#L39-L40",
+          "resource": "repo://src/components/Login.jsx#L41-L42",
           "version": "repo-lines-v1:sha256:d4bf60c0f68640c10bef8dfa78655a0bc1bf33e80b83e477b6af0ecf8ddc6a95:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTU4YzUwZGY1M2EyYTM4MzZlOTY3N2UyNmU2NjllMWYyOTBkZWU1MTI3OWM0YWU4NmJjNGJiMjJiMGM5M2Y5ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2VhNzIxNTk4NGE3ZTg1OGY1MmMyZGFhNjRmZTMzNWZiY2I0OWU3OWY5Mzg5YmRkYmZlZjE3NDFmZWU2ZWI2YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjRjY2IzZjY4N2I1MTI1Njg0YmJjMTc1NDRiZjRjY2YxN2Q5ZTVhZjY1YWMyZmNhYWY1ZmVjZGNjYWJjYjAyOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTE1ODE5ZDEyMDQ1ODY0OTUwMDVkYjk1OWI1NjdjYTZkYjE5ZDcwYjM5YWY5MWRmZTQ0ODBmY2MwNWM4MTA0ZCJ9"
         },
         {
-          "resource": "repo://src/components/Register.jsx#L28-L31",
+          "resource": "repo://src/components/Register.jsx#L30-L33",
           "version": "repo-lines-v1:sha256:61bf35acd79bdbb7614943cd9ab1f5124aa8d42e6a45b89d9ab152dcb7875040:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmZjMWJhNWI3YmIxZTE5NDVjYmUwZjA3MWVlMTIyZDk2YmExOGExNmNiYzU4ZDFmNDQ2YmIyNjkwNmQyM2ZhMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjNlNTg1Y2MyYTg4YTZiMGQ2ODg2Njc4ZmVkNDBiYTI4ZmZkNTdmNDE1ZTU2ZGYxNjAxZjkyOTA3NWFlMzI3ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjNiYmY5ZjVjNjJmNDc2OTFkMTM4ZGVhNTU4NTJiOTUzNjc0Y2ExOTM0YmMxYTY1MDgxMDRkOGI4OGJjZTNhMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmNkMzRlMzUwZjc5MmZiMWRjYTc4Y2FmYTc4ZTFkMmY3ODgxNWNlNTQzMGYyNzA2MDBkNzU4YWE4M2VmNTZiYSJ9"
         }
       ]
@@ -387,7 +355,7 @@
       "statement": "仓库没有自动化测试脚本（package.json 仅有 dev/build/lint/preview/generate-icons），账号流程只能靠 lint、build 与手动冒烟验证。",
       "evidence": [
         {
-          "resource": "repo://package.json#L7-L14",
+          "resource": "repo://package.json#L10-L17",
           "version": "repo-lines-v1:sha256:8c9ac56b88e52a26308029474548168524d5dc0ac548e79957b4c728c1af7e84:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmEzYjQ2OWQ5ZTA5NzU3MjI0NjY2NzM0YzllZjdiMjU0ZDg4NTM0ZjVkNWJiNzA5ODk2MDgwNWM1NTNkYzMwNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzUyMDMzNGJlN2IxYjUyMmU5YzNjNzU0N2Y4OWZkMDk0ZjE1MTAxNjMwOWY3NDk0YTdkYmMzNjg2MzIwMmJmYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjgyODNlNjM2ZmRkYWY5OWQxZjExZDk3MmRmYWI0MWU5NjUwNzVkZDNlODQyOTQ0YWQ4MWViMjA1NTQ2ZDU1NSJ9"
         }
       ]
@@ -395,6 +363,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-04T16:54:50.811Z"
+    "at": "2026-11-11T16:33:24.381Z"
   }
 }

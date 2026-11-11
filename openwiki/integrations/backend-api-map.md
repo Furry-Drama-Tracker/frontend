@@ -1,7 +1,7 @@
 ---
 type: integration
 title: 后端契约地图（API 分组与错误语义）
-description: 以 src/utils/apiEndpoints.js 为索引梳理 SPA 消费的后端表面：端点分组与路径层级、站点内容多路复用与运行时 PWA manifest、SSE ticket、三种部署拓扑，以及前端强依赖的 401/403/409/419/5xx 与登录分支错误语义、内联端点字符串的漂移风险。
+description: 以 src/utils/apiEndpoints.js 为索引梳理 SPA 消费的后端表面：端点分组与路径层级、站点内容多路复用与运行时 PWA manifest、SSE ticket、四种部署拓扑，以及前端强依赖的 401/403/409/419/5xx 与登录分支错误语义、内联端点字符串的漂移风险。
 tags: [backend-api, api-contract, error-semantics, deployment-topology, sse]
 sources:
   - id: openwiki-source-f8d10828394c4129061d5b0e
@@ -16,8 +16,6 @@ sources:
     resource: repo://src/components/AdminApiUsage.jsx
   - id: openwiki-source-c9f5ee9572db408c5720db23
     resource: repo://src/components/AdminBackup.jsx
-  - id: openwiki-source-a0e8087e81fad28f90591a7b
-    resource: repo://src/components/AdminDashboard.jsx
   - id: openwiki-source-23fd220365cc63dc831c29e4
     resource: repo://src/components/AdminEmailSettings.jsx
   - id: openwiki-source-602012ce5f31c1a198602c86
@@ -26,8 +24,6 @@ sources:
     resource: repo://src/components/AdminEpisodeTrash.jsx
   - id: openwiki-source-11c92b2033df029713925335
     resource: repo://src/components/AdminLayout.jsx
-  - id: openwiki-source-a6b508e1bdcfdef16cfc9f21
-    resource: repo://src/components/AdminSessions.jsx
   - id: openwiki-source-c4a2ade1820d6e35c826fcde
     resource: repo://src/components/AdminSiteContent.jsx
   - id: openwiki-source-95f0291f29cd95f8dfdca78e
@@ -58,6 +54,8 @@ sources:
     resource: repo://src/components/ThemeColorPicker.jsx
   - id: openwiki-source-60afaaf20197f317d132c4b1
     resource: repo://src/components/ThemeEditorModal.jsx
+  - id: openwiki-source-3613a5a0b10b3bb26c6d63a8
+    resource: repo://src/components/ThemeWorkshop.jsx
   - id: openwiki-source-3e3cca2b994f3eee9e9afa07
     resource: repo://src/components/TranslatableText.jsx
   - id: openwiki-source-cc593f31fc84c5849299b505
@@ -70,8 +68,6 @@ sources:
     resource: repo://src/components/VerifyEmail.jsx
   - id: openwiki-source-9793b3dd98a0e62ec68a07c3
     resource: repo://src/contexts/AuthContext.jsx
-  - id: openwiki-source-67f450c07acbf8e852c93e69
-    resource: repo://src/contexts/IconContext.jsx
   - id: openwiki-source-52f73cb87517cf05f876b0b4
     resource: repo://src/contexts/SiteSettingsContext.jsx
   - id: openwiki-source-8a340c1c334700f536c603ec
@@ -94,10 +90,10 @@ sources:
     resource: repo://src/utils/offlineQueue.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
+generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-04T16:54:50.811Z
+    at: 2026-11-11T16:33:24.381Z
 ---
 
 # 后端契约地图（API 分组与错误语义）
@@ -120,6 +116,7 @@ flowchart TD
   A --> F["EventSource：通知流"]
   D -->|"开发：Vite proxy"| G["http://localhost:5000"]
   D -->|"生产：同域 nginx 反代"| H["同源 /api 与 /uploads"]
+  D -->|"生产：ESA 边缘函数反代"| H
   D -->|"跨域：VITE_API_BASE_URL"| I["需手工设置 axios.defaults.baseURL"]
   E --> J["后端 /api/users/export-my-data"]
   F --> K["后端 /api/notifications/stream?ticket=..."]
@@ -132,14 +129,15 @@ flowchart TD
 - **原生 `fetch`**（`AccountSecurity` 的数据导出）只显式传 `credentials: 'include'` 与 `getAuthHeaders()`（后者恒返回 `{}`），因此既没有 `X-XSRF-TOKEN`（GET 本不需要）、也没有 `X-Requested-With`，会话失效时不会触发自动刷新或跳转，失败只落到组件内的 `profile.exportDataFailed` 文案。
 - **`EventSource`** 不受 axios 拦截器管辖，也无法自定义请求头，于是后端提供了 ticket 式鉴权（见[通知与 SSE](#通知与-sse-ticket)）。
 
-## 三种部署拓扑
+## 部署拓扑：开发、同域反代与 ESA 边缘函数
 
-所有端点都以 `/` 开头的字面量书写，浏览器把它们解析为**同源路径**；三种拓扑靠"谁来接管这些路径"区分：
+所有端点都以 `/` 开头的字面量书写，浏览器把它们解析为**同源路径**；各拓扑靠"谁来接管这些路径"区分：
 
 | 拓扑 | 前端侧配置 | 浏览器看到的请求 | 要点 |
 | --- | --- | --- | --- |
 | 开发 | `vite.config.js` 的 `server.proxy` | `http://localhost:3000/api/...`、`/uploads/...` | 代理到 `http://localhost:5000`，`changeOrigin: true`；dev 响应头 `Cache-Control: no-store`；PWA `devOptions.enabled: false`，开发期无 Service Worker 缓存 |
 | 生产同域（推荐） | 无需改动 | `https://example.com/api/...` | nginx `location /api/` 与 `location /uploads/` 直接 `proxy_pass` 到后端，不做路径重写（后端必须自己吃掉 `/api` 前缀）；`location /` 用 `try_files $uri $uri/ /index.html` 做 SPA 回退 |
+| 生产 ESA（边缘函数） | `esa.jsonc` + 函数变量 `API_ORIGIN` | 同源 `/api/...`、`/uploads/...` | ESA Pages 构建产物 `dist/` 并按 `notFoundStrategy: singlePageApplication` 做 SPA 回退；未命中静态资源且属于 `/api/`、`/uploads/` 前缀的请求交给边缘函数 `edge/api-proxy.js`，按白名单透传请求头后 `fetch` 到 `API_ORIGIN`（仅域名+端口，不带路径），响应原样返回；修改函数变量后需重新发布版本 |
 | 生产跨域 | `.env.production` 的 `VITE_API_BASE_URL` | 直连后端域名 | 只有 `VITE_` 前缀变量会进客户端产物；cookie 需 `SameSite=None; Secure` 且后端 CORS 放行前端源（待后端核对具体配置） |
 
 跨域这条拓扑有一个必须知道的现状：README 要求"在 `src/utils/axiosConfig.js` 中加入 `axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL || ''`"，但**当前源码里没有任何 `baseURL` 赋值**（全仓库 grep 无匹配）。也就是说跨域部署今天需要改代码，`VITE_API_BASE_URL` 只是约定而非已接线；不要以为配好环境变量就能跨域。一旦补上该行，以 `/` 开头的字面量仍会拼在 baseURL 之后（axios 只把含协议头的 URL 视作绝对地址），而 `withCredentials = true` 已是全局默认值，跨站 cookie 与自定义 CSRF 头会触发 CORS 预检，后端需要相应放行。
@@ -153,14 +151,14 @@ flowchart TD
 - **字符串常量**：无路径参数的端点（`AUTH.LOGIN`、`EPISODES`、`NOTIFICATIONS.UNREAD_COUNT`）。
 - **工厂函数**：带路径参数，调用方自己传 id（`THEMES.DETAIL(id)`、`NOTIFICATIONS.MARK_READ(id)`、`STATS.RECOMMENDATIONS(id)`、`USER_SESSIONS.UPDATE_NAME(id)`、`ADMIN.SITE_CONTENT(key)`）。
 
-分组覆盖：`AUTH`、`EPISODES`、`SERIES`、`USERS`、`WALLPAPERS`、`THEMES`、`ICONS`、`FAVORITES`、`FOLLOWS`、`HISTORIES`、`RATINGS`、`FOLDERS`、`NOTIFICATIONS`、`ADMIN`、`STATS`、`USER_SESSIONS`，以及扁平常量 `TRANSLATE_BATCH`、`FEEDBACK`、`REPORTS`、`FRIEND_LINKS`、`CREATOR_PROFILES`、`HEALTH`。
+分组覆盖：`AUTH`、`EPISODES`、`SERIES`、`USERS`、`WALLPAPERS`、`THEMES`、`FAVORITES`、`FOLLOWS`、`HISTORIES`、`RATINGS`、`FOLDERS`、`NOTIFICATIONS`、`ADMIN`、`STATS`、`USER_SESSIONS`，以及扁平常量 `TRANSLATE_BATCH`、`FEEDBACK`、`REPORTS`、`FRIEND_LINKS`、`CREATOR_PROFILES`、`HEALTH`。
 
 实际引用情况并不均衡，这决定了"改注册表是否安全"：
 
 | 分组 | 引用现状 |
 | --- | --- |
-| `THEMES` / `WALLPAPERS` / `NOTIFICATIONS` / `AUTH` / `USERS` / `USER_SESSIONS` / `ICONS.LIST` / `RATINGS` / `FOLDERS` / `EPISODES` / `STATS` | 主体端点被组件按需引用，但同组仍有空转条目（`ICONS.ALL`、`ICONS.UPLOAD`、`ICONS.DETAIL`、`THEMES.UPLOAD_WALLPAPER`、`THEMES.SET_DEFAULT`、`AUTH.CSRF_TOKEN`、`NOTIFICATIONS.LIST` 原样） |
-| `ADMIN` | 整组未被任何组件引用；后台实际用的是 `adminApi` + 内联字面量 |
+| `THEMES` / `WALLPAPERS` / `NOTIFICATIONS` / `AUTH` / `USERS` / `USER_SESSIONS` / `RATINGS` / `FOLDERS` / `EPISODES` / `STATS` | 主体端点被组件按需引用，但同组仍有空转条目（`THEMES.UPLOAD_WALLPAPER`、`THEMES.SET_DEFAULT`、`AUTH.CSRF_TOKEN`、`NOTIFICATIONS.LIST` 原样） |
+| `ADMIN` | `ADMIN.LOGIN` 已删除；整组其余条目未被任何组件引用，后台实际用的是 `adminApi` + 内联字面量 |
 | `FAVORITES` / `FOLLOWS` / `HISTORIES` / `SERIES` / `TRANSLATE_BATCH` / `FEEDBACK` / `REPORTS` / `FRIEND_LINKS` / `CREATOR_PROFILES` / `HEALTH` | 扁平常量基本空转，对应调用全部写在内联字符串里 |
 
 `adminApi` 本身不是一套独立客户端：它只是把 `get/post/put/delete/patch` 转发给全局 `axios`，`getAdminToken()`/`getAdminData()` 恒返回 `null`——管理端鉴权同样只靠 httpOnly cookie，没有 `Authorization` 头可注入。
@@ -279,19 +277,18 @@ sequenceDiagram
 
 SSE 载荷里 `unreadCount` 是权威值这一点有代码注释背书（后端是实时 `countDocuments`），这属于必须保留的契约：若后端改成增量或省略该字段，徽标会与列表不一致，直到下一次 60 秒轮询。
 
-### 主题、图标与壁纸
+### 主题与壁纸
 
-主题是"两槽"模型：壁纸槽与图标槽可来自不同主题，站点默认主题只做兜底。
+主题是单壁纸槽模型：用户选择只写壁纸槽，站点默认主题只做兜底；原"壁纸槽 + 图标槽"与 `/api/icons/*` 契约已随自研图标引擎删除。
 
 | 端点 | 方法 | 契约要点 |
 | --- | --- | --- |
-| `/api/themes/active` | GET | 站点默认主题，响应 `{ theme }`；未登录时的图标与壁纸来源 |
+| `/api/themes/active` | GET | 站点默认主题，响应 `{ theme }`；未登录时的壁纸来源 |
 | `/api/themes/list`、`/api/themes/my`、`/api/themes/all` | GET | 公开列表 / 我的（草稿与审核中）/ 后台全量 |
-| `/api/themes/my/selection` | GET | 返回 `wallpaperTheme`、`wallpaperIsDefault`、`iconsTheme`、`iconsIsDefault`；`*IsDefault` 为真表示回落站点默认，不算用户选择 |
-| `/api/themes/selection` | PUT | 体 `{ wallpaperThemeId, iconsThemeId }`（传空串即清槽）；响应可带 `backgroundPrefs` 与 `accentColor`，前端据此同步 `localStorage.user` 与主题色 |
+| `/api/themes/my/selection` | GET | 前端消费 `wallpaperTheme`、`wallpaperIsDefault`；`IsDefault` 为真表示回落站点默认，不算用户选择（响应中的 `iconsTheme`/`iconsIsDefault` 是历史遗留，前端不再读取） |
+| `/api/themes/selection` | PUT | 前端只传 `{ wallpaperThemeId }`（传空串即清槽）；后端对缺失键保持原值；响应可带 `backgroundPrefs` 与 `accentColor`，前端据此同步 `localStorage.user` 与主题色 |
 | `/api/themes/background-prefs` | PUT | 透明度/模糊/开关补丁，响应 `{ backgroundPrefs }` |
 | `/api/themes/:id`、`/api/themes/:id/submit`、`/api/themes/:id/review`、`/api/themes/:id/admin` | PUT·DELETE / POST / POST / PUT | 编辑、提交审核、审核结论、后台改 `isDefault`/`enabled`/`isSystem` |
-| `/api/icons/list` | GET | 响应 `{ icons, mappings }`；`mappings` 里的是 SVG URL，`IconContext` 再用 axios（`responseType: 'text'`）逐个取回并净化后内联 |
 | `/api/wallpapers/system`、`/api/wallpapers/system/all`、`/api/wallpapers/system/:id` | GET·POST / GET / PUT·DELETE | 系统壁纸管理（后台） |
 | `/api/wallpapers/personal` | GET / POST / DELETE | 个人壁纸；删除时用 `data: { url }` 传地址，后端同时删记录与 `/uploads` 下的文件 |
 
@@ -413,7 +410,7 @@ flowchart LR
 注册表与内联字符串并存是当前最大的结构性风险。以下清单按"改错会怎样"排序：
 
 1. **注册表与代码互相矛盾**：`ADMIN.BACKUP_*` 指 `/api/admin/backup/*`，代码打 `/api/backup/*`；`NOTIFICATIONS.LIST` 是 `/api/notifications`，实际请求是 `${LIST}/list`；`ADMIN.SITE_CONTENT(key)` 与公开读取路径完全相同（同一个 URL 既当后台写入口又当公开读取，权限只能靠方法区分）。改任一侧前先用后端路由确认真实路径。
-2. **注册表整组空转**：`API.ADMIN.*` 没有任何组件引用，后台 20+ 页全部用内联字面量；`ICONS.UPLOAD/DETAIL/ALL`、`THEMES.UPLOAD_WALLPAPER`、`THEMES.SET_DEFAULT`、`AUTH.CSRF_TOKEN`、`SERIES`、`FAVORITES`、`FOLLOWS`、`HISTORIES`、`TRANSLATE_BATCH`、`HEALTH` 等同样空转。删条目不会破坏功能，但"改注册表 = 改接口"的假设不成立。
+2. **注册表整组空转**：`API.ADMIN.*` 没有任何组件引用，后台 20+ 页全部用内联字面量；`THEMES.UPLOAD_WALLPAPER`、`THEMES.SET_DEFAULT`、`AUTH.CSRF_TOKEN`、`SERIES`、`FAVORITES`、`FOLLOWS`、`HISTORIES`、`TRANSLATE_BATCH`、`HEALTH` 等同样空转（`ICONS` 分组与 `THEMES.UPLOAD_ICON`、`ADMIN.LOGIN` 已随图标引擎移除与后台登录改版删除）。删条目不会破坏功能，但"改注册表 = 改接口"的假设不成立。
 3. **关键端点未注册**：`/api/auth/refresh`（会话续命）、`/api/auth/sse-ticket`（实时通知）、`/api/translate`（运行时翻译）、`/api/notifications/clear-read`、`/api/announcements/*`、`/api/categories`、`/api/banners`、`/api/review/*`、`/api/version(s)/*`、`/api/episode-trash/*`、`/api/saved-folders`、`/api/activity/*`、`/api/stats/calendar|activity-heatmap|episode-lifecycle`、`/api/2fa/*`、`/api/auto-status/*`、`/api/backup/*`、`/api/rss/api-usage`、`/api/admin/creators|register|role|user-admin-access|verify-password`。
 4. **字符串模板被当路径工厂**：`API.THEMES.LIST.replace('/list', '')` 生成 `POST /api/themes`；`API.STATS.RECOMMENDATIONS('personalized')` 把"id 参数"当魔法值。两者都把语义藏在字符串处理里。
 5. **路径前缀与缓存耦合（已反转）**：`vite.config.js` 的 workbox `runtimeCaching` 已被刻意清空——出于隐私考虑（API 响应含个人追番/历史/通知与站点配置，登出后 Cache Storage 不自动清理）不再缓存任何 `/api/` 或 `/uploads/` 响应，另用 `navigateFallbackDenylist` 排除这两个前缀；离线读取完全依赖应用层缓存（`site_settings_cache`、`translation_cache_v2`、`offline_queue`）。若未来要恢复运行时缓存，必须同时评估登出清理（`clearClientData` 会删除全部 Cache Storage）。

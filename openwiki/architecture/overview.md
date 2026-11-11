@@ -18,14 +18,10 @@ sources:
     resource: repo://src/App.jsx
   - id: openwiki-source-11c92b2033df029713925335
     resource: repo://src/components/AdminLayout.jsx
-  - id: openwiki-source-60afaaf20197f317d132c4b1
-    resource: repo://src/components/ThemeEditorModal.jsx
   - id: openwiki-source-9793b3dd98a0e62ec68a07c3
     resource: repo://src/contexts/AuthContext.jsx
   - id: openwiki-source-7898acfb0042c03f592a292f
     resource: repo://src/contexts/I18nContext.jsx
-  - id: openwiki-source-67f450c07acbf8e852c93e69
-    resource: repo://src/contexts/IconContext.jsx
   - id: openwiki-source-52f73cb87517cf05f876b0b4
     resource: repo://src/contexts/SiteSettingsContext.jsx
   - id: openwiki-source-a179f998ae5318f35e50729c
@@ -56,10 +52,10 @@ sources:
     resource: repo://src/utils/translationCache.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
+generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-04T16:54:50.811Z
+    at: 2026-11-11T16:33:24.381Z
 ---
 
 # 架构总览：浏览器侧分层与后端边界
@@ -83,7 +79,7 @@ flowchart TD
   end
   subgraph L2["L2 全局状态 · Provider 树"]
     G1["ThemeProvider 到 SiteSettingsProvider"]
-    G2["AuthProvider 到 IconProvider"]
+    G2["AuthProvider"]
     G3["ErrorBoundary 到 BrowserCompat"]
   end
   subgraph L3["L3 路由与布局 · App.jsx"]
@@ -129,7 +125,7 @@ flowchart TD
 | --- | --- | --- | --- |
 | L0 启动脚本 | `index.html` 两段内联脚本、CSP meta | 在打包产物下载前确定语言、拦住不兼容浏览器、锁定资源白名单 | 业务逻辑、新的外链依赖 |
 | L1 入口副作用 | `src/main.jsx` | polyfills、全局样式、全局 axios 配置、Web Component 注册、SW 注册、文档级事件 | 依赖 React 状态的逻辑、按路由才需要的能力 |
-| L2 全局状态 | `src/contexts/*` 五个 Context、`App.jsx` 的两个错误边界与 `BrowserCompat` | 跨路由共享的少量状态与文档级副作用（`document.title`、manifest、壁纸 CSS 变量） | 页面级状态、服务端列表数据 |
+| L2 全局状态 | `src/contexts/*` 四个 Context、`App.jsx` 的两个错误边界与 `BrowserCompat` | 跨路由共享的少量状态与文档级副作用（`document.title`、manifest、壁纸 CSS 变量） | 页面级状态、服务端列表数据 |
 | L3 路由与布局 | `src/App.jsx` 的两张 `<Routes>`、`AdminLayout`、`AdminGuard`、`getRoutePageTitleKey` | 分区、懒加载边界、标题映射、体验层拦截 | 真正的授权判定 |
 | L4 领域组件与 hooks | `src/components/*`、`src/hooks/*` | 业务 UI、交互、取数与组件内状态 | 全局副作用、直接改写主题之外的 DOM 全局样式 |
 | L5 传输与缓存 | `axiosConfig.js`、`apiEndpoints.js`、`adminApi.js`、`offlineQueue.js`、`translationCache.js`、SW workbox 配置 | 一套凭据模型、端点地址、错误事件、离线与缓存策略 | 业务判断与界面文案 |
@@ -142,9 +138,9 @@ flowchart TD
 - **为什么存在**：早期语言检测必须在浏览器做首次语言判定之前完成；`axiosConfig` 必须在任何 Provider 的 effect 发请求之前注册拦截器；`altcha` 的 Web Component 必须早于懒加载路由注册。
 - **不变量**：`src/main.jsx` 里 `import './utils/axiosConfig'` 是裸副作用导入，删掉或挪进懒加载 chunk 会同时失去 CSRF 注入、自动刷新与 401 跳转；`index.html` 的 CSP meta 是前端唯一的运行期安全策略（`default-src 'self'` 兜底、逐项白名单、`base-uri 'self'` 与 `form-action 'self'` 收尾，并配套 `referrer=no-referrer` 与 `permissions-policy` meta），新增第三方脚本、接口或播放器域名必须同步改对应指令，图片已由 `img-src` 的 `https:` 通配放开。
 
-## L2：全局状态只有五个 Context 加一组 window 事件
+## L2：全局状态只有四个 Context 加一组 window 事件
 
-前端没有任何全局状态库：`package.json` 的运行时依赖只有 `react`、`react-dom`、`react-router-dom`、`axios`、`altcha`、`qrcode`、`lucide-react`。全局状态由 `App.jsx` 里嵌套的五个 Provider 承担：
+前端没有任何全局状态库：`package.json` 的运行时依赖是 `react`、`react-dom`、`react-router-dom`、`axios`、`altcha`、`qrcode`，以及图标库 `@fortawesome/fontawesome-svg-core` + `free-solid/free-regular/free-brands-svg-icons` + `@fortawesome/react-fontawesome` 与 `@icons-pack/react-simple-icons` + `simple-icons`（`lucide-react` 已随自研图标引擎的移除而删除）。全局状态由 `App.jsx` 里嵌套的四个 Provider 承担：
 
 | Context | 提供 | 数据来源与持久化 |
 | --- | --- | --- |
@@ -152,9 +148,10 @@ flowchart TD
 | `I18nContext` | `lang` / `t` / `switchLang` | `localStorage.lang` + `src/locales/zh.js`、`en.js`；切换语言会整页 reload |
 | `SiteSettingsContext` | 运行时站点配置（名称、Logo、PWA、favicon 等） | `GET /api/site-content/settings`，`localStorage.site_settings_cache` 缓存 30 分钟 |
 | `AuthContext` | `user` / `initializing` / `login` / `logout` / `updateUser` | `GET /api/auth/me` 校验 httpOnly cookie 会话，`localStorage.user` 只是界面快照 |
-| `IconContext` | 图标映射表 + 主题图标覆盖，`THEME_SELECTION_CHANGED_EVENT` | `/api/icons/*` 与主题接口；依赖 `useAuth()` |
 
-**跨层同步不走状态库，走 `window` 自定义事件。** 传输层（L5）无法 import React 状态，于是派发事件、由 Context 或 `AppContent` 订阅：`auth:session-expired`、`auth:token-refreshed`、`auth:force-email-change`、`api-error` 四个由拦截器派发，`theme-selection-changed`（应用/取消主题后刷新图标）与 `pwa-install-available` 由业务侧派发。这套事件的语义与消费方见[状态管理与浏览器持久化契约](./state-and-persistence.md)与 [HTTP 层、CSRF 与双 Token 刷新](./http-and-session.md)。
+UI 图标不再是运行时资源：原 `IconContext`/`IconProvider` 图标引擎（`/api/icons/*`、`sanitizeSvg`、主题图标槽）已整体删除，组件直接导入 Font Awesome 图标常量（`@fortawesome/free-solid-svg-icons` 等）与 Simple Icons 品牌组件（GitHub、Bilibili、YouTube、Niconico、X、微信、QQ、微博）在编译期绑定。
+
+**跨层同步不走状态库，走 `window` 自定义事件。** 传输层（L5）无法 import React 状态，于是派发事件、由 Context 或 `AppContent` 订阅：`auth:session-expired`、`auth:token-refreshed`、`auth:force-email-change`、`api-error` 四个由拦截器派发，`pwa-install-available` 由业务侧派发（应用/取消主题后刷新图标的 `theme-selection-changed` 已随图标引擎删除）。这套事件的语义与消费方见[状态管理与浏览器持久化契约](./state-and-persistence.md)与 [HTTP 层、CSRF 与双 Token 刷新](./http-and-session.md)。
 
 **服务端状态不属于这一层。** 列表、详情、通知这类数据由 L4 的组件与 hooks 自己持有（见下文），因此「全局状态」与「服务端数据」是两套互不相通的缓存，别在 Context 里塞业务列表。
 
@@ -182,7 +179,7 @@ flowchart TD
 ## L5：一个 axios 单例、一张端点注册表、两层浏览器缓存
 
 - **唯一客户端**：`axiosConfig.js` 在模块顶层改写全局 axios 默认值（`timeout = 15000`、`withCredentials = true`）并注册拦截器，全仓库没有 `axios.create()`。`adminApi.js` 只是对同一实例的转调，因此管理端与前台共享 CSRF 注入、401/419 刷新重试与 `api-error` 提示；给它单独建实例会立刻丢掉这一整套行为。
-- **端点注册表**：`apiEndpoints.js` 以分组对象列出认证、会话、剧集、主题、图标、通知、管理、统计、翻译等路径（含 `:id` 风格的函数式端点）。它是导航索引而非唯一真源——仍有调用点内联字符串（如 `useTranslation` 的 `/api/translate`、`useNotifications` 的 `/api/auth/sse-ticket`、`useImageUpload` 的 `/api/episodes/upload`），改动路径时要全仓搜索。
+- **端点注册表**：`apiEndpoints.js` 以分组对象列出认证、会话、剧集、主题、壁纸、通知、管理、统计、翻译等路径（含 `:id` 风格的函数式端点；`ICONS` 分组与 `THEMES.UPLOAD_ICON`、`ADMIN.LOGIN` 已随图标引擎移除而删除）。它是导航索引而非唯一真源——仍有调用点内联字符串（如 `useTranslation` 的 `/api/translate`、`useNotifications` 的 `/api/auth/sse-ticket`、`useImageUpload` 的 `/api/episodes/upload`），改动路径时要全仓搜索。
 - **两层缓存**：(1) 应用层——`SiteSettingsContext` 的 30 分钟站点配置缓存、`translationCache` 的 `localStorage` 机器翻译缓存（上限 2000 条、24 小时 TTL）、`offlineQueue` 的离线写操作队列（24 小时、单动作最多重试 3 次）、`Home` 的 `sessionStorage` 滚动位置（`home_scroll_pos`）；(2) 浏览器层——`vite-plugin-pwa` 生成的 Service Worker，但 `workbox.runtimeCaching` 已被刻意清空：API 响应可能包含当前用户的追番、历史、通知状态甚至超管的站点配置，登出后 Cache Storage 不会被自动清理，会构成共享设备上的隐私泄露，因此不再缓存任何 `/api/` 或 `/uploads/` 响应，并以 `navigateFallbackDenylist` 排除这两个前缀；离线数据一律由应用层（localStorage/离线队列）承担，登出时由 `clearClientData` 兜底清空。
 - **绕过 axios 的通道**：`EventSource`（通知流）与个别原生 `fetch`（导出个人数据）不经过拦截器，必须自行处理 CSRF 与会话失效。既有做法是 SSE 先 `GET /api/auth/sse-ticket` 换一次性 ticket，再用 `new EventSource('/api/notifications/stream?ticket=…')` 连接，失败后指数退避最多重连 5 次，并以 60 秒轮询 `unread-count` 兜底。
 
@@ -196,11 +193,11 @@ flowchart TD
 | CSRF | `axiosConfig` 预热 `GET /api/csrf-token`，非 GET 带 `X-XSRF-TOKEN`，并在响应体回传 `csrfToken` 时续期 | 签发与校验 token |
 | 会话 | 凭据只在 httpOnly cookie；`localStorage.user` 是快照 | access / refresh cookie 与 `/api/auth/refresh`、`419`、`409` 语义 |
 | SSE | `useNotifications`：ticket + `/api/notifications/stream` | 一次性 ticket 端点与事件流 |
-| 静态媒体 | `<img>`、壁纸、头像直接引用 `/uploads/...`；上传走 multipart POST（`/api/episodes/upload`、`/api/themes/upload-wallpaper`、`/api/icons/upload`、`/api/users/avatar`） | 接收文件、落盘并返回 `/uploads/...` URL |
+| 静态媒体 | `<img>`、壁纸、头像直接引用 `/uploads/...`；上传走 multipart POST（`/api/episodes/upload`、`/api/wallpapers/personal`、`/api/site-content/upload`、`/api/users/avatar`） | 接收文件、落盘并返回 `/uploads/...` URL |
 | 站点品牌与分发 | `AppContent` 把 `link[rel=manifest]` 指向 `/api/site-content/pwa-manifest`；`index.html` 声明 `/api/rss` | 动态 manifest、RSS、`/api/site-content/settings` 与 `/api/site-content/about` |
 | 错误语义 | 拦截器把 `401`/`403 + forceEmailChange`/`419`/`409`/`5xx` 翻译成登出、打标、刷新、事件提示 | 稳定使用这套状态码约定 |
 
-**同源是隐含假设。** `axiosConfig.js` 没有设置 `baseURL`，`src/` 内没有任何 `VITE_API_BASE_URL` 引用——`README.md` 描述的跨域部署要求手动给 axios 设 `baseURL` 并让后端开 CORS，也就是说跨域是一次**代码改动**，而不是改个环境变量。开发期由 `vite.config.js` 在 3000 端口把 `/api` 与 `/uploads` 代理到 `http://localhost:5000`；生产推荐同域 nginx：`try_files $uri $uri/ /index.html` 做 SPA 回退，`/api/` 与 `/uploads/` 反代后端。
+**同源是隐含假设。** `axiosConfig.js` 没有设置 `baseURL`，`src/` 内没有任何 `VITE_API_BASE_URL` 引用——`README.md` 描述的跨域部署要求手动给 axios 设 `baseURL` 并让后端开 CORS，也就是说跨域是一次**代码改动**，而不是改个环境变量。开发期由 `vite.config.js` 在 3000 端口把 `/api` 与 `/uploads` 代理到 `http://localhost:5000`；生产有两条同源路径：同域 nginx（`try_files $uri $uri/ /index.html` 做 SPA 回退，`/api/` 与 `/uploads/` 反代后端），或阿里云 ESA「函数和 Pages」——`esa.jsonc` 声明构建与 SPA 回退，边缘函数 `edge/api-proxy.js` 把 `/api`、`/uploads` 同源反向代理到 ESA 函数变量 `API_ORIGIN` 指定的后端（细节见[构建、配置与部署](../operations/build-and-release.md)）。
 
 ```mermaid
 flowchart LR
@@ -230,7 +227,7 @@ flowchart LR
 
 ## 架构取舍
 
-**没有外部状态库，也没有服务端状态缓存。** 取舍是「零额外抽象 + 显式刷新」：五个 Context 覆盖真正全局的东西，其余数据留在组件与 hooks 里；跨层同步靠 `window` 自定义事件。收益是依赖树极小、任何人打开文件就能看到数据从哪来；代价是同一接口可能被并发重复拉取、写操作后要手写重取、跨组件的乐观更新没有统一地方安放。**新增全局状态前先确认五个 Context 与事件是否已覆盖**（多数需求其实是在给已有 Context 加字段），引入 Redux/Zustand/TanStack Query 属于跨层决策，不是局部优化。
+**没有外部状态库，也没有服务端状态缓存。** 取舍是「零额外抽象 + 显式刷新」：四个 Context 覆盖真正全局的东西，其余数据留在组件与 hooks 里；跨层同步靠 `window` 自定义事件。收益是依赖树极小、任何人打开文件就能看到数据从哪来；代价是同一接口可能被并发重复拉取、写操作后要手写重取、跨组件的乐观更新没有统一地方安放。**新增全局状态前先确认四个 Context 与事件是否已覆盖**（多数需求其实是在给已有 Context 加字段），引入 Redux/Zustand/TanStack Query 属于跨层决策，不是局部优化。
 
 **样式是纯 CSS 变量，没有 CSS-in-JS 也没有预处理器。** `src/index.css` 的 `:root` 声明间距、圆角、字号、阴影、动效曲线与 z-index 的设计 token；颜色 token 由 `ThemeContext` 的 effect 逐条 `setProperty` 到 `document.documentElement` 并附 `data-theme`，accent 色再由 `applyAccentColor` 派生十余个色调变量；壁纸额外写入 `--bg-image` / `--bg-opacity` / `--bg-blur` 与 `data-custom-bg`。因此切主题是「改自定义属性」，不重挂组件树、也没有主题加载态。代价是全局命名空间无隔离（token 名必须守规范）、`index.css` 是单文件大样式表，而组件内联 `style` 对象与 CSS 变量混用需要靠约定维持一致。
 
@@ -246,7 +243,7 @@ flowchart LR
 | --- | --- | --- |
 | 新增公共/后台页面 | `src/components` 平铺新文件（后台用 `Admin*` 前缀） | `App.jsx` 对应分区的路由、`getRoutePageTitleKey`、导航或侧栏入口、`zh`/`en` 文案；受保护页面用 `user` 判空 `Navigate` |
 | 新增数据请求 | 优先在 `apiEndpoints.js` 加路径，走全局 axios | 不要 `axios.create()` 绕过拦截器；非 axios 客户端自理 CSRF 与 401 |
-| 新增全局状态 | 现有五个 Context 之一，或新增 Context（须插在依赖它的 hook 之内） | 跨传输层的同步用 `window` 自定义事件 |
+| 新增全局状态 | 现有四个 Context 之一，或新增 Context（须插在依赖它的 hook 之内） | 跨传输层的同步用 `window` 自定义事件 |
 | 新增颜色/主题变量 | `ThemeContext` 的 `themes.dark` / `themes.light` 与 `applyAccentColor` | 在 `index.css` 中以 `var(--token, 兜底值)` 消费 |
 | 新增第三方域名或资源 | `index.html` 的 CSP meta | `img-src` 已放开 `https:` 通配，脚本/接口/iframe 域名需加对应指令；SW 运行时缓存当前为空且出于隐私考虑刻意不缓存 `/api/`、`/uploads/`（另有 `navigateFallbackDenylist` 兜底），如确需缓存须连同 `clearClientData` 的登出清理一起评估 |
 | 新增运行时文案 | `src/locales/zh.js` 与 `en.js` | `main.jsx` 里的原生表单校验文案表是独立的第二套字典，需要单独补 |

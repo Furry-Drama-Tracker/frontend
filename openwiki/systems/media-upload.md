@@ -40,8 +40,6 @@ sources:
     resource: repo://src/components/SystemWallpaperManager.jsx
   - id: openwiki-source-60afaaf20197f317d132c4b1
     resource: repo://src/components/ThemeEditorModal.jsx
-  - id: openwiki-source-67f450c07acbf8e852c93e69
-    resource: repo://src/contexts/IconContext.jsx
   - id: openwiki-source-a86d1bac36bce13e7dd195ac
     resource: repo://src/hooks/useImageUpload.js
   - id: openwiki-source-6f6201efb098b41d8f54920f
@@ -56,10 +54,10 @@ sources:
     resource: repo://src/utils/clearClientData.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
+generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-04T16:54:50.811Z
+    at: 2026-11-11T16:33:24.381Z
 ---
 
 # 图片上传与裁剪管线
@@ -224,8 +222,8 @@ flowchart TD
 
 1. **用户头像**（`Profile`）：自建隐藏 `<input type="file" accept="image/*">`，先校验 `file.size > 2 * 1024 * 1024`（`profile.avatarSizeLimit`：「图片大小不能超过2MB」）与 `file.type.startsWith('image/')`（`profile.selectImageFile`），再 `axios.post(API.USERS.AVATAR, FormData{ avatar })`，成功后写回 `user.avatar`。源码里留着一行注释解释了为什么不复用组件：「TODO: 替换为支持裁剪的 ImageUploader（需适配用户认证）」——`ImageUploader` 依赖管理员的 `adminApi` 会话假设。
 2. **系统壁纸库**（`SystemWallpaperManager`）：`FormData` 追加 `image` 与 `name`（取原文件名去扩展名），POST `/api/wallpapers/system`，**无客户端大小/类型校验**、无裁剪，失败仅 `alert(adminContent.wallpaperUploadFail)`。
-3. **主题工作室**（`ThemeEditorModal`）：壁纸 `FormData{ image }` → `API.WALLPAPERS.PERSONAL`（`/api/wallpapers/personal`，上传即存入「我的壁纸」）；图标 `FormData{ file }` → `API.THEMES.UPLOAD_ICON`（`/api/themes/upload-icon`）。两者都用 `URL_RE = /^(\/uploads\/|https?:\/\/)/` 校验响应里的 `url`，不匹配即报 `themeEditor.uploadFailed`。
-4. **未被使用的注册项**：`apiEndpoints.js` 里还登记了 `THEMES.UPLOAD_WALLPAPER`（`/api/themes/upload-wallpaper`）与 `ICONS.UPLOAD`（`/api/icons/upload`），前端没有任何调用点；实际的主题壁纸上传走 `WALLPAPERS.PERSONAL`，主题图标上传走 `THEMES.UPLOAD_ICON`。照抄注册表容易选错端点。
+3. **主题工作室**（`ThemeEditorModal`）：壁纸 `FormData{ image }` → `API.WALLPAPERS.PERSONAL`（`/api/wallpapers/personal`，上传即存入「我的壁纸」），用 `URL_RE = /^(\/uploads\/|https?:\/\/)/` 校验响应里的 `url`，不匹配即报 `themeEditor.uploadFailed`。主题图标上传通道（`THEMES.UPLOAD_ICON` 与图标选择器）已随自研图标引擎（ac3e6c8）整体删除。
+4. **未被使用的注册项**：`apiEndpoints.js` 里仍登记了 `THEMES.UPLOAD_WALLPAPER`（`/api/themes/upload-wallpaper`），前端没有任何调用点；实际的主题壁纸上传走 `WALLPAPERS.PERSONAL`。原 `ICONS` 分组（`ICONS.UPLOAD` 等）与 `THEMES.UPLOAD_ICON` 已从注册表删除。照抄注册表容易选错端点。
 
 ## 校验的真实位置
 
@@ -258,15 +256,14 @@ Service Worker 侧**不再对 `/uploads/` 做任何缓存**：`workbox.runtimeCa
 | 首页轮播图 | banner `image` | `AdminBanners` 列表；`Home` 拉 `/api/banners` 交给 `BannerCarousel` 渲染 |
 | 创作者头像 | 创作者档案 `avatar` | 创作者页与管理后台档案 |
 | 主题壁纸 | 主题 `wallpaperUrl` / `wallpaperThumb` | 应用主题后写入用户 `backgroundPrefs.image`，由 `App` 设为 CSS 变量 `--bg-image`（含 `--bg-opacity`、`--bg-blur`）；未选个人主题时回退站点默认主题 `/api/themes/active` 的壁纸 |
-| 主题图标 | 主题 `icons`（键 → URL 映射） | `IconContext` 拉取 `/api/icons/list` 的全局映射，主题图标在用户勾选时覆盖它；受保护键 `misc.logo` 不允许被主题覆盖，后端同样校验 |
 | 系统壁纸 | 壁纸记录的 `url` | `SystemWallpaperManager` 网格与启用开关；`ThemeEditorModal` 作为可选素材列表读取 |
 
 站点素材与主题素材都是**两步保存**：先上传拿到 URL，再由父表单 `PUT /api/site-content/:key`（内容为 JSON 字符串）或主题保存接口落库。上传成功而保存失败会留下无引用的文件；删除素材（如 `ThemeEditorModal` 删除个人壁纸走 `DELETE /api/wallpapers/personal`）由后端顺带清理 `/uploads/` 下的自有文件，前端不做回收。
 
 ## 新增上传点的检查清单
 
-1. **端点**：管理端站点素材用 `/api/site-content/upload`；剧集封面用 `/api/episodes/upload`；主题壁纸用 `/api/wallpapers/personal`；主题图标用 `/api/themes/upload-icon`。不要复制 `AdminBanners` 的跨域用法，也不要使用注册表里没有调用点的 `UPLOAD_WALLPAPER` / `ICONS.UPLOAD`。
-2. **字段名**：`ImageUploader` 与壁纸上传是 `image`，主题图标是 `file`，用户头像是 `avatar`，`useImageUpload` 是 `coverImage`。这个不一致是目前最容易踩的坑。
+1. **端点**：管理端站点素材用 `/api/site-content/upload`；剧集封面用 `/api/episodes/upload`；主题壁纸用 `/api/wallpapers/personal`（主题图标上传端点已随图标引擎删除）。不要复制 `AdminBanners` 的跨域用法，也不要使用注册表里没有调用点的 `UPLOAD_WALLPAPER`。
+2. **字段名**：`ImageUploader` 与壁纸上传是 `image`，用户头像是 `avatar`，`useImageUpload` 是 `coverImage`。这个不一致是目前最容易踩的坑。
 3. **是否裁剪**：需要固定版式就传 `aspectRatio` 与 `outputWidth`/`outputHeight`（两者数值上应互相吻合），并接受「先上传原图、再上传裁剪图」的两次请求；不需要裁剪就不传 `aspectRatio`，`onChange` 会立即拿到上传 URL。
 4. **校验**：需要 5MB + 白名单时抄 `AdminEpisodes.handleFileUpload` 的写法（而不是引入没有调用点的 hook），并把文案沿用 `adminEpisodes.imageSizeExceeded` / `imageFormatUnsupported`。
 5. **失败与文案**：新增用户可见文案必须同时加到 `src/locales/zh.js` 与 `src/locales/en.js`（`imageUploader.*`、`themeEditor.*` 是既有命名空间）。

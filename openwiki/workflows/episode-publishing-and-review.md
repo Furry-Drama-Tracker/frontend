@@ -28,10 +28,10 @@ sources:
     resource: repo://src/hooks/useEpisodes.js
   - id: openwiki-source-ff495d7f24153076143f0ee8
     resource: repo://src/locales/zh.js
-generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
+generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-04T16:54:50.811Z
+    at: 2026-11-11T16:33:24.381Z
 ---
 
 # 剧集创作、审核与版本流转
@@ -114,7 +114,7 @@ stateDiagram-v2
 
 提交前在客户端做四项校验：封面（`coverImage`）、标题、描述、总集数（勾选"未知集数"时跳过并提交 `totalEpisodes: null`）。请求体只包含内容字段：`category`（数组，来自 `/api/categories` 的 `name` 列表多选）、`tags`、`updateDay`、`premiereDate`（**仅 `status === 'upcoming'` 且未勾"不设首播"时** 才转 `toISOString()`，否则恒为 `null`）、`hideCreator`、`customAuthors`（创作者 `_id` 数组，候选来自 `/api/admin/creators`）、QQ 群两个字段。
 
-创建成功后页面不复位回列表，而是**连锁进入下一步**：用响应体回填编辑表单、打开编辑 Modal、拉取该剧集的单集列表并展开单集表单，单集号默认 `1`、显示序号 `episodeLabel` 默认空串、标题默认取 `adminEpisodes.episodePrefix` 插值。这是"建剧集 → 补单集"的引导路径，改动创建流程时要保留这条接力。
+创建成功后页面不复位回列表，而是**连锁进入下一步**：用响应体回填编辑表单、切换到整页编辑视图（`.yl-page-header` + 返回按钮 + `.yl-panel`，不再是 Modal）、拉取该剧集的单集列表并展开单集表单，单集号默认 `1`、显示序号 `episodeLabel` 默认空串、标题默认取 `adminEpisodes.episodePrefix` 插值。这是"建剧集 → 补单集"的引导路径，改动创建流程时要保留这条接力。
 
 ### 编辑已通过剧集：changeSummary 与待审修改回填
 
