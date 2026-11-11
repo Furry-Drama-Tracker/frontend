@@ -137,6 +137,10 @@ const AdminUsers = () => {
     }
   };
 
+  useEffect(() => {
+    if (showAddForm) window.scrollTo(0, 0);
+  }, [showAddForm]);
+
   if (!admin) return null;
 
   const getRoleLabel = (role) => {
@@ -156,63 +160,72 @@ const AdminUsers = () => {
   const adminCount = users.filter(u => ['superadmin', 'creator', 'admin'].includes(u.role)).length;
   const normalCount = users.length - adminCount;
 
-  const addFormModal = (
-    <Modal isOpen={showAddForm} onClose={() => setShowAddForm(false)}>
-        <div className="modal-header">
-          <h3>{t('adminUsers.addAdminAccount')}</h3>
-          <button className="btn btn-secondary" onClick={() => setShowAddForm(false)}>{t('adminUsers.close')}</button>
+  if (showAddForm) {
+    return (
+      <div className="admin-page">
+        <div className="yl-page-header">
+          <div>
+            <h1 className="yl-page-title">{t('adminUsers.addAdminAccount')}</h1>
+            <p className="yl-page-desc">{t('adminUsers.accountList')}</p>
+          </div>
+          <div className="yl-page-actions">
+            <button className="btn btn-md btn-outline" onClick={() => setShowAddForm(false)}>{t('common.back')}</button>
+          </div>
         </div>
-        <form onSubmit={handleAddUser}>
-          <div className="form-group">
-            <label htmlFor="newUserUsername">{t('adminUsers.username')}</label>
-            <input
-              type="text"
-              id="newUserUsername"
-              value={newUser.username}
-              onChange={(e) => setNewUser({...newUser, username: e.target.value})}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="newUserEmail">{t('adminUsers.email')}</label>
-            <input
-              type="email"
-              id="newUserEmail"
-              value={newUser.email}
-              onChange={(e) => setNewUser({...newUser, email: e.target.value})}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="newUserPassword">{t('adminUsers.password')}</label>
-            <PasswordToggle
-              id="newUserPassword"
-              value={newUser.password}
-              onChange={(e) => setNewUser({...newUser, password: e.target.value})}
-              show={showNewUserPassword}
-              onToggle={() => setShowNewUserPassword(!showNewUserPassword)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>{t('adminUsers.role')}</label>
-            <CustomSelect
-              options={[
-                { value: 'admin', label: t('adminUsers.admin') },
-                { value: 'creator', label: t('adminUsers.creator') }
-              ]}
-              value={newUser.role}
-              onChange={(role) => setNewUser({...newUser, role})}
-              placeholder={t('adminUsers.selectRole')}
-            />
-          </div>
-          {error && <div className="error-message">{error}</div>}
-          <div className="form-group">
-            <button type="submit">{t('adminUsers.add')}</button>
-          </div>
-        </form>
-    </Modal>
-  );
+        <div className="yl-panel">
+          <form onSubmit={handleAddUser}>
+            <div className="form-group">
+              <label htmlFor="newUserUsername">{t('adminUsers.username')}</label>
+              <input
+                type="text"
+                id="newUserUsername"
+                value={newUser.username}
+                onChange={(e) => setNewUser({...newUser, username: e.target.value})}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="newUserEmail">{t('adminUsers.email')}</label>
+              <input
+                type="email"
+                id="newUserEmail"
+                value={newUser.email}
+                onChange={(e) => setNewUser({...newUser, email: e.target.value})}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="newUserPassword">{t('adminUsers.password')}</label>
+              <PasswordToggle
+                id="newUserPassword"
+                value={newUser.password}
+                onChange={(e) => setNewUser({...newUser, password: e.target.value})}
+                show={showNewUserPassword}
+                onToggle={() => setShowNewUserPassword(!showNewUserPassword)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>{t('adminUsers.role')}</label>
+              <CustomSelect
+                options={[
+                  { value: 'admin', label: t('adminUsers.admin') },
+                  { value: 'creator', label: t('adminUsers.creator') }
+                ]}
+                value={newUser.role}
+                onChange={(role) => setNewUser({...newUser, role})}
+                placeholder={t('adminUsers.selectRole')}
+              />
+            </div>
+            {error && <div className="error-message">{error}</div>}
+            <div className="form-group">
+              <button type="submit">{t('adminUsers.add')}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -381,7 +394,6 @@ const AdminUsers = () => {
           </div>
         )}
 
-      {addFormModal}
       <Modal isOpen={!!detailUser} onClose={() => setDetailUser(null)} maxWidth="520px">
         {detailUser && (
           <>
