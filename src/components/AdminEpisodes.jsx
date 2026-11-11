@@ -8,7 +8,7 @@ import { useI18n } from '../contexts/I18nContext';
 import EpisodeVersionHistory from './EpisodeVersionHistory';
 import ReviewStatusBadge from './ReviewStatusBadge';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faFilm } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faFilm, faGripVertical } from '@fortawesome/free-solid-svg-icons';
 
 const AdminEpisodes = () => {
   const { locale, t } = useI18n();
@@ -23,6 +23,8 @@ const AdminEpisodes = () => {
   const [showSingleEpisodeForm, setShowSingleEpisodeForm] = useState(false);
   const [editingSingleEpisode, setEditingSingleEpisode] = useState(null);
   const [singleEpisodes, setSingleEpisodes] = useState([]);
+const [dragId, setDragId] = useState(null);
+const [dragOverId, setDragOverId] = useState(null);
   const [coverImageMode, setCoverImageMode] = useState('url');
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef(null);
@@ -192,18 +194,18 @@ const AdminEpisodes = () => {
         });
         setShowEditForm(true);
         fetchSingleEpisodes(response.data._id);
-        setShowSingleEpisodeForm(true);
-        setNewSingleEpisode({
-          episodeNumber: 1,
-          episodeLabel: '',
-          title: t('adminEpisodes.episodePrefix', { num: 1 }),
-          duration: '',
-          platformLinksList: [],
-          scheduledDate: '',
-          isScheduled: false,
-          premiereDate: '',
-          isUpcoming: false
-        });
+      setShowSingleEpisodeForm(true);
+      setNewSingleEpisode({
+        episodeNumber: 1,
+        episodeLabel: '',
+        title: '',
+        duration: '',
+        platformLinksList: [],
+        scheduledDate: '',
+        isScheduled: false,
+        premiereDate: '',
+        isUpcoming: false
+      });
       }
     } catch (error) {
       setError(error.response?.data?.message || t('adminEpisodes.addEpisodeFailed'));
@@ -335,18 +337,7 @@ const AdminEpisodes = () => {
       }
 
       setEditingSingleEpisode(null);
-      const nextNum = singleEpisodes.length + 1;
-      setNewSingleEpisode({
-        episodeNumber: nextNum,
-        episodeLabel: '',
-        title: t('adminEpisodes.episodePrefix', { num: nextNum }),
-        duration: '',
-        platformLinksList: [],
-        scheduledDate: '',
-        isScheduled: false,
-        noScheduledDate: false,
-        releaseDate: ''
-      });
+      resetSingleEpisodeForm();
       fetchSingleEpisodes(episodeId);
       fetchEpisodes();
     } catch (error) {
@@ -367,23 +358,92 @@ const AdminEpisodes = () => {
         : '',
       isScheduled: singleEpisode.isScheduled || false,
       noScheduledDate: singleEpisode.isScheduled && !singleEpisode.scheduledDate,
-      releaseDate: singleEpisode.releaseDate
-        ? new Date(singleEpisode.releaseDate).toISOString().slice(0, 16)
-        : ''
-    });
-    setShowSingleEpisodeForm(true);
-  };
+    releaseDate: singleEpisode.releaseDate
+      ? new Date(singleEpisode.releaseDate).toISOString().slice(0, 16)
+      : ''
+  });
+};
 
-  const handleDeleteSingleEpisode = async (id) => {
-    if (!window.confirm(t('adminEpisodes.deleteSingleEpisodeConfirm'))) return;
-    try {
-      await adminApi.delete(`/api/episodes/single/${id}`);
-      fetchSingleEpisodes(editingEpisode._id);
-      fetchEpisodes();
-    } catch (error) {
-      setError(t('adminEpisodes.deleteSingleEpisodeFailed'));
+const handleDeleteSingleEpisode = async (id) => {
+  if (!window.confirm(t('adminEpisodes.deleteSingleEpisodeConfirm'))) return;
+  try {
+    await adminApi.delete(`/api/episodes/single/${id}`);
+    fetchSingleEpisodes(editingEpisode._id);
+    fetchEpisodes();
+  } catch (error) {
+    setError(t('adminEpisodes.deleteSingleEpisodeFailed'));
+  }
+};
+
+const getNextSingleNumber = () => singleEpisodes.reduce((max, s) => Math.max(max, Number(s.episodeNumber) || 0), 0) + 1;
+
+const resetSingleEpisodeForm = () => setNewSingleEpisode({
+  episodeNumber: getNextSingleNumber(),
+  episodeLabel: '',
+  title: '',
+  duration: '',
+  platformLinksList: [],
+  scheduledDate: '',
+  isScheduled: false,
+  noScheduledDate: false,
+  releaseDate: ''
+});
+
+const cancelSingleEpisodeEdit = () => {
+  setEditingSingleEpisode(null);
+  resetSingleEpisodeForm();
+};
+
+const handleSingleDragStart = (e, id) => {
+  setDragId(id);
+  e.dataTransfer.effectAllowed = 'move';
+  try {
+    e.dataTransfer.setData('text/plain', id);
+  } catch {
+    // ignore: 部分浏览器禁止在 dragover 前写入 dataTransfer
+  }
+};
+
+const handleSingleDragOver = (e, id) => {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  if (dragOverId !== id) setDragOverId(id);
+};
+
+const handleSingleDragEnd = () => {
+  setDragId(null);
+  setDragOverId(null);
+};
+
+const handleSingleDrop = async (e, targetId) => {
+  e.preventDefault();
+  const sourceId = dragId || e.dataTransfer.getData('text/plain');
+  setDragId(null);
+  setDragOverId(null);
+  if (!sourceId || sourceId === targetId || !editingEpisode) return;
+  const from = singleEpisodes.findIndex(s => s._id === sourceId);
+  const to = singleEpisodes.findIndex(s => s._id === targetId);
+  if (from < 0 || to < 0) return;
+  const reordered = [...singleEpisodes];
+  const [moved] = reordered.splice(from, 1);
+  reordered.splice(to, 0, moved);
+  const renumbered = reordered.map((s, index) => ({ ...s, episodeNumber: index + 1 }));
+  const changed = renumbered.filter(s => {
+    const old = singleEpisodes.find(o => o._id === s._id);
+    return old && old.episodeNumber !== s.episodeNumber;
+  });
+  setSingleEpisodes(renumbered);
+  try {
+    for (let i = 0; i < changed.length; i += 5) {
+      await Promise.all(changed.slice(i, i + 5).map(s => adminApi.put(`/api/episodes/single/${s._id}`, { episodeNumber: s.episodeNumber })));
     }
-  };
+    fetchSingleEpisodes(editingEpisode._id);
+    fetchEpisodes();
+  } catch (error) {
+    setError(t('adminEpisodes.reorderFailed'));
+    fetchSingleEpisodes(editingEpisode._id);
+  }
+};
 
   const handleCloseEditForm = () => {
     setShowEditForm(false);
@@ -721,6 +781,153 @@ const AdminEpisodes = () => {
     </form>
   );
 
+  const renderSingleEpisodeForm = (inline = false) => (
+    <form onSubmit={handleAddSingleEpisode}>
+      <div className="form-group">
+        <label>{t('adminEpisodes.episodeLabelLabel')} <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>{t('adminEpisodes.episodeLabelHint')}</span></label>
+        <input
+          type="text"
+          value={newSingleEpisode.episodeLabel}
+          onChange={(e) => setNewSingleEpisode({ ...newSingleEpisode, episodeLabel: e.target.value })}
+          placeholder={t('adminEpisodes.episodeLabelPlaceholder')}
+          maxLength={40}
+        />
+      </div>
+      <div className="form-group">
+        <label>{t('adminEpisodes.titleLabel')}</label>
+        <input
+          type="text"
+          value={newSingleEpisode.title}
+          onChange={(e) => setNewSingleEpisode({ ...newSingleEpisode, title: e.target.value })}
+          placeholder={t('adminEpisodes.singleTitlePlaceholder')}
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label>{t('adminEpisodes.duration')}</label>
+        <input
+          type="text"
+          value={newSingleEpisode.duration}
+          onChange={(e) => setNewSingleEpisode({ ...newSingleEpisode, duration: e.target.value })}
+          placeholder={t('adminEpisodes.durationPlaceholder')}
+        />
+      </div>
+      {editingEpisode && (editingEpisode.status === 'ongoing' || editingEpisode.status === 'completed') && !newSingleEpisode.isScheduled && (
+        <div className="form-group">
+          <label>{t('adminEpisodes.publishDate')} <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>{t('adminEpisodes.publishDateHint')}</span></label>
+          <input
+            type="datetime-local"
+            value={newSingleEpisode.releaseDate}
+            onChange={(e) => setNewSingleEpisode({ ...newSingleEpisode, releaseDate: e.target.value })}
+          />
+          <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px' }}>{t('adminEpisodes.latePublishNote')}</p>
+        </div>
+      )}
+      <div className="form-group" style={{ padding: '12px', background: 'var(--hover-bg-strong)', borderRadius: '8px', border: '1px solid var(--border)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+          <input
+            type="checkbox"
+            checked={newSingleEpisode.isScheduled}
+            onChange={(e) => setNewSingleEpisode({ ...newSingleEpisode, isScheduled: e.target.checked, scheduledDate: e.target.checked ? newSingleEpisode.scheduledDate || '' : '', noScheduledDate: false })}
+            style={{ accentColor: 'var(--primary)', cursor: 'pointer' }}
+          />
+          <label style={{ fontSize: '14px', cursor: 'pointer', color: 'var(--foreground)' }}>{t('adminEpisodes.scheduledPreview')}</label>
+        </div>
+        {newSingleEpisode.isScheduled && (
+          <div>
+            <label style={{ display: 'block', marginBottom: '4px', fontSize: '13px', color: 'var(--text-secondary)' }}>{t('adminEpisodes.scheduledDate')}</label>
+            <input
+              type="datetime-local"
+              value={newSingleEpisode.scheduledDate}
+              onChange={(e) => setNewSingleEpisode({ ...newSingleEpisode, scheduledDate: e.target.value, noScheduledDate: false })}
+              disabled={newSingleEpisode.noScheduledDate}
+              style={{ opacity: newSingleEpisode.noScheduledDate ? 0.5 : 1, cursor: newSingleEpisode.noScheduledDate ? 'not-allowed' : 'text' }}
+            />
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', marginTop: '8px' }}>
+              <input
+                type="checkbox"
+                checked={newSingleEpisode.noScheduledDate}
+                onChange={(e) => setNewSingleEpisode({ ...newSingleEpisode, noScheduledDate: e.target.checked, scheduledDate: e.target.checked ? '' : newSingleEpisode.scheduledDate })}
+                style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+              />
+              <span style={{ fontSize: '14px' }}>{t('adminEpisodes.noScheduledDate')}</span>
+            </label>
+            {!newSingleEpisode.noScheduledDate && (
+              <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px' }}>{t('adminEpisodes.scheduledHint')}</p>
+            )}
+          </div>
+        )}
+      </div>
+      <div className="form-group">
+        <label>{t('adminEpisodes.videoUrl')}</label>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {newSingleEpisode.platformLinksList.map((item, index) => (
+            <div key={index} style={{ background: 'var(--hover-bg)', border: '1px solid var(--border)', borderRadius: '8px', padding: '12px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{t('adminEpisodes.platformNum', { num: index + 1 })}</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const newList = newSingleEpisode.platformLinksList.filter((_, i) => i !== index);
+                    setNewSingleEpisode({ ...newSingleEpisode, platformLinksList: newList });
+                  }}
+                  style={{
+                    background: 'var(--destructive-bg)', border: '1px solid var(--destructive-border)',
+                    color: 'var(--destructive-text)', borderRadius: '6px', padding: '4px 10px',
+                    cursor: 'pointer', fontSize: '12px', lineHeight: 1
+                  }}
+                >{t('adminEpisodes.deleteBtn')}</button>
+              </div>
+              <div style={{ marginBottom: '8px' }}>
+                <input
+                  type="text"
+                  value={item.name}
+                  onChange={(e) => {
+                    const newList = [...newSingleEpisode.platformLinksList];
+                    newList[index] = { ...newList[index], name: e.target.value };
+                    setNewSingleEpisode({ ...newSingleEpisode, platformLinksList: newList });
+                  }}
+                  placeholder={t('adminEpisodes.platformNamePlaceholder')}
+                />
+              </div>
+              <div>
+                <input
+                  type="text"
+                  value={item.url}
+                  onChange={(e) => {
+                    const newList = [...newSingleEpisode.platformLinksList];
+                    newList[index] = { ...newList[index], url: e.target.value };
+                    setNewSingleEpisode({ ...newSingleEpisode, platformLinksList: newList });
+                  }}
+                  placeholder={t('adminEpisodes.linkUrlPlaceholder')}
+                />
+              </div>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => {
+              setNewSingleEpisode({
+                ...newSingleEpisode,
+                platformLinksList: [...newSingleEpisode.platformLinksList, { name: '', url: '' }]
+              });
+            }}
+            style={{
+              background: 'var(--primary-bg-subtle)', border: '1px dashed var(--primary)',
+              color: 'var(--primary)', borderRadius: '8px', padding: '10px',
+              cursor: 'pointer', fontSize: '14px'
+            }}
+          >{t('adminEpisodes.addPlatformLink')}</button>
+        </div>
+        <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '6px' }}>{t('adminEpisodes.platformHint')}</p>
+      </div>
+      <div className="form-group" style={{ display: 'flex', gap: '10px' }}>
+        <button type="submit">{editingSingleEpisode ? t('adminEpisodes.updateBtn') : t('adminEpisodes.addBtn')}</button>
+        <button type="button" className="btn btn-secondary" onClick={() => (inline ? cancelSingleEpisodeEdit() : setShowSingleEpisodeForm(false))}>{t('common.cancel')}</button>
+      </div>
+    </form>
+  );
+
   if (showAddForm) {
     return (
       <div className="admin-page">
@@ -759,215 +966,23 @@ const AdminEpisodes = () => {
         <div className="yl-panel">
           <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
             <h4>{t('adminEpisodes.singleEpisodeManagement')}</h4>
-            <button className="btn" onClick={() => {
-              if (showSingleEpisodeForm && !editingSingleEpisode) {
+            <button className="btn btn-md btn-outline" onClick={() => {
+              if (showSingleEpisodeForm) {
                 setShowSingleEpisodeForm(false);
               } else {
                 setShowSingleEpisodeForm(true);
                 setEditingSingleEpisode(null);
-                const nextNum = singleEpisodes.length + 1;
-                setNewSingleEpisode({
-                  episodeNumber: nextNum,
-                  episodeLabel: '',
-                  title: t('adminEpisodes.episodePrefix', { num: nextNum }),
-                  duration: '',
-                  platformLinksList: [],
-                  scheduledDate: '',
-                  isScheduled: false,
-                  noScheduledDate: false,
-                  releaseDate: ''
-                });
+                resetSingleEpisodeForm();
               }
             }}>
-              {showSingleEpisodeForm && !editingSingleEpisode ? t('adminEpisodes.cancel') : t('adminEpisodes.addSingleEpisode')}
+              {showSingleEpisodeForm ? t('common.cancel') : t('adminEpisodes.addSingleEpisode')}
             </button>
           </div>
 
-          {showSingleEpisodeForm && (
+          {showSingleEpisodeForm && !editingSingleEpisode && (
             <div className="form-container" style={{marginBottom: '15px', background: 'var(--hover-bg)', padding: '15px', borderRadius: '8px', border: '1px solid var(--border)'}}>
-              <h4>{editingSingleEpisode ? t('adminEpisodes.editEpisodeNum', { num: editingSingleEpisode.episodeNumber }) : t('adminEpisodes.addSingleEpisode')}</h4>
-              <form onSubmit={handleAddSingleEpisode}>
-                <div className="form-group">
-                  <label>{t('adminEpisodes.episodeNumberLabel')}</label>
-                  <input
-                    type="number"
-                    value={newSingleEpisode.episodeNumber}
-                    onChange={(e) => setNewSingleEpisode({...newSingleEpisode, episodeNumber: parseInt(e.target.value) || 1})}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>{t('adminEpisodes.episodeLabelLabel')} <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>{t('adminEpisodes.episodeLabelHint')}</span></label>
-                  <input
-                    type="text"
-                    value={newSingleEpisode.episodeLabel}
-                    onChange={(e) => setNewSingleEpisode({...newSingleEpisode, episodeLabel: e.target.value})}
-                    placeholder={t('adminEpisodes.episodeLabelPlaceholder')}
-                    maxLength={40}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>{t('adminEpisodes.titleLabel')}</label>
-                  <input
-                    type="text"
-                    value={newSingleEpisode.title}
-                    onChange={(e) => setNewSingleEpisode({...newSingleEpisode, title: e.target.value})}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>{t('adminEpisodes.duration')}</label>
-                  <input
-                    type="text"
-                    value={newSingleEpisode.duration}
-                    onChange={(e) => setNewSingleEpisode({...newSingleEpisode, duration: e.target.value})}
-                    placeholder={t('adminEpisodes.durationPlaceholder')}
-                  />
-                </div>
-                {editingEpisode && (editingEpisode.status === 'ongoing' || editingEpisode.status === 'completed') && !newSingleEpisode.isScheduled && (
-                  <div className="form-group">
-                    <label>{t('adminEpisodes.publishDate')} <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>{t('adminEpisodes.publishDateHint')}</span></label>
-                    <input
-                      type="datetime-local"
-                      value={newSingleEpisode.releaseDate}
-                      onChange={(e) => setNewSingleEpisode({...newSingleEpisode, releaseDate: e.target.value})}
-                      style={{
-                        width: '100%', padding: '8px 12px', borderRadius: '6px',
-                        border: '1px solid var(--border)', backgroundColor: 'var(--hover-bg)',
-                        color: 'var(--text-light)', fontSize: '14px'
-                      }}
-                    />
-                    <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px' }}>{t('adminEpisodes.latePublishNote')}</p>
-                  </div>
-                )}
-                <div className="form-group" style={{ padding: '12px', background: 'var(--hover-bg-strong)', borderRadius: '8px', border: '1px solid var(--border)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                    <input
-                      type="checkbox"
-                      checked={newSingleEpisode.isScheduled}
-                      onChange={(e) => setNewSingleEpisode({...newSingleEpisode, isScheduled: e.target.checked, scheduledDate: e.target.checked ? newSingleEpisode.scheduledDate || '' : '', noScheduledDate: false})}
-                      style={{ accentColor: 'var(--primary)', cursor: 'pointer' }}
-                    />
-                    <label style={{ fontSize: '14px', cursor: 'pointer', color: 'var(--foreground)' }}>{t('adminEpisodes.scheduledPreview')}</label>
-                  </div>
-                  {newSingleEpisode.isScheduled && (
-                    <div>
-                      <label style={{ display: 'block', marginBottom: '4px', fontSize: '13px', color: 'var(--text-secondary)' }}>{t('adminEpisodes.scheduledDate')}</label>
-                      <input
-                        type="datetime-local"
-                        value={newSingleEpisode.scheduledDate}
-                        onChange={(e) => setNewSingleEpisode({...newSingleEpisode, scheduledDate: e.target.value, noScheduledDate: false})}
-                        disabled={newSingleEpisode.noScheduledDate}
-                        style={{
-                          width: '100%', padding: '8px 12px', borderRadius: '6px',
-                          border: '1px solid var(--border)',
-                          backgroundColor: newSingleEpisode.noScheduledDate ? 'var(--bg)' : 'var(--hover-bg)',
-                          color: 'var(--text-light)', fontSize: '14px',
-                          opacity: newSingleEpisode.noScheduledDate ? 0.5 : 1,
-                          cursor: newSingleEpisode.noScheduledDate ? 'not-allowed' : 'text'
-                        }}
-                      />
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', marginTop: '8px' }}>
-                        <input
-                          type="checkbox"
-                          checked={newSingleEpisode.noScheduledDate}
-                          onChange={(e) => setNewSingleEpisode({...newSingleEpisode, noScheduledDate: e.target.checked, scheduledDate: e.target.checked ? '' : newSingleEpisode.scheduledDate})}
-                          style={{ width: '16px', height: '16px', cursor: 'pointer' }}
-                        />
-                        <span style={{ fontSize: '14px' }}>{t('adminEpisodes.noScheduledDate')}</span>
-                      </label>
-                      {!newSingleEpisode.noScheduledDate && (
-                        <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px' }}>{t('adminEpisodes.scheduledHint')}</p>
-                      )}
-                    </div>
-                  )}
-                </div>
-                <div className="form-group">
-                  <label>{t('adminEpisodes.videoUrl')}</label>
-                  <div style={{display: 'flex', flexDirection: 'column', gap: '12px'}}>
-                    {newSingleEpisode.platformLinksList.map((item, index) => (
-                      <div key={index} style={{
-                        background: 'var(--hover-bg)', border: '1px solid var(--border)',
-                        borderRadius: '8px', padding: '12px'
-                      }}>
-                        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px'}}>
-                          <span style={{fontSize: '13px', color: 'var(--text-secondary)'}}>{t('adminEpisodes.platformNum', { num: index + 1 })}</span>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const newList = newSingleEpisode.platformLinksList.filter((_, i) => i !== index);
-                              setNewSingleEpisode({...newSingleEpisode, platformLinksList: newList});
-                            }}
-                            style={{
-                              background: 'var(--destructive-bg)', border: '1px solid var(--destructive-border)',
-                              color: 'var(--destructive-text)', borderRadius: '6px', padding: '4px 10px',
-                              cursor: 'pointer', fontSize: '12px', lineHeight: 1
-                            }}
-                          >{t('adminEpisodes.deleteBtn')}</button>
-                        </div>
-                        <div style={{marginBottom: '8px'}}>
-                          <input
-                            type="text"
-                            value={item.name}
-                            onChange={(e) => {
-                              const newList = [...newSingleEpisode.platformLinksList];
-                              newList[index] = {...newList[index], name: e.target.value};
-                              setNewSingleEpisode({...newSingleEpisode, platformLinksList: newList});
-                            }}
-                            placeholder={t('adminEpisodes.platformNamePlaceholder')}
-                          />
-                        </div>
-                        <div>
-                          <input
-                            type="text"
-                            value={item.url}
-                            onChange={(e) => {
-                              const newList = [...newSingleEpisode.platformLinksList];
-                              newList[index] = {...newList[index], url: e.target.value};
-                              setNewSingleEpisode({...newSingleEpisode, platformLinksList: newList});
-                            }}
-                            placeholder={t('adminEpisodes.linkUrlPlaceholder')}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setNewSingleEpisode({
-                          ...newSingleEpisode,
-                          platformLinksList: [...newSingleEpisode.platformLinksList, { name: '', url: '' }]
-                        });
-                      }}
-                      style={{
-                        background: 'var(--primary-bg-subtle)', border: '1px dashed var(--primary)',
-                        color: 'var(--primary)', borderRadius: '8px', padding: '10px',
-                        cursor: 'pointer', fontSize: '14px'
-                      }}
-                    >{t('adminEpisodes.addPlatformLink')}</button>
-                  </div>
-                  <p style={{fontSize: '12px', color: 'var(--text-secondary)', marginTop: '6px'}}>{t('adminEpisodes.platformHint')}</p>
-                </div>
-                <div className="form-group" style={{display: 'flex', gap: '10px'}}>
-                  <button type="submit">{editingSingleEpisode ? t('adminEpisodes.updateBtn') : t('adminEpisodes.addBtn')}</button>
-                  {editingSingleEpisode && (
-                    <button type="button" className="btn btn-secondary" onClick={() => {
-                      setEditingSingleEpisode(null);
-                      const nextNum = singleEpisodes.length + 1;
-                      setNewSingleEpisode({
-                        episodeNumber: nextNum,
-                        episodeLabel: '',
-                        title: t('adminEpisodes.episodePrefix', { num: nextNum }),
-                        duration: '',
-                        platformLinksList: [],
-                        scheduledDate: '',
-                        isScheduled: false,
-                        noScheduledDate: false
-                      });
-                    }}>{t('adminEpisodes.cancelEdit')}</button>
-                  )}
-                </div>
-              </form>
+              <h4>{t('adminEpisodes.addSingleEpisode')}</h4>
+              {renderSingleEpisodeForm(false)}
             </div>
           )}
 
@@ -978,6 +993,7 @@ const AdminEpisodes = () => {
             <table className="admin-table">
               <thead>
                 <tr>
+                    <th style={{ width: 32 }} aria-label={t('adminEpisodes.reorderHint')}></th>
                     <th>{t('adminEpisodes.episodeNumber')}</th>
                     <th>{t('adminEpisodes.titleLabel')}</th>
                   <th>{t('adminEpisodes.duration')}</th>
@@ -987,8 +1003,25 @@ const AdminEpisodes = () => {
                 </tr>
               </thead>
               <tbody>
-                {singleEpisodes.map(se => (
-                  <tr key={se._id}>
+                {singleEpisodes.map((se) => (
+                  <React.Fragment key={se._id}>
+                  <tr
+                    draggable={!editingSingleEpisode}
+                    onDragStart={(e) => handleSingleDragStart(e, se._id)}
+                    onDragOver={(e) => handleSingleDragOver(e, se._id)}
+                    onDrop={(e) => handleSingleDrop(e, se._id)}
+                    onDragEnd={handleSingleDragEnd}
+                    style={{
+                      cursor: editingSingleEpisode ? 'default' : 'grab',
+                      opacity: dragId === se._id ? 0.4 : 1,
+                      background: dragOverId === se._id && dragId && dragId !== se._id ? 'var(--primary-bg-subtle)' : undefined
+                    }}
+                  >
+                    <td style={{ width: 32, color: 'var(--text-tertiary)' }} title={t('adminEpisodes.reorderHint')}>
+                      <span style={{ display: 'inline-flex', cursor: 'grab' }}>
+                        <FontAwesomeIcon icon={faGripVertical} aria-hidden="true" />
+                      </span>
+                    </td>
                     <td>{se.episodeLabel || se.episodeNumber}</td>
                     <td>{se.title}</td>
                     <td>
@@ -1024,14 +1057,36 @@ const AdminEpisodes = () => {
                     <td>{se.views}</td>
                     <td>
                       <div className="action-buttons">
-                        <button className="btn btn-small" onClick={() => handleEditSingleEpisode(se)}>{t('adminEpisodes.editBtn')}</button>
+                        <button className="btn btn-small" onClick={() => {
+                          if (editingSingleEpisode && editingSingleEpisode._id === se._id) {
+                            cancelSingleEpisodeEdit();
+                          } else {
+                            handleEditSingleEpisode(se);
+                          }
+                        }}>{editingSingleEpisode && editingSingleEpisode._id === se._id ? t('common.cancel') : t('adminEpisodes.editBtn')}</button>
                         <button className="btn btn-secondary btn-small" onClick={() => handleDeleteSingleEpisode(se._id)}>{t('adminEpisodes.deleteBtn')}</button>
                       </div>
                     </td>
                   </tr>
+                  {editingSingleEpisode && editingSingleEpisode._id === se._id && (
+                    <tr>
+                      <td colSpan={7} style={{ background: 'var(--hover-bg)', padding: 0 }}>
+                        <div style={{ padding: '14px 16px' }}>
+                          <h4 style={{ marginTop: 0, marginBottom: '12px' }}>
+                            {t('adminEpisodes.editEpisodeNum', { num: se.episodeNumber })}
+                          </h4>
+                          {renderSingleEpisodeForm(true)}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                  </React.Fragment>
                 ))}
               </tbody>
             </table>
+            <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '8px', marginBottom: 0 }}>
+              {t('adminEpisodes.reorderHint')}
+            </p>
             </div>
           )}
         </div>
