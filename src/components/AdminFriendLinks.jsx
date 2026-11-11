@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import adminApi from '../utils/adminApi';
 import { useOutletContext } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLink } from '@fortawesome/free-solid-svg-icons';
 
 const AdminFriendLinks = () => {
   const { admin } = useOutletContext();
@@ -208,7 +210,7 @@ const AdminFriendLinks = () => {
                   background: 'var(--hover-bg-strong)', display: 'flex',
                   alignItems: 'center', justifyContent: 'center',
                   fontSize: '16px', flexShrink: 0
-                }}>🔗</div>
+                }}><FontAwesomeIcon icon={faLink} aria-hidden="true" /></div>
               )}
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>

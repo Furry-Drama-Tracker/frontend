@@ -1,4 +1,6 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClapperboard } from '@fortawesome/free-solid-svg-icons';
 import useTranslation from '../hooks/useTranslation';
 import { useI18n } from '../contexts/I18nContext';
 
@@ -8,6 +10,11 @@ const EpisodeList = ({ episodes, onEdit, onDelete }) => {
   if (episodes.length === 0) {
     return (
       <div className="empty-state">
+        <FontAwesomeIcon
+          icon={faClapperboard}
+          aria-hidden="true"
+          style={{ display: 'block', margin: '0 auto 16px', fontSize: 48, opacity: 0.5 }}
+        />
         <p>{t('episodeList.noEpisodes')}</p>
       </div>
     );

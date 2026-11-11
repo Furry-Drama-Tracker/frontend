@@ -5,6 +5,8 @@ import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import PasswordToggle from './PasswordToggle';
 import API from '../utils/apiEndpoints';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faArrowRotateLeft, faTrashCan, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 const DeleteAccount = ({ user }) => {
   const { t } = useI18n();
@@ -87,7 +89,7 @@ const DeleteAccount = ({ user }) => {
             color: 'var(--foreground)', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '4px'
           }}
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+          <FontAwesomeIcon icon={faArrowLeft} style={{ fontSize: 16 }} aria-hidden="true" />
           {t('common.back')}
         </button>
         <h2 style={{margin: 0, color: 'var(--destructive-text)'}}>{t('profile.deleteAccountSection')}</h2>
@@ -98,7 +100,7 @@ const DeleteAccount = ({ user }) => {
           background: 'var(--destructive-bg-subtle)', border: '1px solid var(--destructive-border-subtle)',
           borderRadius: '12px', padding: '24px'
         }}>
-          <h3 style={{ color: 'var(--destructive-text)', marginBottom: '12px', fontSize: '16px' }}>{t('profile.accountDeleting')}</h3>
+          <h3 style={{ color: 'var(--destructive-text)', marginBottom: '12px', fontSize: '16px' }}><FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" /> {t('profile.accountDeleting')}</h3>
           <p style={{ color: 'var(--text-secondary)', fontSize: '14px', lineHeight: 1.7, marginBottom: '12px' }}>
             {t('profile.deletionCountdown')} <strong style={{ color: 'var(--destructive-text)' }}>{formatCountdown(deletionStatus.deleteAt)}</strong> {t('profile.deletionCountdownAfter')}
           </p>
@@ -114,7 +116,7 @@ const DeleteAccount = ({ user }) => {
             onClick={handleCancelDeletion}
             disabled={cancelLoading}
           >
-            {cancelLoading ? t('common.processing') : t('profile.cancelDeletionKeepAccount')}
+            {cancelLoading ? t('common.processing') : <><FontAwesomeIcon icon={faArrowRotateLeft} aria-hidden="true" /> {t('profile.cancelDeletionKeepAccount')}</>}
           </button>
         </div>
       ) : (
@@ -134,7 +136,7 @@ const DeleteAccount = ({ user }) => {
               }}
               onClick={() => { setShowDeleteConfirm(true); setDeleteStep(0); setDeletePassword(''); setDeleteError(''); }}
             >
-              {t('profile.requestDeletion')}
+              <FontAwesomeIcon icon={faTrashCan} aria-hidden="true" /> {t('profile.requestDeletion')}
             </button>
           ) : (
             <div style={{
@@ -145,7 +147,7 @@ const DeleteAccount = ({ user }) => {
                 <>
                   <h4 style={{ color: 'var(--destructive-text)', marginBottom: '12px', fontSize: '14px' }}>{t('profile.deleteConfirmTitle')}</h4>
                   <div style={{ background: 'var(--destructive-bg-subtle)', borderRadius: '6px', padding: '12px', marginBottom: '16px', fontSize: '13px', color: 'var(--destructive-text-light)', lineHeight: 1.7 }}>
-                    <p style={{ margin: '0 0 8px 0' }}>{t('profile.pleaseReadCarefully')}</p>
+                    <p style={{ margin: '0 0 8px 0' }}><FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" /> {t('profile.pleaseReadCarefully')}</p>
                     <ul style={{ margin: 0, paddingLeft: '16px' }}>
                       <li>{t('profile.deletionCoolingPeriod')}</li>
                       <li>{t('profile.canCancelAnytime')}</li>

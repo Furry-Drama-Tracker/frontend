@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faLock, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 export default function OfflineIndicator() {
   const { t } = useI18n();
@@ -59,19 +61,19 @@ export default function OfflineIndicator() {
     bgColor = 'var(--destructive-bg)';
     borderColor = 'var(--destructive-border)';
     textColor = 'var(--destructive-text)';
-    icon = '🔒';
+    icon = <FontAwesomeIcon icon={faLock} aria-hidden="true" />;
     message = t('auth.sessionExpired');
   } else if (isBackOnline) {
     bgColor = 'var(--success-bg)';
     borderColor = 'var(--success-border)';
     textColor = 'var(--success-text)';
-    icon = '✓';
+    icon = <FontAwesomeIcon icon={faCheck} aria-hidden="true" />;
     message = t('pwa.backOnline');
   } else {
     bgColor = 'var(--warning-bg)';
     borderColor = 'var(--warning-border)';
     textColor = 'var(--warning-text)';
-    icon = '⚠';
+    icon = <FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" />;
     message = t('pwa.offline');
   }
 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faFolderOpen, faRulerCombined, faScissors, faThumbtack, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 const ImageUploader = ({ value, onChange, label, aspectRatio, outputWidth, outputHeight, uploadEndpoint }) => {
   const { t } = useI18n();
@@ -270,8 +272,8 @@ const ImageUploader = ({ value, onChange, label, aspectRatio, outputWidth, outpu
           background: 'var(--primary-bg-subtle)', border: '1px solid var(--primary-border-subtle)',
           borderRadius: '8px', padding: '10px 14px', marginBottom: '12px', fontSize: '13px', color: 'var(--primary-light)'
         }}>
-          <div style={{ marginBottom: '4px' }}>{t('imageUploader.cropDragHint')}</div>
-          {aspectRatio && <div>{t('imageUploader.cropFixedRatio', { w: outputWidth, h: outputHeight })}</div>}
+          <div style={{ marginBottom: '4px' }}><FontAwesomeIcon icon={faThumbtack} aria-hidden="true" /> {t('imageUploader.cropDragHint')}</div>
+          {aspectRatio && <div><FontAwesomeIcon icon={faRulerCombined} aria-hidden="true" /> {t('imageUploader.cropFixedRatio', { w: outputWidth, h: outputHeight })}</div>}
           {!aspectRatio && <div>{t('imageUploader.cropMoveHint')}</div>}
         </div>
         <div
@@ -306,7 +308,7 @@ const ImageUploader = ({ value, onChange, label, aspectRatio, outputWidth, outpu
           <div style={{ padding: '8px 12px', marginTop: '8px', borderRadius: '6px', background: 'var(--destructive-bg)', color: 'var(--destructive-text)', border: '1px solid var(--destructive-border)', fontSize: '13px' }}>{cropError}</div>
         )}
         <div style={{ display: 'flex', gap: '8px', marginTop: '12px', flexWrap: 'wrap' }}>
-          <button className="btn" onClick={handleCropConfirm} disabled={cropLoading}>{cropLoading ? t('common.processing') : `✓ ${t('imageUploader.confirmCrop')}`}</button>
+          <button className="btn" onClick={handleCropConfirm} disabled={cropLoading}>{cropLoading ? t('common.processing') : <><FontAwesomeIcon icon={faCheck} aria-hidden="true" /> {t('imageUploader.confirmCrop')}</>}</button>
           <button className="btn btn-secondary" onClick={handleUseOriginal}>{t('imageUploader.useOriginal')}</button>
           <button className="btn btn-secondary" onClick={handleCancelCrop}>{t('common.cancel')}</button>
         </div>
@@ -332,7 +334,7 @@ const ImageUploader = ({ value, onChange, label, aspectRatio, outputWidth, outpu
         <div>
           <input type="file" ref={fileInputRef} accept="image/jpeg,image/jpg,image/png,image/gif,image/webp" onChange={handleFileUpload} style={{ display: 'none' }} />
           <button type="button" className="btn btn-secondary" onClick={() => fileInputRef.current?.click()} disabled={uploading}>
-            {uploading ? t('common.saving') : `📁 ${t('imageUploader.selectFile')}`}
+            {uploading ? t('common.saving') : <><FontAwesomeIcon icon={faFolderOpen} aria-hidden="true" /> {t('imageUploader.selectFile')}</>}
           </button>
           <span style={{ fontSize: '12px', color: 'var(--text-secondary)', marginLeft: '8px' }}>{t('imageUploader.fileSupport')}</span>
         </div>
@@ -342,9 +344,9 @@ const ImageUploader = ({ value, onChange, label, aspectRatio, outputWidth, outpu
           <img src={value} alt={t('imageUploader.preview')} style={{ maxWidth: '200px', maxHeight: '120px', borderRadius: '8px', border: '1px solid var(--border)', objectFit: 'cover' }} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             {aspectRatio && (
-              <button type="button" onClick={handleStartCrop} style={{ background: 'var(--primary-bg)', border: '1px solid var(--primary-border)', color: 'var(--primary-light)', borderRadius: '6px', padding: '5px 12px', cursor: 'pointer', fontSize: '12px' }}>{`✂️ ${t('imageUploader.crop')}`}</button>
+              <button type="button" onClick={handleStartCrop} style={{ background: 'var(--primary-bg)', border: '1px solid var(--primary-border)', color: 'var(--primary-light)', borderRadius: '6px', padding: '5px 12px', cursor: 'pointer', fontSize: '12px' }}><FontAwesomeIcon icon={faScissors} aria-hidden="true" /> {t('imageUploader.crop')}</button>
             )}
-            <button type="button" onClick={handleRemove} style={{ background: 'var(--destructive-bg)', border: '1px solid var(--destructive-border)', color: 'var(--destructive-text)', borderRadius: '6px', padding: '5px 12px', cursor: 'pointer', fontSize: '12px' }}>{`🗑️ ${t('imageUploader.remove')}`}</button>
+            <button type="button" onClick={handleRemove} style={{ background: 'var(--destructive-bg)', border: '1px solid var(--destructive-border)', color: 'var(--destructive-text)', borderRadius: '6px', padding: '5px 12px', cursor: 'pointer', fontSize: '12px' }}><FontAwesomeIcon icon={faTrashCan} aria-hidden="true" /> {t('imageUploader.remove')}</button>
           </div>
         </div>
       )}

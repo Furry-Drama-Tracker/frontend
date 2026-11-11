@@ -123,8 +123,10 @@ html {
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', 'Noto Sans SC', 'HarmonyOS Sans', 'PingFang SC', 'Microsoft YaHei',
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /* 纯系统字体栈：不依赖任何外部字体 CDN（CSP 不允许跨域字体），
+   * 中文字体优先鸿蒙 / 苹方 / 微软雅黑，拉丁字符回落到各平台系统无衬线体 */
+  font-family: 'HarmonyOS Sans', 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, sans-serif;
   background-color: var(--background);
   color: var(--foreground);
   min-height: 100vh;
@@ -134,7 +136,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  font-feature-settings: 'cv11', 'ss01', 'ss03';
   letter-spacing: -0.011em;
   line-height: 1.6;
 }
@@ -4372,15 +4373,7 @@ tbody tr:hover {
   padding: 60px 20px;
   color: var(--text-secondary);
 }
-.empty-state::before,
-.no-data::before {
-  content: '📭';
-  display: block;
-  font-size: 48px;
-  margin-bottom: 16px;
-  opacity: 0.5;
-  animation: float-slow 4s var(--ease-smooth) infinite;
-}
+/* 空状态图标改由组件渲染 Font Awesome（不再用 CSS emoji 伪元素） */
 
 /* 分页按钮增强 */
 .pagination button,

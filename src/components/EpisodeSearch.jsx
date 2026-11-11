@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import useTranslation from '../hooks/useTranslation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClock, faTag, faTv } from '@fortawesome/free-solid-svg-icons';
 
 const HISTORY_KEY = 'search_history';
 const MAX_HISTORY = 10;
@@ -242,7 +244,7 @@ const EpisodeSearch = ({ value, onChange, totalCount, filteredCount }) => {
                       borderBottom: index < history.length - 1 ? '1px solid var(--border)' : 'none'
                     }}
                   >
-                    <span style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>🕐</span>
+                    <span style={{ color: 'var(--text-secondary)', fontSize: '14px' }}><FontAwesomeIcon icon={faClock} aria-hidden="true" /></span>
                     <span style={{ fontSize: '14px', color: 'var(--foreground)' }}>{item}</span>
                   </div>
                 ))}
@@ -271,7 +273,7 @@ const EpisodeSearch = ({ value, onChange, totalCount, filteredCount }) => {
                           borderBottom: index < suggestions.titles.length - 1 || suggestions.tags.length > 0 ? '1px solid var(--border)' : 'none'
                         }}
                       >
-                        <span style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>📺</span>
+                        <span style={{ color: 'var(--text-secondary)', fontSize: '14px' }}><FontAwesomeIcon icon={faTv} aria-hidden="true" /></span>
                         <span style={{ fontSize: '14px', color: 'var(--foreground)' }}>
                           {highlightText(title.title || title.titleEn, query)}
                         </span>
@@ -285,7 +287,7 @@ const EpisodeSearch = ({ value, onChange, totalCount, filteredCount }) => {
                       padding: '8px 16px', fontSize: '12px', color: 'var(--text-secondary)',
                       fontWeight: 600, borderBottom: '1px solid var(--border)'
                     }}>
-                      🏷️ Tags
+                      <FontAwesomeIcon icon={faTag} aria-hidden="true" /> Tags
                     </div>
                     {suggestions.tags.map((tag, index) => {
                       const globalIdx = suggestions.titles.length + index;
@@ -307,7 +309,7 @@ const EpisodeSearch = ({ value, onChange, totalCount, filteredCount }) => {
                             borderBottom: index < suggestions.tags.length - 1 ? '1px solid var(--border)' : 'none'
                           }}
                         >
-                          <span style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>🏷️</span>
+                          <span style={{ color: 'var(--text-secondary)', fontSize: '14px' }}><FontAwesomeIcon icon={faTag} aria-hidden="true" /></span>
                           <span style={{ fontSize: '14px', color: 'var(--primary)' }}>
                             {highlightText(tag, query)}
                           </span>

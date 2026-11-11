@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMobileScreenButton } from '@fortawesome/free-solid-svg-icons';
 
 const DISMISSED_KEY = 'pwa-install-dismissed';
 
@@ -58,7 +60,7 @@ export default function InstallPrompt() {
   return (
     <div className="pwa-prompt-wrapper">
       <div className="pwa-prompt-card">
-        <span className="pwa-prompt-icon">📲</span>
+        <span className="pwa-prompt-icon"><FontAwesomeIcon icon={faMobileScreenButton} aria-hidden="true" /></span>
         <div className="pwa-prompt-text">
           <div className="pwa-prompt-title">{t('pwa.install')}</div>
           <div className="pwa-prompt-desc">{t('pwa.installDesc')}</div>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useI18n } from '../contexts/I18nContext';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleQuestion, faFaceGrinBeamSweat } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * 浏览器兼容性检测组件
@@ -368,7 +370,7 @@ const IncompatibleOverlay = ({ reason, browser, t, lang, switchLang, onContinue 
           >
             {lang === 'zh' ? 'EN' : '中文'}
           </button>
-          <div style={{ ...iconStyle, textAlign: 'center' }} aria-hidden="true">😅</div>
+          <div style={{ ...iconStyle, textAlign: 'center' }} aria-hidden="true"><FontAwesomeIcon icon={faFaceGrinBeamSweat} /></div>
           <h1 style={{ ...titleStyle, textAlign: 'center' }}>{t('browserCompat.title')}</h1>
           {browser && browser !== 'Unknown' && (
             <div style={{ ...browserStyle, textAlign: 'center' }}>{browser}</div>
@@ -470,7 +472,7 @@ const FeedbackDialog = ({ onNormal, onProblem, t }) => {
   return (
     <div style={overlayStyle}>
       <div style={cardStyle}>
-        <div style={{ fontSize: '32px', marginBottom: '8px' }} aria-hidden="true">🤔</div>
+        <div style={{ fontSize: '32px', marginBottom: '8px' }} aria-hidden="true"><FontAwesomeIcon icon={faCircleQuestion} /></div>
         <h2 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '8px', color: '#1e293b' }}>
           {t('browserCompat.feedbackTitle')}
         </h2>

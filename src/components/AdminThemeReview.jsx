@@ -4,15 +4,16 @@ import adminApi from '../utils/adminApi';
 import API from '../utils/apiEndpoints';
 import Modal from './Modal';
 import { computeThemeType, themeTypeBadge } from './ThemeEditorModal';
-import { SvgIconPreview } from '../contexts/IconContext';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faCircleCheck, faCircleXmark, faComment, faSpinner, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * AdminThemeReview 主题审批页（/admin/theme-review，superadmin 专用）。
  *
  * 与剧集审核（/admin/review）对齐的专门审批工作流：
  *   - 待审核 / 已通过 / 已驳回 三档列表；
- *   - 卡片预览主题内容（类型徽章、壁纸缩略图、图标预览、主题色圆点）；
+ *   - 卡片预览主题内容（类型徽章、壁纸缩略图、主题色圆点）；
  *   - 通过 → 升级为系统主题上架市场；驳回 → 附原因退回作者（可修改后重新提交）；
  *   - 审核结果自动向主题作者发送站内通知（后端 notifyThemeReviewResult）。
  */
@@ -104,9 +105,9 @@ const AdminThemeReview = () => {
   };
 
   const tabs = [
-    { key: 'pending', label: t('adminThemeReview.tabPending'), badge: pendingCount, icon: '⏳' },
-    { key: 'approved', label: t('adminThemeReview.tabApproved'), icon: '✅' },
-    { key: 'rejected', label: t('adminThemeReview.tabRejected'), icon: '❌' },
+    { key: 'pending', label: t('adminThemeReview.tabPending'), badge: pendingCount, icon: <FontAwesomeIcon icon={faSpinner} spin aria-hidden="true" /> },
+    { key: 'approved', label: t('adminThemeReview.tabApproved'), icon: <FontAwesomeIcon icon={faCircleCheck} aria-hidden="true" /> },
+    { key: 'rejected', label: t('adminThemeReview.tabRejected'), icon: <FontAwesomeIcon icon={faCircleXmark} aria-hidden="true" /> },
   ];
 
   return (
@@ -203,22 +204,9 @@ const AdminThemeReview = () => {
                   }} />
                 )}
 
-                {/* 图标预览 */}
+                {/* 图标数量（图标引擎已下线，不再渲染图标预览） */}
                 {iconEntries.length > 0 && (
-                  <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>
-                    {iconEntries.slice(0, 8).map(([key, url]) => (
-                      <span key={key} title={key} style={{
-                        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                        width: '28px', height: '28px', borderRadius: '6px',
-                        background: 'var(--hover-bg)', border: '1px solid var(--border)', color: 'var(--foreground)',
-                      }}>
-                        <SvgIconPreview url={url} size={17} />
-                      </span>
-                    ))}
-                    {iconEntries.length > 8 && (
-                      <span style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>+{iconEntries.length - 8}</span>
-                    )}
-                  </div>
+                  <div style={{ fontSize: '11px', color: 'var(--text-tertiary)' }}>{t('themeEditor.iconsCount', { count: iconEntries.length })}</div>
                 )}
 
                 <div style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
@@ -230,7 +218,7 @@ const AdminThemeReview = () => {
                   <div style={{
                     fontSize: '11px', color: 'var(--destructive-text)', background: 'var(--destructive-bg-subtle)',
                     borderRadius: '6px', padding: '6px 8px', lineHeight: 1.5,
-                  }}>💬 {th.reviewNote}</div>
+                  }}><FontAwesomeIcon icon={faComment} style={{ fontSize: 11 }} aria-hidden="true" /> {th.reviewNote}</div>
                 )}
 
                 {/* 操作 */}
@@ -241,12 +229,12 @@ const AdminThemeReview = () => {
                         className="btn"
                         style={{ padding: '5px 12px', fontSize: '12px', background: 'var(--success-bg-strong)', borderColor: 'var(--success-border)', color: 'var(--success-text)' }}
                         onClick={() => openReview(th, 'approve')}
-                      >✅ {t('adminThemeReview.approve')}</button>
+                      ><FontAwesomeIcon icon={faCheck} aria-hidden="true" /> {t('adminThemeReview.approve')}</button>
                       <button
                         className="btn btn-secondary"
                         style={{ padding: '5px 12px', fontSize: '12px', color: 'var(--destructive-text)', borderColor: 'var(--destructive-border)' }}
                         onClick={() => openReview(th, 'reject')}
-                      >❌ {t('adminThemeReview.reject')}</button>
+                      ><FontAwesomeIcon icon={faXmark} aria-hidden="true" /> {t('adminThemeReview.reject')}</button>
                     </>
                   )}
                   {(th.status === 'approved' || th.status === 'rejected') && (

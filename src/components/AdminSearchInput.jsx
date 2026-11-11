@@ -1,4 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * 后台专用搜索框（源力风格）。
@@ -70,10 +72,7 @@ const AdminSearchInput = ({
   return (
     <div className="admin-search" ref={boxRef}>
       <span className="admin-search-icon" aria-hidden="true">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-          <circle cx="11" cy="11" r="7" />
-          <path d="m20 20-3.5-3.5" />
-        </svg>
+        <FontAwesomeIcon icon={faMagnifyingGlass} style={{ fontSize: 14 }} aria-hidden="true" />
       </span>
       <input
         type="text"

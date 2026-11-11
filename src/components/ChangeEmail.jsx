@@ -5,6 +5,8 @@ import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
 import PasswordToggle from './PasswordToggle';
 import API from '../utils/apiEndpoints';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 const ChangeEmail = ({ user }) => {
   const { t } = useI18n();
@@ -57,7 +59,7 @@ const ChangeEmail = ({ user }) => {
             color: 'var(--foreground)', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '4px'
           }}
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+          <FontAwesomeIcon icon={faArrowLeft} style={{ fontSize: 16 }} aria-hidden="true" />
           {t('common.back')}
         </button>
         <h2 style={{margin: 0}}>{t('auth.changeEmail')}</h2>
@@ -71,7 +73,7 @@ const ChangeEmail = ({ user }) => {
       {success ? (
         <div className="success-message" style={{padding: '10px', background: 'var(--success-bg-strong)', border: '1px solid var(--success-border)', borderRadius: '6px', color: 'var(--success-text)'}}>
           <div style={{textAlign: 'center', padding: '8px 0'}}>
-            <div style={{fontSize: '32px', marginBottom: '8px'}}>📧</div>
+            <div style={{fontSize: '32px', marginBottom: '8px'}}><FontAwesomeIcon icon={faEnvelope} aria-hidden="true" /></div>
             <p>{success}</p>
           </div>
         </div>

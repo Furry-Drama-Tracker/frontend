@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
 import API from '../utils/apiEndpoints';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faBox, faCheck, faCircleCheck, faEnvelope, faKey, faMobileScreenButton, faShieldHalved, faTrashCan, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 const maskEmail = (email) => {
   if (!email) return '';
@@ -89,7 +91,7 @@ const AccountSecurity = ({ user }) => {
             color: 'var(--foreground)', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '4px'
           }}
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+          <FontAwesomeIcon icon={faArrowLeft} style={{ fontSize: 16 }} aria-hidden="true" />
           {t('common.back')}
         </button>
         <h2 style={{margin: 0}}>{t('profile.accountSecurity')}</h2>
@@ -99,7 +101,7 @@ const AccountSecurity = ({ user }) => {
       <div style={sectionStyle}>
         <div style={rowStyle}>
           <div style={labelStyle}>
-            <div style={{...iconStyle, background: 'var(--primary-bg)', color: 'var(--primary)'}}>📧</div>
+            <div style={{...iconStyle, background: 'var(--primary-bg)', color: 'var(--primary)'}}><FontAwesomeIcon icon={faEnvelope} aria-hidden="true" /></div>
             <div>
               <div style={{fontWeight: 500, fontSize: '15px'}}>{t('auth.email')}</div>
               <div style={{fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px'}}>
@@ -115,9 +117,9 @@ const AccountSecurity = ({ user }) => {
                   {showFullEmail ? t('common.hide') : t('common.show')}
                 </button>
                 {user?.isEmailVerified ? (
-                  <span style={{marginLeft: '8px', fontSize: '12px', color: 'var(--success-text)', background: 'var(--success-bg)', padding: '1px 8px', borderRadius: '10px', border: '1px solid var(--success-border)'}}>{t('auth.emailVerified')}</span>
+                  <span style={{marginLeft: '8px', fontSize: '12px', color: 'var(--success-text)', background: 'var(--success-bg)', padding: '1px 8px', borderRadius: '10px', border: '1px solid var(--success-border)'}}><FontAwesomeIcon icon={faCheck} aria-hidden="true" /> {t('auth.emailVerified')}</span>
                 ) : (
-                  <span style={{marginLeft: '8px', fontSize: '12px', color: 'var(--warning-text)', background: 'var(--warning-bg)', padding: '1px 8px', borderRadius: '10px', border: '1px solid var(--warning-border)'}}>{t('auth.emailNotVerified')}</span>
+                  <span style={{marginLeft: '8px', fontSize: '12px', color: 'var(--warning-text)', background: 'var(--warning-bg)', padding: '1px 8px', borderRadius: '10px', border: '1px solid var(--warning-border)'}}><FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" /> {t('auth.emailNotVerified')}</span>
                 )}
               </div>
             </div>
@@ -132,7 +134,7 @@ const AccountSecurity = ({ user }) => {
       <div style={sectionStyle}>
         <div style={rowStyle}>
           <div style={labelStyle}>
-            <div style={{...iconStyle, background: 'var(--warning-bg)', color: 'var(--warning-text)'}}>🔑</div>
+            <div style={{...iconStyle, background: 'var(--warning-bg)', color: 'var(--warning-text)'}}><FontAwesomeIcon icon={faKey} aria-hidden="true" /></div>
             <div>
               <div style={{fontWeight: 500, fontSize: '15px'}}>{t('auth.password')}</div>
               <div style={{fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px'}}>{t('profile.changePassword')}</div>
@@ -148,7 +150,7 @@ const AccountSecurity = ({ user }) => {
       <div style={sectionStyle}>
         <div style={rowStyle}>
           <div style={labelStyle}>
-            <div style={{...iconStyle, background: 'var(--primary-bg-subtle)', color: 'var(--primary)'}}>📱</div>
+            <div style={{...iconStyle, background: 'var(--primary-bg-subtle)', color: 'var(--primary)'}}><FontAwesomeIcon icon={faMobileScreenButton} aria-hidden="true" /></div>
             <div>
               <div style={{fontWeight: 500, fontSize: '15px'}}>{t('profile.manageDevices')}</div>
               <div style={{fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px'}}>{t('profile.manageDevicesDesc')}</div>
@@ -164,11 +166,11 @@ const AccountSecurity = ({ user }) => {
       <div style={sectionStyle}>
         <div style={rowStyle}>
           <div style={labelStyle}>
-            <div style={{...iconStyle, background: 'var(--success-bg)', color: 'var(--success-text)'}}>🛡️</div>
+            <div style={{...iconStyle, background: 'var(--success-bg)', color: 'var(--success-text)'}}><FontAwesomeIcon icon={faShieldHalved} aria-hidden="true" /></div>
             <div>
               <div style={{fontWeight: 500, fontSize: '15px'}}>{t('twoFactor.title')}</div>
               <div style={{fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px'}}>
-                {user?.twoFactorEnabled ? t('twoFactor.enabled') : t('twoFactor.disabled')}
+                {user?.twoFactorEnabled ? <><FontAwesomeIcon icon={faCircleCheck} aria-hidden="true" /> {t('twoFactor.enabled')}</> : t('twoFactor.disabled')}
               </div>
             </div>
           </div>
@@ -184,7 +186,7 @@ const AccountSecurity = ({ user }) => {
       <div style={sectionStyle}>
         <div style={rowStyle}>
           <div style={labelStyle}>
-            <div style={{...iconStyle, background: 'rgba(14,165,233,0.1)', color: '#0ea5e9'}}>📦</div>
+            <div style={{...iconStyle, background: 'rgba(14,165,233,0.1)', color: '#0ea5e9'}}><FontAwesomeIcon icon={faBox} aria-hidden="true" /></div>
             <div>
               <div style={{fontWeight: 500, fontSize: '15px'}}>{t('profile.exportData')}</div>
               <div style={{fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px'}}>{t('profile.exportDataDesc')}</div>
@@ -212,7 +214,7 @@ const AccountSecurity = ({ user }) => {
       }}>
         <div style={rowStyle}>
           <div style={labelStyle}>
-            <div style={{...iconStyle, background: 'var(--destructive-bg)', color: 'var(--destructive-text)'}}>⚠️</div>
+            <div style={{...iconStyle, background: 'var(--destructive-bg)', color: 'var(--destructive-text)'}}><FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" /></div>
             <div>
               <div style={{fontWeight: 500, fontSize: '15px', color: 'var(--destructive-text)'}}>{t('profile.deleteAccountSection')}</div>
               <div style={{fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px'}}>{t('profile.deleteAccountWarning')}</div>
@@ -226,7 +228,7 @@ const AccountSecurity = ({ user }) => {
                 color: 'var(--destructive-text)', cursor: 'pointer'
               }}
             >
-              {t('profile.requestDeletion')}
+              <FontAwesomeIcon icon={faTrashCan} aria-hidden="true" /> {t('profile.requestDeletion')}
             </button>
           </Link>
         </div>

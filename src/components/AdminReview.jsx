@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilm, faXmark } from '@fortawesome/free-solid-svg-icons';
 import ReviewStatusBadge from './ReviewStatusBadge';
 import Modal from './Modal';
 
@@ -121,7 +123,7 @@ const AdminReview = () => {
     { key: 'category', label: t('adminReview.categories') },
     { key: 'tags', label: t('adminEpisodes.tags') },
     { key: 'updateDay', label: t('adminReview.updateDayLabel') },
-    { key: 'premiereDate', label: t('adminEpisodes.premiereDate') },
+    { key: 'premiereDate', label: <><FontAwesomeIcon icon={faFilm} aria-hidden="true" /> {t('adminEpisodes.premiereDate')}</> },
     { key: 'hideCreator', label: t('adminEpisodes.hideCreator') },
     { key: 'customAuthors', label: t('adminEpisodes.customAuthors') },
     { key: 'qqGroupLink', label: t('adminEpisodes.qqGroupLink') },
@@ -296,8 +298,9 @@ const AdminReview = () => {
                             {editor.username}
                             <button
                               onClick={() => handleRemoveEditor(ep._id, editor._id)}
+                              aria-label={t('common.delete')}
                               style={{background: 'none', border: 'none', color: 'var(--destructive-text)', cursor: 'pointer', fontSize: '12px', padding: '0 2px'}}
-                            >×</button>
+                            ><FontAwesomeIcon icon={faXmark} aria-hidden="true" /></button>
                           </span>
                         ))}
                       </div>
@@ -366,10 +369,10 @@ const AdminReview = () => {
               padding: '20px 24px', borderBottom: '1px solid var(--border)'
             }}>
               <h3 style={{margin: 0, color: 'var(--foreground)'}}>{detailEpisode?.title}</h3>
-              <button onClick={() => setDetailEpisode(null)} style={{
+              <button onClick={() => setDetailEpisode(null)} aria-label={t('common.close')} title={t('common.close')} style={{
                 background: 'none', border: 'none', color: 'var(--foreground)',
                 fontSize: '24px', cursor: 'pointer', padding: '0 4px', lineHeight: 1
-              }}>✕</button>
+              }}><FontAwesomeIcon icon={faXmark} aria-hidden="true" /></button>
             </div>
             <div style={{padding: '20px 24px'}}>
               {detailEpisode?.coverImage && (

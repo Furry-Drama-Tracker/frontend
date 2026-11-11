@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBoxArchive, faDownload, faFloppyDisk, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 
 const AdminBackup = () => {
   const { admin } = useOutletContext();
@@ -63,22 +65,22 @@ const AdminBackup = () => {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
         <div style={{ background: 'var(--card)', borderRadius: '12px', padding: '24px', border: '1px solid var(--border)' }}>
-          <h3 style={{ margin: '0 0 12px 0', color: 'var(--foreground)', fontSize: '16px' }}>{t('adminBackup.exportTitle')}</h3>
+          <h3 style={{ margin: '0 0 12px 0', color: 'var(--foreground)', fontSize: '16px' }}><FontAwesomeIcon icon={faBoxArchive} aria-hidden="true" /> {t('adminBackup.exportTitle')}</h3>
           <p style={{ color: 'var(--text-secondary)', fontSize: '13px', lineHeight: 1.6, margin: '0 0 16px 0' }}>{t('adminBackup.exportDesc')}</p>
           <button className="btn" onClick={handleExport} disabled={exporting}>
-            {exporting ? t('adminBackup.exporting') : t('adminBackup.exportData')}
+            {exporting ? t('adminBackup.exporting') : <><FontAwesomeIcon icon={faFloppyDisk} aria-hidden="true" /> {t('adminBackup.exportData')}</>}
           </button>
         </div>
 
         <div style={{ background: 'var(--card)', borderRadius: '12px', padding: '24px', border: '1px solid var(--border)' }}>
-          <h3 style={{ margin: '0 0 12px 0', color: 'var(--foreground)', fontSize: '16px' }}>{t('adminBackup.importTitle')}</h3>
+          <h3 style={{ margin: '0 0 12px 0', color: 'var(--foreground)', fontSize: '16px' }}><FontAwesomeIcon icon={faDownload} aria-hidden="true" /> {t('adminBackup.importTitle')}</h3>
           <p style={{ color: 'var(--text-secondary)', fontSize: '13px', lineHeight: 1.6, margin: '0 0 12px 0' }}>{t('adminBackup.importDesc')}</p>
           <label style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', cursor: 'pointer', fontSize: '13px', color: 'var(--text-secondary)' }}>
             <input type="checkbox" checked={overwrite} onChange={e => setOverwrite(e.target.checked)} />
             {t('adminBackup.overwriteData')}
           </label>
           <label className="btn" style={{ display: 'inline-block', cursor: importing ? 'wait' : 'pointer' }}>
-            {importing ? t('adminBackup.importing') : t('adminBackup.selectBackupFile')}
+            {importing ? t('adminBackup.importing') : <><FontAwesomeIcon icon={faFolderOpen} aria-hidden="true" /> {t('adminBackup.selectBackupFile')}</>}
             <input type="file" accept=".json" onChange={handleImport} disabled={importing} style={{ display: 'none' }} />
           </label>
         </div>

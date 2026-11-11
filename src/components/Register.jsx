@@ -4,6 +4,8 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { getDeviceInfo } from '../utils/deviceInfo';
 import { useI18n } from '../contexts/I18nContext';
 import PasswordToggle from './PasswordToggle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleCheck, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 const Register = () => {
   const { t } = useI18n();
@@ -143,7 +145,7 @@ const Register = () => {
       <div className="auth-form" style={{ textAlign: 'center' }}>
         {emailVerified ? (
           <>
-            <div style={{ fontSize: '48px', marginBottom: '16px' }} aria-hidden="true">✅</div>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }} aria-hidden="true"><FontAwesomeIcon icon={faCircleCheck} /></div>
             <h2>{t('auth.emailVerifyCodeVerified')}</h2>
             <p style={{ color: 'var(--text-secondary)', marginBottom: '24px', lineHeight: 1.7 }}>
               {t('auth.emailVerifyCodeVerifySuccessDesc')}
@@ -155,7 +157,7 @@ const Register = () => {
           </>
         ) : (
           <>
-            <div style={{ fontSize: '48px', marginBottom: '16px' }} aria-hidden="true">📧</div>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }} aria-hidden="true"><FontAwesomeIcon icon={faEnvelope} /></div>
             <h2>{t('auth.emailVerifyCodeTitle')}</h2>
             <p style={{ color: 'var(--text-secondary)', marginBottom: '12px', lineHeight: 1.7 }}>
               {t('auth.verifySent')} <strong style={{ color: 'var(--foreground)' }}>{registeredEmail}</strong>
@@ -216,7 +218,7 @@ const Register = () => {
         background: 'var(--primary-bg-subtle)', border: '1px solid var(--primary-border-subtle)',
         color: 'var(--text-secondary)', fontSize: '13px', lineHeight: 1.6
       }}>
-        {t('auth.registerEmailHint')}
+        <FontAwesomeIcon icon={faEnvelope} aria-hidden="true" /> {t('auth.registerEmailHint')}
       </div>
       {/* 已注册引导条已含完整提示语义，与错误提示融合为单条，避免重复 */}
       {error && !suggestLogin && <div className="error-message">{error}</div>}

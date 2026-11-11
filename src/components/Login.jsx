@@ -5,6 +5,8 @@ import { getDeviceInfo } from '../utils/deviceInfo';
 import { useI18n } from '../contexts/I18nContext';
 import PasswordToggle from './PasswordToggle';
 import API from '../utils/apiEndpoints';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleCheck, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 
 const Login = ({ login }) => {
   const { t } = useI18n();
@@ -261,7 +263,7 @@ const Login = ({ login }) => {
   if (deviceLoginCode) {
     return (
       <div className="auth-form" style={{textAlign: 'center', padding: '40px 20px'}}>
-        <div aria-hidden="true" style={{fontSize: '48px', marginBottom: '16px'}}>✅</div>
+        <div aria-hidden="true" style={{fontSize: '48px', marginBottom: '16px'}}><FontAwesomeIcon icon={faCircleCheck} /></div>
         <h2>{t('auth.deviceVerifiedTitle')}</h2>
         <p style={{color: 'var(--text-secondary)', lineHeight: 1.7, marginTop: '12px'}}>
           {t('auth.deviceVerifiedDesc')}
@@ -285,7 +287,7 @@ const Login = ({ login }) => {
   if (deviceVerifyLoading) {
     return (
       <div className="auth-form" style={{textAlign: 'center', padding: '60px 20px'}}>
-        <div aria-hidden="true" style={{fontSize: '48px', marginBottom: '16px'}}>🔐</div>
+        <div aria-hidden="true" style={{fontSize: '48px', marginBottom: '16px'}}><FontAwesomeIcon icon={faLock} /></div>
         <h2>{t('auth.verifyingDevice')}</h2>
         <p style={{color: 'var(--text-secondary)'}}>{t('common.pleaseWait')}</p>
       </div>
@@ -296,7 +298,7 @@ const Login = ({ login }) => {
     const isAppleDevice = deviceVerifyInfo?.os === 'iOS' || deviceVerifyInfo?.os === 'iPadOS' || deviceVerifyInfo?.os === 'macOS';
     return (
       <div className="auth-form" style={{textAlign: 'center', padding: '40px 20px'}}>
-        <div aria-hidden="true" style={{fontSize: '48px', marginBottom: '16px'}}>📧</div>
+        <div aria-hidden="true" style={{fontSize: '48px', marginBottom: '16px'}}><FontAwesomeIcon icon={faEnvelope} /></div>
         <h2>{t('auth.newDeviceVerify')}</h2>
         <p style={{color: 'var(--text-secondary)', lineHeight: 1.7, marginTop: '12px'}}>
           {t('auth.newDeviceDesc')}<br/>
@@ -380,7 +382,7 @@ const Login = ({ login }) => {
   if (need2FA) {
     return (
       <div className="auth-form">
-        <h2>{t('twoFactor.title')}</h2>
+        <h2><FontAwesomeIcon icon={faLock} aria-hidden="true" /> {t('twoFactor.title')}</h2>
         <p style={{color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '20px', lineHeight: 1.7}}>
           {t('twoFactor.loginDesc')}
         </p>
@@ -419,7 +421,7 @@ const Login = ({ login }) => {
   if (needVerification) {
     return (
       <div className="auth-form" style={{textAlign: 'center', padding: '40px 20px'}}>
-        <div aria-hidden="true" style={{fontSize: '48px', marginBottom: '16px'}}>📧</div>
+        <div aria-hidden="true" style={{fontSize: '48px', marginBottom: '16px'}}><FontAwesomeIcon icon={faEnvelope} /></div>
         <h2>{t('auth.emailVerifyCodeTitle')}</h2>
         <p style={{color: 'var(--text-secondary)', lineHeight: 1.7, marginTop: '12px'}}>
           {t('auth.verifySent')}<br/>

@@ -9,10 +9,14 @@ import { useI18n } from '../contexts/I18nContext';
 import useTranslation from '../hooks/useTranslation';
 import { useAuth } from '../contexts/AuthContext';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
-import { Icon } from '../contexts/IconContext';
+
 import API from '../utils/apiEndpoints';
 import useScrollReveal from '../hooks/useScrollReveal';
 import ScrollProgress from './ScrollProgress';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowDown, faArrowUp, faArrowUpRightFromSquare, faBullseye, faCalendarDays, faEye, faFilm, faFlag, faFloppyDisk, faFolder, faFolderOpen, faLink, faMobileScreenButton, faSpinner, faStar, faStopwatch, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
+import { SiBilibili, SiNiconico, SiX, SiYoutube } from '@icons-pack/react-simple-icons';
 
 const EpisodeDetail = ({ user }) => {
   const { t, lang } = useI18n();
@@ -157,13 +161,13 @@ const EpisodeDetail = ({ user }) => {
 
   const getPlatformIcon = (platform) => {
     const icons = {
-      'bilibili': '📺', 'B站': '📺',
-      'youtube': '▶️', 'YouTube': '▶️',
-      'nicovideo': '🎬', 'N站': '🎬',
-      'twitter': '🐦', 'Twitter': '🐦', 'X': '🐦',
-      '网盘': '💾', '百度网盘': '💾', '蓝奏云': '💾',
+      'bilibili': <SiBilibili size={14} color="currentColor" aria-hidden="true" />, 'B站': <SiBilibili size={14} color="currentColor" aria-hidden="true" />,
+      'youtube': <SiYoutube size={14} color="currentColor" aria-hidden="true" />, 'YouTube': <SiYoutube size={14} color="currentColor" aria-hidden="true" />,
+      'nicovideo': <SiNiconico size={14} color="currentColor" aria-hidden="true" />, 'N站': <SiNiconico size={14} color="currentColor" aria-hidden="true" />,
+      'twitter': <SiX size={14} color="currentColor" aria-hidden="true" />, 'Twitter': <SiX size={14} color="currentColor" aria-hidden="true" />, 'X': <SiX size={14} color="currentColor" aria-hidden="true" />,
+      '网盘': <FontAwesomeIcon icon={faFloppyDisk} aria-hidden="true" />, '百度网盘': <FontAwesomeIcon icon={faFloppyDisk} aria-hidden="true" />, '蓝奏云': <FontAwesomeIcon icon={faFloppyDisk} aria-hidden="true" />,
     };
-    return icons[platform] || '🔗';
+    return icons[platform] || <FontAwesomeIcon icon={faLink} aria-hidden="true" />;
   };
 
   const extractUrl = (raw) => {
@@ -445,7 +449,7 @@ const EpisodeDetail = ({ user }) => {
             <p><strong>{t('episode.views')}</strong>{episode.views} {t('episode.viewCount')}</p>
             {episode.averageRating > 0 && (
               <p><strong>{t('episode.ratingLabel')}</strong>
-                <span style={{color: 'var(--warning-text)', display: 'inline-flex', alignItems: 'center', gap: '4px'}}><Icon name="misc.star" fallback="⭐" size={13} /> {episode.averageRating}</span>
+                <span style={{color: 'var(--warning-text)', display: 'inline-flex', alignItems: 'center', gap: '4px'}}><FontAwesomeIcon icon={faStar} style={{ fontSize: 13 }} aria-hidden="true" /> {episode.averageRating}</span>
                 <span style={{color: 'var(--text-tertiary)', fontSize: '13px', marginLeft: '6px'}}>
                   ({episode.ratingCount}{t('episode.ratingCountLabel')})
                 </span>
@@ -520,7 +524,7 @@ const EpisodeDetail = ({ user }) => {
                       onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.filter = 'brightness(1)'; }}
                     >
                       {t('episode.jumpToGroup')}
-                      <span aria-hidden="true" style={{display: 'inline-block', transition: 'transform 0.2s'}}>↗</span>
+                      <span aria-hidden="true" style={{display: 'inline-block', transition: 'transform 0.2s'}}><FontAwesomeIcon icon={faArrowUpRightFromSquare} /></span>
                     </a>
                   </span>
                 </p>
@@ -547,7 +551,7 @@ const EpisodeDetail = ({ user }) => {
                   onClick={handleOpenFolderPicker}
                   style={isFavorite ? {borderColor: 'var(--warning-text)', color: 'var(--warning-text)'} : {}}
                 >
-                  {isFavorite ? t('episode.favorited') : t('episode.favoriteLabel')}
+                  <FontAwesomeIcon icon={isFavorite ? faStar : faStarRegular} aria-hidden="true" /> {isFavorite ? t('episode.favorited') : t('episode.favoriteLabel')}
                 </button>
                 {showFolderPicker && !isFavorite && favoriteBtnRef.current && createPortal(
                   <div style={{
@@ -570,7 +574,7 @@ const EpisodeDetail = ({ user }) => {
                       }}
                       onMouseEnter={(e) => e.currentTarget.style.background = 'var(--hover-bg)'}
                       onMouseLeave={(e) => e.currentTarget.style.background = 'none'}
-                    >📁 {t('profile.defaultFolder')}</button>
+                    ><FontAwesomeIcon icon={faFolder} aria-hidden="true" /> {t('profile.defaultFolder')}</button>
                     {favoriteFolders.map(folder => (
                       <button
                         key={folder._id}
@@ -582,7 +586,7 @@ const EpisodeDetail = ({ user }) => {
                         }}
                         onMouseEnter={(e) => e.currentTarget.style.background = 'var(--hover-bg)'}
                         onMouseLeave={(e) => e.currentTarget.style.background = 'none'}
-                      >📂 {folder.name}</button>
+                      ><FontAwesomeIcon icon={faFolderOpen} aria-hidden="true" /> {folder.name}</button>
                     ))}
                     <div style={{borderTop: '1px solid var(--border)', margin: '4px 0'}} />
                     <button
@@ -605,7 +609,7 @@ const EpisodeDetail = ({ user }) => {
               onClick={() => setShowShare(true)}
               style={{fontSize: '13px', padding: '8px 14px'}}
             >
-              {t('episode.shareLabel')}
+              <FontAwesomeIcon icon={faLink} aria-hidden="true" /> {t('episode.shareLabel')}
             </button>
             {user && (
               <button
@@ -613,7 +617,7 @@ const EpisodeDetail = ({ user }) => {
                 onClick={() => setShowReport(true)}
                 style={{fontSize: '13px', padding: '8px 14px'}}
               >
-                {t('episode.reportLabel')}
+                <FontAwesomeIcon icon={faFlag} aria-hidden="true" /> {t('episode.reportLabel')}
               </button>
             )}
             {user && (
@@ -631,7 +635,7 @@ const EpisodeDetail = ({ user }) => {
                       padding: '0 1px', lineHeight: 1,
                       filter: star <= (hoverRating || userRating) ? 'none' : 'grayscale(1) opacity(0.4)',
                       transition: 'filter 0.15s'
-                    }}><Icon name="misc.star" fallback="⭐" size={20} /></button>
+                    }}><FontAwesomeIcon icon={faStar} style={{ fontSize: 20 }} aria-hidden="true" /></button>
                 ))}
                 {userRating > 0 && (
                   <span style={{fontSize: '13px', color: 'var(--warning-text)', marginLeft: '4px'}}>{userRating}{t('episode.scoreUnit')}</span>
@@ -660,7 +664,7 @@ const EpisodeDetail = ({ user }) => {
             color: 'var(--foreground)', cursor: 'pointer', fontSize: '13px',
             transition: 'all 0.2s'
           }}>
-            {episodeSortOrder === 'asc' ? t('episode.sortAsc') : t('episode.sortDesc')}
+            <FontAwesomeIcon icon={episodeSortOrder === 'asc' ? faArrowUp : faArrowDown} aria-hidden="true" /> {episodeSortOrder === 'asc' ? t('episode.sortAsc') : t('episode.sortDesc')}
           </button>
         </h3>
         {displayedEpisodes.map(singleEpisode => {
@@ -728,17 +732,17 @@ const EpisodeDetail = ({ user }) => {
                   <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', fontSize: '12px', color: 'var(--text-tertiary)', alignItems: 'center' }}>
                     {singleEpisode.duration && (
                       <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                        <span aria-hidden="true">⏱</span>{singleEpisode.duration}
+                        <span aria-hidden="true"><FontAwesomeIcon icon={faStopwatch} /></span>{singleEpisode.duration}
                       </span>
                     )}
                     {releaseDate && (
                       <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                        <span aria-hidden="true">📅</span>{new Date(releaseDate).toLocaleDateString(lang === 'en' ? 'en-US' : 'zh-CN', { year: 'numeric', month: 'short', day: 'numeric' })}
+                        <span aria-hidden="true"><FontAwesomeIcon icon={faCalendarDays} /></span>{new Date(releaseDate).toLocaleDateString(lang === 'en' ? 'en-US' : 'zh-CN', { year: 'numeric', month: 'short', day: 'numeric' })}
                       </span>
                     )}
                     {singleEpisode.views > 0 && (
                       <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                        <span aria-hidden="true">👁</span>{singleEpisode.views}
+                        <span aria-hidden="true"><FontAwesomeIcon icon={faEye} /></span>{singleEpisode.views}
                       </span>
                     )}
                   </div>
@@ -773,7 +777,7 @@ const EpisodeDetail = ({ user }) => {
 
       {recommendations.length > 0 && (
         <div style={{marginTop: '32px'}}>
-          <h3 style={{marginBottom: '16px'}}>{t('episode.recommendations')}</h3>
+          <h3 style={{marginBottom: '16px'}}><FontAwesomeIcon icon={faBullseye} aria-hidden="true" /> {t('episode.recommendations')}</h3>
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
@@ -794,7 +798,7 @@ const EpisodeDetail = ({ user }) => {
                   <div style={{fontSize: '14px', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{getLocalizedTitle(rec)}</div>
                   <div style={{fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px'}}>
                     {t('episode.epPrefix')}{rec.currentEpisodes}{rec.totalEpisodes ? `/${rec.totalEpisodes}` : ''}{t('episode.epSuffix')}
-                    {rec.averageRating > 0 && <span style={{color: 'var(--warning-text)', marginLeft: '6px', display: 'inline-flex', alignItems: 'center', gap: '2px'}}><Icon name="misc.star" fallback="⭐" size={11} />{rec.averageRating}</span>}
+                    {rec.averageRating > 0 && <span style={{color: 'var(--warning-text)', marginLeft: '6px', display: 'inline-flex', alignItems: 'center', gap: '2px'}}><FontAwesomeIcon icon={faStar} style={{ fontSize: 11 }} aria-hidden="true" />{rec.averageRating}</span>}
                   </div>
                 </div>
               </Link>
@@ -831,7 +835,7 @@ const EpisodeDetail = ({ user }) => {
               <button onClick={() => closeWatchModal()} aria-label={t('common.close')} style={{
                 background: 'none', border: 'none', color: 'var(--foreground)',
                 fontSize: '24px', cursor: 'pointer', padding: '0 4px', lineHeight: 1
-              }}>✕</button>
+              }}><FontAwesomeIcon icon={faXmark} aria-hidden="true" /></button>
             </div>
             <div style={{padding: '16px'}}>
               {(() => {
@@ -853,7 +857,7 @@ const EpisodeDetail = ({ user }) => {
                       {embedUrl ? (
                         (typeof navigator !== 'undefined' && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) && embedUrl.includes('player.bilibili.com')) ? (
                           <div style={{textAlign: 'center', color: 'var(--text-secondary)', padding: '20px 16px'}}>
-                            <div style={{fontSize: '40px', marginBottom: '12px', lineHeight: 1}} aria-hidden="true"><Icon name="misc.empty" fallback="📱" size={40} /></div>
+                            <div style={{fontSize: '40px', marginBottom: '12px', lineHeight: 1}} aria-hidden="true"><FontAwesomeIcon icon={faMobileScreenButton} style={{ fontSize: 40 }} aria-hidden="true" /></div>
                             <p style={{fontSize: '15px', fontWeight: 600, color: 'var(--foreground)', marginBottom: '6px'}}>{t('episode.mobileEmbedUnsupported')}</p>
                             <p style={{fontSize: '13px', margin: 0}}>{t('episode.mobileEmbedUnsupportedHint')}</p>
                           </div>
@@ -868,13 +872,13 @@ const EpisodeDetail = ({ user }) => {
                           />
                         ) : (
                           <div style={{textAlign: 'center', color: 'var(--text-secondary)'}}>
-                            <div style={{fontSize: '32px', marginBottom: '8px'}}>⏳</div>
+                            <div style={{fontSize: '32px', marginBottom: '8px'}}><FontAwesomeIcon icon={faSpinner} spin aria-hidden="true" /></div>
                             <p style={{fontSize: '14px'}}>{t('common.loading')}</p>
                           </div>
                         )
                       ) : (
                         <div style={{textAlign: 'center', color: 'var(--text-secondary)'}}>
-                          <div style={{fontSize: '48px', marginBottom: '12px'}}>🎬</div>
+                          <div style={{fontSize: '48px', marginBottom: '12px'}}><FontAwesomeIcon icon={faFilm} aria-hidden="true" /></div>
                           <p>{t('episode.noEmbedVideo')}</p>
                           <p style={{fontSize: '13px'}}>{t('episode.watchViaPlatform')}</p>
                         </div>

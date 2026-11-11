@@ -4,6 +4,8 @@ import QRCode from 'qrcode';
 import { useNavigate } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faCircleCheck, faLock } from '@fortawesome/free-solid-svg-icons';
 
 const TwoFactorPage = ({ user, setUser }) => {
   const { t } = useI18n();
@@ -111,10 +113,10 @@ const TwoFactorPage = ({ user, setUser }) => {
             color: 'var(--foreground)', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '4px'
           }}
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+          <FontAwesomeIcon icon={faArrowLeft} style={{ fontSize: 16 }} aria-hidden="true" />
           {t('common.back')}
         </button>
-        <h2 style={{margin: 0}}>{t('twoFactor.title')}</h2>
+        <h2 style={{margin: 0}}><FontAwesomeIcon icon={faLock} aria-hidden="true" /> {t('twoFactor.title')}</h2>
       </div>
 
       {error && (
@@ -218,7 +220,7 @@ const TwoFactorPage = ({ user, setUser }) => {
             borderRadius: '6px', marginBottom: '16px',
             color: 'var(--success-text)', fontSize: '14px'
           }}>
-            {t('twoFactor.enabled')}
+            <FontAwesomeIcon icon={faCircleCheck} aria-hidden="true" /> {t('twoFactor.enabled')}
           </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '16px', lineHeight: 1.7 }}>
             {t('twoFactor.disableDesc')}

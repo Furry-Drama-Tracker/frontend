@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import ConfirmModal from './ConfirmModal';
 import Modal from './Modal';
 
@@ -195,10 +197,10 @@ const AdminEpisodeTrash = () => {
           padding: '20px 24px', borderBottom: '1px solid var(--border)'
         }}>
           <h3 style={{ margin: 0, color: 'var(--foreground)' }}>{t('adminEpisodeTrash.versionsTitle', { title: versionsFor?.title || '' })}</h3>
-          <button onClick={() => setVersionsFor(null)} style={{
+          <button onClick={() => setVersionsFor(null)} aria-label={t('common.close')} title={t('common.close')} style={{
             background: 'none', border: 'none', color: 'var(--foreground)',
             fontSize: '24px', cursor: 'pointer', padding: '0 4px', lineHeight: 1
-          }}>✕</button>
+          }}><FontAwesomeIcon icon={faXmark} aria-hidden="true" /></button>
         </div>
         <div style={{ padding: '20px 24px' }}>
           <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '0 0 14px 0', lineHeight: 1.6 }}>

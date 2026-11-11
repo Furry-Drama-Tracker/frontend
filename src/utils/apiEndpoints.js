@@ -44,19 +44,11 @@ const API = {
     SELECTION: '/api/themes/selection',
     BACKGROUND_PREFS: '/api/themes/background-prefs',
     UPLOAD_WALLPAPER: '/api/themes/upload-wallpaper',
-    UPLOAD_ICON: '/api/themes/upload-icon',
     DETAIL: (id) => `/api/themes/${id}`,
     SUBMIT: (id) => `/api/themes/${id}/submit`,
     REVIEW: (id) => `/api/themes/${id}/review`,
     SET_DEFAULT: (id) => `/api/themes/${id}/default`,
     ADMIN_UPDATE: (id) => `/api/themes/${id}/admin`,
-  },
-  // 图标管理
-  ICONS: {
-    LIST: '/api/icons/list',
-    ALL: '/api/icons/all',
-    UPLOAD: '/api/icons/upload',
-    DETAIL: (id) => `/api/icons/${id}`,
   },
   // 收藏/关注/历史
   FAVORITES: '/api/favorites',
@@ -77,7 +69,6 @@ const API = {
   },
   // 管理
   ADMIN: {
-    LOGIN: '/api/admin/login',
     VERIFY: '/api/admin/verify',
     LOGOUT: '/api/admin/logout',
     PENDING_COUNTS: '/api/admin/pending-counts',

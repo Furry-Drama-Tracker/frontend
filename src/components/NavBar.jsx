@@ -1,16 +1,17 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
 import { useI18n } from '../contexts/I18nContext';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
-import { Icon } from '../contexts/IconContext';
 import useTranslation from '../hooks/useTranslation';
 import useNotifications from '../hooks/useNotifications';
 import usePushNotifications from '../hooks/usePushNotifications';
 import LanguageSwitcher from './LanguageSwitcher';
 import TranslatableText from './TranslatableText';
 import TransitionLink from './TransitionLink';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faBell, faChevronDown, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 // ===== 常用样式常量 =====
 const btnNoneStyle = { background: 'none', border: 'none', cursor: 'pointer' };
@@ -282,7 +283,7 @@ const NavBar = ({ onFeedback }) => {
               }}
             >
               {/* 主题图标映射存在时显示「图标+文字」，未配置时仅显示文字（不使用 emoji） */}
-              <Icon name="nav.notifications" size={14} /> {t('nav.notifications')}
+              <FontAwesomeIcon icon={faBell} style={{ fontSize: 14 }} aria-hidden="true" /> {t('nav.notifications')}
               {unreadCount > 0 && (
                 <span style={{
                   position: 'absolute', top: '0', right: '-2px',
@@ -297,7 +298,7 @@ const NavBar = ({ onFeedback }) => {
           <button className="mobile-menu-btn" onClick={() => { setShowMobileMenu(!showMobileMenu); setShowMobileMore(false); }} aria-expanded={showMobileMenu} aria-haspopup="true" aria-label={t('nav.menu')} style={{
             background: 'none', border: 'none', cursor: 'pointer',
             color: 'var(--foreground)', fontSize: '22px', padding: '6px'
-          }}><span aria-hidden="true">☰</span></button>
+          }}><FontAwesomeIcon icon={faBars} aria-hidden="true" /></button>
         </div>
         <ul className={showMobileMenu ? 'mobile-open' : ''}>
           <li><a href="/" onClick={(e) => { e.preventDefault(); setShowMobileMenu(false); if (document.startViewTransition) { document.startViewTransition(() => navigate('/')); } else { navigate('/'); } }} style={{ color: isActive('/') ? 'var(--primary)' : undefined }}>{t('nav.home')}</a></li>
@@ -322,7 +323,7 @@ const NavBar = ({ onFeedback }) => {
                   onMouseLeave={(e) => { e.currentTarget.style.background = 'none'; e.currentTarget.style.color = 'var(--foreground)'; }}
                 >
                   {/* 主题图标映射存在时显示「图标+文字」，未配置时仅显示文字（不使用 emoji） */}
-                  <Icon name="nav.notifications" size={14} /> {t('nav.notifications')}
+                  <FontAwesomeIcon icon={faBell} style={{ fontSize: 14 }} aria-hidden="true" /> {t('nav.notifications')}
                   {unreadCount > 0 && (
                     <span style={{
                       position: 'absolute', top: '2px', right: '2px',
@@ -348,7 +349,7 @@ const NavBar = ({ onFeedback }) => {
                     padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '4px'
                   }}
                 >
-                  {t('nav.more')}
+                  {t('nav.more')} <FontAwesomeIcon icon={faChevronDown} style={{ fontSize: 12 }} aria-hidden="true" />
                 </button>
                 <div
                   className={`more-dropdown${showMoreMenu ? ' more-dropdown--open' : ''}`}
@@ -398,7 +399,7 @@ const NavBar = ({ onFeedback }) => {
                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                 >
                   <span>{t('nav.more')}</span>
-                  <span style={{ fontSize: '12px', transition: 'transform 0.2s', transform: showMobileMore ? 'rotate(180deg)' : 'rotate(0)' }}>▾</span>
+                  <FontAwesomeIcon icon={faChevronDown} style={{ fontSize: 12, transition: 'transform 0.2s', transform: showMobileMore ? 'rotate(180deg)' : 'rotate(0)' }} aria-hidden="true" />
                 </button>
               </li>
               {showMobileMore && renderMobileMoreItems()}
@@ -422,7 +423,7 @@ const NavBar = ({ onFeedback }) => {
                     padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '4px'
                   }}
                 >
-                  {t('nav.more')}
+                  {t('nav.more')} <FontAwesomeIcon icon={faChevronDown} style={{ fontSize: 12 }} aria-hidden="true" />
                 </button>
                 <div
                   className={`more-dropdown${showMoreMenu ? ' more-dropdown--open' : ''}`}
@@ -456,7 +457,7 @@ const NavBar = ({ onFeedback }) => {
                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                 >
                   <span>{t('nav.more')}</span>
-                  <span style={{ fontSize: '12px', transition: 'transform 0.2s', transform: showMobileMore ? 'rotate(180deg)' : 'rotate(0)' }}>▾</span>
+                  <FontAwesomeIcon icon={faChevronDown} style={{ fontSize: 12, transition: 'transform 0.2s', transform: showMobileMore ? 'rotate(180deg)' : 'rotate(0)' }} aria-hidden="true" />
                 </button>
               </li>
               {showMobileMore && renderMobileMoreItems()}
@@ -489,7 +490,7 @@ const NavBar = ({ onFeedback }) => {
                   fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px',
                   color: 'var(--text-secondary)',
                 }}>
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                  <FontAwesomeIcon icon={faBell} style={{ fontSize: 14 }} aria-hidden="true" />
                   {t('notification.pushSettings')}
                 </button>
               )}
@@ -497,7 +498,7 @@ const NavBar = ({ onFeedback }) => {
                 background: 'none', border: 'none', color: 'var(--text-secondary)',
                 cursor: 'pointer', padding: '4px', lineHeight: 1, display: 'inline-flex', alignItems: 'center'
               }}>
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                <FontAwesomeIcon icon={faXmark} style={{ fontSize: 18 }} aria-hidden="true" />
               </button>
             </div>
           </div>

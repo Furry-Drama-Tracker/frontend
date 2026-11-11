@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Megaphone, AlertTriangle, Wrench, Sparkles, X } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faBullhorn, faTriangleExclamation, faWandMagicSparkles, faWrench, faXmark } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { useI18n } from '../contexts/I18nContext';
 
@@ -23,7 +24,7 @@ const markDismissed = (id) => {
   } catch {}
 };
 
-const typeIcon = { info: Megaphone, warning: AlertTriangle, maintenance: Wrench, update: Sparkles };
+const typeIcon = { info: faBullhorn, warning: faTriangleExclamation, maintenance: faWrench, update: faWandMagicSparkles };
 const typeBg = {
   info: 'var(--primary-bg, #eef2ff)',
   warning: 'var(--warning-bg, #fef3c7)',
@@ -63,7 +64,7 @@ const AnnouncementBanner = () => {
         const content = lang === 'en' ? (a.contentEn || a.content) : a.content;
         const isExpanded = expandedId === a._id;
         const accent = typeAccent[a.type] || typeAccent.info;
-        const IconComp = typeIcon[a.type] || Megaphone;
+        const IconComp = typeIcon[a.type] || faBullhorn;
         return (
           <div
             key={a._id}
@@ -77,7 +78,7 @@ const AnnouncementBanner = () => {
               maxWidth: '1200px', margin: '0 auto', padding: '8px 16px',
               display: 'flex', alignItems: 'center', gap: '10px'
             }}>
-              <span aria-hidden="true" style={{ color: accent, flexShrink: 0, display: 'inline-flex', alignItems: 'center' }}><IconComp size={15} strokeWidth={2} /></span>
+              <span aria-hidden="true" style={{ color: accent, flexShrink: 0, display: 'inline-flex', alignItems: 'center' }}><FontAwesomeIcon icon={IconComp} style={{ fontSize: 15 }} /></span>
               <span
                 onClick={() => a.content && setExpandedId(isExpanded ? null : a._id)}
                 style={{
@@ -111,7 +112,7 @@ const AnnouncementBanner = () => {
                     color: accent, textDecoration: 'none', fontSize: '12px', fontWeight: 600,
                     flexShrink: 0, whiteSpace: 'nowrap'
                   }}
-                >{t('announcement.viewDetails')} →</a>
+                >{t('announcement.viewDetails')} <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" /></a>
               )}
               <button
                 onClick={() => {
@@ -123,7 +124,7 @@ const AnnouncementBanner = () => {
                   background: 'none', border: 'none', color: 'var(--text-secondary)',
                   cursor: 'pointer', padding: '2px', lineHeight: 1, flexShrink: 0, display: 'inline-flex', alignItems: 'center'
                 }}
-              ><X size={15} strokeWidth={2} /></button>
+              ><FontAwesomeIcon icon={faXmark} style={{ fontSize: 15 }} /></button>
             </div>
             {isExpanded && a.content && (
               <div style={{

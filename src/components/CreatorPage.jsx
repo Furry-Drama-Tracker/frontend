@@ -4,6 +4,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
 import useTranslation from '../hooks/useTranslation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faComment } from '@fortawesome/free-solid-svg-icons';
 
 const CreatorPage = () => {
   const { id } = useParams();
@@ -129,7 +131,7 @@ const CreatorPage = () => {
                 onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 4px 12px var(--shadow-modal)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
               >
-                {t('creator.contactQQGroup')}
+                <FontAwesomeIcon icon={faComment} aria-hidden="true" /> {t('creator.contactQQGroup')}
               </a>
             </div>
           )}

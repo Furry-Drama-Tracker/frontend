@@ -4,6 +4,8 @@ import adminApi from '../utils/adminApi';
 import ImageUploader from './ImageUploader';
 import SystemWallpaperManager from './SystemWallpaperManager';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faBox, faClipboard, faComment, faCopyright, faDesktop, faEye, faFloppyDisk, faGlobe, faHashtag, faHeart, faIdBadge, faImage, faMasksTheater, faMobileScreenButton, faPalette, faPenToSquare, faRobot, faShieldHalved, faTag, faWandMagicSparkles, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
 
 const LANGS = [
@@ -261,7 +263,7 @@ const AdminSiteContent = () => {
     </div>
   );
 
-  const renderLocalizedField = (label, emoji, data, setter, field, placeholder, multiline) => {
+  const renderLocalizedField = (label, icon, data, setter, field, placeholder, multiline) => {
     const currentLang = LANGS.find(l => l.code === editLang);
     const zhValue = data[field] || '';
     const locKey = getLocKey(field, editLang);
@@ -270,7 +272,7 @@ const AdminSiteContent = () => {
     if (editLang === 'zh') {
       return (
         <div className="form-group" key={`${field}-${editLang}`}>
-          <label>{emoji} {label}</label>
+          <label><FontAwesomeIcon icon={icon} style={{ fontSize: 13 }} aria-hidden="true" /> {label}</label>
           {multiline ? (
             <textarea value={zhValue} onChange={(e) => setter(prev => ({ ...prev, [field]: e.target.value }))} placeholder={placeholder} rows={3} style={{ width: '100%', padding: '12px', borderRadius: '8px', background: 'var(--card)', color: 'var(--foreground)', border: '1px solid var(--border)', fontSize: '14px', lineHeight: 1.6, resize: 'vertical' }} />
           ) : (
@@ -282,7 +284,7 @@ const AdminSiteContent = () => {
 
     return (
       <div className="form-group" key={`${field}-${editLang}`}>
-        <label>{emoji} {label}（{currentLang.flag} {currentLang.label}）</label>
+        <label><FontAwesomeIcon icon={icon} style={{ fontSize: 13 }} aria-hidden="true" /> {label}（{currentLang.flag} {currentLang.label}）</label>
         {zhValue && (
           <div style={{
             marginBottom: '8px', padding: '10px 12px', borderRadius: '8px',
@@ -318,19 +320,19 @@ const AdminSiteContent = () => {
             borderRadius: '12px', padding: '16px', marginBottom: '20px',
           }}>
             <h4 style={{ margin: '0 0 8px 0', color: 'var(--foreground)', fontSize: '14px' }}>
-              🌐 {currentLang.flag} {currentLang.label} {t('adminContent.translationTitle')}
+              <FontAwesomeIcon icon={faGlobe} style={{ fontSize: 14 }} aria-hidden="true" /> {currentLang.flag} {currentLang.label} {t('adminContent.translationTitle')}
             </h4>
             <p style={{ margin: 0, fontSize: '12px', color: 'var(--text-secondary)' }}>
               {t('adminContent.translationDesc', { lang: currentLang.label })}
             </p>
           </div>
-          {renderLocalizedField(t('adminContent.siteName'), '📝', settingsData, setSettingsData, 'siteName', 'e.g., Furry Drama Hub')}
-          {renderLocalizedField(t('adminContent.welcomeTitle'), '🎉', settingsData, setSettingsData, 'welcomeTitle', 'e.g., Welcome to Furry Drama Hub')}
-          {renderLocalizedField(t('adminContent.welcomeSubtitle'), '💬', settingsData, setSettingsData, 'welcomeSubtitle', 'e.g., Discover and track your favorite dramas')}
-          {renderLocalizedField(t('adminContent.browserTitle'), '🌐', settingsData, setSettingsData, 'browserTitle', 'e.g., Furry Drama Hub')}
+          {renderLocalizedField(t('adminContent.siteName'), faPenToSquare, settingsData, setSettingsData, 'siteName', 'e.g., Furry Drama Hub')}
+          {renderLocalizedField(t('adminContent.welcomeTitle'), faWandMagicSparkles, settingsData, setSettingsData, 'welcomeTitle', 'e.g., Welcome to Furry Drama Hub')}
+          {renderLocalizedField(t('adminContent.welcomeSubtitle'), faComment, settingsData, setSettingsData, 'welcomeSubtitle', 'e.g., Discover and track your favorite dramas')}
+          {renderLocalizedField(t('adminContent.browserTitle'), faGlobe, settingsData, setSettingsData, 'browserTitle', 'e.g., Furry Drama Hub')}
 
           <div style={{ background: 'var(--primary-bg-subtle)', border: '1px solid var(--primary-border-subtle)', borderRadius: '12px', padding: '20px', marginTop: '20px' }}>
-            <h4 style={{ margin: '0 0 12px 0', color: 'var(--foreground)', fontSize: '14px' }}>👁️ {t('adminContent.effectPreview')}（{currentLang.label}）</h4>
+            <h4 style={{ margin: '0 0 12px 0', color: 'var(--foreground)', fontSize: '14px' }}><FontAwesomeIcon icon={faEye} style={{ fontSize: 14 }} aria-hidden="true" /> {t('adminContent.effectPreview')}（{currentLang.label}）</h4>
             <div style={{ borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--card)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 16px', borderBottom: '1px solid var(--border)' }}>
                 {settingsData.navLogo && <img src={settingsData.navLogo} alt="Logo" style={{ width: '28px', height: '28px', borderRadius: '4px', objectFit: 'cover' }} />}
@@ -355,7 +357,7 @@ const AdminSiteContent = () => {
     return (
       <div>
         <div style={{ background: 'var(--primary-bg-subtle)', border: '1px solid var(--primary-border-subtle)', borderRadius: '12px', padding: '16px', marginBottom: '20px' }}>
-          <h4 style={{ margin: '0 0 8px 0', color: 'var(--foreground)', fontSize: '14px' }}>🌐 {t('adminContent.browserTab')}</h4>
+          <h4 style={{ margin: '0 0 8px 0', color: 'var(--foreground)', fontSize: '14px' }}><FontAwesomeIcon icon={faGlobe} style={{ fontSize: 14 }} aria-hidden="true" /> {t('adminContent.browserTab')}</h4>
           <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: 'var(--text-secondary)' }}>{t('adminContent.browserTabDesc')}</p>
           <div style={{ marginBottom: '16px' }}>
             <label style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block' }}>{t('adminContent.favicon')}</label>
@@ -380,7 +382,7 @@ const AdminSiteContent = () => {
               {settingsData.favicon ? (
                 <img src={settingsData.favicon} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               ) : (
-                <span style={{ fontSize: '10px' }}>🌐</span>
+                <FontAwesomeIcon icon={faGlobe} style={{ fontSize: 10 }} aria-hidden="true" />
               )}
             </div>
             <span style={{ fontSize: '13px', color: 'var(--foreground)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -390,29 +392,29 @@ const AdminSiteContent = () => {
         </div>
 
         <div style={{ background: 'var(--primary-bg-subtle)', border: '1px solid var(--primary-border-subtle)', borderRadius: '12px', padding: '16px', marginBottom: '20px' }}>
-          <h4 style={{ margin: '0 0 8px 0', color: 'var(--foreground)', fontSize: '14px' }}>🏷️ {t('adminContent.navLogo')}</h4>
+          <h4 style={{ margin: '0 0 8px 0', color: 'var(--foreground)', fontSize: '14px' }}><FontAwesomeIcon icon={faTag} style={{ fontSize: 14 }} aria-hidden="true" /> {t('adminContent.navLogo')}</h4>
           <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: 'var(--text-secondary)' }}>{t('adminContent.navLogoDesc')}</p>
           <ImageUploader label={t('adminContent.navLogoLabel')} value={settingsData.navLogo} onChange={(url) => setSettingsData(prev => ({ ...prev, navLogo: url }))} aspectRatio={1} outputWidth={64} outputHeight={64} />
         </div>
 
         <div className="form-group">
-          <label>📝 {t('adminContent.siteNameLabel')}</label>
+          <label><FontAwesomeIcon icon={faPenToSquare} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminContent.siteNameLabel')}</label>
           <input type="text" value={settingsData.siteName} onChange={(e) => setSettingsData(prev => ({ ...prev, siteName: e.target.value }))} placeholder={t('adminContent.siteNamePlaceholder')} />
           <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px' }}>{t('adminContent.siteNameHint')}</p>
         </div>
 
         <div className="form-group">
-          <label>🎉 {t('adminContent.welcomeTitleLabel')}</label>
+          <label><FontAwesomeIcon icon={faWandMagicSparkles} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminContent.welcomeTitleLabel')}</label>
           <input type="text" value={settingsData.welcomeTitle} onChange={(e) => setSettingsData(prev => ({ ...prev, welcomeTitle: e.target.value }))} placeholder={t('adminContent.welcomeTitlePlaceholder')} />
         </div>
 
         <div className="form-group">
-          <label>💬 {t('adminContent.welcomeSubtitleLabel')}</label>
+          <label><FontAwesomeIcon icon={faComment} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminContent.welcomeSubtitleLabel')}</label>
           <input type="text" value={settingsData.welcomeSubtitle} onChange={(e) => setSettingsData(prev => ({ ...prev, welcomeSubtitle: e.target.value }))} placeholder={t('adminContent.welcomeSubtitlePlaceholder')} />
         </div>
 
         <div style={{ background: 'var(--primary-bg-subtle)', border: '1px solid var(--primary-border-subtle)', borderRadius: '12px', padding: '20px', marginTop: '20px' }}>
-          <h4 style={{ margin: '0 0 12px 0', color: 'var(--foreground)', fontSize: '14px' }}>👁️ {t('adminContent.effectPreview')}</h4>
+          <h4 style={{ margin: '0 0 12px 0', color: 'var(--foreground)', fontSize: '14px' }}><FontAwesomeIcon icon={faEye} style={{ fontSize: 14 }} aria-hidden="true" /> {t('adminContent.effectPreview')}</h4>
           <div style={{ borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--card)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 16px', borderBottom: '1px solid var(--border)' }}>
               {settingsData.navLogo && <img src={settingsData.navLogo} alt="Logo" style={{ width: '28px', height: '28px', borderRadius: '4px', objectFit: 'cover' }} />}
@@ -426,28 +428,28 @@ const AdminSiteContent = () => {
         </div>
 
         <div style={{ background: 'var(--primary-bg-subtle)', border: '1px solid var(--primary-border-subtle)', borderRadius: '12px', padding: '16px', marginTop: '20px' }}>
-          <h4 style={{ margin: '0 0 8px 0', color: 'var(--foreground)', fontSize: '14px' }}>📱 {t('adminContent.pwaSection')}</h4>
+          <h4 style={{ margin: '0 0 8px 0', color: 'var(--foreground)', fontSize: '14px' }}><FontAwesomeIcon icon={faMobileScreenButton} style={{ fontSize: 14 }} aria-hidden="true" /> {t('adminContent.pwaSection')}</h4>
           <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: 'var(--text-secondary)' }}>{t('adminContent.pwaSectionDesc')}</p>
 
           <div className="form-group" style={{ marginBottom: '12px' }}>
-            <label>📛 {t('adminContent.pwaNameLabel')}</label>
+            <label><FontAwesomeIcon icon={faIdBadge} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminContent.pwaNameLabel')}</label>
             <input type="text" value={settingsData.pwaName} onChange={(e) => setSettingsData(prev => ({ ...prev, pwaName: e.target.value }))} placeholder={t('adminContent.pwaNamePlaceholder')} />
             <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px' }}>{t('adminContent.pwaNameHint')}</p>
           </div>
 
           <div className="form-group" style={{ marginBottom: '12px' }}>
-            <label>🏷️ {t('adminContent.pwaShortNameLabel')}</label>
+            <label><FontAwesomeIcon icon={faTag} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminContent.pwaShortNameLabel')}</label>
             <input type="text" value={settingsData.pwaShortName} onChange={(e) => setSettingsData(prev => ({ ...prev, pwaShortName: e.target.value }))} placeholder={t('adminContent.pwaShortNamePlaceholder')} maxLength={12} />
             <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px' }}>{t('adminContent.pwaShortNameHint')}</p>
           </div>
 
           <div className="form-group" style={{ marginBottom: '12px' }}>
-            <label>📝 {t('adminContent.pwaDescriptionLabel')}</label>
+            <label><FontAwesomeIcon icon={faPenToSquare} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminContent.pwaDescriptionLabel')}</label>
             <textarea value={settingsData.pwaDescription} onChange={(e) => setSettingsData(prev => ({ ...prev, pwaDescription: e.target.value }))} placeholder={t('adminContent.pwaDescriptionPlaceholder')} rows={2} style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', background: 'var(--card)', color: 'var(--foreground)', border: '1px solid var(--border)', fontSize: '13px', lineHeight: 1.5, resize: 'vertical' }} />
           </div>
 
           <div className="form-group" style={{ marginBottom: '12px' }}>
-            <label>🎨 {t('adminContent.pwaThemeColorLabel')}</label>
+            <label><FontAwesomeIcon icon={faPalette} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminContent.pwaThemeColorLabel')}</label>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <input type="color" value={settingsData.pwaThemeColor} onChange={(e) => setSettingsData(prev => ({ ...prev, pwaThemeColor: e.target.value }))} style={{ width: '40px', height: '32px', padding: 0, border: '1px solid var(--border)', borderRadius: '6px', background: 'var(--card)', cursor: 'pointer' }} />
               <input type="text" value={settingsData.pwaThemeColor} onChange={(e) => setSettingsData(prev => ({ ...prev, pwaThemeColor: e.target.value }))} placeholder="#1777ff" style={{ flex: 1 }} />
@@ -456,7 +458,7 @@ const AdminSiteContent = () => {
           </div>
 
           <div className="form-group" style={{ marginBottom: '12px' }}>
-            <label>🖤 {t('adminContent.pwaBackgroundColorLabel')}</label>
+            <label><FontAwesomeIcon icon={faHeart} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminContent.pwaBackgroundColorLabel')}</label>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <input type="color" value={settingsData.pwaBackgroundColor} onChange={(e) => setSettingsData(prev => ({ ...prev, pwaBackgroundColor: e.target.value }))} style={{ width: '40px', height: '32px', padding: 0, border: '1px solid var(--border)', borderRadius: '6px', background: 'var(--card)', cursor: 'pointer' }} />
               <input type="text" value={settingsData.pwaBackgroundColor} onChange={(e) => setSettingsData(prev => ({ ...prev, pwaBackgroundColor: e.target.value }))} placeholder="#0f172a" style={{ flex: 1 }} />
@@ -466,25 +468,25 @@ const AdminSiteContent = () => {
 
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
             <div style={{ flex: '1 1 200px', minWidth: '200px' }}>
-              <label style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block' }}>🖼️ {t('adminContent.pwaIcon192Label')}</label>
+              <label style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block' }}><FontAwesomeIcon icon={faImage} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminContent.pwaIcon192Label')}</label>
               <ImageUploader label={t('adminContent.pwaIcon192Label')} value={settingsData.pwaIcon192} onChange={(url) => setSettingsData(prev => ({ ...prev, pwaIcon192: url }))} aspectRatio={1} outputWidth={192} outputHeight={192} />
               <p style={{ fontSize: '11px', color: 'var(--text-tertiary)', marginTop: '4px' }}>{t('adminContent.pwaIcon192Hint')}</p>
             </div>
             <div style={{ flex: '1 1 200px', minWidth: '200px' }}>
-              <label style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block' }}>🖥️ {t('adminContent.pwaIcon512Label')}</label>
+              <label style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block' }}><FontAwesomeIcon icon={faDesktop} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminContent.pwaIcon512Label')}</label>
               <ImageUploader label={t('adminContent.pwaIcon512Label')} value={settingsData.pwaIcon512} onChange={(url) => setSettingsData(prev => ({ ...prev, pwaIcon512: url }))} aspectRatio={1} outputWidth={512} outputHeight={512} />
               <p style={{ fontSize: '11px', color: 'var(--text-tertiary)', marginTop: '4px' }}>{t('adminContent.pwaIcon512Hint')}</p>
             </div>
           </div>
 
           <div style={{ marginTop: '12px' }}>
-            <label style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block' }}>🎭 {t('adminContent.pwaMaskableIconLabel')}</label>
+            <label style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block' }}><FontAwesomeIcon icon={faMasksTheater} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminContent.pwaMaskableIconLabel')}</label>
             <ImageUploader label={t('adminContent.pwaMaskableIconLabel')} value={settingsData.pwaMaskableIcon} onChange={(url) => setSettingsData(prev => ({ ...prev, pwaMaskableIcon: url }))} aspectRatio={1} outputWidth={512} outputHeight={512} />
             <p style={{ fontSize: '11px', color: 'var(--text-tertiary)', marginTop: '4px' }}>{t('adminContent.pwaMaskableIconHint')}</p>
           </div>
 
           <div style={{ marginTop: '16px', padding: '12px', borderRadius: '8px', background: 'var(--card)', border: '1px solid var(--border)' }}>
-            <h5 style={{ margin: '0 0 8px 0', fontSize: '12px', color: 'var(--text-secondary)' }}>👁️ {t('adminContent.pwaPreview')}</h5>
+            <h5 style={{ margin: '0 0 8px 0', fontSize: '12px', color: 'var(--text-secondary)' }}><FontAwesomeIcon icon={faEye} style={{ fontSize: 12 }} aria-hidden="true" /> {t('adminContent.pwaPreview')}</h5>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               {(settingsData.pwaIcon192 || settingsData.pwaIcon512) && (
                 <img src={settingsData.pwaIcon512 || settingsData.pwaIcon192} alt="PWA Icon" style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover', border: `2px solid ${settingsData.pwaThemeColor}` }} />
@@ -513,18 +515,18 @@ const AdminSiteContent = () => {
             borderRadius: '12px', padding: '16px', marginBottom: '20px',
           }}>
             <h4 style={{ margin: '0 0 8px 0', color: 'var(--foreground)', fontSize: '14px' }}>
-              🌐 {currentLang.flag} {currentLang.label} {t('adminContent.translationTitle')}
+              <FontAwesomeIcon icon={faGlobe} style={{ fontSize: 14 }} aria-hidden="true" /> {currentLang.flag} {currentLang.label} {t('adminContent.translationTitle')}
             </h4>
             <p style={{ margin: 0, fontSize: '12px', color: 'var(--text-secondary)' }}>
               {t('adminContent.translationDesc', { lang: currentLang.label })}
             </p>
           </div>
-          {renderLocalizedField(t('adminContent.siteDesc'), '📝', aboutData, setAboutData, 'description', t('adminContent.siteDescPlaceholder'), true)}
-          {renderLocalizedField(t('adminContent.aiDisclaimer'), '🤖', aboutData, setAboutData, 'aiDisclaimer', t('adminContent.aiDisclaimerPlaceholder'))}
-          {renderLocalizedField(t('adminContent.copyright'), '©', aboutData, setAboutData, 'copyright', t('adminContent.copyrightPlaceholder'))}
+          {renderLocalizedField(t('adminContent.siteDesc'), faPenToSquare, aboutData, setAboutData, 'description', t('adminContent.siteDescPlaceholder'), true)}
+          {renderLocalizedField(t('adminContent.aiDisclaimer'), faRobot, aboutData, setAboutData, 'aiDisclaimer', t('adminContent.aiDisclaimerPlaceholder'))}
+          {renderLocalizedField(t('adminContent.copyright'), faCopyright, aboutData, setAboutData, 'copyright', t('adminContent.copyrightPlaceholder'))}
 
           <div style={{ background: 'var(--primary-bg-subtle)', border: '1px solid var(--primary-border-subtle)', borderRadius: '12px', padding: '20px', marginTop: '20px' }}>
-            <h4 style={{ margin: '0 0 12px 0', color: 'var(--foreground)', fontSize: '14px' }}>👁️ {t('adminContent.pagePreview')}（{currentLang.label}）</h4>
+            <h4 style={{ margin: '0 0 12px 0', color: 'var(--foreground)', fontSize: '14px' }}><FontAwesomeIcon icon={faEye} style={{ fontSize: 14 }} aria-hidden="true" /> {t('adminContent.pagePreview')}（{currentLang.label}）</h4>
             <div style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--card)' }}>
               {aboutData.banner && (
                 <div style={{ height: '100px', overflow: 'hidden' }}>
@@ -554,29 +556,29 @@ const AdminSiteContent = () => {
     return (
       <div>
         <div style={{ background: 'var(--primary-bg-subtle)', border: '1px solid var(--primary-border-subtle)', borderRadius: '12px', padding: '16px', marginBottom: '20px' }}>
-          <h4 style={{ margin: '0 0 8px 0', color: 'var(--foreground)', fontSize: '14px' }}>🖼️ {t('adminContent.bannerImage')}</h4>
+          <h4 style={{ margin: '0 0 8px 0', color: 'var(--foreground)', fontSize: '14px' }}><FontAwesomeIcon icon={faImage} style={{ fontSize: 14 }} aria-hidden="true" /> {t('adminContent.bannerImage')}</h4>
           <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: 'var(--text-secondary)' }}>{t('adminContent.bannerImageDesc')}</p>
           <ImageUploader label={t('adminContent.bannerImage')} value={aboutData.banner} onChange={(url) => setAboutData(prev => ({ ...prev, banner: url }))} aspectRatio={3} outputWidth={1200} outputHeight={400} />
         </div>
 
         <div style={{ background: 'var(--primary-bg-subtle)', border: '1px solid var(--primary-border-subtle)', borderRadius: '12px', padding: '16px', marginBottom: '20px' }}>
-          <h4 style={{ margin: '0 0 8px 0', color: 'var(--foreground)', fontSize: '14px' }}>🏷️ {t('adminContent.siteLogo')}</h4>
+          <h4 style={{ margin: '0 0 8px 0', color: 'var(--foreground)', fontSize: '14px' }}><FontAwesomeIcon icon={faTag} style={{ fontSize: 14 }} aria-hidden="true" /> {t('adminContent.siteLogo')}</h4>
           <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: 'var(--text-secondary)' }}>{t('adminContent.siteLogoDesc')}</p>
           <ImageUploader label={t('adminContent.siteLogo')} value={aboutData.logo} onChange={(url) => setAboutData(prev => ({ ...prev, logo: url }))} aspectRatio={1} outputWidth={200} outputHeight={200} />
         </div>
 
         <div className="form-group">
-          <label>📝 {t('adminContent.siteDesc')}</label>
+          <label><FontAwesomeIcon icon={faPenToSquare} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminContent.siteDesc')}</label>
           <textarea value={aboutData.description} onChange={(e) => setAboutData(prev => ({ ...prev, description: e.target.value }))} placeholder={t('adminContent.siteDescPlaceholder')} rows={3} style={{ width: '100%', padding: '12px', borderRadius: '8px', background: 'var(--card)', color: 'var(--foreground)', border: '1px solid var(--border)', fontSize: '14px', lineHeight: 1.6, resize: 'vertical' }} />
         </div>
 
         <div className="form-group">
-          <label>🔢 {t('adminContent.versionNumber')}</label>
+          <label><FontAwesomeIcon icon={faHashtag} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminContent.versionNumber')}</label>
           <input type="text" value={aboutData.version} onChange={(e) => setAboutData(prev => ({ ...prev, version: e.target.value }))} placeholder="e.g., 1.0.0" />
         </div>
 
         <div className="form-group">
-          <label>📋 {t('adminContent.changelog')}</label>
+          <label><FontAwesomeIcon icon={faClipboard} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminContent.changelog')}</label>
           <p style={{ fontSize: '12px', color: 'var(--text-secondary)', margin: '4px 0 12px 0', lineHeight: 1.6 }}>
             {t('adminContent.changelogDesc')}
           </p>
@@ -610,7 +612,7 @@ const AdminSiteContent = () => {
                       color: 'var(--destructive-text)', cursor: 'pointer', fontSize: '12px',
                       width: '20px', height: '20px', borderRadius: '3px', flexShrink: 0,
                       display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 1, marginTop: '1px'
-                    }}>×</button>
+                    }} aria-label={t('common.delete')}><FontAwesomeIcon icon={faXmark} aria-hidden="true" /></button>
                   </div>
                 ))}
               </div>
@@ -637,7 +639,7 @@ const AdminSiteContent = () => {
               setNewUpdate('');
               setMessage(t('adminContent.versionLogPublished', { version: aboutData.version }));
             }}>
-              📦 {t('adminContent.publishVersionLog', { version: aboutData.version })}
+              <FontAwesomeIcon icon={faBox} aria-hidden="true" /> {t('adminContent.publishVersionLog', { version: aboutData.version })}
             </button>
           </div>
 
@@ -679,7 +681,7 @@ const AdminSiteContent = () => {
                         <button type="button" onClick={() => {
                           setAboutData(prev => ({ ...prev, changelog: prev.changelog.filter((_, i) => i !== idx) }));
                           if (editingChangelogIdx === idx) setEditingChangelogIdx(null);
-                        }} style={{ background: 'var(--destructive-bg)', border: '1px solid var(--destructive-border)', color: 'var(--destructive-text)', cursor: 'pointer', fontSize: '12px', width: '20px', height: '20px', borderRadius: '3px', display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 1 }}>×</button>
+                        }} style={{ background: 'var(--destructive-bg)', border: '1px solid var(--destructive-border)', color: 'var(--destructive-text)', cursor: 'pointer', fontSize: '12px', width: '20px', height: '20px', borderRadius: '3px', display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 1 }} aria-label={t('common.delete')}><FontAwesomeIcon icon={faXmark} aria-hidden="true" /></button>
                       </div>
                     </div>
                     <div style={{ padding: '8px 12px' }}>
@@ -704,7 +706,7 @@ const AdminSiteContent = () => {
                             color: 'var(--destructive-text)', cursor: 'pointer', fontSize: '12px',
                             width: '18px', height: '18px', borderRadius: '3px', flexShrink: 0,
                             display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 1, marginTop: '2px'
-                          }}>×</button>
+                          }} aria-label={t('common.delete')}><FontAwesomeIcon icon={faXmark} aria-hidden="true" /></button>
                         </div>
                       ))}
                       <div style={{ display: 'flex', gap: '6px', marginTop: '8px', paddingTop: '6px', borderTop: '1px dashed var(--border)' }}>
@@ -746,17 +748,17 @@ const AdminSiteContent = () => {
         </div>
 
         <div className="form-group">
-          <label>🌐 {t('adminContent.icpFiling')}</label>
+          <label><FontAwesomeIcon icon={faGlobe} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminContent.icpFiling')}</label>
           <input type="text" value={aboutData.icp} onChange={(e) => setAboutData(prev => ({ ...prev, icp: e.target.value }))} placeholder={t('adminContent.icpPlaceholder')} />
         </div>
 
         <div className="form-group">
-          <label>🛡️ {t('adminContent.policeFiling')}</label>
+          <label><FontAwesomeIcon icon={faShieldHalved} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminContent.policeFiling')}</label>
           <input type="text" value={aboutData.policeRecord} onChange={(e) => setAboutData(prev => ({ ...prev, policeRecord: e.target.value }))} placeholder={t('adminContent.policePlaceholder')} />
         </div>
 
         <div className="form-group">
-          <label>🤖 {t('adminContent.aiDisclaimer')}</label>
+          <label><FontAwesomeIcon icon={faRobot} style={{ fontSize: 13 }} aria-hidden="true" /> {t('adminContent.aiDisclaimer')}</label>
           <input type="text" value={aboutData.aiDisclaimer} onChange={(e) => setAboutData(prev => ({ ...prev, aiDisclaimer: e.target.value }))} placeholder={t('adminContent.aiDisclaimerPlaceholder')} />
         </div>
 
@@ -766,7 +768,7 @@ const AdminSiteContent = () => {
         </div>
 
         <div style={{ background: 'var(--primary-bg-subtle)', border: '1px solid var(--primary-border-subtle)', borderRadius: '12px', padding: '20px', marginTop: '20px' }}>
-          <h4 style={{ margin: '0 0 12px 0', color: 'var(--foreground)', fontSize: '14px' }}>👁️ {t('adminContent.pagePreview')}</h4>
+          <h4 style={{ margin: '0 0 12px 0', color: 'var(--foreground)', fontSize: '14px' }}><FontAwesomeIcon icon={faEye} style={{ fontSize: 14 }} aria-hidden="true" /> {t('adminContent.pagePreview')}</h4>
           <div style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--card)' }}>
             {aboutData.banner && (
               <div style={{ height: '100px', overflow: 'hidden' }}>
@@ -863,7 +865,7 @@ const AdminSiteContent = () => {
         </div>
       ) : (
         <div className="form-container" style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <button className="btn btn-secondary" onClick={() => { setEditingKey(null); setMessage(''); }} style={{ marginBottom: '20px' }}>{t('adminContent.backToList')}</button>
+          <button className="btn btn-secondary" onClick={() => { setEditingKey(null); setMessage(''); }} style={{ marginBottom: '20px' }}><FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" /> {t('adminContent.backToList')}</button>
           <div className="form-group">
             <label>{t('adminContent.titleLabel')}</label>
             <input type="text" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
@@ -873,7 +875,7 @@ const AdminSiteContent = () => {
           {message && (
             <div style={{ padding: '10px 16px', borderRadius: '8px', marginBottom: '16px', background: message.includes(t('adminContent.saveSuccess')) ? 'var(--success-bg)' : 'var(--destructive-bg)', color: message.includes(t('adminContent.saveSuccess')) ? 'var(--success-text)' : 'var(--destructive-text)', border: `1px solid ${message.includes(t('adminContent.saveSuccess')) ? 'var(--success-border)' : 'var(--destructive-border)'}` }}>{message}</div>
           )}
-          <button className="btn" onClick={handleSave} disabled={saving}>{saving ? t('adminContent.saving') : `💾 ${t('adminContent.saveBtn')}`}</button>
+          <button className="btn" onClick={handleSave} disabled={saving}>{saving ? t('adminContent.saving') : <><FontAwesomeIcon icon={faFloppyDisk} aria-hidden="true" /> {t('adminContent.saveBtn')}</>}</button>
         </div>
       )}
     </div>

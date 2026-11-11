@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useEpisodes } from '../hooks/useEpisodes';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 
 const SingleEpisodeManager = ({ episode, onClose }) => {
   const { t, locale } = useI18n();
@@ -562,17 +564,17 @@ const SingleEpisodeManager = ({ episode, onClose }) => {
                 <p style={{ margin: '8px 0', fontSize: '14px' }}>{singleEpisode.title}</p>
                 {singleEpisode.releaseDate && (
                   <p style={{ margin: '8px 0', fontSize: '13px', color: 'var(--primary-light)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    📅 {t('singleEpisode.published')} {new Date(singleEpisode.releaseDate).toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' })}
+                    <FontAwesomeIcon icon={faCalendarDays} aria-hidden="true" /> {t('singleEpisode.published')} {new Date(singleEpisode.releaseDate).toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' })}
                   </p>
                 )}
                 {singleEpisode.isScheduled && singleEpisode.scheduledDate && (
                   <p style={{ margin: '8px 0', fontSize: '13px', color: 'var(--warning-text)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    🔔 {t('singleEpisode.previewLabel')} {new Date(singleEpisode.scheduledDate).toLocaleString(locale)}
+                    <FontAwesomeIcon icon={faBell} aria-hidden="true" /> {t('singleEpisode.previewLabel')} {new Date(singleEpisode.scheduledDate).toLocaleString(locale)}
                   </p>
                 )}
                 {singleEpisode.isScheduled && !singleEpisode.scheduledDate && (
                   <p style={{ margin: '8px 0', fontSize: '13px', color: 'var(--text-tertiary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    🔔 {t('singleEpisode.previewLabel')} {t('singleEpisode.noPreviewDate')}
+                    <FontAwesomeIcon icon={faBell} aria-hidden="true" /> {t('singleEpisode.previewLabel')} {t('singleEpisode.noPreviewDate')}
                   </p>
                 )}
                 {singleEpisode.duration && (

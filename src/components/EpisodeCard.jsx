@@ -1,5 +1,6 @@
-﻿import React, { useRef, useState, useEffect } from 'react';
-import { Flame, Star } from 'lucide-react';
+import React, { useRef, useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFire, faStar } from '@fortawesome/free-solid-svg-icons';
 import TransitionLink from './TransitionLink';
 
 const EpisodeCard = React.memo(({ episode, highlightQuery, t, getLocalizedTitle, getLocalizedDescription, onTagClick }) => {
@@ -103,10 +104,10 @@ const EpisodeCard = React.memo(({ episode, highlightQuery, t, getLocalizedTitle,
 
         <div className="ec-meta">
           <span className="ec-meta-item ec-views">
-            <Flame size={13} strokeWidth={2} aria-hidden="true" /> {formatViews(episode.views)}
+            <FontAwesomeIcon icon={faFire} style={{ fontSize: 13 }} aria-hidden="true" /> {formatViews(episode.views)}
           </span>
           <span className="ec-meta-item ec-rating">
-            <Star size={13} strokeWidth={2} aria-hidden="true" fill="currentColor" /> {avgRating}{ratingCount > 0 ? ` (${ratingCount}${t('common.people')})` : ''}
+            <FontAwesomeIcon icon={faStar} style={{ fontSize: 13 }} aria-hidden="true" /> {avgRating}{ratingCount > 0 ? ` (${ratingCount}${t('common.people')})` : ''}
           </span>
         </div>
 

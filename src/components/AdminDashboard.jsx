@@ -1,43 +1,33 @@
-﻿import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBullhorn, faChartLine, faClipboardList, faCommentDots, faDatabase, faEnvelope, faFile, faFilm, faGear, faImage, faLink, faListCheck, faMobileScreen, faPalette, faRotate, faTag, faTrash, faTriangleExclamation, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
 
-const ICON_PATHS = {
-  episode: 'M3 5.5A1.5 1.5 0 0 1 4.5 4h15A1.5 1.5 0 0 1 21 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5v-13ZM3 9h18M3 15h18M8 4v5M16 15v5',
-  user: 'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z',
-  tag: 'M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-7.2-7.2A2 2 0 0 1 3 12V5a2 2 0 0 1 2-2h7a2 2 0 0 1 1.4.6l7.2 7.2a2 2 0 0 1 0 2.6ZM7.5 7.5h.01',
-  image: 'M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5ZM8 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM21 15l-5-5L5 21',
-  users: 'M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11',
-  palette: 'M12 21a9 9 0 1 1 9-9c0 1.7-1.3 3-3 3h-2a2 2 0 0 0-1.4 3.4c.3.3.4.8.4 1.2 0 1-.8 1.4-2 1.4ZM7.5 11h.01M10.5 7.5h.01M15 7.5h.01M17.5 11h.01',
-  megaphone: 'M3 11v2a1 1 0 0 0 1 1h2l4 4V6L6 10H4a1 1 0 0 0-1 1ZM14 8a4 4 0 0 1 0 8M16.5 5a8 8 0 0 1 0 14',
-  file: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6ZM14 2v6h6M8 13h8M8 17h8',
-  mail: 'M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6ZM3 7l9 6 9-6',
-  clipboard: 'M9 3h6a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1ZM8 5H6a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M8 11h8M8 15h5',
-  database: 'M12 7c4.4 0 8-1.1 8-2.5S16.4 2 12 2 4 3.1 4 4.5 7.6 7 12 7ZM4 4.5v15C4 20.9 7.6 22 12 22s8-1.1 8-2.5v-15M4 12c0 1.4 3.6 2.5 8 2.5s8-1.1 8-2.5',
-  link: 'M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1',
-  device: 'M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2ZM11 18h2',
-  chart: 'M3 3v18h18M7 15l4-5 3 3 5-6',
-  check: 'M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11',
-  trash: 'M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6',
-  alert: 'M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z',
-  feedback: 'M21 11.5a8.4 8.4 0 0 1-9 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.2A8.5 8.5 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5Z',
+const ICONS = {
+  episode: faFilm,
+  user: faUser,
+  tag: faTag,
+  image: faImage,
+  users: faUsers,
+  palette: faPalette,
+  megaphone: faBullhorn,
+  file: faFile,
+  mail: faEnvelope,
+  clipboard: faClipboardList,
+  database: faDatabase,
+  link: faLink,
+  device: faMobileScreen,
+  chart: faChartLine,
+  check: faListCheck,
+  trash: faTrash,
+  alert: faTriangleExclamation,
+  feedback: faCommentDots,
 };
 
 const AdminIcon = ({ name, size = 18 }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.6"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d={ICON_PATHS[name] || ICON_PATHS.file} />
-  </svg>
+  <FontAwesomeIcon icon={ICONS[name] || ICONS.file} style={{ fontSize: size }} aria-hidden="true" />
 );
 
 const AdminDashboard = () => {
@@ -275,13 +265,13 @@ const AdminDashboard = () => {
 
       {isSuper && (
         <div className="yl-panel" style={{ marginTop: 16 }}>
-          <h2 className="yl-panel-title">{t('adminDashboard.autoStatusFlow')}</h2>
+          <h2 className="yl-panel-title"><FontAwesomeIcon icon={faGear} aria-hidden="true" /> {t('adminDashboard.autoStatusFlow')}</h2>
           <div className="yl-toolbar">
             <button type="button" className="btn btn-md btn-outline" onClick={() => runAutoStatus('/api/auto-status/auto-complete')}>
-              {t('adminDashboard.autoMarkCompleted')}
+              <FontAwesomeIcon icon={faRotate} aria-hidden="true" /> {t('adminDashboard.autoMarkCompleted')}
             </button>
             <button type="button" className="btn btn-md btn-outline" onClick={() => runAutoStatus('/api/auto-status/check-premieres')}>
-              {t('adminDashboard.publishDuePremieres')}
+              <FontAwesomeIcon icon={faFilm} aria-hidden="true" /> {t('adminDashboard.publishDuePremieres')}
             </button>
           </div>
           {statusMsg && (

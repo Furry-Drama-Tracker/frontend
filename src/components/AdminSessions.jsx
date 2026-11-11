@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGlobe, faLaptop, faMobileScreen, faTabletScreenButton } from '@fortawesome/free-solid-svg-icons';
+import { faChrome, faEdge, faFirefoxBrowser, faSafari } from '@fortawesome/free-brands-svg-icons';
 
 const AdminSessions = () => {
   const { admin } = useOutletContext();
@@ -57,17 +60,17 @@ const AdminSessions = () => {
   };
 
   const getDeviceIcon = (type) => {
-    if (type === 'mobile') return '📱';
-    if (type === 'tablet') return '📲';
-    return '💻';
+    if (type === 'mobile') return <FontAwesomeIcon icon={faMobileScreen} aria-hidden="true" />;
+    if (type === 'tablet') return <FontAwesomeIcon icon={faTabletScreenButton} aria-hidden="true" />;
+    return <FontAwesomeIcon icon={faLaptop} aria-hidden="true" />;
   };
 
   const getBrowserIcon = (browser) => {
-    if (browser === 'Chrome') return '🌐';
-    if (browser === 'Edge') return '🔷';
-    if (browser === 'Firefox') return '🦊';
-    if (browser === 'Safari') return '🧭';
-    return '🌍';
+    if (browser === 'Chrome') return <FontAwesomeIcon icon={faChrome} aria-hidden="true" />;
+    if (browser === 'Edge') return <FontAwesomeIcon icon={faEdge} aria-hidden="true" />;
+    if (browser === 'Firefox') return <FontAwesomeIcon icon={faFirefoxBrowser} aria-hidden="true" />;
+    if (browser === 'Safari') return <FontAwesomeIcon icon={faSafari} aria-hidden="true" />;
+    return <FontAwesomeIcon icon={faGlobe} aria-hidden="true" />;
   };
 
   const formatTime = (dateStr) => {

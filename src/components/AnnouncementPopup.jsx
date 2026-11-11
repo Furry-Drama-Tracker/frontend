@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Megaphone, AlertTriangle, Wrench, Sparkles, X } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBullhorn, faTriangleExclamation, faWandMagicSparkles, faWrench, faXmark } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { useI18n } from '../contexts/I18nContext';
 import Modal from './Modal';
@@ -26,7 +27,7 @@ const markDismissed = (id) => {
   } catch {}
 };
 
-const typeIcon = { info: Megaphone, warning: AlertTriangle, maintenance: Wrench, update: Sparkles };
+const typeIcon = { info: faBullhorn, warning: faTriangleExclamation, maintenance: faWrench, update: faWandMagicSparkles };
 const typeColor = {
   info: 'var(--primary)',
   warning: 'var(--warning-text, #f59e0b)',
@@ -63,7 +64,7 @@ const AnnouncementPopup = () => {
   const title = lang === 'en' ? (current.titleEn || current.title) : current.title;
   const content = lang === 'en' ? (current.contentEn || current.content) : current.content;
   const accent = typeColor[current.type] || typeColor.info;
-  const IconComp = typeIcon[current.type] || Megaphone;
+  const IconComp = typeIcon[current.type] || faBullhorn;
 
   const handleDismiss = (dontShowAgain) => {
     if (dontShowAgain || !current.dismissible) {
@@ -94,7 +95,7 @@ const AnnouncementPopup = () => {
         padding: '20px 24px 16px', borderBottom: '1px solid var(--border)',
         display: 'flex', alignItems: 'center', gap: '12px'
       }}>
-        <span style={{ color: accent }} aria-hidden="true"><IconComp size={24} strokeWidth={2} /></span>
+        <span style={{ color: accent }} aria-hidden="true"><FontAwesomeIcon icon={IconComp} style={{ fontSize: 24 }} /></span>
         <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 700, color: 'var(--foreground)', flex: 1 }}>{title}</h3>
         {current.dismissible && (
           <button
@@ -104,7 +105,7 @@ const AnnouncementPopup = () => {
               background: 'none', border: 'none', color: 'var(--text-secondary)',
               cursor: 'pointer', padding: '4px', lineHeight: 1, display: 'inline-flex', alignItems: 'center'
             }}
-          ><X size={20} strokeWidth={2} /></button>
+          ><FontAwesomeIcon icon={faXmark} style={{ fontSize: 20 }} /></button>
         )}
       </div>
       <div style={{ padding: '18px 24px' }}>

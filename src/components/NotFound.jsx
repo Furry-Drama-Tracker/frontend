@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
-import { Icon } from '../contexts/IconContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 const NotFound = () => {
   const { t } = useI18n();
@@ -10,7 +11,7 @@ const NotFound = () => {
       display: 'flex', flexDirection: 'column', alignItems: 'center',
       justifyContent: 'center', minHeight: '60vh', textAlign: 'center'
     }}>
-      <div style={{ fontSize: '120px', lineHeight: 1, marginBottom: '20px' }}><Icon name="nav.search" fallback="🔍" size={100} /></div>
+      <div style={{ fontSize: '120px', lineHeight: 1, marginBottom: '20px' }}><FontAwesomeIcon icon={faMagnifyingGlass} style={{ fontSize: 100 }} aria-hidden="true" /></div>
       <h1 style={{
         fontSize: '48px', fontWeight: 700, margin: '0 0 12px 0',
         color: 'var(--foreground)'

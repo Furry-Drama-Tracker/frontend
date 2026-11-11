@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useI18n } from '../contexts/I18nContext';
 import API from '../utils/apiEndpoints';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faImage, faSpinner, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const SystemWallpaperManager = () => {
   const { t } = useI18n();
@@ -56,7 +58,7 @@ const SystemWallpaperManager = () => {
   return (
     <div style={{ background: 'var(--primary-bg-subtle)', border: '1px solid var(--primary-border-subtle)', borderRadius: '12px', padding: '16px', marginBottom: '20px' }}>
       <h4 style={{ margin: '0 0 8px 0', color: 'var(--foreground)', fontSize: '14px' }}>
-        🖼️ {t('adminContent.wallpaperLibraryTitle')}
+        <FontAwesomeIcon icon={faImage} aria-hidden="true" /> {t('adminContent.wallpaperLibraryTitle')}
       </h4>
       <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: 'var(--text-secondary)' }}>
         {t('adminContent.wallpaperLibraryDesc')}
@@ -72,7 +74,7 @@ const SystemWallpaperManager = () => {
           opacity: uploading ? 0.6 : 1, transition: 'all 0.15s',
         }}
       >
-        {uploading ? `⏳ ${t('adminContent.wallpaperUploading')}` : `+ ${t('adminContent.wallpaperUpload')}`}
+        {uploading ? <><FontAwesomeIcon icon={faSpinner} spin aria-hidden="true" /> {t('adminContent.wallpaperUploading')}</> : `+ ${t('adminContent.wallpaperUpload')}`}
       </button>
       <input ref={fileInputRef} type="file" accept="image/*" onChange={handleUpload} style={{ display: 'none' }} />
 
@@ -104,7 +106,7 @@ const SystemWallpaperManager = () => {
                     color: wp.enabled ? 'var(--btn-text)' : 'var(--foreground)', fontSize: '11px', padding: 0,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}
-                >{wp.enabled ? '✓' : '✕'}</button>
+                >{wp.enabled ? <FontAwesomeIcon icon={faCheck} aria-hidden="true" /> : <FontAwesomeIcon icon={faXmark} aria-hidden="true" />}</button>
                 <button
                   onClick={() => handleDelete(wp._id, wp.url)}
                   title={t('adminContent.wallpaperDelete')}
@@ -113,7 +115,7 @@ const SystemWallpaperManager = () => {
                     background: 'rgba(239,68,68,0.9)', color: '#fff', fontSize: '11px', padding: 0,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}
-                >🗑</button>
+                ><FontAwesomeIcon icon={faTrashCan} aria-hidden="true" /></button>
               </div>
               {wp.name && (
                 <div style={{

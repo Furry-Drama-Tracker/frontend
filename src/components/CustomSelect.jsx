@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useI18n } from '../contexts/I18nContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 const CustomSelect = ({ options, value, onChange, placeholder, className = '' }) => {
   const { t } = useI18n();
@@ -78,7 +80,7 @@ const CustomSelect = ({ options, value, onChange, placeholder, className = '' })
           {selectedOption ? selectedOption.label : placeholder || t('common.selectPlaceholder')}
         </span>
         <span className={`select-arrow ${isOpen ? 'open' : ''}`}>
-          ▼
+          <FontAwesomeIcon icon={faCaretDown} aria-hidden="true" />
         </span>
       </div>
       {isOpen && createPortal(

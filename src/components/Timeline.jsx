@@ -4,11 +4,13 @@ import axios from 'axios';
 import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
 import useTranslation from '../hooks/useTranslation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChartColumn, faChevronRight, faFilm, faInbox, faStar, faThumbtack } from '@fortawesome/free-solid-svg-icons';
 
 const typeIcons = {
-  new_episode: '🎬',
-  status_change: '📊',
-  new_rating: '⭐',
+  new_episode: <FontAwesomeIcon icon={faFilm} aria-hidden="true" />,
+  status_change: <FontAwesomeIcon icon={faChartColumn} aria-hidden="true" />,
+  new_rating: <FontAwesomeIcon icon={faStar} aria-hidden="true" />,
 };
 
 const Timeline = () => {
@@ -188,7 +190,7 @@ const Timeline = () => {
           padding: '60px 20px',
           color: 'var(--text-secondary)',
         }}>
-          <div style={{ fontSize: '48px', marginBottom: '16px' }}>📭</div>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}><FontAwesomeIcon icon={faInbox} aria-hidden="true" /></div>
           <p style={{ fontSize: '16px', margin: '0 0 8px', fontWeight: 600 }}>{t('timeline.empty')}</p>
           <p style={{ fontSize: '14px', margin: 0, color: 'var(--text-tertiary)' }}>{t('timeline.emptyDesc')}</p>
         </div>
@@ -222,7 +224,7 @@ const Timeline = () => {
                 }}
               >
                 <span style={{ fontSize: '24px', flexShrink: 0 }}>
-                  {typeIcons[activity.type] || '📌'}
+                  {typeIcons[activity.type] || <FontAwesomeIcon icon={faThumbtack} aria-hidden="true" />}
                 </span>
 
                 {activity.coverImage && (
@@ -260,14 +262,11 @@ const Timeline = () => {
                   </div>
                 </div>
 
-                <svg
-                  width="16" height="16" viewBox="0 0 24 24"
-                  fill="none" stroke="var(--text-tertiary)" strokeWidth="2"
-                  strokeLinecap="round" strokeLinejoin="round"
-                  style={{ flexShrink: 0 }}
-                >
-                  <path d="M9 18l6-6-6-6" />
-                </svg>
+                <FontAwesomeIcon
+                  icon={faChevronRight}
+                  style={{ fontSize: 16, flexShrink: 0, color: 'var(--text-tertiary)' }}
+                  aria-hidden="true"
+                />
               </div>
             ))}
           </div>

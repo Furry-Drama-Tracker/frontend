@@ -4,11 +4,16 @@ import { Link, useLocation } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import useTranslation from '../hooks/useTranslation';
 import { useAuth } from '../contexts/AuthContext';
-import { Icon } from '../contexts/IconContext';
 import API from '../utils/apiEndpoints';
 import useScrollReveal from '../hooks/useScrollReveal';
 import ShareModal from './ShareModal';
 import FolderShareModal from './FolderShareModal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faArrowRotateLeft, faCamera, faCheck, faEllipsisVertical, faFolder,
+  faFolderOpen, faGlobe, faLink, faPenToSquare, faStar, faTrashCan,
+  faTriangleExclamation, faXmark,
+} from '@fortawesome/free-solid-svg-icons';
 
 const maskEmail = (email) => {
   if (!email) return '';
@@ -436,7 +441,7 @@ const Profile = ({ user, setUser, logout }) => {
               alignItems: 'center', justifyContent: 'center',
               cursor: 'pointer', fontSize: '12px', border: '2px solid var(--card)'
             }}>
-              📷
+              <FontAwesomeIcon icon={faCamera} aria-hidden="true" />
               {/* TODO: 替换为支持裁剪的 ImageUploader（需适配用户认证） */}
               <input type="file" accept="image/*" onChange={handleAvatarUpload}
                 disabled={uploadingAvatar}
@@ -456,7 +461,7 @@ const Profile = ({ user, setUser, logout }) => {
                   }}
                   title={t('profile.editNickname')}
                 >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  <FontAwesomeIcon icon={faPenToSquare} style={{ fontSize: 14 }} aria-hidden="true" />
                 </button>
               )}
             </div>
@@ -534,7 +539,7 @@ const Profile = ({ user, setUser, logout }) => {
                 color: 'var(--success-text)', background: 'var(--success-bg)',
                 padding: '2px 10px', borderRadius: '12px',
                 border: '1px solid var(--success-border)'
-              }}>{t('auth.emailVerified')}</span>
+              }}><FontAwesomeIcon icon={faCheck} aria-hidden="true" /> {t('auth.emailVerified')}</span>
             ) : (
               <div style={{ marginTop: '8px' }}>
                 <span style={{
@@ -542,7 +547,7 @@ const Profile = ({ user, setUser, logout }) => {
                   color: 'var(--warning-text)', background: 'var(--warning-bg)',
                   padding: '2px 10px', borderRadius: '12px',
                   border: '1px solid var(--warning-border)', marginRight: '8px'
-                }}>⚠ {t('auth.emailNotVerified')}</span>
+                }}><FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" /> {t('auth.emailNotVerified')}</span>
                 <button
                   onClick={async () => {
                     setResendLoading(true);
@@ -689,7 +694,7 @@ const Profile = ({ user, setUser, logout }) => {
                   transition: 'all 0.15s',
                   position: 'relative'
                 }}
-              >📂 {t('profile.defaultFolder')} <span style={{fontSize: '11px', color: 'var(--text-tertiary)', marginLeft: '4px' }}>({folderCounts.unclassified || 0})</span>
+              ><FontAwesomeIcon icon={faFolderOpen} aria-hidden="true" /> {t('profile.defaultFolder')} <span style={{fontSize: '11px', color: 'var(--text-tertiary)', marginLeft: '4px' }}>({folderCounts.unclassified || 0})</span>
                 <button
                   onClick={(e) => { e.stopPropagation(); setShareFolder({ _id: '__unclassified__', name: t('profile.defaultFolder'), isUnclassified: true }); }}
                   style={{
@@ -699,7 +704,7 @@ const Profile = ({ user, setUser, logout }) => {
                     lineHeight: 1
                   }}
                   title={t('share.shareFolder')}
-                ><Icon name="action.share" fallback="🔗" size={12} /></button>
+                ><FontAwesomeIcon icon={faLink} style={{ fontSize: 12 }} aria-hidden="true" /></button>
               </div>
             </div>
             {favoriteFolders.map(folder => (
@@ -732,14 +737,14 @@ const Profile = ({ user, setUser, logout }) => {
                       }}
                     />
                     <div style={{display: 'flex', gap: '4px', marginTop: '4px'}}>
-                      <button onClick={() => handleRenameFolder(folder._id)} style={{
+                      <button onClick={() => handleRenameFolder(folder._id)} aria-label={t('common.confirm')} style={{
                         padding: '2px 8px', borderRadius: '4px', fontSize: '11px',
                         background: 'var(--primary)', color: 'var(--btn-text)', border: 'none', cursor: 'pointer'
-                      }}>✓</button>
-                      <button onClick={() => setEditingFolderId(null)} style={{
+                      }}><FontAwesomeIcon icon={faCheck} aria-hidden="true" /></button>
+                      <button onClick={() => setEditingFolderId(null)} aria-label={t('common.cancel')} style={{
                         padding: '2px 8px', borderRadius: '4px', fontSize: '11px',
                         background: 'var(--hover-bg)', color: 'var(--foreground)', border: '1px solid var(--border)', cursor: 'pointer'
-                      }}>✕</button>
+                      }}><FontAwesomeIcon icon={faXmark} aria-hidden="true" /></button>
                     </div>
                   </div>
                 ) : (
@@ -756,16 +761,17 @@ const Profile = ({ user, setUser, logout }) => {
                       position: 'relative'
                     }}
                   >
-                    📂 {folder.name} <span style={{fontSize: '11px', color: 'var(--text-tertiary)', marginLeft: '4px' }}>({folderCounts[folder._id] || 0})</span>
+                    <FontAwesomeIcon icon={faFolderOpen} aria-hidden="true" /> {folder.name} <span style={{fontSize: '11px', color: 'var(--text-tertiary)', marginLeft: '4px' }}>({folderCounts[folder._id] || 0})</span>
                     <button
                       onClick={(e) => { e.stopPropagation(); setShowFolderMenu(showFolderMenu === folder._id ? null : folder._id); }}
+                      aria-label={t('common.more')}
                       style={{
                         position: 'absolute', right: '4px', top: '50%', transform: 'translateY(-50%)',
                         background: 'none', border: 'none', cursor: 'pointer',
                         color: 'var(--text-tertiary)', fontSize: '14px', padding: '2px 4px',
                         lineHeight: 1
                       }}
-                    >⋮</button>
+                    ><FontAwesomeIcon icon={faEllipsisVertical} aria-hidden="true" /></button>
                   </div>
                 )}
                 {showFolderMenu === folder._id && (
@@ -784,7 +790,7 @@ const Profile = ({ user, setUser, logout }) => {
                       }}
                       onMouseEnter={(e) => e.target.style.background = 'var(--hover-bg)'}
                       onMouseLeave={(e) => e.target.style.background = 'none'}
-                    ><Icon name="action.edit" fallback="✏️" size={13} /> {t('profile.renameFolder')}</button>
+                    ><FontAwesomeIcon icon={faPenToSquare} style={{ fontSize: 13 }} aria-hidden="true" /> {t('profile.renameFolder')}</button>
                     <button
                       onClick={(e) => { e.stopPropagation(); setShareFolder(folder); setShowFolderMenu(null); }}
                       style={{
@@ -794,7 +800,7 @@ const Profile = ({ user, setUser, logout }) => {
                       }}
                       onMouseEnter={(e) => e.target.style.background = 'var(--hover-bg)'}
                       onMouseLeave={(e) => e.target.style.background = 'none'}
-                    ><Icon name="action.share" fallback="🔗" size={13} /> {t('share.shareFolder')}</button>
+                    ><FontAwesomeIcon icon={faLink} style={{ fontSize: 13 }} aria-hidden="true" /> {t('share.shareFolder')}</button>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -810,7 +816,7 @@ const Profile = ({ user, setUser, logout }) => {
                       }}
                       onMouseEnter={(e) => e.target.style.background = 'var(--destructive-bg)'}
                       onMouseLeave={(e) => e.target.style.background = 'none'}
-                    ><Icon name="action.delete" fallback="🗑️" size={13} /> {t('profile.deleteFolder')}</button>
+                    ><FontAwesomeIcon icon={faTrashCan} style={{ fontSize: 13 }} aria-hidden="true" /> {t('profile.deleteFolder')}</button>
                   </div>
                 )}
               </div>
@@ -836,7 +842,7 @@ const Profile = ({ user, setUser, logout }) => {
                       onMouseEnter={(e) => e.currentTarget.style.background = 'var(--hover-bg)'}
                       onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                     >
-                      <span>🌐 {sf.folderName}</span>
+                      <span><FontAwesomeIcon icon={faGlobe} aria-hidden="true" /> {sf.folderName}</span>
                       <button
                         onClick={async (e) => {
                           e.preventDefault();
@@ -851,7 +857,7 @@ const Profile = ({ user, setUser, logout }) => {
                           color: 'var(--text-tertiary)', fontSize: '12px', padding: '2px 4px'
                         }}
                         title={t('profile.removeSavedFolder')}
-                      >✕</button>
+                      ><FontAwesomeIcon icon={faXmark} aria-hidden="true" /></button>
                     </div>
                   </Link>
                 ))}
@@ -869,7 +875,7 @@ const Profile = ({ user, setUser, logout }) => {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <span style={{ fontSize: '24px' }}>
-                      {activeFolderId === 'unclassified' ? '📂' : '📁'}
+                      <FontAwesomeIcon icon={activeFolderId === 'unclassified' ? faFolderOpen : faFolder} aria-hidden="true" />
                     </span>
                     <div>
                       <h3 style={{ margin: 0, fontSize: '16px' }}>
@@ -900,7 +906,7 @@ const Profile = ({ user, setUser, logout }) => {
                       }
                     }}
                     style={{ fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}
-                  ><Icon name="action.share" fallback="🔗" size={13} /> {t('share.shareFolder')}</button>
+                  ><FontAwesomeIcon icon={faLink} style={{ fontSize: 13 }} aria-hidden="true" /> {t('share.shareFolder')}</button>
                 </div>
                 {activeFolderId !== 'unclassified' && (() => {
                   const currentFolder = favoriteFolders.find(f => f._id === activeFolderId);
@@ -945,7 +951,7 @@ const Profile = ({ user, setUser, logout }) => {
                           }}>
                             {currentFolder.description || t('profile.folderDescPlaceholder')}
                           </p>
-                          <span style={{ fontSize: '12px', color: 'var(--text-tertiary)', flexShrink: 0 }}><Icon name="action.edit" fallback="✏️" size={12} /></span>
+                          <span style={{ fontSize: '12px', color: 'var(--text-tertiary)', flexShrink: 0 }}><FontAwesomeIcon icon={faPenToSquare} style={{ fontSize: 12 }} aria-hidden="true" /></span>
                         </div>
                       )}
                     </div>
@@ -969,14 +975,14 @@ const Profile = ({ user, setUser, logout }) => {
                       <h4>{getLocalizedTitle(episode)}</h4>
                       <p>{t('episode.updatedTo')}{episode.currentEpisodes}{isUnknownTotal ? t('episode.unknownTotal') : `${t('episode.epTotal')}${episode.totalEpisodes}`}{t('episode.epSuffix')}</p>
                       {episode.averageRating > 0 && (
-                        <p style={{fontSize: '13px', color: 'var(--warning-text)', display: 'flex', alignItems: 'center', gap: '4px'}}><Icon name="misc.star" fallback="⭐" size={12} /> {episode.averageRating} ({episode.ratingCount}{t('episode.ratingCountLabel')})</p>
+                        <p style={{fontSize: '13px', color: 'var(--warning-text)', display: 'flex', alignItems: 'center', gap: '4px'}}><FontAwesomeIcon icon={faStar} style={{ fontSize: 12 }} aria-hidden="true" /> {episode.averageRating} ({episode.ratingCount}{t('episode.ratingCountLabel')})</p>
                       )}
                       {fav.folderId && fav.folderId.name && (
                         <span style={{
                           fontSize: '12px', color: 'var(--primary)', background: 'var(--primary-bg)',
                           padding: '2px 8px', borderRadius: '10px', border: '1px solid var(--primary-border)',
                           display: 'inline-block', marginBottom: '4px'
-                        }}>📂 {fav.folderId.name}</span>
+                        }}><FontAwesomeIcon icon={faFolderOpen} aria-hidden="true" /> {fav.folderId.name}</span>
                       )}
                       <div style={{display: 'flex', gap: '8px', marginTop: '8px', flexWrap: 'wrap', alignItems: 'center'}}>
                         <button className="btn btn-secondary" onClick={() => handleUnfavorite(episode._id)}
@@ -985,14 +991,14 @@ const Profile = ({ user, setUser, logout }) => {
                         </button>
                         <button className="btn btn-secondary" onClick={() => setShareEpisode(episode)}
                           style={{fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '4px'}}>
-                          <Icon name="action.share" fallback="🔗" size={13} /> {t('share.share')}
+                          <FontAwesomeIcon icon={faLink} style={{ fontSize: 13 }} aria-hidden="true" /> {t('share.share')}
                         </button>
                         <div style={{position: 'relative'}}>
                           <button
                             className="btn btn-secondary"
                             onClick={() => setMovingFavoriteId(movingFavoriteId === fav._id ? null : fav._id)}
                             style={{fontSize: '13px'}}
-                          >📂 {t('profile.moveToFolder')}</button>
+                          ><FontAwesomeIcon icon={faFolderOpen} aria-hidden="true" /> {t('profile.moveToFolder')}</button>
                           {movingFavoriteId === fav._id && (
                             <div style={{
                               position: 'absolute', top: '100%', left: '0', zIndex: 10,
@@ -1010,7 +1016,7 @@ const Profile = ({ user, setUser, logout }) => {
                                   }}
                                   onMouseEnter={(e) => e.target.style.background = 'var(--destructive-bg)'}
                                   onMouseLeave={(e) => e.target.style.background = 'none'}
-                                ><Icon name="action.delete" fallback="↩️" size={13} /> {t('profile.removeFromFolder')}</button>
+                                ><FontAwesomeIcon icon={faArrowRotateLeft} style={{ fontSize: 13 }} aria-hidden="true" /> {t('profile.removeFromFolder')}</button>
                               )}
                               {favoriteFolders.filter(fd => !fav.folderId || fd._id !== fav.folderId._id).map(fd => (
                                 <button
@@ -1023,7 +1029,7 @@ const Profile = ({ user, setUser, logout }) => {
                                   }}
                                   onMouseEnter={(e) => e.target.style.background = 'var(--hover-bg)'}
                                   onMouseLeave={(e) => e.target.style.background = 'none'}
-                                >📂 {fd.name}</button>
+                                ><FontAwesomeIcon icon={faFolderOpen} aria-hidden="true" /> {fd.name}</button>
                               ))}
                               {favoriteFolders.filter(fd => !fav.folderId || fd._id !== fav.folderId._id).length === 0 && (
                                 <p style={{padding: '6px 10px', fontSize: '12px', color: 'var(--text-tertiary)', margin: 0}}>

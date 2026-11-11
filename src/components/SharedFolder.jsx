@@ -4,6 +4,9 @@ import axios from 'axios';
 import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
 import useTranslation from '../hooks/useTranslation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFaceFrown, faFolderOpen, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
 
 const SharedFolder = () => {
   const { shareToken } = useParams();
@@ -85,7 +88,7 @@ const SharedFolder = () => {
   if (loading) {
     return (
       <div style={{ textAlign: 'center', padding: '60px 20px' }}>
-        <div style={{ fontSize: '48px', marginBottom: '16px' }}>📂</div>
+        <div style={{ fontSize: '48px', marginBottom: '16px' }}><FontAwesomeIcon icon={faFolderOpen} aria-hidden="true" /></div>
         <p style={{ color: 'var(--text-secondary)' }}>{t('common.loading')}</p>
       </div>
     );
@@ -94,7 +97,7 @@ const SharedFolder = () => {
   if (error) {
     return (
       <div style={{ textAlign: 'center', padding: '60px 20px' }}>
-        <div style={{ fontSize: '48px', marginBottom: '16px' }}>😕</div>
+        <div style={{ fontSize: '48px', marginBottom: '16px' }}><FontAwesomeIcon icon={faFaceFrown} aria-hidden="true" /></div>
         <h2 style={{ marginBottom: '8px' }}>{error}</h2>
         <Link to="/" className="btn" style={{ marginTop: '16px', display: 'inline-block' }}>{t('nav.home')}</Link>
       </div>
@@ -109,7 +112,7 @@ const SharedFolder = () => {
         marginBottom: '24px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <span style={{ fontSize: '32px' }}>📂</span>
+          <span style={{ fontSize: '32px' }}><FontAwesomeIcon icon={faFolderOpen} aria-hidden="true" /></span>
           <h1 style={{ margin: 0, fontSize: '24px' }}>{data.name}</h1>
         </div>
         <p style={{ color: 'var(--text-secondary)', fontSize: '14px', margin: 0 }}>
@@ -131,7 +134,7 @@ const SharedFolder = () => {
                 className="btn btn-secondary"
                 style={{ fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}
               >
-                ⭐ {t('share.folderSaved')}
+                <FontAwesomeIcon icon={faStar} aria-hidden="true" /> {t('share.folderSaved')}
               </button>
             ) : (
               <button
@@ -140,7 +143,7 @@ const SharedFolder = () => {
                 className="btn"
                 style={{ fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}
               >
-                ☆ {t('share.saveFolder')}
+                <FontAwesomeIcon icon={faStarRegular} aria-hidden="true" /> {t('share.saveFolder')}
               </button>
             )}
           </div>
@@ -181,7 +184,7 @@ const SharedFolder = () => {
                   </p>
                   {ep.averageRating > 0 && (
                     <p style={{ margin: '4px 0 0', fontSize: '12px', color: 'var(--warning-text)' }}>
-                      ⭐ {ep.averageRating}
+                      <FontAwesomeIcon icon={faStar} aria-hidden="true" /> {ep.averageRating}
                     </p>
                   )}
                 </div>

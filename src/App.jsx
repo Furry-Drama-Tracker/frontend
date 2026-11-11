@@ -20,7 +20,9 @@ import InstallPrompt from './components/InstallPrompt';
 import BrowserCompat from './components/BrowserCompat';
 import AnnouncementBanner from './components/AnnouncementBanner';
 import AnnouncementPopup from './components/AnnouncementPopup';
-import { IconProvider } from './contexts/IconContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowsRotate, faGear, faPalette, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { SiGithub } from '@icons-pack/react-simple-icons';
 
 const Profile = lazy(() => import('./components/Profile'));
 const Admin = lazy(() => import('./components/Admin'));
@@ -240,7 +242,7 @@ const FooterBeian = () => {
         onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.color = 'var(--primary)'; }}
         onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
       >
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+        <FontAwesomeIcon icon={faArrowsRotate} style={{ fontSize: 12 }} aria-hidden="true" />
         {t('common.refresh')}
       </button>
       {copyright && (
@@ -283,7 +285,7 @@ const FooterBeian = () => {
         onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
         onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
       >
-        <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" style={{ flexShrink: 0 }}><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        <SiGithub size={14} color="currentColor" title="GitHub" style={{ flexShrink: 0 }} />
         {t('footer.githubProject')}
       </span>
       <Modal
@@ -294,10 +296,10 @@ const FooterBeian = () => {
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <h3 style={{ margin: 0, fontSize: '18px', color: 'var(--foreground)' }}>{t('footer.githubProject')}</h3>
-          <button onClick={() => setShowGithubModal(false)} style={{
+          <button onClick={() => setShowGithubModal(false)} aria-label={t('common.close')} style={{
             background: 'none', border: 'none', color: 'var(--text-secondary)',
             fontSize: '20px', cursor: 'pointer', padding: '4px 8px', lineHeight: 1
-          }}>✕</button>
+          }}><FontAwesomeIcon icon={faXmark} aria-hidden="true" /></button>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <div style={{
@@ -308,17 +310,17 @@ const FooterBeian = () => {
           onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
           onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'translateY(0)'; }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-              <span style={{ fontSize: '18px' }}>🎨</span>
+              <FontAwesomeIcon icon={faPalette} style={{ fontSize: 18 }} aria-hidden="true" />
               <div style={{ fontWeight: 600, fontSize: '14px', color: 'var(--foreground)' }}>{t('footer.frontendProject')}</div>
               <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', background: 'var(--card)', padding: '1px 8px', borderRadius: '4px', border: '1px solid var(--border)' }}>GPL v3.0</span>
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '10px', opacity: 0.85 }}>furry-drama-tracker-frontend</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '10px', opacity: 0.85 }}>Furry-Drama-Tracker/frontend</div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Link to="/license" onClick={() => setShowGithubModal(false)} style={{ fontSize: '12px', color: 'var(--primary)', textDecoration: 'none' }}
                 onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
                 onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
               >{t('footer.viewLicense')}</Link>
-              <a href="https://github.com/Furry09shou/furry-drama-tracker-frontend" target="_blank" rel="noopener noreferrer" onClick={() => setShowGithubModal(false)} style={{
+              <a href="https://github.com/Furry-Drama-Tracker/frontend" target="_blank" rel="noopener noreferrer" onClick={() => setShowGithubModal(false)} style={{
                 padding: '6px 12px', borderRadius: '8px', background: 'var(--primary)',
                 color: '#fff', textDecoration: 'none', fontSize: '12px', fontWeight: 600,
                 flexShrink: 0, whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '5px',
@@ -326,7 +328,7 @@ const FooterBeian = () => {
               }}
               onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 4px 12px var(--shadow-modal)'; e.currentTarget.style.filter = 'brightness(1.05)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.filter = 'brightness(1)'; }}>
-                <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                <SiGithub size={12} color="currentColor" title="GitHub" />
                 GitHub
               </a>
             </div>
@@ -339,17 +341,17 @@ const FooterBeian = () => {
           onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
           onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'translateY(0)'; }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-              <span style={{ fontSize: '18px' }}>⚙️</span>
+              <FontAwesomeIcon icon={faGear} style={{ fontSize: 18 }} aria-hidden="true" />
               <div style={{ fontWeight: 600, fontSize: '14px', color: 'var(--foreground)' }}>{t('footer.backendProject')}</div>
               <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', background: 'var(--card)', padding: '1px 8px', borderRadius: '4px', border: '1px solid var(--border)' }}>AGPL v3.0</span>
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '10px', opacity: 0.85 }}>furry-drama-be-neo</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '10px', opacity: 0.85 }}>Furry-Drama-Tracker/backend</div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Link to="/license" onClick={() => setShowGithubModal(false)} style={{ fontSize: '12px', color: 'var(--primary)', textDecoration: 'none' }}
                 onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
                 onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
               >{t('footer.viewLicense')}</Link>
-              <a href="https://github.com/xiedada05/furry-drama-be-neo" target="_blank" rel="noopener noreferrer" onClick={() => setShowGithubModal(false)} style={{
+              <a href="https://github.com/Furry-Drama-Tracker/backend" target="_blank" rel="noopener noreferrer" onClick={() => setShowGithubModal(false)} style={{
                 padding: '6px 12px', borderRadius: '8px', background: 'var(--primary)',
                 color: '#fff', textDecoration: 'none', fontSize: '12px', fontWeight: 600,
                 flexShrink: 0, whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '5px',
@@ -357,7 +359,7 @@ const FooterBeian = () => {
               }}
               onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 4px 12px var(--shadow-modal)'; e.currentTarget.style.filter = 'brightness(1.05)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.filter = 'brightness(1)'; }}>
-                <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                <SiGithub size={12} color="currentColor" title="GitHub" />
                 GitHub
               </a>
             </div>
@@ -624,14 +626,11 @@ function App() {
         <I18nProvider>
           <SiteSettingsProvider>
             <AuthProvider>
-              {/* 图标引擎：拉取全局图标映射表 + 主题图标覆盖（壁纸+图标主题包），全站 Icon 组件消费 */}
-              <IconProvider>
               <ErrorBoundary>
                 <BrowserCompat>
                   <AppContent />
                 </BrowserCompat>
               </ErrorBoundary>
-              </IconProvider>
             </AuthProvider>
           </SiteSettingsProvider>
         </I18nProvider>

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import API from '../utils/apiEndpoints';
@@ -6,11 +6,12 @@ import { EpisodeCardSkeletonFixed as EpisodeCardSkeleton } from './Skeleton';
 import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
-import { Icon } from '../contexts/IconContext';
 import useTranslation from '../hooks/useTranslation';
 import useScrollReveal from '../hooks/useScrollReveal';
 import useStaggerReveal from '../hooks/useStaggerReveal';
 import BannerCarousel from './BannerCarousel';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlay, faStar, faWandMagicSparkles } from '@fortawesome/free-solid-svg-icons';
 import EmptyState from './EmptyState';
 import EpisodeFilters from './EpisodeFilters';
 import TagCloud from './TagCloud';
@@ -317,7 +318,7 @@ const Home = () => {
               alignItems: 'center',
               gap: '8px',
             }}>
-              <Icon name="action.play" fallback={null} size={18} /> {t('home.continueWatching')}
+              <FontAwesomeIcon icon={faPlay} style={{ fontSize: 18 }} aria-hidden="true" /> {t('home.continueWatching')}
             </h2>
           </div>
           <div style={{
@@ -443,7 +444,7 @@ const Home = () => {
               alignItems: 'center',
               gap: '8px',
             }}>
-              <Icon name="tab.recommended" fallback={null} size={18} /> {t('home.guessYouLike')}
+              <FontAwesomeIcon icon={faWandMagicSparkles} style={{ fontSize: 18 }} aria-hidden="true" /> {t('home.guessYouLike')}
             </h2>
           </div>
           {recLoading ? (
@@ -525,7 +526,7 @@ const Home = () => {
                         fontSize: '11px',
                         fontWeight: 600,
                       }}>
-                        <Icon name="misc.star" fallback="⭐" size={11} style={{ color: '#f59e0b' }} /> {rec.averageRating.toFixed(1)}
+                        <FontAwesomeIcon icon={faStar} style={{ fontSize: 11, color: '#f59e0b' }} aria-hidden="true" /> {rec.averageRating.toFixed(1)}
                       </span>
                     )}
                   </div>

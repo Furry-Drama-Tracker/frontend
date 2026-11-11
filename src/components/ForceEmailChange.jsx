@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useI18n } from '../contexts/I18nContext';
 import API from '../utils/apiEndpoints';
 import Modal from './Modal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleCheck, faEnvelope, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const ForceEmailChange = ({ onUpdate, onLogout }) => {
   const { t } = useI18n();
@@ -51,7 +53,7 @@ const ForceEmailChange = ({ onUpdate, onLogout }) => {
     >
       {success ? (
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '48px', marginBottom: '16px' }} aria-hidden="true">✅</div>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }} aria-hidden="true"><FontAwesomeIcon icon={faCircleCheck} /></div>
           <h2 style={{ marginBottom: '12px' }}>{t('auth.changeEmailSuccess')}</h2>
           <button onClick={onLogout} style={{
             marginTop: '20px', padding: '10px 28px', borderRadius: '8px',
@@ -61,7 +63,7 @@ const ForceEmailChange = ({ onUpdate, onLogout }) => {
         </div>
       ) : (
         <>
-          <div style={{ fontSize: '48px', marginBottom: '16px', textAlign: 'center' }} aria-hidden="true">📧</div>
+          <div style={{ fontSize: '48px', marginBottom: '16px', textAlign: 'center' }} aria-hidden="true"><FontAwesomeIcon icon={faEnvelope} /></div>
           <h2 style={{ textAlign: 'center', marginBottom: '12px' }}>{t('auth.forceEmailChangeTitle')}</h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '14px', lineHeight: 1.7, marginBottom: '24px', textAlign: 'center' }}>
             {t('auth.forceEmailChangeDesc')}
@@ -95,7 +97,7 @@ const ForceEmailChange = ({ onUpdate, onLogout }) => {
                 background: 'none', border: 'none', cursor: 'pointer',
                 color: 'var(--text-secondary)', padding: 0, width: '24px', height: '24px'
               }}>
-                {showPassword ? '🙈' : '👁'}
+                {showPassword ? <FontAwesomeIcon icon={faEyeSlash} style={{ fontSize: 18 }} aria-hidden="true" /> : <FontAwesomeIcon icon={faEye} style={{ fontSize: 18 }} aria-hidden="true" />}
               </button>
             </div>
             <div className="form-group">
