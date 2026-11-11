@@ -102,7 +102,7 @@ verified:
 
 # 后端契约地图（API 分组与错误语义）
 
-本仓库只有前端，后端是独立的 [furry-drama-be-neo](https://github.com/xiedada05/furry-drama-be-neo)（Go + Gin，README 标注为 Express 后端的 Drop-In 重写）。前端从不引入后端 SDK、也没有 OpenAPI/类型定义：**后端契约完全由字符串 URL、请求体字段与状态码约定隐式表达**。[src/utils/apiEndpoints.js](../../src/utils/apiEndpoints.js) 是唯一集中登记的端点清单，也是本页的索引——但它只是"索引"，不是完整真源：注册表里有整组条目（`ADMIN`）从未被引用，而真正在用的后台端点和若干关键端点（`/api/auth/refresh`、`/api/auth/sse-ticket`、`/api/translate` 等）只以组件内字面量存在。
+本仓库只有前端，后端是独立的 [Furry-Drama-Tracker/backend](https://github.com/Furry-Drama-Tracker/backend)（Go + Gin，README 标注为 Express 后端的 Drop-In 重写）。前端从不引入后端 SDK、也没有 OpenAPI/类型定义：**后端契约完全由字符串 URL、请求体字段与状态码约定隐式表达**。[src/utils/apiEndpoints.js](../../src/utils/apiEndpoints.js) 是唯一集中登记的端点清单，也是本页的索引——但它只是"索引"，不是完整真源：注册表里有整组条目（`ADMIN`）从未被引用，而真正在用的后台端点和若干关键端点（`/api/auth/refresh`、`/api/auth/sse-ticket`、`/api/translate` 等）只以组件内字面量存在。
 
 因此改动任何一端都要双向核对：注册表 ↔ 组件内字面量 ↔ 后端路由；本页无法从前端代码确认的后端行为一律标注"待后端核对"。HTTP 层的机制细节（CSRF 预热、双 token 刷新、并发合并）见[HTTP 层、CSRF 与双 Token 刷新](../architecture/http-and-session.md)，会话与账号流程见[认证与账号体系](../systems/auth-and-account.md)。
 

@@ -38,7 +38,7 @@ verified:
 
 # 快速上手与任务路由
 
-这是**兽剧聚合追踪平台**的前端：一个纯浏览器侧的 React 单页应用，负责剧集发现与追踪、评分与收藏、更新日历、账号体系、实时通知，以及一整套带角色分层的管理后台。它本身不含任何服务端代码——入口 HTML、构建配置、图标生成脚本之外全是浏览器侧代码——所有数据都来自独立仓库的后端 [furry-drama-be-neo](https://github.com/xiedada05/furry-drama-be-neo)（Go + Gin，原 Express 后端的 drop-in 重写）。技术栈为 React 19 + Vite 8 + react-router-dom v7 + axios，样式是纯 CSS 变量，没有 TypeScript、没有外部状态库、没有测试运行器。
+这是**兽剧聚合追踪平台**的前端：一个纯浏览器侧的 React 单页应用，负责剧集发现与追踪、评分与收藏、更新日历、账号体系、实时通知，以及一整套带角色分层的管理后台。它本身不含任何服务端代码——入口 HTML、构建配置、图标生成脚本之外全是浏览器侧代码——所有数据都来自独立仓库的后端 [Furry-Drama-Tracker/backend](https://github.com/Furry-Drama-Tracker/backend)（Go + Gin，原 Express 后端的 drop-in 重写）。技术栈为 React 19 + Vite 8 + react-router-dom v7 + axios，样式是纯 CSS 变量，没有 TypeScript、没有外部状态库、没有测试运行器。
 
 因此本仓库的每一次改动都落在两件事之一上：浏览器侧某一层的行为，或者与后端之间的那条 HTTP 契约。这份页面只做两件事——**把本地跑起来**，以及**告诉你下一步该读哪一页**。
 
