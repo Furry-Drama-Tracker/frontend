@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import adminApi from '../utils/adminApi';
 import { useOutletContext } from 'react-router-dom';
-import Modal from './Modal';
 import { useI18n } from '../contexts/I18nContext';
 
 const AdminCategories = () => {
@@ -95,103 +94,94 @@ const AdminCategories = () => {
     setNewCategoryOrder(cat.order || 0);
   };
 
+  useEffect(() => {
+    if (showAddForm || editingCategory) window.scrollTo(0, 0);
+  }, [showAddForm, editingCategory]);
+
   if (!admin) return null;
 
-  const addFormModal = (
-    <Modal isOpen={showAddForm} onClose={() => setShowAddForm(false)} maxWidth="520px">
-        <div className="modal-header">
-          <h3>{t('adminCategories.addCategory')}</h3>
-          <button className="btn btn-secondary" onClick={() => setShowAddForm(false)}>{t('adminCategories.close')}</button>
-        </div>
-        <form onSubmit={handleAdd}>
-          <div className="form-group">
-            <label>{t('adminCategories.categoryName')}</label>
-            <input
-              type="text"
-              value={newCategoryName}
-              onChange={(e) => setNewCategoryName(e.target.value)}
-              placeholder={t('adminCategories.categoryNamePlaceholder')}
-              required
-            />
-          </div>
-          <div className="form-group">
-              <label>{t('adminCategories.nameEn')} <span style={{color: 'var(--text-tertiary)', fontWeight: 'normal', fontSize: '12px'}}>{t('adminCategories.optionalAutoTranslate')}</span></label>
-              <input
-                type="text"
-                value={newCategoryNameEn}
-                onChange={(e) => setNewCategoryNameEn(e.target.value)}
-                placeholder="English name (optional)"
-              />
-            </div>
-          <div className="form-group">
-            <label>{t('adminCategories.orderLabel')}</label>
-            <input
-              type="number"
-              value={newCategoryOrder}
-              onChange={(e) => setNewCategoryOrder(Number(e.target.value))}
-              min={0}
-            />
-          </div>
-          {error && <div className="error-message">{error}</div>}
-          <div className="form-group">
-            <button type="submit">{t('adminCategories.add')}</button>
-          </div>
-        </form>
-    </Modal>
+  const renderForm = (onSubmit, submitLabel) => (
+    <form onSubmit={onSubmit}>
+      <div className="form-group">
+        <label>{t('adminCategories.categoryName')}</label>
+        <input
+          type="text"
+          value={newCategoryName}
+          onChange={(e) => setNewCategoryName(e.target.value)}
+          placeholder={t('adminCategories.categoryNamePlaceholder')}
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label>{t('adminCategories.nameEn')} <span style={{color: 'var(--text-tertiary)', fontWeight: 'normal', fontSize: '12px'}}>{t('adminCategories.optionalAutoTranslate')}</span></label>
+        <input
+          type="text"
+          value={newCategoryNameEn}
+          onChange={(e) => setNewCategoryNameEn(e.target.value)}
+          placeholder="English name (optional)"
+        />
+      </div>
+      <div className="form-group">
+        <label>{t('adminCategories.orderLabel')}</label>
+        <input
+          type="number"
+          value={newCategoryOrder}
+          onChange={(e) => setNewCategoryOrder(Number(e.target.value))}
+          min={0}
+        />
+      </div>
+      {error && <div className="error-message">{error}</div>}
+      <div className="form-group">
+        <button type="submit">{submitLabel}</button>
+      </div>
+    </form>
   );
 
-  const editFormModal = (
-    <Modal isOpen={!!editingCategory} onClose={() => setEditingCategory(null)} maxWidth="520px">
-        <div className="modal-header">
-          <h3>{t('adminCategories.editCategory')}</h3>
-          <button className="btn btn-secondary" onClick={() => setEditingCategory(null)}>{t('adminCategories.close')}</button>
+  if (showAddForm) {
+    return (
+      <div className="admin-page">
+        <div className="yl-page-header">
+          <div>
+            <h1 className="yl-page-title">{t('adminCategories.addCategory')}</h1>
+            <p className="yl-page-desc">{t('adminCategories.title')}</p>
+          </div>
+          <div className="yl-page-actions">
+            <button className="btn btn-md btn-outline" onClick={() => setShowAddForm(false)}>{t('common.back')}</button>
+          </div>
         </div>
-        <form onSubmit={handleEdit}>
-          <div className="form-group">
-            <label>{t('adminCategories.categoryName')}</label>
-            <input
-              type="text"
-              value={newCategoryName}
-              onChange={(e) => setNewCategoryName(e.target.value)}
-              placeholder={t('adminCategories.categoryNamePlaceholder')}
-              required
-            />
+        <div className="yl-panel">{renderForm(handleAdd, t('adminCategories.add'))}</div>
+      </div>
+    );
+  }
+
+  if (editingCategory) {
+    return (
+      <div className="admin-page">
+        <div className="yl-page-header">
+          <div>
+            <h1 className="yl-page-title">{t('adminCategories.editCategory')}</h1>
+            <p className="yl-page-desc">{editingCategory.name}</p>
           </div>
-          <div className="form-group">
-              <label>{t('adminCategories.nameEn')} <span style={{color: 'var(--text-tertiary)', fontWeight: 'normal', fontSize: '12px'}}>{t('adminCategories.optionalAutoTranslate')}</span></label>
-              <input
-                type="text"
-                value={newCategoryNameEn}
-                onChange={(e) => setNewCategoryNameEn(e.target.value)}
-                placeholder="English name (optional)"
-              />
-            </div>
-          <div className="form-group">
-            <label>{t('adminCategories.orderLabel')}</label>
-            <input
-              type="number"
-              value={newCategoryOrder}
-              onChange={(e) => setNewCategoryOrder(Number(e.target.value))}
-              min={0}
-            />
+          <div className="yl-page-actions">
+            <button className="btn btn-md btn-outline" onClick={() => setEditingCategory(null)}>{t('common.back')}</button>
           </div>
-          {error && <div className="error-message">{error}</div>}
-          <div className="form-group">
-            <button type="submit">{t('adminCategories.save')}</button>
-          </div>
-        </form>
-    </Modal>
-  );
+        </div>
+        <div className="yl-panel">{renderForm(handleEdit, t('adminCategories.save'))}</div>
+      </div>
+    );
+  }
 
   return (
-    <div className="admin-panel">
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px'}}>
-        <div style={{display: 'flex', alignItems: 'center', gap: '15px'}}>
-          <h2>{t('adminCategories.title')}</h2>
+    <div className="admin-page">
+      <div className="yl-page-header">
+        <div>
+          <h1 className="yl-page-title">{t('adminCategories.title')}</h1>
         </div>
-        <button className="btn" onClick={() => { setShowAddForm(true); setNewCategoryName(''); setNewCategoryNameEn(''); setNewCategoryOrder(0); setError(''); }}>
-          {t('adminCategories.addCategoryBtn')}
-        </button>
+        <div className="yl-page-actions">
+          <button className="btn btn-md btn-primary" onClick={() => { setShowAddForm(true); setNewCategoryName(''); setNewCategoryNameEn(''); setNewCategoryOrder(0); setError(''); }}>
+            {t('adminCategories.addCategoryBtn')}
+          </button>
+        </div>
       </div>
 
       {error && <div className="error-message" style={{marginBottom: '15px'}}>{error}</div>}
@@ -262,9 +252,6 @@ const AdminCategories = () => {
           </div>
         )}
       </div>
-
-      {addFormModal}
-      {editFormModal}
     </div>
   );
 };

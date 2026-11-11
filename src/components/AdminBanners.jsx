@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import adminApi from '../utils/adminApi';
 import { useOutletContext } from 'react-router-dom';
 import ImageUploader from './ImageUploader';
-import Modal from './Modal';
 import { useI18n } from '../contexts/I18nContext';
 
 const AdminBanners = () => {
@@ -103,6 +102,10 @@ const AdminBanners = () => {
     setError('');
   };
 
+  useEffect(() => {
+    if (showAddForm || editingBanner) window.scrollTo(0, 0);
+  }, [showAddForm, editingBanner]);
+
   if (!admin) return null;
 
   const renderForm = (onSubmit, submitLabel) => (
@@ -152,33 +155,49 @@ const AdminBanners = () => {
     </form>
   );
 
-  const addModal = (
-    <Modal isOpen={showAddForm} onClose={() => setShowAddForm(false)} maxWidth="520px">
-        <div className="modal-header">
-          <h3>{t('adminBanners.addBanner')}</h3>
-          <button className="btn btn-secondary" onClick={() => setShowAddForm(false)}>{t('adminBanners.close')}</button>
+  if (showAddForm) {
+    return (
+      <div className="admin-page">
+        <div className="yl-page-header">
+          <div>
+            <h1 className="yl-page-title">{t('adminBanners.addBanner')}</h1>
+            <p className="yl-page-desc">{t('adminBanners.title')}</p>
+          </div>
+          <div className="yl-page-actions">
+            <button className="btn btn-md btn-outline" onClick={() => setShowAddForm(false)}>{t('common.back')}</button>
+          </div>
         </div>
-        {renderForm(handleAdd, t('adminBanners.add'))}
-    </Modal>
-  );
+        <div className="yl-panel">{renderForm(handleAdd, t('adminBanners.add'))}</div>
+      </div>
+    );
+  }
 
-  const editModal = (
-    <Modal isOpen={!!editingBanner} onClose={() => setEditingBanner(null)} maxWidth="520px">
-        <div className="modal-header">
-          <h3>{t('adminBanners.editBanner')}</h3>
-          <button className="btn btn-secondary" onClick={() => setEditingBanner(null)}>{t('adminBanners.close')}</button>
+  if (editingBanner) {
+    return (
+      <div className="admin-page">
+        <div className="yl-page-header">
+          <div>
+            <h1 className="yl-page-title">{t('adminBanners.editBanner')}</h1>
+            <p className="yl-page-desc">{editingBanner.title}</p>
+          </div>
+          <div className="yl-page-actions">
+            <button className="btn btn-md btn-outline" onClick={() => setEditingBanner(null)}>{t('common.back')}</button>
+          </div>
         </div>
-        {renderForm(handleEdit, t('adminBanners.save'))}
-    </Modal>
-  );
+        <div className="yl-panel">{renderForm(handleEdit, t('adminBanners.save'))}</div>
+      </div>
+    );
+  }
 
   return (
-    <div className="admin-panel">
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px'}}>
-        <div style={{display: 'flex', alignItems: 'center', gap: '15px'}}>
-          <h2>{t('adminBanners.title')}</h2>
+    <div className="admin-page">
+      <div className="yl-page-header">
+        <div>
+          <h1 className="yl-page-title">{t('adminBanners.title')}</h1>
         </div>
-        <button className="btn" onClick={openAdd}>{t('adminBanners.addBannerBtn')}</button>
+        <div className="yl-page-actions">
+          <button className="btn btn-md btn-primary" onClick={openAdd}>{t('adminBanners.addBannerBtn')}</button>
+        </div>
       </div>
 
       {error && <div className="error-message" style={{marginBottom: '15px'}}>{error}</div>}
@@ -215,8 +234,6 @@ const AdminBanners = () => {
         </div>
       )}
 
-      {addModal}
-      {editModal}
     </div>
   );
 };

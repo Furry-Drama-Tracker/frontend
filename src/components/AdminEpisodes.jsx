@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import adminApi from '../utils/adminApi';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import Modal from './Modal';
 import CustomSelect from './CustomSelect';
 import AdminSearchInput from './AdminSearchInput';
 import ImageUploader from './ImageUploader';
@@ -484,6 +483,10 @@ const AdminEpisodes = () => {
     }
   };
 
+  useEffect(() => {
+    if (showAddForm || showEditForm) window.scrollTo(0, 0);
+  }, [showAddForm, showEditForm]);
+
   if (!admin) return null;
 
   const renderEpisodeForm = (isEdit) => (
@@ -718,31 +721,42 @@ const AdminEpisodes = () => {
     </form>
   );
 
-  const addFormModal = (
-    <Modal isOpen={showAddForm} onClose={() => setShowAddForm(false)}>
-      <div className="modal-header">
-        <h3>{t('adminEpisodes.addNewEpisode')}</h3>
-        <button className="btn btn-secondary" onClick={() => setShowAddForm(false)}>{t('adminEpisodes.close')}</button>
+  if (showAddForm) {
+    return (
+      <div className="admin-page">
+        <div className="yl-page-header">
+          <div>
+            <h1 className="yl-page-title">{t('adminEpisodes.addNewEpisode')}</h1>
+            <p className="yl-page-desc">{t('adminEpisodes.addEpisodeHint')}</p>
+          </div>
+          <div className="yl-page-actions">
+            <button className="btn btn-md btn-outline" onClick={() => setShowAddForm(false)}>{t('common.back')}</button>
+          </div>
+        </div>
+        <div className="yl-panel">{renderEpisodeForm(false)}</div>
       </div>
-      <p style={{color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '15px'}}>{t('adminEpisodes.addEpisodeHint')}</p>
-      {renderEpisodeForm(false)}
-    </Modal>
-  );
+    );
+  }
 
-  const editFormModal = editingEpisode ? (
-    <Modal isOpen={showEditForm} onClose={handleCloseEditForm}>
-        <div className="modal-header">
-          <h3>{t('adminEpisodes.editEpisode')} - {editingEpisode.title}</h3>
-          <button className="btn btn-secondary" onClick={handleCloseEditForm}>{t('adminEpisodes.close')}</button>
+  if (editingEpisode && showEditForm) {
+    return (
+      <div className="admin-page">
+        <div className="yl-page-header">
+          <div>
+            <h1 className="yl-page-title">{t('adminEpisodes.editEpisode')}</h1>
+            <p className="yl-page-desc">{editingEpisode.title}</p>
+          </div>
+          <div className="yl-page-actions">
+            <button className="btn btn-md btn-outline" onClick={handleCloseEditForm}>{t('common.back')}</button>
+          </div>
         </div>
         {editingEpisode.hasPendingChanges && (
           <div style={{ marginBottom: '12px', padding: '10px 14px', background: 'var(--warning-bg)', border: '1px solid var(--warning-border)', borderRadius: '8px', fontSize: '13px', color: 'var(--warning-text)', lineHeight: 1.5 }}>
             {t('adminEpisodes.editingPendingChanges')}
           </div>
         )}
-        {renderEpisodeForm(true)}
-
-        <div style={{marginTop: '20px', borderTop: '1px solid var(--border)', paddingTop: '20px'}}>
+        <div className="yl-panel" style={{ marginBottom: '16px' }}>{renderEpisodeForm(true)}</div>
+        <div className="yl-panel">
           <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
             <h4>{t('adminEpisodes.singleEpisodeManagement')}</h4>
             <button className="btn" onClick={() => {
@@ -1021,8 +1035,9 @@ const AdminEpisodes = () => {
             </div>
           )}
         </div>
-    </Modal>
-  ) : null;
+      </div>
+    );
+  }
 
   // ===== 剧集列表渲染 =====
   return (
@@ -1121,9 +1136,6 @@ const AdminEpisodes = () => {
         </tbody>
       </table>
       </div>
-
-      {addFormModal}
-      {editFormModal}
 
       {historyEpisodeId && (
         <EpisodeVersionHistory
