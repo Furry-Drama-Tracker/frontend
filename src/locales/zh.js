@@ -1184,6 +1184,7 @@ export default {
     episodeLabelPlaceholder: '例如：1、1.5、OVA',
     singleTitlePlaceholder: '填写视频标题',
     reorderHint: '拖拽左侧手柄调整顺序，集数会按新顺序自动重排',
+    sortOrder: '排序',
     reorderFailed: '调整集数顺序失败，请重试',
     duration: '时长',
     durationPlaceholder: '例如：24分钟',

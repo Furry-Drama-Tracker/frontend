@@ -1184,6 +1184,7 @@ export default {
     episodeLabelPlaceholder: 'e.g. 1, 1.5, OVA',
     singleTitlePlaceholder: 'Video title',
     reorderHint: 'Drag the handle on the left to reorder; episode numbers update automatically',
+    sortOrder: 'Order',
     reorderFailed: 'Failed to reorder episodes. Please try again.',
     duration: 'Duration',
     durationPlaceholder: 'e.g., 24min',
