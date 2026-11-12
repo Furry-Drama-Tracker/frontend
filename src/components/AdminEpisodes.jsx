@@ -197,7 +197,7 @@ const [dragOverId, setDragOverId] = useState(null);
       setShowSingleEpisodeForm(true);
       setNewSingleEpisode({
         episodeNumber: 1,
-        episodeLabel: '',
+        episodeLabel: formatEpisodeLabel(1),
         title: '',
         duration: '',
         platformLinksList: [],
@@ -315,6 +315,11 @@ const [dragOverId, setDragOverId] = useState(null);
 
   const handleAddSingleEpisode = async (e) => {
     e.preventDefault();
+    setError('');
+    if (!newSingleEpisode.episodeLabel.trim()) {
+      setError(t('adminEpisodes.episodeLabelRequired'));
+      return;
+    }
     try {
       const episodeId = editingEpisode._id;
       const submitData = {
@@ -345,11 +350,14 @@ const [dragOverId, setDragOverId] = useState(null);
     }
   };
 
+  const formatEpisodeLabel = (num) => `${t('episode.epPrefix')}${num}${t('episode.epSuffix')}`;
+
   const handleEditSingleEpisode = (singleEpisode) => {
     setEditingSingleEpisode(singleEpisode);
+    const customLabel = typeof singleEpisode.episodeLabelCustom === 'string' ? singleEpisode.episodeLabelCustom.trim() : '';
     setNewSingleEpisode({
       episodeNumber: singleEpisode.episodeNumber,
-      episodeLabel: singleEpisode.episodeLabelCustom ?? singleEpisode.episodeLabel ?? '',
+      episodeLabel: customLabel || singleEpisode.episodeLabel || formatEpisodeLabel(singleEpisode.episodeNumber),
       title: singleEpisode.title,
       duration: singleEpisode.duration,
       platformLinksList: toLinksList(singleEpisode.platformLinks),
@@ -379,7 +387,7 @@ const getNextSingleNumber = () => singleEpisodes.reduce((max, s) => Math.max(max
 
 const resetSingleEpisodeForm = () => setNewSingleEpisode({
   episodeNumber: getNextSingleNumber(),
-  episodeLabel: '',
+  episodeLabel: formatEpisodeLabel(getNextSingleNumber()),
   title: '',
   duration: '',
   platformLinksList: [],
@@ -435,7 +443,10 @@ const handleSingleDrop = async (e, targetId) => {
   setSingleEpisodes(renumbered);
   try {
     for (let i = 0; i < changed.length; i += 5) {
-      await Promise.all(changed.slice(i, i + 5).map(s => adminApi.put(`/api/episodes/single/${s._id}`, { episodeNumber: s.episodeNumber })));
+      await Promise.all(changed.slice(i, i + 5).map(s => adminApi.put(`/api/episodes/single/${s._id}`, {
+        episodeNumber: s.episodeNumber,
+        episodeLabel: s.episodeLabel,
+      })));
     }
     fetchSingleEpisodes(editingEpisode._id);
     fetchEpisodes();
@@ -791,6 +802,7 @@ const handleSingleDrop = async (e, targetId) => {
           onChange={(e) => setNewSingleEpisode({ ...newSingleEpisode, episodeLabel: e.target.value })}
           placeholder={t('adminEpisodes.episodeLabelPlaceholder')}
           maxLength={40}
+          required
         />
       </div>
       <div className="form-group">
