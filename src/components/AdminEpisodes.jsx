@@ -656,7 +656,7 @@ const handleSingleDrop = async (e, targetId) => {
         <input
           type="text"
           value={newEpisode.tags.join(', ')}
-          onChange={(e) => setNewEpisode({...newEpisode, tags: e.target.value.split(',').map(t => t.trim()).filter(t => t)})}
+          onChange={(e) => setNewEpisode({...newEpisode, tags: e.target.value.split(/[,，]/).map(t => t.trim()).filter(t => t)})}
           placeholder={t('adminEpisodes.tagsPlaceholder')}
         />
       </div>
