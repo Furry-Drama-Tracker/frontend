@@ -994,6 +994,7 @@ const handleSingleDrop = async (e, targetId) => {
               <thead>
                 <tr>
                     <th style={{ width: 32 }} aria-label={t('adminEpisodes.reorderHint')}></th>
+                    <th style={{ width: 56 }}>{t('adminEpisodes.sortOrder')}</th>
                     <th>{t('adminEpisodes.episodeNumber')}</th>
                     <th>{t('adminEpisodes.titleLabel')}</th>
                   <th>{t('adminEpisodes.duration')}</th>
@@ -1003,7 +1004,7 @@ const handleSingleDrop = async (e, targetId) => {
                 </tr>
               </thead>
               <tbody>
-                {singleEpisodes.map((se) => (
+                {singleEpisodes.map((se, index) => (
                   <React.Fragment key={se._id}>
                   <tr
                     draggable={!editingSingleEpisode}
@@ -1022,6 +1023,7 @@ const handleSingleDrop = async (e, targetId) => {
                         <FontAwesomeIcon icon={faGripVertical} aria-hidden="true" />
                       </span>
                     </td>
+                    <td style={{ width: 56, textAlign: 'center', color: 'var(--text-secondary)' }}>{index + 1}</td>
                     <td>{se.episodeLabel || se.episodeNumber}</td>
                     <td>{se.title}</td>
                     <td>
@@ -1070,7 +1072,7 @@ const handleSingleDrop = async (e, targetId) => {
                   </tr>
                   {editingSingleEpisode && editingSingleEpisode._id === se._id && (
                     <tr>
-                      <td colSpan={7} style={{ background: 'var(--hover-bg)', padding: 0 }}>
+                      <td colSpan={8} style={{ background: 'var(--hover-bg)', padding: 0 }}>
                         <div style={{ padding: '14px 16px' }}>
                           <h4 style={{ marginTop: 0, marginBottom: '12px' }}>
                             {t('adminEpisodes.editEpisodeNum', { num: se.episodeNumber })}

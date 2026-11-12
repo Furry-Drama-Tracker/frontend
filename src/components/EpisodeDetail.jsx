@@ -137,6 +137,7 @@ const EpisodeDetail = ({ user }) => {
   }, [episode]);
 
   const handleWatch = async (singleEpisode) => {
+    setEpPreview(null);
     try {
       await axios.put(`/api/episodes/single/${singleEpisode._id}/view`);
     } catch (error) {}
@@ -345,11 +346,10 @@ const EpisodeDetail = ({ user }) => {
   const EP_PREVIEW_HEIGHT = 200;
   const EP_PREVIEW_GAP = 16;
   const EP_PREVIEW_MARGIN = 8;
-  const canShowEpPreview = () => typeof window !== 'undefined' && !window.matchMedia('(hover: none)').matches;
-  const positionEpPreview = (e) => {
-    const x = e.clientX;
-    const y = e.clientY;
-    const button = e.currentTarget.querySelector('button.btn');
+  const isTouchDevice = () => typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches;
+  const canShowEpPreview = () => typeof window !== 'undefined' && !isTouchDevice();
+  const positionEpPreview = (x, y, container) => {
+    const button = container?.querySelector?.('button.btn');
     const buttonRect = button ? button.getBoundingClientRect() : null;
     let left = x + EP_PREVIEW_GAP;
     if (left + EP_PREVIEW_WIDTH > window.innerWidth - EP_PREVIEW_MARGIN) {
@@ -373,14 +373,39 @@ const EpisodeDetail = ({ user }) => {
   };
   const showEpPreview = (e, se) => {
     if (!canShowEpPreview()) return;
-    setEpPreview({ se, ...positionEpPreview(e) });
+    setEpPreview({ se, ...positionEpPreview(e.clientX, e.clientY, e.currentTarget) });
   };
   const moveEpPreview = (e) => {
     if (!canShowEpPreview()) return;
-    const position = positionEpPreview(e);
+    const position = positionEpPreview(e.clientX, e.clientY, e.currentTarget);
     setEpPreview(prev => (prev ? { ...prev, ...position } : prev));
   };
   const hideEpPreview = () => setEpPreview(null);
+  // 触控设备：点按剧集行显示预览，点按其他区域或滚动时收起
+  const handleEpPreviewTap = (e, se) => {
+    if (!isTouchDevice()) return;
+    const target = e.target;
+    if (target instanceof Element && target.closest('button, a, input, select, textarea, label')) return;
+    if (epPreview?.se?._id === se._id) {
+      setEpPreview(null);
+      return;
+    }
+    setEpPreview({ se, ...positionEpPreview(e.clientX, e.clientY, e.currentTarget) });
+  };
+  useEffect(() => {
+    if (!epPreview || typeof window === 'undefined') return;
+    const handleDocClick = (event) => {
+      if (event.target instanceof Element && event.target.closest('.episode-item')) return;
+      setEpPreview(null);
+    };
+    const handleScroll = () => setEpPreview(null);
+    document.addEventListener('click', handleDocClick);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      document.removeEventListener('click', handleDocClick);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [epPreview]);
 
   const DEFAULT_SHOW_COUNT = 5;
   const displayedEpisodes = episodesExpanded
@@ -676,7 +701,8 @@ const EpisodeDetail = ({ user }) => {
             <div key={singleEpisode._id} className="episode-item"
               onMouseEnter={(e) => showEpPreview(e, singleEpisode)}
               onMouseMove={moveEpPreview}
-              onMouseLeave={hideEpPreview} style={{
+              onMouseLeave={() => { if (!isTouchDevice()) hideEpPreview(); }}
+              onClick={(e) => handleEpPreviewTap(e, singleEpisode)} style={{
               opacity: isWatched ? 0.72 : 1,
               flexDirection: 'column',
               alignItems: 'stretch',

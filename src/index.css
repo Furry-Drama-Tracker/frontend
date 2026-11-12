@@ -4761,9 +4761,6 @@ header.nav-scrolled {
   font-size: 11px;
   font-weight: 600;
 }
-@media (hover: none), (pointer: coarse) {
-  .ep-preview { display: none; }
-}
 
 /* 验证码输入框：站点正文字体 + 等宽数字 + 视觉居中 */
 .code-input {
