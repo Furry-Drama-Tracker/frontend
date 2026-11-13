@@ -13,6 +13,7 @@ const Force2FASetup = ({ onUpdate, onLogout }) => {
   const { t } = useI18n();
   const [step, setStep] = useState('idle'); // idle | setup
   const [secret, setSecret] = useState('');
+  const [secretBase32, setSecretBase32] = useState('');
   const [otpauthUrl, setOtpauthUrl] = useState('');
   const [backupCodes, setBackupCodes] = useState([]);
   const [qrDataUrl, setQrDataUrl] = useState('');
@@ -35,6 +36,7 @@ const Force2FASetup = ({ onUpdate, onLogout }) => {
     try {
       const res = await axios.post(API.TWOFACTOR.ENABLE);
       setSecret(res.data.secret);
+      setSecretBase32(res.data.secretBase32 || '');
       setOtpauthUrl(res.data.otpauthUrl);
       setBackupCodes(res.data.backupCodes || []);
       setStep('setup');
@@ -99,7 +101,7 @@ const Force2FASetup = ({ onUpdate, onLogout }) => {
           </div>
           <div style={{ padding: '10px', background: 'var(--hover-bg)', borderRadius: '6px', marginBottom: '12px', wordBreak: 'break-all' }}>
             <p style={{ color: 'var(--text-tertiary)', fontSize: '11px', margin: '0 0 4px 0' }}>{t('twoFactor.manualKey')}</p>
-            <code style={{ color: 'var(--foreground)', fontSize: '12px' }}>{secret}</code>
+            <code style={{ color: 'var(--foreground)', fontSize: '12px', letterSpacing: '1px' }}>{secretBase32 || secret}</code>
           </div>
           <div style={{ padding: '10px', background: 'var(--hover-bg)', borderRadius: '6px', marginBottom: '12px' }}>
             {showBackupCodes ? (

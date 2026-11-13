@@ -1,5 +1,7 @@
 export default {
   common: {
+    prevPage: 'Previous page',
+    nextPage: 'Next page',
     loading: 'Loading...',
     save: 'Save',
     cancel: 'Cancel',
@@ -87,6 +89,8 @@ export default {
     feedbackProblem: 'Having issues',
   },
   nav: {
+    previous: 'Previous',
+    next: 'Next',
     home: 'Home',
     profile: 'Profile',
     login: 'Login',
@@ -211,6 +215,8 @@ export default {
     hasAccount: 'Already have an account?',
     goToLogin: 'Go to login',
     goToRegister: 'Go to register',
+    logout: 'Log out',
+    passwordRequired: 'Please enter your password',
     accountNotFoundHint: "This email isn't registered yet — create an account",
     emailTakenHint: 'This email is already registered — log in directly',
     emailPlaceholder: 'Enter your email',
@@ -1128,6 +1134,7 @@ export default {
     title: 'Episode Trash',
     desc: 'Deleted or review-rejected episodes are moved here and become invisible to the public immediately. You can view edit content logs (version snapshots for rollback after restore), restore them to the live collection, or permanently delete them to free up server resources.',
     totalCount: '{total} items',
+    pageInfo: 'Page {page} / {totalPages}',
     loadFailed: 'Failed to load trash',
     noItems: 'Trash is empty',
     colTitle: 'Title',
@@ -1443,6 +1450,11 @@ export default {
     successKeyword: 'successful',
   },
   adminCreatorProfile: {
+    pendingNotice: 'Under review: your profile is pending moderation; the currently approved version will be shown until it passes.',
+    rejectedNotice: 'Profile content was not approved',
+    qqGroupLink: 'QQ group link',
+    qqGroupLinkPlaceholder: 'QQ group join link (e.g. https://qm.qq.com/q/xxx)',
+    qqGroupLinkHint: 'Left field: group number (shown on detail page); right field: join link (click to jump). Both optional, per episode.',
     title: 'Manage My Profile',
     displayName: 'Display Name',
     displayNamePlaceholder: 'Creator display name',

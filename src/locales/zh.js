@@ -1,6 +1,8 @@
 export default {
   common: {
     loading: '加载中...',
+    prevPage: '上一页',
+    nextPage: '下一页',
     save: '保存',
     cancel: '取消',
     delete: '删除',
@@ -87,6 +89,8 @@ export default {
     feedbackProblem: '有问题',
   },
   nav: {
+    previous: '上一张',
+    next: '下一张',
     home: '首页',
     profile: '个人中心',
     login: '登录',
@@ -211,6 +215,8 @@ export default {
     hasAccount: '已有账号？',
     goToLogin: '去登录',
     goToRegister: '去注册',
+    logout: '退出登录',
+    passwordRequired: '请输入密码',
     accountNotFoundHint: '该邮箱尚未注册，创建一个账号吧',
     emailTakenHint: '该邮箱已注册过，直接登录即可',
     emailPlaceholder: '请输入邮箱',
@@ -1128,6 +1134,7 @@ export default {
     title: '剧集回收站',
     desc: '被删除或审核拒绝的剧集会移入回收站，前台即刻不可见。可查看编辑内容日志（版本快照，恢复后可回退），恢复回正式集合，或彻底删除以释放服务器资源。',
     totalCount: '共 {total} 条',
+    pageInfo: '第 {page} / {totalPages} 页',
     loadFailed: '加载回收站失败',
     noItems: '回收站为空',
     colTitle: '标题',
@@ -1443,6 +1450,8 @@ export default {
     successKeyword: '成功',
   },
   adminCreatorProfile: {
+    pendingNotice: '审核中：主页内容正在等待管理员审核，审核通过前将展示当前已通过的版本。',
+    rejectedNotice: '主页内容未通过审核',
     title: '管理我的主页',
     displayName: '显示名称',
     displayNamePlaceholder: '创作者显示名称',

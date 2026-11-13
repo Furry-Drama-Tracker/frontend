@@ -23,6 +23,7 @@ const TwoFactorPage = ({ user, setUser }) => {
   const navigate = useNavigate();
   const [step, setStep] = useState(user?.twoFactorEnabled ? 'enabled' : 'disabled');
   const [secret, setSecret] = useState('');
+  const [secretBase32, setSecretBase32] = useState('');
   const [otpauthUrl, setOtpauthUrl] = useState('');
   const [backupCodes, setBackupCodes] = useState([]);
   const [qrDataUrl, setQrDataUrl] = useState('');
@@ -38,6 +39,12 @@ const TwoFactorPage = ({ user, setUser }) => {
   const [passkeyLoading, setPasskeyLoading] = useState(false);
   const [passkeyBrowserOK, setPasskeyBrowserOK] = useState(false);
   const [passkeyPlatformOK, setPasskeyPlatformOK] = useState(false);
+
+  // 2FA 状态随 user prop 同步（/me 或登录响应更新 twoFactorEnabled 后页面跟着切换，
+  // 修复刷新后状态不识别的问题——状态权威来源是后端响应）。
+  useEffect(() => {
+    setStep(user?.twoFactorEnabled ? 'enabled' : 'disabled');
+  }, [user?.twoFactorEnabled]);
 
   useEffect(() => {
     if (otpauthUrl) {
@@ -73,6 +80,8 @@ const TwoFactorPage = ({ user, setUser }) => {
         headers: getAuthHeaders()
       });
       setSecret(res.data.secret);
+      // otpauth 规范格式（Base32）：二维码与"手动输入密钥"都必须用它，2FA 工具才识别。
+      setSecretBase32(res.data.secretBase32 || '');
       setOtpauthUrl(res.data.otpauthUrl);
       setBackupCodes(res.data.backupCodes);
       setStep('setup');
@@ -249,7 +258,7 @@ const TwoFactorPage = ({ user, setUser }) => {
             marginBottom: '16px', wordBreak: 'break-all'
           }}>
             <p style={{ color: 'var(--text-tertiary)', fontSize: '12px', margin: '0 0 4px 0' }}>{t('twoFactor.manualKey')}</p>
-            <code style={{ color: 'var(--foreground)', fontSize: '13px' }}>{secret}</code>
+            <code style={{ color: 'var(--foreground)', fontSize: '13px', letterSpacing: '1px' }}>{secretBase32 || secret}</code>
           </div>
 
           <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '8px', lineHeight: 1.7 }}>
