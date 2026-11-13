@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
     if (!user) return;
     localStorage.setItem('user', JSON.stringify({
       _id: user._id,
+      uid: user.uid ?? null,
       accountId: user.accountId,
       username: user.username,
       isEmailVerified: user.isEmailVerified,

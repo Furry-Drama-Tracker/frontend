@@ -21,7 +21,7 @@ Vite proxies `/api` and `/uploads` to `http://localhost:5000` (the backend). If 
 - **Entry**: `src/main.jsx` → `App.jsx`
 - **Routing**: react-router-dom v7, defined in `App.jsx`. Admin routes (`/admin/*`) render under `AdminLayout`; public routes render with `NavBar`.
 - **State**: No external state library. All global state lives in React Contexts:
-  - `AuthContext` — user auth, token in `localStorage`
+  - `AuthContext` — user auth; tokens live in httpOnly cookies (NOT localStorage); only a user-info cache projection (`_id/uid/accountId/username/isEmailVerified/role/avatar`) goes in `localStorage.user`
   - `ThemeContext` — dark/light/system theme
   - `I18nContext` — zh/en i18n (locale files in `src/locales/`)
   - `SiteSettingsContext` — runtime site config from API
@@ -35,7 +35,8 @@ Vite proxies `/api` and `/uploads` to `http://localhost:5000` (the backend). If 
 - **ESLint** — flat config in `eslint.config.js` (ESLint 9). Run `npm run lint` to check.
 - **Production builds strip console/debugger** — configured in `vite.config.js` via `esbuild.drop`.
 - **Env vars** must be prefixed `VITE_` to be exposed to client code. `VITE_API_BASE_URL` is an optional override for the hardcoded production API origin (`DEFAULT_API_BASE_URL` lives in both `src/utils/apiBase.js` and `vite.config.js` — keep them in sync). On ESA, build-time env vars are configured as 函数变量 (function variables) in the project detail page. It drives axios, `/uploads` asset URLs, and the `index.html` injections (CSP `connect-src`, RSS link, boot-time API path).
-- **Auth** — unified role-based system: `localStorage.token` / `localStorage.user` for all users. Admin permissions are determined by the `User.role` field (`user`/`creator`/`admin`/`superadmin`). The 401 interceptor redirects accordingly.
+- **Auth** — unified role-based system: httpOnly cookies carry the tokens; `localStorage.user` is a boot-hint cache only (the authoritative source is `GET /api/auth/me`). Admin permissions are determined by the `User.role` field (`user`/`creator`/`admin`/`superadmin`). The 401 interceptor redirects accordingly.
+- **Auth model (2026-11)** — login accepts `identifier` (username or email); login first factor = password | Passkey (`@simplewebauthn/browser` in `Login.jsx`); 2FA second factor methods come from the login response `twoFactorMethods` (`totp` / `emailOtp`); role policy: regular users cannot enable 2FA, creators may, admins must (a `force2FASetup` blocking modal renders from `App.jsx` when the flag is set). Passkey management lives in `TwoFactorPage.jsx`. Username rename UI lives in `Profile.jsx` (`PUT /api/users/login-name`). The old device-verification flow (`/verify-device`, `needDeviceVerify`) has been removed — new-device logins now trigger a notification email instead.
 - **i18n** — `t('key.path')` function from `useI18n()` hook. Fallback language is `zh`. New strings must be added to both `src/locales/zh.js` and `src/locales/en.js`.
 - **Components** are flat files in `src/components/`. No folder-per-component pattern. Admin components are prefixed `Admin*`.
 
