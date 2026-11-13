@@ -589,7 +589,7 @@ const Login = ({ login }) => {
         </div>
         <altcha-widget
           ref={altchaRef}
-          challenge="/api/auth/captcha"
+          challenge={apiUrl('/api/auth/captcha')}
           auto="onload"
           hidefooter="true"
           hidelogo="true"
