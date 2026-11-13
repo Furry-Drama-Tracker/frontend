@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:5d52ba0b6b7971b23856f7e17bf57ccf1ec409bc70d64827221c414f3095d4ad",
+  "pageVersion": "sha256:7fe39a871bef5a64a5a4a208c23357c9fb2a904fd2328c5eefc62da7bc81d378",
   "claims": [
     {
       "id": "claim_df439e2cd4164d62ae99b68b617731ce",
@@ -11,8 +11,8 @@
           "version": "repo-lines-v1:sha256:bbc14f02291d72df6fb7ee36693dbff7bca2c12a162d6ee470a4e6496ec03356:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5N2MzYzY5MWM4ZTgzODY5MjFiZjVlY2U5ZmMwYWE1MWE2MzUzZTBjYTY1MWY5MWViZmQyMGJlZWFjZGZjZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNkNjRiZDY3MzExZGI4MjQzYjMxZWY1NDkwNTMzNDQ4NTAyNzUzMjIyMTRlZDhiODkzZjJiNmM4YzIxMjA0N2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRiMTNmYTNiN2Q3MmQ0NDk3ZmRmNTAzMmYxOGFlNTQzNGNlOGMyMDlkNzY1YTJjMzIwNGUwYTEzNDE2MWI2MDEifQ"
         },
         {
-          "resource": "repo://vite.config.js#L65-L66",
-          "version": "repo-lines-v1:sha256:507b8f7287e8361c8beb78781519d593db0c47457f3118032b0eccf91014c9e2:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmVhMDY1YjUwMzQwZjFkZTA5YjRlMDEyZWE1MzBmNzJlN2Y1ODkwMmViNDRjMjJkZTVmYmI4NTlkNzlkM2VmMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjQ3NWU5NGE5MDRhYzQ5YjMxNTRkNDY3MmE2NmU4NjI5Yjg2ZGFjNzRlM2UyOTM3YmU2OTI3YWUzZGExMWM1MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU5ZjkwNDliOTBjN2FhOTM3NDM5ZDdmZDU5NTUwMzA1OWQ4MDJlMGVmM2NhNjk1YjhhNTFiM2FkNjNlMTFmZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTBmMjMxYzA4ODRlYzg4NWQzYmM4ZTQ0NjQwM2Y3YjdlOWI3ZTZkMTZjOTBmNzg4YTg1MDlmZThhYjA2MTIyNyJ9"
+          "resource": "repo://vite.config.js#L89-L89",
+          "version": "repo-lines-v1:sha256:b9098727fa2a8c366dda01c5d410a612262f8de3b600a66e57fabf41be13fff2:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjkwOTg3MjdmYTJhOGMzNjZkZGEwMWM1ZDQxMGE2MTIyNjJmOGRlM2I2MDBhNjZlNTdmYWJmNDFiZTEzZmZmMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjkwOTg3MjdmYTJhOGMzNjZkZGEwMWM1ZDQxMGE2MTIyNjJmOGRlM2I2MDBhNjZlNTdmYWJmNDFiZTEzZmZmMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTIzZTIwMTMwZmFiMzc1ZjIxMDBmOWM2ZDNiNTI1OTRjYWNmMDIzM2E0Mjg4NTBlY2RhMmI1OTM3ZjkwZDNhZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDgwYTFmNjlkMGFkZDBmYWNhNmM1OWE3NTE3ODNmNDMwN2M2M2Y0OGUyZWZmNWRmMDlkZGU4NjEwZWZmMDQ3YyJ9"
         }
       ]
     },
@@ -25,78 +25,74 @@
           "version": "repo-lines-v1:sha256:bbc14f02291d72df6fb7ee36693dbff7bca2c12a162d6ee470a4e6496ec03356:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5N2MzYzY5MWM4ZTgzODY5MjFiZjVlY2U5ZmMwYWE1MWE2MzUzZTBjYTY1MWY5MWViZmQyMGJlZWFjZGZjZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNkNjRiZDY3MzExZGI4MjQzYjMxZWY1NDkwNTMzNDQ4NTAyNzUzMjIyMTRlZDhiODkzZjJiNmM4YzIxMjA0N2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRiMTNmYTNiN2Q3MmQ0NDk3ZmRmNTAzMmYxOGFlNTQzNGNlOGMyMDlkNzY1YTJjMzIwNGUwYTEzNDE2MWI2MDEifQ"
         },
         {
-          "resource": "repo://vite.config.js#L26-L29",
-          "version": "repo-lines-v1:sha256:dc2f1cd3f35c2e0d56e53b312046d2255c8059a94f43b51baeb4f45bae8176d2:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWRjYWYzZjE2ZTRkNGY5OGY5NmU2OTk3NmI3OTVjZTQ5ZjVmOWQ3YzhkZjYwNzkzM2M1ZjhlNzBjOTMxZDE0OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODc0Y2U5ZWZjMmEyOTZlYzQ5Njc4NTc5NGRjYTA1YzAwNzJmNGExOTc3MTNhNWRiNDMxM2FkNzk4YTljNTdkYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzgxZWFmM2ZkYmE5M2Y0MmI4NzNjMGY4N2FlMDUzOTIwYWNkMWYwNjE3YzgyZTkwYjQwNmNkN2EyNWUyNmQyZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWU3MjIzOTBkZDk5Nzc4Y2VlNzU2ZTIzMmU5MTY4YmMxNTVjMTIyMDRjOGI1ZjMxZTdkYjI5NjYwZDBhZDM1MSJ9"
+          "resource": "repo://vite.config.js#L51-L51",
+          "version": "repo-lines-v1:sha256:8ba93ecfe8756cb780986068d9de285aff719d122e8aecc592d71db894e081c8:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGJhOTNlY2ZlODc1NmNiNzgwOTg2MDY4ZDlkZTI4NWFmZjcxOWQxMjJlOGFlY2M1OTJkNzFkYjg5NGUwODFjOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGJhOTNlY2ZlODc1NmNiNzgwOTg2MDY4ZDlkZTI4NWFmZjcxOWQxMjJlOGFlY2M1OTJkNzFkYjg5NGUwODFjOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTJiNjk0MzE0ZjNjNDM2NThlYjc3Nzk4YjQ4MDhhYmQ4NmM1MjRlMTdkYjk2Mjk2ZGVhMmE1NzNlOGVjYWYxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmI4NmJmZmVlMTJmMmQ2N2MyZDJjMDA5MDllYjcxZGQ2YTc5MjlkMTkwMmRiMGMxY2Q2YjU4ZjI2MTRiYTgxYSJ9"
         }
       ]
     },
     {
       "id": "claim_918dbe4cd8894d6ebdf40a846119b0bf",
-      "statement": "VitePWA 的预缓存由 workbox.globPatterns（js/css/html/ico/png/svg/woff2）与 includeAssets（apple-touch-icon.png）界定，配置未覆写 navigateFallback（默认 index.html 导航回退），但新增 navigateFallbackDenylist [/^\\/api\\//, /^\\/uploads\\//] 把这两个前缀的导航请求排除在回退之外——断网时它们直接失败而不是拿到应用外壳。",
+      "statement": "VitePWA 的预缓存由 workbox.globPatterns（js/css/html/ico/png/svg/woff2）与 includeAssets（apple-touch-icon.png）界定，配置未覆写 navigateFallback（默认 index.html 导航回退），但 navigateFallbackDenylist [/^\\/api\\//, /^\\/uploads\\//] 把这两个前缀的导航请求排除在回退之外——断网时它们直接失败而不是拿到应用外壳。",
       "evidence": [
         {
-          "resource": "repo://vite.config.js#L28-L29",
-          "version": "repo-lines-v1:sha256:09e53075e046ff928b6fa1c2a1f666984ddd0452eeee64fba905ea1956d302ec:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWY4MWE2MDJkZTg0NmE1ODkyYTEwN2NlM2U4ODA0NWYyMWIzZTMxMjc0NGM1MmQ0NDk0NmVlOWZiMmE2ZWEyYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODc0Y2U5ZWZjMmEyOTZlYzQ5Njc4NTc5NGRjYTA1YzAwNzJmNGExOTc3MTNhNWRiNDMxM2FkNzk4YTljNTdkYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmU4NWI5YzBmNjhhMjFhOGFhZjE3MGI3ZWFjYjAxMThhZTBmMzdjOWMwOWViZGVjMTgxMGY0NDM2YTA5ZmU4YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWU3MjIzOTBkZDk5Nzc4Y2VlNzU2ZTIzMmU5MTY4YmMxNTVjMTIyMDRjOGI1ZjMxZTdkYjI5NjYwZDBhZDM1MSJ9"
-        },
-        {
-          "resource": "repo://vite.config.js#L55-L70",
-          "version": "repo-lines-v1:sha256:ce53066e52622765712d4d5ac868855eade4ab237c5958a4d2ca16e106c141ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxZGJmZTkwMjNhMjNiMTFmYjFjYjVlNjFmYTEzZGRlYzE0NjQ2ZmUxOTQ5NzIxMWM0ZjAwOTExODZlZTU4YzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3YWRjZDVjNDQ3NjUyMDNhZDQzM2EzYzA1NDUyMTRmZjg0ZTY3MTc0YzE4MTVlYzdhYjQyNjNkNjBkZGMxYjcifQ"
+          "resource": "repo://vite.config.js#L82-L88",
+          "version": "repo-lines-v1:sha256:6e0839c130253bc1d94a77a80cbd6eda06db040b2da8450beb72d76b8f4148ae:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTcwN2I2OGRlOWEzOWY3MzMxMGZmN2I4MGQ2OWJjNzBhZjM5NzY2NTIwMDEzMjVkOTQyN2MwM2UwMzYwMDUzZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWU2NzNhYmQ0NTdhOTdlZWExN2E2MDA2MmViMGZhZWE2YmRmMDk0ODY4Y2M2YjhmOGMwZWJkYTJmNjFlZDQyZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2RkYjMyYTAyYTQzZTkzMDdkMTVjZTM3NGVhYjdjM2M2MzI1YzIzMTFmZjJhMjAzYjJkZTZlMDY0MDEzY2RiYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmU1YWFmNzkyYjQwMDc0MjFkZGVjOTE3ZmU5MDIxZWMyNDY5Y2Y5NmZhYTY2NTFiZDRiMjllN2MxNzQxZWI2YiJ9"
         }
       ]
     },
     {
       "id": "claim_8968bdb0afa74763a5696552ce8f3f04",
-      "statement": "运行时缓存已被刻意清空：workbox.runtimeCaching 现为空数组，原 /api/(episodes|series|categories|banners|friend-links|site-content) NetworkFirst 与 /uploads/ CacheFirst 两条路由已移除——隐私动机（API 响应含个人追番/历史/通知与站点配置，登出后 Cache Storage 不自动清理），SW 不再缓存任何运行时响应。",
+      "statement": "运行时缓存已被刻意清空：workbox.runtimeCaching 现为空数组，原 /api NetworkFirst 与 /uploads CacheFirst 两条路由已移除——隐私动机（API 响应含个人追番/历史/通知与站点配置，登出后 Cache Storage 不自动清理），SW 不再缓存任何运行时响应。",
       "evidence": [
         {
-          "resource": "repo://vite.config.js#L56-L70",
-          "version": "repo-lines-v1:sha256:3bb2343d48e75de68d0a06f1d150c325347d7b70632befdf24ff1c3ff8a321a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5NzhlMjUwM2I4Y2YzN2EwNmY3ZDZmMGEzYTZiNmZlMzU2OTFmYmNhYjUwYjg3NzVjYWI2ZmFiYzcxYzU5MmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjExYjYxZDQ1NWZhNTk5YTQ5M2EzZGNmMGIyNzVlNGRhYWJkYzVlZDMzMDRlNTY0MmI4NjI4NmNjYzFlODc5NDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3YWRjZDVjNDQ3NjUyMDNhZDQzM2EzYzA1NDUyMTRmZjg0ZTY3MTc0YzE4MTVlYzdhYjQyNjNkNjBkZGMxYjcifQ"
-        },
-        {
-          "resource": "repo://vite.config.js#L60-L63",
-          "version": "repo-lines-v1:sha256:8df4c87405e5d1f63c71c090440a1444f9d616d8c9b780b801cc3dfd6499c61c:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTk3NzVjZjIzN2E4ZDIwMTc1NjI4NTk4NzY0YmRiY2QyMGRhMDA1NGRjZmNhODZiM2NhMWQwMGZhNTYxYjkwZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDMxZjEwZjYxMDMzNzY0ODkzOGYyYzdlYmRmYWQyYTJmMTg5NDNhYWQ3ODI1MTU5Nzc5ZmNiZTJjNDNjMzMzNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2RkMmRmOTVlZDhiY2Q5ODQ3ZWUyZWM1OTMzZmExOWM1MmRjMWVmMjcyMzVmMGQ0MzA0MGJhZmU0MDc1NWNjYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjQzYTQ1YzNjYWUwZGYzZTMyZjRmMzhlNjBhOWYwY2Q1Mjk0NjU0NTJlMTE4MzJjZWNiZDgxNGZlZDE5ZmZkNiJ9"
+          "resource": "repo://vite.config.js#L83-L89",
+          "version": "repo-lines-v1:sha256:44dcc04375b5baba23f06d1875ad9256fb244314b99671a501160b1a4e15d4cb:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWI5NjM5MGMzMGY1MTc1YzliYjQyNjI0NDVkYTUwZjkwNWNiOWI1OTZkZDE2MWFjZDQ5NTk3MWEyMDk2MjIxZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjkwOTg3MjdmYTJhOGMzNjZkZGEwMWM1ZDQxMGE2MTIyNjJmOGRlM2I2MDBhNjZlNTdmYWJmNDFiZTEzZmZmMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjI3OGYxN2I5Y2EzNDY5ZDRjZGVmMjgzMDI0ZDRjOTMxYmU0ODUyNDM3YTlkMGI3YTcwNWUwMzZlNDE1NGZkOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDgwYTFmNjlkMGFkZDBmYWNhNmM1OWE3NTE3ODNmNDMwN2M2M2Y0OGUyZWZmNWRmMDlkZGU4NjEwZWZmMDQ3YyJ9"
         }
       ]
     },
     {
       "id": "claim_8736e8c01c0b4beea6a749e0242552a7",
-      "statement": "浏览器缓存层不再给任何 API 数据离线答案：/api/auth/*、/api/notifications/*、/api/ratings、/api/histories/* 乃至全部 /api/ 与 /uploads/ 请求断网都直接失败（denylist 排除回退、runtimeCaching 为空），离线可用的只剩预缓存应用外壳、应用层缓存（site_settings_cache/translation_cache_v2）与 offlineQueue 评分补偿；若恢复某条缓存必须连同登出清理一起评估。",
+      "statement": "浏览器缓存层不再给任何 API 数据离线答案：全部 /api/ 与 /uploads/ 请求断网都直接失败（denylist 排除回退、runtimeCaching 为空；跨域直连部署下还叠加跨源），离线可用的只剩预缓存应用外壳、应用层缓存（site_settings_cache/translation_cache_v2）与 offlineQueue 评分补偿；若恢复某条缓存必须连同登出清理一起评估。",
       "evidence": [
         {
           "resource": "repo://src/components/EpisodeDetail.jsx#L291-L298",
-          "version": "repo-lines-v1:sha256:31e8233736546f094e6083863c30d60129ee8e2d52bf939e1b53b3ef8306d6b7:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTljMTM1OTA2NjU2MzIzZDFjNWVhNDE2NTRlZTY2YWZiNTg1YWNkY2ZhZWFjYTEyMWQ1ZTMwYmYxOTNlZWRkNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTljMTM1OTA2NjU2MzIzZDFjNWVhNDE2NTRlZTY2YWZiNTg1YWNkY2ZhZWFjYTEyMWQ1ZTMwYmYxOTNlZWRkNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2RmY2I4ZDcyMTdlZmQ1YmI2MDMxMWUxZTEyM2VjNjE5MGRlODVhZDc0ZGJiYWQ5YWQwYzk4MTRmZTM1YTk3NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTU5YjBhNWRkYWZhMWU2MTcyNDM3ZTZiMGRhNDA2M2RhMTM5MWIxYmQ5ZTU1OGNhMmQ3YjZjYjdmMTFmYjYxMiJ9"
+          "version": "repo-lines-v1:sha256:9ada059e5d8ba5df4f47944aa6358a2294ef069b4e15ff7fdfae4619efb13120:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTg2MDZjNjhiODBmOWUxZjFiNmEwZTI4Nzk4NjdlMGVjNmE2NDliNzQzN2IzOWEzODc4YjBhMjliYjAyY2Y3MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmQ4OTIzYTdmMmM2ZGM5MjFjNTU5MzIwMjBmOGJjYThkOWEzZTRhOWZjNzQxM2MzYWMzYWYwYTdhNTAxNGIzZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTdiY2M2ZDUxNjVmMDM1YzlhODAxMmRlNWU5ZDY0NmE1N2Y1NzUwZjhmZjYwYmVjMDQyNzFiNGE2NzgwOGFmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDZiMjcyZWI1MTRiMTBkMDVkNWUwMWU4ZmJiZWYwZmQyODZjNzY0ZDYyOTRiYjAzYWYwZDI4ZmU1MDNlMmU5ZiJ9"
         },
         {
           "resource": "repo://src/utils/clearClientData.js#L1-L18",
           "version": "repo-lines-v1:sha256:565ac99a2c6febc146e348985629ec76630308e9030c6f6fa80ea7f279d3b118:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlMDIzZmZkNDA2MjI2YjIzNWYwOTk4Mjc3ZTNmYjI5ZjllOTA0YzBjMzg2YWViZjBiMWQwMmI2ZjI0NTE5ZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiZTg4NzhkOWI3ZTcwMThmZjZkOTFmNjQ1OGQyOWU2YTdmNTMxODJjZjRhYzEyZDk5NmNlNTIwYTI3NWI1YjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         },
         {
-          "resource": "repo://vite.config.js#L56-L70",
-          "version": "repo-lines-v1:sha256:3bb2343d48e75de68d0a06f1d150c325347d7b70632befdf24ff1c3ff8a321a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5NzhlMjUwM2I4Y2YzN2EwNmY3ZDZmMGEzYTZiNmZlMzU2OTFmYmNhYjUwYjg3NzVjYWI2ZmFiYzcxYzU5MmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjExYjYxZDQ1NWZhNTk5YTQ5M2EzZGNmMGIyNzVlNGRhYWJkYzVlZDMzMDRlNTY0MmI4NjI4NmNjYzFlODc5NDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3YWRjZDVjNDQ3NjUyMDNhZDQzM2EzYzA1NDUyMTRmZjg0ZTY3MTc0YzE4MTVlYzdhYjQyNjNkNjBkZGMxYjcifQ"
+          "resource": "repo://vite.config.js#L83-L89",
+          "version": "repo-lines-v1:sha256:44dcc04375b5baba23f06d1875ad9256fb244314b99671a501160b1a4e15d4cb:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWI5NjM5MGMzMGY1MTc1YzliYjQyNjI0NDVkYTUwZjkwNWNiOWI1OTZkZDE2MWFjZDQ5NTk3MWEyMDk2MjIxZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjkwOTg3MjdmYTJhOGMzNjZkZGEwMWM1ZDQxMGE2MTIyNjJmOGRlM2I2MDBhNjZlNTdmYWJmNDFiZTEzZmZmMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjI3OGYxN2I5Y2EzNDY5ZDRjZGVmMjgzMDI0ZDRjOTMxYmU0ODUyNDM3YTlkMGI3YTcwNWUwMzZlNDE1NGZkOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDgwYTFmNjlkMGFkZDBmYWNhNmM1OWE3NTE3ODNmNDMwN2M2M2Y0OGUyZWZmNWRmMDlkZGU4NjEwZWZmMDQ3YyJ9"
         }
       ]
     },
     {
       "id": "claim_172186acb5974b8d966d5f3ae50f8a5e",
-      "statement": "站点设置就绪后 AppContent 会把 link[rel=manifest] 的 href 改指后端端点 /api/site-content/pwa-manifest（仅当尚未指向时），并同步更新 apple-touch-icon、apple-mobile-web-app-title、application-name、theme-color、msapplication-TileColor；源码注释明确记录了不采用 blob: URL 的原因——浏览器无法验证 blob manifest，安装提示不弹出。",
+      "statement": "站点设置就绪后 AppContent 只同步 apple-touch-icon、apple-mobile-web-app-title、application-name、theme-color、msapplication-TileColor 等 meta；link[rel=manifest] 不再被改指后端 /api/site-content/pwa-manifest（跨域部署下动态 manifest 会以 API 域名解析 start_url/scope/icons，改向逻辑已整体移除），保持构建期 vite-plugin-pwa 注入的同源 manifest。",
       "evidence": [
         {
           "resource": "repo://src/App.jsx#L452-L500",
-          "version": "repo-lines-v1:sha256:ec247462d139f3ea47660e8c6b62cb41c62c1c8dfa64468d3238e30dbfb8ab91:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1YmRkYmQxZThlNGZkNzhiN2ExY2EwMDQ3MWY5YzljN2ZjYjVhYjQ3ZDViNzNlN2IxZjdkZDU4YjAxZGUzZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1MWIyZTExNDYyNmU1NTgzYTVlZjE1Y2VlMWU2ZTJmNzUzZWZkZDgzYjZiZDUxYTgwYjA1OGU2YTI2NWRjZTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0NjY1Nzk1NjU4OTZiMWYwZTFkNmUxMDgxOWQ5NTFiOWEyNmU4NWY3ZTEyMzlmMjNkMmNmZmQ2NzRiYTA5ZGIifQ"
+          "version": "repo-lines-v1:sha256:493196aef98d3e897685454ef3ba6967560d75f15efa698dd283bd8a31b1a5c6:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlNzlmZjEwN2E0ZGI1ZmNhMTgxNWNhYmFiODA0MjIyNDAzNDliZDdiNTJiMzZmNGQzZGY3ZDkwZmI1ZjJhMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmOTMwZjlmMjc4ZWZlNmFhNGViNGJiOGIwZWE5ZWExOWY4MTU4M2RjODg5Zjk0Yjg1MTIzN2E0YmRjMTA2M2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0ZGEyN2IxOGIwNzJlZTFhNmZkNmQxN2NjNmNkN2RjMjM4MzAyYmQ1ZTk0YWUzNjg5YzU5NzBjOWZiYjA4YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkNWI2MjJkN2EyMjU3MTY4MGNmMzlkNWQ3NmU4ZjAwZmUwNjU0YWQwMDg0MGFhZWQyNDBiOWI0YmJmNjI0NjkifQ"
+        },
+        {
+          "resource": "repo://src/App.jsx#L469-L472",
+          "version": "repo-lines-v1:sha256:9f40a02390938a4cc934b369a7dc6a239c6c57794bd7e105c537782a0ac9e714:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWVhMjA5YmI1NWUwODI2YmFlZGE5MzU1NDk0OTBkODQ4ZDE1NDNhOWJlZmVhOTA4OTBiYjYwOTI4OWNmNzFjNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk2NmZiZmE4ODk5OGRhNzQ2NTZjNTAxOTQ5NTZjMjVmMDg0OTQ1NzY2MGMwMDlmZTYzZDFlOWZhOWRjOTMxYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjJmN2U0ZGE0NTY4NmQwZWU5NmMxMDRjYjMxMzhmNWViOWY2Zjk5Y2NhMGNjMzZjMzVlYjQwMWZmZDJiMWU0NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTE0ZWY5OTBkMDRjMWZjN2JkMDI1Mjk1Y2I0NWZhODA1YzMyNTY1ZjM0Mjg4ZmNkYzA1ZmMyMTZmNjY4NTFiMSJ9"
         }
       ]
     },
     {
       "id": "claim_72a4085a73fc4c7e915a4e5287c81d15",
-      "statement": "运行时 manifest /api/site-content/pwa-manifest 不再被 SW 缓存（runtimeCaching 清空且被 navigateFallbackDenylist 排除）：后台改完名称/图标后客户端立即拉到新值，不再有 api-data 里最长 1 小时的旧副本；代价是断网时动态 manifest 一定拿不到（安装提示不弹），唯一兜底是构建期预缓存的 /manifest.webmanifest。",
+      "statement": "动态 manifest 端点 /api/site-content/pwa-manifest 已不被前端消费（改向逻辑移除）：可安装性完全由构建期预缓存的同源 /manifest.webmanifest 承担，断网时安装提示仍可用；后台改 pwaName/图标只能影响 meta 层，要改 manifest 内容必须改 vite.config.js 并重新构建。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L459-L472",
-          "version": "repo-lines-v1:sha256:cc6f0cc2b03147eb82fbdd420385cf6ec52f8154fd6df830edb8cda8015b9cb6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5NTU1ZjU5Y2I1OTNjYjJlMDBkZmU4YTMzMWQ0MjgxM2NlMTA5ZTFiNjI0YjllZmUzZWI5ZGEzMmQ4ODUwODUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhNDdiMDA2Mjk4MDU2NmQ3ODBiZDdmYTlmZDc2OGFiZmY4YmIxODY4YjFjN2YyNzlkYzg0MzlkNTMxNGZkNjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNiZDZmNDQ3MTFjYWJkNDhjZTM4NTUzYmZkMGMyNGY2MDVmYmYxNzQzYjlmODc4ZjA3MzI4OTNhZWQzMTM0ZDgifQ"
+          "resource": "repo://src/App.jsx#L469-L472",
+          "version": "repo-lines-v1:sha256:9f40a02390938a4cc934b369a7dc6a239c6c57794bd7e105c537782a0ac9e714:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWVhMjA5YmI1NWUwODI2YmFlZGE5MzU1NDk0OTBkODQ4ZDE1NDNhOWJlZmVhOTA4OTBiYjYwOTI4OWNmNzFjNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk2NmZiZmE4ODk5OGRhNzQ2NTZjNTAxOTQ5NTZjMjVmMDg0OTQ1NzY2MGMwMDlmZTYzZDFlOWZhOWRjOTMxYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjJmN2U0ZGE0NTY4NmQwZWU5NmMxMDRjYjMxMzhmNWViOWY2Zjk5Y2NhMGNjMzZjMzVlYjQwMWZmZDJiMWU0NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTE0ZWY5OTBkMDRjMWZjN2JkMDI1Mjk1Y2I0NWZhODA1YzMyNTY1ZjM0Mjg4ZmNkYzA1ZmMyMTZmNjY4NTFiMSJ9"
         },
         {
-          "resource": "repo://vite.config.js#L56-L70",
-          "version": "repo-lines-v1:sha256:3bb2343d48e75de68d0a06f1d150c325347d7b70632befdf24ff1c3ff8a321a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5NzhlMjUwM2I4Y2YzN2EwNmY3ZDZmMGEzYTZiNmZlMzU2OTFmYmNhYjUwYjg3NzVjYWI2ZmFiYzcxYzU5MmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjExYjYxZDQ1NWZhNTk5YTQ5M2EzZGNmMGIyNzVlNGRhYWJkYzVlZDMzMDRlNTY0MmI4NjI4NmNjYzFlODc5NDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3YWRjZDVjNDQ3NjUyMDNhZDQzM2EzYzA1NDUyMTRmZjg0ZTY3MTc0YzE4MTVlYzdhYjQyNjNkNjBkZGMxYjcifQ"
+          "resource": "repo://vite.config.js#L52-L89",
+          "version": "repo-lines-v1:sha256:14bf057761bcf92ef8f3eca4b377a821ab590ca9240bef25dc2254d794c60d2d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0NGJmZGZmZTllZmNlYmRlNDM5MGJmZDk0NzJmOGM1YTM2YjU3NjAwOWQ2ODYyYjNmMTQxN2UzMGMzNDhiZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5MDk4NzI3ZmEyYThjMzY2ZGRhMDFjNWQ0MTBhNjEyMjYyZjhkZTNiNjAwYTY2ZTU3ZmFiZjQxYmUxM2ZmZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ2MTIzNzQyMTY0YWQyMTcyNDg2MjlkMWJjOTA0NTA5MjcyMDE4MjgzNDcwYjZhM2U4OTA0YWNmZmI4ZjU2NGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4MGExZjY5ZDBhZGQwZmFjYTZjNTlhNzUxNzgzZjQzMDdjNjNmNDhlMmVmZjVkZjA5ZGRlODYxMGVmZjA0N2MifQ"
         }
       ]
     },
@@ -106,11 +102,11 @@
       "evidence": [
         {
           "resource": "repo://src/components/Home.jsx#L40-L56",
-          "version": "repo-lines-v1:sha256:44cd617037c5ec42ba5863cc3a21e826f31f67be7b080c10e465f4237d6878ba:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjZjdmYTUxN2Y5YTFiOTc5ODY2YmZkZGEzZTcxZWVmM2ZkZTQ2N2U2MGVkZTI1OTI4NTk2Y2M4YzAwMjYyOTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlYWUwNDFiN2Q1ZWMwZGQ4YTA1YmI3Yjk4MGY3NGY1ODgyMGUyMjI2NTVmMTNmMzVkNzNiNGJmMzRmYWZmYTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5NjE2OWJmM2E5OGYyODhmMmNhOTQzZjI5MTBlODBhZTg4OWM0ZjAyMDUzNGZjOWQ4ODA3M2YzMDExZDBmOGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjViZWMwOWYzZTYyNDc3ZjNiM2Y4MzBhMzBhYTFmN2Q0YWFiNjc5ODQ3NGMwOTBiMjE0NTNiMzRkMjI1MDJkODgifQ"
+          "version": "repo-lines-v1:sha256:63fc789fc0baf45ec76146f3205d050f564d964df90c0551bc9872c0fcc37db0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5N2M1YmU2ZDM5ZTU0MzE5NmI4ZmZmZDUxOThiNjg1N2EyMTQ4YzljN2M5Y2YyN2Q5MzlhNjc5MDU5ODM2YzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4YzEzYTU2MGFmMTg2MjJmY2ZjZTczZTY3NGZjN2UyODI5OTA1NDRhZTFmYzNjMTJkYWRiMzJmYThmNzdjODMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhNjBkMzMwMWYyZGM4MzY0MjFiYjY0YTJlMzM4MjJhZGI1ZmI3MzA1NDRlNTlmZjE5MjI1Y2Y1YWViY2I5OGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1NjNhNzAwMDA1MjhlNmMwYjJiNmJmNTM3MjFlZGRiMTM2NzUxY2RlYmU0YzVjMjU3NmFlN2ZlZTM0ZDE4YmYifQ"
         },
         {
-          "resource": "repo://vite.config.js#L46-L56",
-          "version": "repo-lines-v1:sha256:fcc4506db1509e1c08e32e1a8f9ef12b826be78f403667765818f81813284afd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmMjBlYzZiNDUwZTVmNWZkNTZlNmMyMDQ0OTFkNDA5OTViMGYyNDdjMTIzNDFiOTkwMjJjN2M2MjZjODRkMjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5NzhlMjUwM2I4Y2YzN2EwNmY3ZDZmMGEzYTZiNmZlMzU2OTFmYmNhYjUwYjg3NzVjYWI2ZmFiYzcxYzU5MmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkMDE1YWQ2ZGVhMmFkYmExZDUyMzE3NDRjZDIxYzBkYzU3NzhmNDdmYWYzY2Y3NjRiZDJlYmIwZjQ4NTBiZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZjNzBiMmNlZGIzZDFjNmFlZGEwNTM1NmRjMmYxMDIxZTdmNTBhYWQxZWY5NWFhMzRkOTE1YjhkOTcyNzRiOTgifQ"
+          "resource": "repo://vite.config.js#L70-L80",
+          "version": "repo-lines-v1:sha256:da6038881f9d0c6411748d630f9603e33f43ac4796d62b0b51334f86d9f612a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwMWY4ODJjNWNjMDUxZDI0OTU0ZWIyOGZiZTE4NjEzZDI1OTAwNzk4OGQxOTFkZGE0MDU2ZjQxNmY0NTYyZDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlNjczYWJkNDU3YTk3ZWVhMTdhNjAwNjJlYjBmYWVhNmJkZjA5NDg2OGNjNmI4ZjhjMGViZGEyZjYxZWQ0MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2NjNiMzIwNzI1MTJkOWNiZmRhZDA3ZTIwN2EzN2FjYzQ5N2YxYmVkOGY4MjFmYzAxZTNlYTk1MmZjYWQyZjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY1Njc3NmI3MjBjNGE5YjVkMmRhNjQ4NTU4NGM2ZmU3ZjNlMDYwNTJlZWNiOTUwNDM4ODYwZGY2MDE1YTcwNjMifQ"
         }
       ]
     },
@@ -143,7 +139,7 @@
       "statement": "NavBar 里还有一份独立的 beforeinstallprompt 监听与安装 state，但 handleInstallClick 和 isInstalled 在 JSX 中没有被引用（死代码），appinstalled 也只在这里监听；因此实际的安装入口只有 InstallPrompt，通过浏览器自身 UI 完成安装也不会关闭这张卡片。",
       "evidence": [
         {
-          "resource": "repo://src/components/NavBar.jsx#L58-L111",
+          "resource": "repo://src/components/NavBar.jsx#L59-L112",
           "version": "repo-lines-v1:sha256:00742f8da2eb22367e6dcc0a6513eace5e299875b0bf2ff4af2bfe6c32e9e9bc:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliYjk2OWEyOGQ4YmFkNmIxZDM0NDIyYThmZTI0OTc5OTk2NmIwYjM2YTRmYmRjY2E3N2JhM2JmMmIyOTI2YWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBhYmQ0ODMwMWJmYTM0NWQ4YzllYTEyYmVmN2Y0NWY5YTc5NmNmNTc3OGJlZDM2MWI2MWQ1ZDViYjRlYzY1MzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1NzdkZTZiZDFiZjlkODdlMjVjMWVkOGQwZTk0YzNiZjFhNzE0MWM3MjVkMzc4Y2M2MzM4NjdiMTJiZDQ3YmQifQ"
         }
       ]
@@ -163,7 +159,7 @@
       "statement": "离线队列的只在上线上重放：AuthContext 在 window 的 online 事件里动态 import('../utils/offlineQueue') 并调用 processOfflineQueue(axios)，传入的是带 cookie 与 CSRF 拦截器的全局 axios 实例；没有应用启动时的回放入口，也没有并发锁，因此离线关闭应用后直接在线打开不会重放，而短时间两次 online 事件可能重复 POST。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L141-L149",
+          "resource": "repo://src/contexts/AuthContext.jsx#L142-L150",
           "version": "repo-lines-v1:sha256:c1b97442cfbeeb48be7c24f90bc726f28c02a63d01bfc22571ab6b5ccd463ece:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk2NmZiZmE4ODk5OGRhNzQ2NTZjNTAxOTQ5NTZjMjVmMDg0OTQ1NzY2MGMwMDlmZTYzZDFlOWZhOWRjOTMxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWEyNTYxMTE3ZTM4NTM0MTE2NTZmMzllNmY4NTliZTcxNWM1MzNjNzM3MDIzNzBhMjg1MWUyNTI5NmVmN2YzYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWI5YzMyNGZhN2IwYTIzM2I0NGY3NmE1NzZmMjJmYzhlZDQ4YzE3YmRiZWEzMDcwNDI4MTMwMDMzNjg1Y2QyNSJ9"
         },
         {
@@ -177,7 +173,7 @@
       "statement": "唯一的离线入队点是 EpisodeDetail 的 handleRate：只有 POST /api/ratings 抛错且 navigator.onLine 为 false 时，才以 { method: 'post', url: '/api/ratings', data: { episodeId, score } } 入队；收藏、观看历史、评论等其他写操作都没有离线补偿。",
       "evidence": [
         {
-          "resource": "repo://src/components/EpisodeDetail.jsx#L277-L300",
+          "resource": "repo://src/components/EpisodeDetail.jsx#L279-L302",
           "version": "repo-lines-v1:sha256:b5ac26a0751b18b6602fe0466ff927a401abceb3b89c7efd56c0c5024567e0a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZlM2ZjNjNkNDA3N2ZlMjIwNTI0YTliYzAzZjk5MzgwNzVkNjdhNjU5OTVjOWQ0NWQ0YWNlMmY3YmM1ZTY0ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczZmUyZDgwZTc4OWE1MDBkMjViZDJkYTMxODhmZWRjZjQ5MTIzNmE5YzBkZTg2NTkzODNiMDI0ODU4NzFkNGIifQ"
         }
       ]
@@ -197,26 +193,26 @@
       "statement": "auth:session-expired 在两处被派发（401 处理与 419 刷新失败），且两条路径通常紧接着 window.location.href = '/login' 整页跳转，因此在普通页面里 OfflineIndicator 的“登录已过期”红色横幅基本随卸载消失，只有在已处于 /login、/register、/reset-password 或请求带 skipRedirect 时才稳定可见。",
       "evidence": [
         {
-          "resource": "repo://src/utils/axiosConfig.js#L249-L262",
+          "resource": "repo://src/utils/axiosConfig.js#L256-L269",
           "version": "repo-lines-v1:sha256:b6e9944267b6a470926dd2289a8fb8756181715e45fd46ac9eb3e5e6d5549066:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmMDliMjYxNDlhNzI0Y2E5ZGQ0ODJkOGZhMTc4YThiOGZhMDA0NzAzMjBhOGVlY2Y0YzRlZDU4Njk5ZTExNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliNjJmNjBkODU5MGE1NzljZjQ2ZjhkNjczNzhjNGM1NzJiOTYyY2VjY2RiOTBjN2E1ZjdiNDJiOTYwNzgyYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ1OTk3MzIwYTUzOTgxNzcyNTU5NjY5N2ExNGZjZWQzZGEzMGE0YmQxYjkyNjNhMGJmOGJlNjkxZDZlODdhNmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1NTQ1ZmIwYmYwNmFhYzU2OWFmNjYwNzQ2NTY1ZGQ4ZDFmZjQ0MjAwY2FkYTY3ZmYxYWM5YzMyYWU1NDEzZTAifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L91-L110",
+          "resource": "repo://src/utils/axiosConfig.js#L98-L117",
           "version": "repo-lines-v1:sha256:18aecda1ff0a47fc57c0e90cb5e6f5db3442469a4365bd2a3bd7ee6f6f525c12:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxYzk5YmE5MzIwMjE2NDMwODc0OWY0ZGY5MzcyN2NhMmRkMDFjZjk4M2RjYTI3YmUwYmFlZDA1NzkzOTgzNjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhODY0OWRiMjkzYTM4MGE2MzNjNGUzN2IyYTFlYjY1YTUwNWRiMDAzOTVjM2Y5NTllN2VhZjMwZGU2NjNjNTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkNjI2NGJkYzQ0ODFiZDRiM2M5ZmZmYjIyZTBiYzQ1ZWMyYTIxMGMzMGI4NWQ5MjUxMGY4ODYwOTNlYTY0ZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllYWEwNjJhZjRiZTBjMjM1MTIxMTMwNjc0NmVlNDM5OTMwZWQ1MDRlYWFhYjExZjUwMTg2NDg5NzY2Yjc5NTUifQ"
         }
       ]
     },
     {
       "id": "claim_4a3b8c73e0904c1f816700ac970275fa",
-      "statement": "index.html 里的兼容遮罩刻意只用 ES5（先为缺失环境补 JSON.parse/stringify），仅用 UA 判定 MSIE|Trident 与 Edge 但不含 Edg 两类目标，命中后构造 z-index 2147483647 的全屏遮罩、语言切换只写 localStorage 后就地重绘、并用 XMLHttpRequest（IE 下回退 ActiveXObject）取 /api/site-content/about 的 ICP 写入 localStorage._icp（读缓存回显与回填两处 innerHTML 拼接都先经局部 escapeHtml 转义）；它不做版本阈值或特性检测、也不读 bypass 记录，并且不能真正阻断启动。",
+      "statement": "index.html 里的兼容遮罩刻意只用 ES5（先为缺失环境补 JSON.parse/stringify），仅用 UA 判定 MSIE|Trident 与 Edge 但不含 Edg 两类目标，命中后构造 z-index 2147483647 的全屏遮罩、语言切换只写 localStorage 后就地重绘、并用 XMLHttpRequest（IE 下回退 ActiveXObject）取 __API_BASE_URL__/api/site-content/about 的 ICP 写入 localStorage._icp（读缓存回显与回填两处 innerHTML 拼接都先经局部 escapeHtml 转义）；它不做版本阈值或特性检测、也不读 bypass 记录，并且不能真正阻断启动。",
       "evidence": [
         {
           "resource": "repo://index.html#L131-L135",
           "version": "repo-lines-v1:sha256:8fd0cda9fe8742afc6ff67471d986af77b0ce47031f70f65f9247e2781c27f34:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzFiNzRkYjdmMGU2M2Q3ODMyMzYwZWQ3MDdmOTkwMjlhYWUxZTFhM2YwNjIzZjdjODYyZjE4OWJlZWY5MTI2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZiMDQ0OTE0Njk3MjJlODM2M2E5NGU0MDQ0NTM4ZTAxM2EyYTIxN2UzNmIxZTU2OGJhNjBhY2I3YjRjOGYyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTI3MzAxYzYyMTA4YWRlZGMzYmEzNmQxZWI5ZGI2MDViYjM0YzdmMGRmYjA2NTI5NGExMjFlOGEyOGE4OTAyOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDRhNTBmMGE0ODk0MzVmMjUzODEwZjNlYjhlOTZlNzUyZTViOTY2M2RkYzZhMTMxNzZiNGI3YmNiM2ZmNjVmOCJ9"
         },
         {
-          "resource": "repo://index.html#L57-L234",
-          "version": "repo-lines-v1:sha256:7c85c7f4e25a21dc23579d29b66003230cf5f53a017ba2c8667e9dc43de77c09:eyJzZWxlY3RlZExpbmVDb3VudCI6MTc4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI4NmI4ZjRlMDA4NDM5MDk3ODM4MWY1YzhiMzJhMzVhMDM3NjdjNTExNjM2NGJmOGEyYjMwNjg5OTY2MDRhYjY5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJiNmJmODFjOWZlZWM4OGI4MDExYzE4ODM3YzVlYjVjNGI3ODIxNDY5ZTUyNTNmZDQ4ODcyODJhOTBlNzFiM2IwIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkMjc5ZTY5ZmZlZTNmMDdlNTAwMjFjM2NiOTUzN2VlNGNmZTcyNmMzNzQyYjNiM2ZhNjYxODI2MWNlNTU1YjVjIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI1NTQyZjQzNThiMWIxZGI5YTQ3ZmFjZDNlOWNkNmQ4ZTU0OWZmYzIwYzUxY2JkZDg1NzU0Y2M4ODFmNzBiYTJjIn0"
+          "resource": "repo://index.html#L57-L238",
+          "version": "repo-lines-v1:sha256:727c8daf9b3ee9192d39603a36c27382faceb12f1f4d8efafdf60236ee0ce262:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI4NmI4ZjRlMDA4NDM5MDk3ODM4MWY1YzhiMzJhMzVhMDM3NjdjNTExNjM2NGJmOGEyYjMwNjg5OTY2MDRhYjY5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJkM2VkODFjZDE2ZGY4OGQ2OTIxNjY0NmQ4ZGFkYTc2MzRiMzNhNjk4NmU5YzIzYTcyNjMxZDE5MzNiNjM1YTUyIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkMjc5ZTY5ZmZlZTNmMDdlNTAwMjFjM2NiOTUzN2VlNGNmZTcyNmMzNzQyYjNiM2ZhNjYxODI2MWNlNTU1YjVjIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
         }
       ]
     },
@@ -225,7 +221,7 @@
       "statement": "BrowserCompat 是 React 层的第二道闸门，包在 ErrorBoundary 与 AppContent 之间（Provider 链为 Router → Theme → I18n → SiteSettings → Auth → ErrorBoundary → BrowserCompat → AppContent，原图标层 IconContext 已随自研图标引擎删除）：effect 内先查 browserCompat_bypass_<UA 哈希> === 'ok' 直接放行，否则依次做 UA 阈值判定（IE、EdgeHTML、Chrome<60、Firefox<55、Safari<12）、六项特性探测（Promise/fetch/IntersectionObserver/ResizeObserver/Object.assign/Array.from）与 CSS 自定义属性元素探针。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L622-L637",
+          "resource": "repo://src/App.jsx#L615-L630",
           "version": "repo-lines-v1:sha256:ffbe3b41b651bfc02676085a0931be10a5dc52b510927b92d9ffc100a37e90a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmYzMzZGE1MTNkZWZjMmZkZjg3YzNiNjY2OTkyYmMwZTUyMmZhZTA5N2YxMjYxZDg3MDIxOGUxNGY5ZTY5NzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmZTE0MDhjNWRjMzcyM2M2MGRhMmM0YTA3MmM0ZjBmNzc2ZjRkOTM5ZTc0YmIzOTFhNTI5ODAyMzM5ODhmODYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljZjcxZTI1Nzk0ZmMxNTA4NzA3OTMxOWI0MWFmZTk5ZjJjZjliMzFjMDdlZmEyZTFjYzEzYjQ1MzE1OWRmOTUifQ"
         },
         {
@@ -257,7 +253,7 @@
           "version": "repo-lines-v1:sha256:d06c85a21ea0f17204c5cf4e8d559f9aa1ddb1151c1da8e2053b610d49eeb929:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmZmU0MmZmZmU3NTA4OTQwZTcwNzQ3NGYwN2E5MDhkNDIyZTYxZDNiYmNmYTZkYTNkZTQ3ODQyZjdmNzQ4NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI5NTk5YmM2N2E0ODgyZGI2MTE1ZmI4NTEwNGE5ZjVkODQ3NTQ1ZDE4ZGRmMzMyZTJiMGE4YmM4OGRhMDY0M2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk5Njc5MzQ3MDRjM2UzY2UxOGVmMjY4NjEwYjEzNjdlOTI5Njc4ZGVmZDQwYzBiYzAwMTMxNTVkMzk2ZTQzMjcifQ"
         },
         {
-          "resource": "repo://src/locales/zh.js#L58-L69",
+          "resource": "repo://src/locales/zh.js#L60-L71",
           "version": "repo-lines-v1:sha256:5ac1e42bafabc0b6ee43d49b916b3d65a10494c22bd00f1572415dea318975d0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1MDg4ZDMxN2EwYmIxNjdhNzc0ZjBlNDI0N2Y0ZGEyNWI0MmE3NjUyZTBiY2JjZTViYTI4YWYyNzA2ZWExY2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwOTIzN2I2MWMzZDhiZjU2ZWM2NGExNTExZDgyNmJjMzM1ZGM5YjVkYzU3OTY1ZWZlODlhOGU1YmM3ZmJhNTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyOWE5NmNiZGEzODkzNDFlMDdlYzAyZTJhYzczNjg3NGJjMDNjZmYwYjk2MWI4ODA4OTA0MDg5NWUyY2ZiZTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg2OGRjZDYxNDBlMmQwYTI5MmNhMGEwYTQ3NDk2ODlkZTdmNjk3ODhiZThjMzMyZTk2OWQxZWEzNDVhNjM2Y2IifQ"
         }
       ]
@@ -281,11 +277,11 @@
       "statement": "OfflineIndicator 与 InstallPrompt 只渲染在普通站点外壳里（与 NavBar、FooterBeian、AnnouncementPopup 同层），AppContent 的 /admin 分支直接返回后台路由，因此后台页面既没有离线/恢复/会话过期提示，也没有安装卡片。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L509-L515",
+          "resource": "repo://src/App.jsx#L500-L506",
           "version": "repo-lines-v1:sha256:595f7562cc4f84369f400fbbee900603426edf6adbff4bcd914f56aeb9650acb:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWY5MzBmOWYyNzhlZmU2YWE0ZWI0YmI4YjBlYTllYTE5ZjgxNTgzZGM4ODlmOTRiODUxMjM3YTRiZGMxMDYzYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2MwOGUyMzNiYjJmYjQwMmEyYmQxYzJkYzc5YzQ2NGVmODA3OTEyODFlZTFhNWFhNzMwZmEzZDU4YTgyMjMwMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjJkZmMyODQwMWM5YzM3NGQwMWQ1NGYxN2E2ZDIwNDJlZjA5MDAyN2JjNTQ0YzI4MzNkZmI5ZDE4NzMxMWJjOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzE2ODI0Y2YyN2FkMjNlYTZiYjg0ZjI5MDA4ODllNzcxN2M0ZGU5Y2VhZjYyMjZmYjQyYWYxODMwNDY3NzA1NSJ9"
         },
         {
-          "resource": "repo://src/App.jsx#L588-L594",
+          "resource": "repo://src/App.jsx#L578-L584",
           "version": "repo-lines-v1:sha256:c94e4d373281896ab490df9fa71dce427c0622358cd39745ac25ad8d15f46f8a:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGFiMjQxYzJjYmQzNzNiZWJmMjIwOWY1NzMwMzMzNTUwMzRlMTIwOTIxMWQ0NGExNDk0OThkYzM0MjdjYjQ3YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2RhNDUwNTdiNzQyMDI0M2M5YTIyYjFlYjBiZDQ4MWQwM2RhODY3NjlhNzYwZTU4OTljMmY2MGU1N2EzMzE2NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzY5NjI4ZmE3MWMxN2FkMTZiNjJkNjBiYzgxMTQwYjZmNTNjMGRlNWY1NGZiNWU1NjRkNjA0MjViOGU2YjQ5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGQwY2FiNWMxNTAxY2YyNWIzYmQ5NmEzNmUyYmUxMTQ3MTQyOGNjYTI5ZDVkM2UyMGY4NGFlYzgzY2E5MDg0MCJ9"
         }
       ]
@@ -293,6 +289,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-11T16:33:24.381Z"
+    "at": "2026-11-13T19:07:27.754Z"
   }
 }

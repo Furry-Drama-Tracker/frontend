@@ -18,6 +18,8 @@ sources:
     resource: repo://src/components/AdminThemeReview.jsx
   - id: openwiki-source-90df6398a9bdee1975095452
     resource: repo://src/components/AdminUsers.jsx
+  - id: openwiki-source-796bf829c11f93de2a5a3aea
+    resource: repo://src/components/Force2FASetup.jsx
   - id: openwiki-source-1d160b0a5a99aa918edefd21
     resource: repo://src/components/ForceEmailChange.jsx
   - id: openwiki-source-0563314e4e01b2956353b034
@@ -32,10 +34,10 @@ sources:
     resource: repo://src/utils/axiosConfig.js
   - id: openwiki-source-0772ae522304487a6af3bee6
     resource: repo://src/utils/clearClientData.js
-generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
+generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-11T16:33:24.381Z
+    at: 2026-11-13T19:07:27.754Z
 ---
 
 # 路由分区与访问守卫
@@ -53,13 +55,13 @@ verified:
 | 公共树 | `pathname` 不以 `/admin` 开头 | `skip-link` → `AnnouncementBanner` → `NavBarErrorBoundary`/`NavBar` → `.container#main-content` → `.page-enter`（`key={location.pathname}`）→ `Suspense` → `Routes` | 30 余条扁平路由 | `path="*"` → `NotFound` |
 | 后台树 | `pathname` 以 `/admin` 开头 | 无前台骨架，只有 `Suspense` → 后台 `Routes` | `/admin` 跳板 + `/admin` 布局路由及其 23 个子路径 | **无** `*` 兜底 |
 
-两个分区之前还有一道共同前置：`initializing` 为真时直接返回一个 `common.loading` 占位页，所以后台页面同样要等 `AuthContext` 的 `GET /api/auth/me` 初始化结束（无论用户是否登录）。`FooterBeian` 与一批全局浮层（`FeedbackModal`、`ThemeColorPicker`、`OfflineIndicator`、`InstallPrompt`、`AnnouncementPopup`、`ForceEmailChange`、`apiError` 提示条）都只出现在公共分支的返回值里，后台分支一条都不渲染。这个不对称有实际后果，见后文「forceEmailChange 拦截层」。
+两个分区之前还有一道共同前置：`initializing` 为真时直接返回一个 `common.loading` 占位页，所以后台页面同样要等 `AuthContext` 的 `GET /api/auth/me` 初始化结束（无论用户是否登录）。`FooterBeian` 与一批全局浮层（`FeedbackModal`、`ThemeColorPicker`、`OfflineIndicator`、`InstallPrompt`、`AnnouncementPopup`、`ForceEmailChange`、`Force2FASetup`、`apiError` 提示条）都只出现在公共分支的返回值里，后台分支一条都不渲染。这个不对称有实际后果，见后文「forceEmailChange 拦截层」。
 
 `.page-enter` 的 `key={location.pathname}` 意味着前台每次换路径都会重新挂载页面组件、重置页面内 state 并重放进入动画；后台分支没有这层包装。
 
 ## 公共路由树
 
-公开页面（`/`、`/episode/:id`、`/login`、`/register`、`/reset-password`、`/verify-email`、`/verify-email-change`、`/verify-device`、`/shared-folder/:shareToken`、`/calendar`、`/timeline`、`/creator/:id`、`/privacy`、`/terms`、`/about`、`/friend-links`、`/license`）直接渲染；`/login` 与 `/verify-device` 复用同一个 `Login` 组件，只是后者对应跨设备登录确认流程。
+公开页面（`/`、`/episode/:id`、`/login`、`/register`、`/reset-password`、`/verify-email`、`/verify-email-change`、`/shared-folder/:shareToken`、`/calendar`、`/timeline`、`/creator/:id`、`/privacy`、`/terms`、`/about`、`/friend-links`、`/license`）直接渲染。（原 `/verify-device` 路由已随设备验证码链移除——新设备登录不再拦截，只发提醒邮件，登录页不再有跨设备确认流程。）
 
 需要登录的页面用统一的**内联判空**写法，而不引入独立守卫组件：
 
@@ -67,7 +69,7 @@ verified:
 <Route path="/profile" element={user ? <Profile user={user} setUser={updateUser} logout={logout} /> : <Navigate to="/login" />} />
 ```
 
-覆盖 `/profile`、`/devices`、`/change-password`、`/change-email`、`/account-security`、`/two-factor`、`/delete-account`、`/settings`。两点值得注意：
+覆盖 `/profile`、`/devices`、`/change-password`、`/change-email`、`/account-security`、`/two-factor`（`TwoFactorPage`：2FA 方法页签 + Passkey 凭据管理）、`/delete-account`、`/settings`。两点值得注意：
 
 - 这里用的是 `<Navigate to="/login" />`（不带 `replace`），而后台守卫用的是 `replace`。未登录访问受保护前台页会在历史栈压入新条目。
 - `Login` 不读取 `location.state`/`from`，登录成功后固定 `navigate('/')`，因此**没有「登录后回到原页面」**的体验；深链被踢到登录页后只能自己再点回去。
@@ -178,7 +180,7 @@ sequenceDiagram
 | 公共多为精确匹配 | `/settings` → `pageTitle.settings` | 少一个字符就落到 `null` |
 | 参数化路径用前缀 | `/episode/`、`/shared-folder/`、`/creator/` | 预留子路径 |
 | 声明顺序即优先级 | `creator-profiles` 先于 `creator-profile`；`theme-review` 先于 `themes` | 更具体的前缀必须写在更宽前缀之前 |
-| 共用标题 | `/login` 与 `/verify-device` 同为 `pageTitle.login` | 复用同一组件 |
+| 共用标题 | `/login` 独占 `pageTitle.login`（原 `/verify-device` 路由已移除） | —— |
 
 它是与路由表**完全独立的第二份清单**，两者没有共享常量，所以新增页面时最容易漏的就是这里：漏了不报错，只是浏览器标签显示站点名。
 
@@ -188,15 +190,15 @@ sequenceDiagram
 
 两条 Suspense 边界各自包住自己的 `Routes`，`fallback` 都是 `LoadingFallback`（内部用 `useI18n` 读取 `common.loading`，因此必须在 `I18nProvider` 之下）。`NavBar`、`AnnouncementBanner`、`FooterBeian`、浮层都不在 Suspense 内，所以切页时只有内容区回退到加载态，外壳保持稳定；后台树没有外壳，加载态占满整页。
 
-## forceEmailChange 全局拦截层
+## forceEmailChange 与 force2FASetup 全局拦截层
 
-这是唯一把「会话状态」和「路由分区」耦合在一起的机制，链路分三段：
+这是把「会话状态」和「路由分区」耦合在一起的机制，链路分三段：
 
 1. 后端在写操作上返回 `403` 且响应体含 `forceEmailChange`。`axiosConfig` 的响应拦截器把 `localStorage.user.forceEmailChange` 置真并派发 `auth:force-email-change`。
-2. `AuthContext` 监听该事件，把 `user.forceEmailChange` 置真。
-3. `AppContent` 的公共分支据此渲染 `ForceEmailChange`：一个不可关闭的 `Modal`（`closeOnOverlay={false}`、`closeOnEsc={false}`、`onClose` 为空函数），强制提交 `PUT /api/auth/change-email`；成功后 `onUpdate({ email, isEmailVerified: false, forceEmailChange: false })` 解除拦截。
+2. `AuthContext` 监听该事件，把 `user.forceEmailChange` 置真；同型的 `force2FASetup` 标记来自登录/`/me` 响应（admin/superadmin 未开启 2FA），由 `AuthContext` 快照与刷新合并携带。
+3. `AppContent` 的公共分支据此渲染两个互斥优先级的阻断浮层：`user?.forceEmailChange && <ForceEmailChange />`（不可关闭的 `Modal`，强制提交 `PUT /api/auth/change-email`，成功后解除拦截）；`user?.force2FASetup && !user?.forceEmailChange && <Force2FASetup />`（强制 TOTP 注册模态，后端 force2FASetup 门禁同步拦截其余写操作）——**邮箱优先于 2FA**，两者同时命中时只显示改邮箱。
 
-关键限制：`ForceEmailChange` 与 `apiError` 提示条都写在公共分支的返回值里，后台分支提前 `return` 了。所以超管在 `/admin/*` 上被后端拦截时，**弹窗和 5xx 提示都不会显示**，只有写操作失败；要等回到前台页面才会看到强制改邮箱对话框。修改这段渲染位置时务必同步考虑后台树。
+关键限制：`ForceEmailChange`、`Force2FASetup` 与 `apiError` 提示条都写在公共分支的返回值里，后台分支提前 `return` 了。所以超管在 `/admin/*` 上被后端拦截时，**弹窗和 5xx 提示都不会显示**，只有写操作失败；要等回到前台页面才会看到强制改邮箱/强制设置 2FA 对话框。修改这段渲染位置时务必同步考虑后台树。
 
 ## 新增页面时的同步清单
 

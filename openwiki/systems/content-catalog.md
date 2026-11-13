@@ -36,12 +36,14 @@ sources:
     resource: repo://src/components/UpdateCalendar.jsx
   - id: openwiki-source-9793b3dd98a0e62ec68a07c3
     resource: repo://src/contexts/AuthContext.jsx
+  - id: openwiki-source-397248f5d0f5e1b6d6a02a0d
+    resource: repo://src/utils/apiBase.js
   - id: openwiki-source-091078cd4f585582a9efba7a
     resource: repo://src/utils/offlineQueue.js
 generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-11T16:33:24.381Z
+    at: 2026-11-13T19:07:27.754Z
 ---
 
 # 内容发现、剧集详情与用户内容库

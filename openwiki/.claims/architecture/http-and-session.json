@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:fe80d0072eda5bbcae03e3ec7daf3f0704aa1c2f3a6aa92d6716547fa9d3b98f",
+  "pageVersion": "sha256:bab0d91b6e7c12c6510046dc741d975cb2336e5e66cca0863bbe5c6ff7f908e3",
   "claims": [
     {
       "id": "claim_1786bbb4355944c8b4b25d25c69d0a20",
-      "statement": "axiosConfig 在模块顶层改写全局 axios 默认值（timeout 15000、withCredentials true）并由 main.jsx 以裸副作用方式导入；仓库内没有 axios.create，因此包括 adminApi 在内的所有模块共用同一 axios 实例与同一条拦截器链。",
+      "statement": "axiosConfig 在模块顶层改写全局 axios 默认值（baseURL = API_BASE_URL 跨域直连后端源站、timeout 15000、withCredentials true）并由 main.jsx 以裸副作用方式导入；仓库内没有 axios.create，因此包括 adminApi 在内的所有模块共用同一 axios 实例与同一条拦截器链。",
       "evidence": [
         {
           "resource": "repo://src/main.jsx#L4-L8",
@@ -15,8 +15,8 @@
           "version": "repo-lines-v1:sha256:51334a9a366dfd608aa17a37927b9417839f850eda2c77a8f0e46f3391e9981a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0ZThlMjcwNzBmYThhZGQ0NTY1NTk1YzVmZTQxYTdhODFlMDYyM2JmN2E5NzYzYWQ3NjlmZTk3YTkyM2Q4MzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyMDgwODVhY2ZkOTQwMmQwMTIwOTNiNzI1YzgxOGRhNDk2MTkxZWNmYzYzNmY2YjkzOWIwMTgxNjQzYmJlZWIifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L1-L5",
-          "version": "repo-lines-v1:sha256:94c6c078fda8b4693c9b14cf72896a2258cf825b3a7f8772e6f9a799a08615b3:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTRlOGUyNzA3MGZhOGFkZDQ1NjU1OTVjNWZlNDFhN2E4MWUwNjIzYmY3YTk3NjNhZDc2OWZlOTdhOTIzZDgzNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzM1YTgxNzViYmEyODZjZDA0ODA2YzVkNmUyMzljNWZhNjYxYzM3MTA3ZjBhYjgyMGU4NzA0ZjdjOTM2MzNmZSJ9"
+          "resource": "repo://src/utils/axiosConfig.js#L1-L14",
+          "version": "repo-lines-v1:sha256:1195cf9e6ec73f33350b34e3706afe0ce80f959dde017801c5fcb9ffd2c28464:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0ZThlMjcwNzBmYThhZGQ0NTY1NTk1YzVmZTQxYTdhODFlMDYyM2JmN2E5NzYzYWQ3NjlmZTk3YTkyM2Q4MzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyNjFjMjczN2RjMzk2OGE0OGI3ZTk0MWM2ODMwNGUwYThiNTc3NWZiNTI2YjY1MjJiNzZiY2FkNWZlNjI5MzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFmZDQ0ZmJjYjdiYTVlZjJiMjgyYTlkNzAyMDIwMzA3Y2RiN2I0NWZjYzU5MTdkMTM3N2Q5Y2Y5YTVmMTBkNDgifQ"
         }
       ]
     },
@@ -25,7 +25,7 @@
       "statement": "请求拦截器给每个请求补 X-Requested-With: XMLHttpRequest，非 GET 请求在发出前 await csrfReady，并且只在内存已有 csrfToken 且请求非 GET 时附加 X-XSRF-TOKEN。",
       "evidence": [
         {
-          "resource": "repo://src/utils/axiosConfig.js#L24-L36",
+          "resource": "repo://src/utils/axiosConfig.js#L31-L43",
           "version": "repo-lines-v1:sha256:6d46513f115eabce34fa2a6dfd8e0a3796c833dfd0a81ca3992296354d6b451a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1ZTBlMGQxM2U1YTExMTU4OTA4ZWRjMzI0OTViZGE0YTFhNmU4N2JmNzA1NWViZGYzNzBkYjNmNTM3OTEyMDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiZTJjOWIxNDAxM2VlZjM1MmM2MzlkNDZjMGFjOGM5ZWFlYTRiYTIxMzhkYzNmZGZkYmExOTUyODQ5YmQ3MzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3NWNhMjBhMmM5ZTZiOGZjZGY4YTZlODc0YTE2ZjI4MTcxYzgzMjRkMzE3M2VhZjgwYzk2ZTZiYTA5YTYxY2IifQ"
         }
       ]
@@ -35,7 +35,7 @@
       "statement": "CSRF 预热是失败即放行的：initCsrf 无论成功或失败都会 resolve csrfReady，所以写请求不会被永久挂起，但可能在缺少 X-XSRF-TOKEN 的情况下发出并被后端以 403 拒绝。",
       "evidence": [
         {
-          "resource": "repo://src/utils/axiosConfig.js#L6-L23",
+          "resource": "repo://src/utils/axiosConfig.js#L13-L30",
           "version": "repo-lines-v1:sha256:0f09504b9304ca2b485ae8b4d10c4a68f3246afdcf944810ef6d4b504a2dbc27:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0OGYzMmI2NzhhOGM0YmYzZWFhYmQ3ZThjZTIyZWIzODljMGU2MzU5NzI1MGNlMjIzZTg4Yjg4MTBmYTM4NjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlNzMxMTRiODhiZjI4ZDdhNzFkOTgyNDkzYWU1YWI1YWUyOTMzY2Y4MzAwMThlZDVjYWVkMDc3NjMyYzYwZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE5ZTM0NDFjYjEzYmFmNTU2MDFjMTUwMDJlZDdmMmJlYzJlZDZmM2FhNDVhZDEyMmRjNTA2NmRkZWYyZTk1MDEifQ"
         }
       ]
@@ -45,15 +45,15 @@
       "statement": "第一段响应拦截器会把任何成功响应 body 里的 csrfToken 写回内存 token；fetchCsrfToken 是显式重取入口，目前只由 AuthContext 在启动与标签页 visibilitychange 时调用。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L127-L140",
+          "resource": "repo://src/contexts/AuthContext.jsx#L128-L141",
           "version": "repo-lines-v1:sha256:03187f84f4d3a9f444ab02eb9e2e402eda8284413f52769ec3557798b9b4c0a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNjNjIxOTRiYTM3YmM1NTg1MDIzMmNhYzYxZWY4NGM4NzA2ZDg0ODA2ZmNhNGNlNzQ1N2UwNDQ1ODU4MWE0ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5NDgxNTkwMzc0NDhhNTk1NmY2YjI1OWM4MTMxZGI2YzM5NDJjN2RlNDlhNDQwMTMwZjBhYWM2YWUyYjJlNzMifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L268-L276",
+          "resource": "repo://src/utils/axiosConfig.js#L275-L283",
           "version": "repo-lines-v1:sha256:24601069ee30204f8f26576eef625000746269362d5bcc8bcfb56a7675a46f2b:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjFkMzlhZGU0YWNkNTJlYmZmMzY3YWViOTdjZWU2N2Q2OTBhNjZkYTExZTZiMDk3MjQzNjlmODc0OTM4ODU4YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmViYzJjODE3OWM1ODZhNzJjMjAzNzEyYThiNTk1N2YzMjU2MGQ0YWFlMmY1MjJkMzA3MjdjOWE3NDY1ZDY5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzk2MDFiODJhOTQxMzA1N2FlMjlmYjEzNjAyMGExZGQyNDJkNmViYWIxNjMzYTMzNTQzMDJlNzFhMWE1MTU4OSJ9"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L37-L44",
+          "resource": "repo://src/utils/axiosConfig.js#L44-L51",
           "version": "repo-lines-v1:sha256:c1b073f304fbed04e96ad17dfb8cb023e62c82412994302269e44677fb84fb43:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDJhMjk3MWE1MmYyOTY2MTZkOTgwZDk5MzQ2NDMyNDJmN2I3NDRjNDM3MTE3MjYxNzE4ZmE1NjJhMTA2Yjg0NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDM0MjIwYTJjYzI2NDViMzdlM2RlODc5YzJmZDlmYTRiYzkxYjA4NzU1OTk5MzM3ZTFjYzJjNGUwYjNlNmE0YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzU3MjQxMzU3ODhkNDE0NjU5NWU0NzEwNTg2ZjVhOTJlZmJmZDJlYjA5NjI4YTIzMGU5ZDhkYTc3ZGIxMWQ3YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGNhYTMzN2E2ODllYmM3YTU2MTJiOWNkY2E3YjQyNGI2NWYzZWE0Y2Y5YmJmN2JhYmM4NjZiMWMzZDBlOWZjYSJ9"
         }
       ]
@@ -63,15 +63,15 @@
       "statement": "三段响应拦截器按注册顺序 FIFO 执行（401/403 → 5xx api-error → 419 刷新），因此 419 不会触发 api-error，且 419 分支必须自带登出逻辑，因为前面的处理器不会对刷新失败再次执行。",
       "evidence": [
         {
-          "resource": "repo://src/utils/axiosConfig.js#L126-L139",
+          "resource": "repo://src/utils/axiosConfig.js#L133-L146",
           "version": "repo-lines-v1:sha256:eea52512acdb3d3310d3a42f3efca5f847b6218a6300d68d64f10ca7a9c08ace:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyYTI5NzFhNTJmMjk2NjE2ZDk4MGQ5OTM0NjQzMjQyZjdiNzQ0YzQzNzExNzI2MTcxOGZhNTYyYTEwNmI4NDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJlYmMyYzgxNzljNTg2YTcyYzIwMzcxMmE4YjU5NTdmMzI1NjBkNGFhZTJmNTIyZDMwNzI3YzlhNzQ2NWQ2OWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJlM2FhY2Q5YzZlZjFkMmNmNGEzNmY0NzIyNDMwMDU4YzljZjA2NTY0MDljYzViZDExMzcwNWY5YmZlNTM2YmQifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L198-L205",
+          "resource": "repo://src/utils/axiosConfig.js#L205-L212",
           "version": "repo-lines-v1:sha256:de3d2e06bf5cae0b7ec037b7e8c451b19f169bcd63fc070b7f53210ca7e10a96:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDJhMjk3MWE1MmYyOTY2MTZkOTgwZDk5MzQ2NDMyNDJmN2I3NDRjNDM3MTE3MjYxNzE4ZmE1NjJhMTA2Yjg0NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzIxMjljMjczNTJiNDk1NTQ4YjA3MWFlMzRhYjkwODExNzI4NzM0MjhmNmY4N2Y1NGI1ODBlNTE1M2M5YWEwMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTdkNjViYjIyNzg2NzczMWEwMDI4MDFmMWM4MzRiNmJmOWM0OGIzZDdmNTQyZmMyZTdmMGUwNzkwY2QwYzE1YiJ9"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L37-L45",
+          "resource": "repo://src/utils/axiosConfig.js#L44-L52",
           "version": "repo-lines-v1:sha256:e431d638e00dedb89c82b725397dc201e8b9da4fe2e38d976f08147078d82f26:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDJhMjk3MWE1MmYyOTY2MTZkOTgwZDk5MzQ2NDMyNDJmN2I3NDRjNDM3MTE3MjYxNzE4ZmE1NjJhMTA2Yjg0NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTY1OWU2MjM2N2UwZWFkMGQ5MmE0YTkzMzZkMmJjMDJhNWI5ZjMzNWE4ZGQzZDgwZDI0YTA0OTM1NTgwMWFkNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzU3MjQxMzU3ODhkNDE0NjU5NWU0NzEwNTg2ZjVhOTJlZmJmZDJlYjA5NjI4YTIzMGU5ZDhkYTc3ZGIxMWQ3YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjFlMDhjMzU4OTAwZmQzYWVmNWNkNWIzMTQzMTc3YTAzYjEwMGZmYzJkMjBlMThkMzhmNmEzZTZiOGZlMzMxOSJ9"
         }
       ]
@@ -81,15 +81,15 @@
       "statement": "401 路径在 config 未标记 _isRetry 且 URL 不在跳过名单时先用 refresh token 恢复会话并重试原请求，只有刷新失败才落回登出；401 与 419 两条路径共用 isRefreshing、refreshSubscribers 与 refreshAccessToken。",
       "evidence": [
         {
-          "resource": "repo://src/utils/axiosConfig.js#L147-L162",
+          "resource": "repo://src/utils/axiosConfig.js#L154-L169",
           "version": "repo-lines-v1:sha256:c0062936adf5f5a6d6778148431383a3095babb483a31544555cfea1c2461149:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxZGUwOWZhZmY0YTYzZDExNDVjZTgyOWY0MjE4ZGQ0MThjZjIxYzY3Njc0MTNkMDNhYWFkOWFmMWRjZDUzOTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllZGVjZDA0YmU1ZTdkNzhiODZlNjEyYTU5OWY1NThlODMzYmNiNWY1ZGZmMGI4ZmMwZDJhN2VkMmQxYjU2NzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4M2QxMTdmYjUzZmFkZWQzZmQ0MmFkMTk1NzBiMjk3MDk0NmQ1YWExNjY0NWU0ZmFiMzA1ODM4OGJlZTIzY2MifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L198-L222",
+          "resource": "repo://src/utils/axiosConfig.js#L205-L229",
           "version": "repo-lines-v1:sha256:bd6294b1d185ac36a3e82cbff5e4acae8456244ab7e4b0726630757ab671e0ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyYTI5NzFhNTJmMjk2NjE2ZDk4MGQ5OTM0NjQzMjQyZjdiNzQ0YzQzNzExNzI2MTcxOGZhNTYyYTEwNmI4NDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0N2VmMzgxODVjNDM1NDdiOThiMmQ1YjZmZDlhZTZlMjcyMjQyOGY4ZjAwOGRhMDFkZDAyYThkYmMwMTk1ZjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcyMTI5YzI3MzUyYjQ5NTU0OGIwNzFhZTM0YWI5MDgxMTcyODczNDI4ZjZmODdmNTRiNTgwZTUxNTNjOWFhMDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJlNTYyNjM2ODA3MWY2NWE5MDJiYzY2ZTUwZTUyNDYzZDI1ZmY1MmJlNmJmYTQ1MjQ1ODM2OTgxYmI2NmRlYWMifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L44-L109",
+          "resource": "repo://src/utils/axiosConfig.js#L51-L116",
           "version": "repo-lines-v1:sha256:e2693dfd1abc25be9a640979208686bcd87779b45a63e2b0f3a743b76efcc7c0:eyJzZWxlY3RlZExpbmVDb3VudCI6NjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzNDIyMGEyY2MyNjQ1YjM3ZTNkZTg3OWMyZmQ5ZmE0YmM5MWIwODc1NTk5OTMzN2UxY2MyYzRlMGIzZTZhNGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3ZGZmNjQ4NTRhNWY4OTE3ZGYyYTQxMDU3ODQxZmZlZWU0ODJmMGNkODQxMDUzZjZlNTdhNTgyZWFmNjA4MzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNjZjVlZTU4NTAxOGViYmY5MTUyODhkNzQxZDA2MTMyM2UzMmM5ZTVhMjY4ZDI3YWIxYmYzYjQyZjY3NWFlZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU0NzFjNmI5YzcwYWMxNDVmYWY4NGUyY2EwMWExMmY5YTg4NTA4ZTU3NGQ1Mjk5YTc2YzdhYzkwZmNkM2RkZDkifQ"
         }
       ]
@@ -99,11 +99,11 @@
       "statement": "shouldSkipAutoRefresh 按 URL 子串跳过 refresh/login/register/csrf-token，但跳过名单只跳过刷新而不跳过登出副作用：这些请求的 401 仍会清掉 localStorage.user 并派发 auth:session-expired，只有页面跳转受 skipRedirect 与 /login、/register、/reset-password 路径判断抑制。",
       "evidence": [
         {
-          "resource": "repo://src/utils/axiosConfig.js#L165-L172",
+          "resource": "repo://src/utils/axiosConfig.js#L172-L179",
           "version": "repo-lines-v1:sha256:60143d54eafcf490220331224a851cfd01422adaa4e2125d7f8d1c9208f789a8:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjY1ZWMzZjgxN2RhMjYxYTFjYjUyMzRjNjk3MWViYzBhYjE3ODdjZmE2N2RlYTljMmNmYjZjNzljYzliMTZlOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDM1NjVjOGVlZjE5MGMyOGVhYTc4Mjk1MThiYTdlNWZkOTlmNDMyMDgzOGJmMTlhNWJiYjk4NjNiMTFkNzgzNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODZiNTkzZTFkOTY5NmFlMzFlN2JiNmU3MmQzMWVjZTRhMjlkNGFkMmU2NjNiODhiNmVjYzk2NjE4ZTFmN2Y1OCJ9"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L88-L110",
+          "resource": "repo://src/utils/axiosConfig.js#L95-L117",
           "version": "repo-lines-v1:sha256:338e0474b3b983c36a4b46695f1a441b5e46d2e367e47d8c21b4ceb571123256:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhMjkwZDQ3ZjdmZWQ5NGMxZGZiZGQxZjdlMzJjYmRjNmQ5OGI3ZjQzMDUwNGFhMGU2OTBmNmNjMzE3YTI3M2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhODY0OWRiMjkzYTM4MGE2MzNjNGUzN2IyYTFlYjY1YTUwNWRiMDAzOTVjM2Y5NTllN2VhZjMwZGU2NjNjNTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzYzFlMmIwNTMxYzFlODIxMTI2MGZjZDliOWI5ZmYyYzM1ZmEyZWFiZWIwNDFmYzg2YTdiYmIxZGMxOGU4MjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllYWEwNjJhZjRiZTBjMjM1MTIxMTMwNjc0NmVlNDM5OTMwZWQ1MDRlYWFhYjExZjUwMTg2NDg5NzY2Yjc5NTUifQ"
         }
       ]
@@ -113,7 +113,7 @@
       "statement": "refreshAccessToken 有三类结局：2xx 返回成功并带上用户快照；409 视为另一标签页已完成轮换、按成功返回 user 为 null 让调用方重试；403 时先重取 CSRF token 再重试一次，其余失败（含 5xx）一律按会话终结处理。",
       "evidence": [
         {
-          "resource": "repo://src/utils/axiosConfig.js#L173-L197",
+          "resource": "repo://src/utils/axiosConfig.js#L180-L204",
           "version": "repo-lines-v1:sha256:2c7758c31017a21c8c909360af1239ef4c7900a0254766dd82b0759375187f6e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmY2EzZjY1MDNlMzQwY2ViNTk1OWE5OTc5M2E4ZTFlZWEzZTg1OWM3ODMxMzVjMTEwNGJhNGU4Yzc2MTEyZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzMTYxYTM3MzdlZTNhNDY1NDMwNThjMjk1NGU0MjMyZGFjZmMyMDhkMGRiMGQ3MDc5MzI0NmRlNWQxMThhNDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyYTQ4ZTliZDk3NWFmM2QxODVlYTZjNDc2MDBmNTE0NjYyMDI4NjdhYzEyMmRkMmI0ZjJhNGQ2NmRmNmU2ZDgifQ"
         }
       ]
@@ -123,11 +123,11 @@
       "statement": "并发合并依靠单个 isRefreshing 屏障与 refreshSubscribers 队列：同一时刻只发一次刷新请求，其余失败请求挂起等待，由 onTokenRefreshed 或 onRefreshFailed 统一释放并重试或 reject；订阅回调的 token 参数始终是 undefined，因为 access token 在 httpOnly cookie 中随请求自动携带、无需注入头部。",
       "evidence": [
         {
-          "resource": "repo://src/utils/axiosConfig.js#L147-L163",
+          "resource": "repo://src/utils/axiosConfig.js#L154-L170",
           "version": "repo-lines-v1:sha256:008b1cdce95c058f1444c37f54b0c7d3660cb824344abeabb5edddeb0ba5c7c6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxZGUwOWZhZmY0YTYzZDExNDVjZTgyOWY0MjE4ZGQ0MThjZjIxYzY3Njc0MTNkMDNhYWFkOWFmMWRjZDUzOTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllZGVjZDA0YmU1ZTdkNzhiODZlNjEyYTU5OWY1NThlODMzYmNiNWY1ZGZmMGI4ZmMwZDJhN2VkMmQxYjU2NzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1NTc1ZDJhZjYzOTkxYzIzNzgxNTcxOGExNTVlMjYxMjc0ODRjMzRhMWVhMGZiYzQ2OGU5ZDAxMjVmNDIxZTIifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L203-L227",
+          "resource": "repo://src/utils/axiosConfig.js#L210-L234",
           "version": "repo-lines-v1:sha256:56c133db6ad78329649163b0a2ac80568cc92537b3e994bd39ef15e4570fd254:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1NzE5OTA4YmZhNGJkNTI5OGZjODUxMDE3ZDA2MDM5MWE5NjFhNWM0MmE1OTcyYWY5MzlkNzY4NzNkZGY3YjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzZGJmMzk2ODQ1M2M1NGE3NjIyYWZjMjRkYWY2MGIwZDBjNjhlMWE5ZDdhOGU4OGQ3M2UwZGI1NzdlODZjZjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVjODc5NGY5NzBhOTQ4ODNkNTBmN2Y4NWZmNWE4ZTIzOWJiNDQ3M2UyMTczZDE3NzY5Njk3NTc1MmY3YWNkNTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzNWJhNjFiMTg1MmIwOTA3Y2VhZGNiMGJmYzE4MjcwYjMyZmY5NzI4NjViMmE5OTVlZTg4Y2IwNDM2ODUyMTEifQ"
         }
       ]
@@ -137,30 +137,30 @@
       "statement": "刷新成功后客户端把白名单字段（_id、accountId、username、isEmailVerified、role、forceEmailChange——email 已从白名单剔除，快照不再携带邮箱）合并进既有 localStorage.user 快照并派发 auth:token-refreshed；仅当快照已存在时才执行合并与派发。",
       "evidence": [
         {
-          "resource": "repo://src/utils/axiosConfig.js#L224-L246",
+          "resource": "repo://src/utils/axiosConfig.js#L231-L253",
           "version": "repo-lines-v1:sha256:efcb7227c9b4797bd4c69ac55132d5d1b920feaa001e2919b740d6fbf6bcc7b0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhY2U0Y2I5YTI2NzQ3M2ZmZTYwYTkzOGE2ZjE2ZTNkNzliMGM5MWI4YjQwYTk3NDA5OTZiZGY2MWQ0ZDU1ZTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyODdkMTE2ZTY5YmE2Y2NmOTNjMDZiNWY5ODFmNGQ0M2Y5MDczYmYyNzk0YTFlOGJmNjYyZTFjZGJjYWRhMTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIyMmNjMGJmMmU5MTc1NzkxNWQwMjAwNWMyYzUzZDJlOTlkMGE2NjQ1OTVmZmEyYmFkMTIxZWQxNjNkN2Q3YjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljMTJkZmEyZWMwYjRmMjExNWRkMTc1ZjFlYWIzNDg0NzMwZjUzM2Y2NGY2ODQwMDE0MzQ3ZjdkZWU5NzM2NjgifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L62-L82",
+          "resource": "repo://src/utils/axiosConfig.js#L69-L89",
           "version": "repo-lines-v1:sha256:51a38aa0d9dcfb0f81504315ed24366a135afe36f282147209d1901c5846da31:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkYjY1OWMzNjRiZGEzOTQyN2ZjOGFhNzE5ZmUxMDhkNmFkMWJmNjg0ZTUxZGVjOGMxOGZiNDM4MmJkODExZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4MDA1ZDU3MTA2YTM2MmViMDAwZGFmM2RhNDY3NGM4MmI1MThmZjVhMmUyZjY3ZWU4ZTc1N2EzMzNjMmFmNjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlNGFiYTJjMWJkYzg1MGI4NjcxZWY0ZWIwMTA3M2FhOTFjYmI4ZjAwODdjNGZmMGM1ZGE4NzJkNTY3NjM2MWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJlMjBlYjdkMDA2NzY4OTViYzcyMzA3M2FmYWQ1OWJmZjBlZGE0NmU2MWM1ZmRjNWE4ZTQ2ODc3YTQ2N2IxOTUifQ"
         }
       ]
     },
     {
       "id": "claim_b14261f550f04a9f83dd05f2917a54de",
-      "statement": "刷新合并写入的字段集合与 AuthContext.storeUserToLocalStorage 的集合不同：合并补写 forceEmailChange 而 avatar 与 email 两边都不写，后者写 avatar 不写 forceEmailChange/email，因此 localStorage.user 的字段取决于最后一次写入方，读取方不能假设字段齐全（依赖 user.email 的 UI 不能从快照取值）。",
+      "statement": "刷新合并写入的字段集合与 AuthContext.storeUserToLocalStorage 的集合不同：合并补写 forceEmailChange 而不写 uid/avatar/email，后者写 uid 与 avatar 但不写 forceEmailChange/email，因此 localStorage.user 的字段取决于最后一次写入方，读取方不能假设字段齐全（依赖 user.email 的 UI 不能从快照取值）。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L18-L28",
-          "version": "repo-lines-v1:sha256:67d672a2b394e9364e7e49f0ec23c2fda8163fecd7f090fbe31d7dec369d568f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzOGE5ZWYyZjUyMWMxMWZjZjU0YmY5Yjc1YzYxZTE2MzNmNTVkZDAxYjBjYWEzNWM4NTA0NmJhZjg2YTU0MWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiMWU4MTlkYmU5ODczM2UyZjc2ZGEzMWE0NmVkYjY0ZTY3NTQ0MjYyMDk3MzM4MTg3MmYzNjc1NDkxMWQyYzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjOGUzYWZhYzE5NDRmY2JlNGVlYmFkNjViOWVhZWM5NmIwMWUxZjVhOWEwODRhNmU1MmUxMDVjMDJhN2E1NWEifQ"
+          "resource": "repo://src/contexts/AuthContext.jsx#L18-L31",
+          "version": "repo-lines-v1:sha256:abebbcc79fbe8bfa76fb54429baa54baa6082399dbbb493f0982e63ff092f5f7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzOGE5ZWYyZjUyMWMxMWZjZjU0YmY5Yjc1YzYxZTE2MzNmNTVkZDAxYjBjYWEzNWM4NTA0NmJhZjg2YTU0MWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiMWU4MTlkYmU5ODczM2UyZjc2ZGEzMWE0NmVkYjY0ZTY3NTQ0MjYyMDk3MzM4MTg3MmYzNjc1NDkxMWQyYzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0ZWI3MDE2NjUzNDY1OTEyZjkzYTM3Y2Y1NjQ4NmI5ZTJmOGIwMjhlMDAzZGIzMDE5Yjg5MGFhNmQwYmYyNWUifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L228-L246",
-          "version": "repo-lines-v1:sha256:9c7b7188acb937ca432cb1900ecbce68942336c248c299b8788bf0a2de4a53c8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM4NzhhMDdmNWU3MGFhMjU1NTZlYTAwYWVkZmVhNGRmOWVmOTllZTg2ZDI3NDI3NWUwM2I3ZTk3YjRmY2FkNDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyODdkMTE2ZTY5YmE2Y2NmOTNjMDZiNWY5ODFmNGQ0M2Y5MDczYmYyNzk0YTFlOGJmNjYyZTFjZGJjYWRhMTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdkNjJhMWVhMjdlZDIzYWNhYjBmMDAzMGU4ZGFlOWExNzc4YmNkZDY1ZmYwZDc1Nzc5YzJkN2UwM2JhODZiNDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljMTJkZmEyZWMwYjRmMjExNWRkMTc1ZjFlYWIzNDg0NzMwZjUzM2Y2NGY2ODQwMDE0MzQ3ZjdkZWU5NzM2NjgifQ"
+          "resource": "repo://src/utils/axiosConfig.js#L238-L247",
+          "version": "repo-lines-v1:sha256:914949633a524dec5e08d7e6ee302085d9955c5c14be5283936cfc18bce67551:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiYTFhMjUwZTI3Mjg2NDI2MDkwOTg3NjNmZTU4Yjk2MmQ1NWJlYjBhMGZkNmZkNjc5MDM2MzI4N2U5MThmYTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyMjNhNmEyMGQ0ZDQwMTIzYTQxY2Y4ZTY4ZDJlOTRlYTdlMTIyNDY2NmVmMGZmMjAwMzc0ZjA5OWU1NTIyMDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkzNWJhNjFiMTg1MmIwOTA3Y2VhZGNiMGJmYzE4MjcwYjMyZmY5NzI4NjViMmE5OTVlZTg4Y2IwNDM2ODUyMTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAxZWY4ZThkNWNkN2RjMzYxZjVlMDY3OThkOGZlYWUyY2U5MWNmZTY4OGQ1ZTMzYTIzYjAwODIwYmJiZjk1ZmYifQ"
         },
         {
           "resource": "repo://src/utils/axiosConfig.js#L62-L82",
-          "version": "repo-lines-v1:sha256:51a38aa0d9dcfb0f81504315ed24366a135afe36f282147209d1901c5846da31:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkYjY1OWMzNjRiZGEzOTQyN2ZjOGFhNzE5ZmUxMDhkNmFkMWJmNjg0ZTUxZGVjOGMxOGZiNDM4MmJkODExZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4MDA1ZDU3MTA2YTM2MmViMDAwZGFmM2RhNDY3NGM4MmI1MThmZjVhMmUyZjY3ZWU4ZTc1N2EzMzNjMmFmNjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlNGFiYTJjMWJkYzg1MGI4NjcxZWY0ZWIwMTA3M2FhOTFjYmI4ZjAwODdjNGZmMGM1ZGE4NzJkNTY3NjM2MWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJlMjBlYjdkMDA2NzY4OTViYzcyMzA3M2FmYWQ1OWJmZjBlZGE0NmU2MWM1ZmRjNWE4ZTQ2ODc3YTQ2N2IxOTUifQ"
+          "version": "repo-lines-v1:sha256:a35d8878b8a5695a0ec6b8f5b0b6d24686524cdec92db322cb6e367c55941978:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4ZGFmZTJmMzkwNjViMTA2YWY4MTdmYzNhNTJkZWM4MDA4ZjI2YTNiNTM1Mjg3MjUyZDg2YTdkN2Y0ZjIzYWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2NGJmODJiMGQ4NGJjNGY0MWVjM2FmZWM5ODEwNDU2ZWM0ODQ4OWM4OGMyM2Y2MGNjZmRmNzgyNGYyOTg2NjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc3MDg5ZWY5ZTAyN2JiNDRiNzNlMTY3M2JmZWM2YTNlZmRkZTI5MjA5N2VkNWExYzRiYjM2MmE5YjNjYzk1N2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZiZGZhY2ViNjg4MWM0MTcyODA1YjBlZGZiZGRkYzc4YmMwYjQyZDA0M2EyYmUzNzU3ZjVkZWY5YjE5MGZhNzEifQ"
         }
       ]
     },
@@ -169,15 +169,15 @@
       "statement": "事件消费分工：auth:token-refreshed 由 AuthContext 合并进 React 侧 user；auth:session-expired 在 detail.type 为 user 时把 user 置 null，并被 OfflineIndicator 用作 3 秒提示；api-error 由 AppContent 显示 3 秒错误提示。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L374-L383",
+          "resource": "repo://src/App.jsx#L378-L387",
           "version": "repo-lines-v1:sha256:b61ce423834635cfc24ad02be31d1184b0a35d8192ef8557245205bf66fb9a20:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwNTYzMDRiMGVlYWJkODhhZDRjYmRkNjBiZGY0NjY1MWFkODU3YWQxZTAxMDRlNDJhYmZmNmIwNDNhZThlYTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3ZmRkZmQ4ZDYwNzRmYTg0YjllODAzZDI2ODNmMDhhM2MyMGI3Yzk0M2Y4NDUyZTE5OTQ2NTFjNjdkODMzNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY4MjhlMjY1YmI1MTVjNmY4MTg0M2VkODY0YWQwOTJhZTI0NzA5ZTgwODc3YTVjZGEwNGZiNzRjYWZkYmE1NTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2NzkwZDFlZTUzZWUyZTM5ZDM5YzkxZDQ0NTUyYjMwMmU4MWM3ZThhOTlhYTRiNGUwMTBlNWMxNDE4NDA0NjkifQ"
         },
         {
-          "resource": "repo://src/components/OfflineIndicator.jsx#L28-L41",
+          "resource": "repo://src/components/OfflineIndicator.jsx#L30-L43",
           "version": "repo-lines-v1:sha256:5d7dd6b1a9b1b0087376963108d75aabb573bc979cb864c7613f22282df1075a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlZDUwNGE4MTQ3YzY0ZmY0MjYwODE4MzFkYTQ1MmYzZDA1OTZjNGRmYWYyNTcyOTllZDUzYzQ3Y2RhNTUyZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1NzZmNGQxN2Q0NjcyNmY1OWM0ZTAyYmU1ZWQ2OGNiM2FmMTdkMzVhYzE4NTFlMzAxNTA1YTk5MjQyODc3YmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkZTI1YzdmOWFkNTY4MmI1YjUyM2IzOGY2YTM5N2M4NWE1OGI3ZjkzMzE1MDBmNTkyYzFlMGVhYzRiZDM0MTEifQ"
         },
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L90-L114",
+          "resource": "repo://src/contexts/AuthContext.jsx#L91-L115",
           "version": "repo-lines-v1:sha256:0d9ae3d7b450f463fae2bc907c9b535b8f9d63019a0ab4468cae61ea29df192c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZkODZhYjZmMTMzMTJhMDI0MGY2OGVlNTA4N2IwNjBlMGYxZDk0NmFjZjkwYjE4ZjczOWExZDkyMjk0ZDNmZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjZWZmMzM3Nzg0YjFhNzllMTQwM2UzMDFhY2E1Mzc4NzlhNjJkMmFjMTk1ODgzZTAwODQ1MTAzNzk1OGYyYjUifQ"
         }
       ]
@@ -187,11 +187,11 @@
       "statement": "419 刷新失败分支不读取 skipRedirect，而是自行按 pathname 判断跳转，派发带 reason: 'refresh-failed' 的 auth:session-expired，并以刷新请求的错误 reject；401 分支则以原始错误 reject，两条路径的登出实现并不共享。",
       "evidence": [
         {
-          "resource": "repo://src/utils/axiosConfig.js#L249-L262",
+          "resource": "repo://src/utils/axiosConfig.js#L256-L269",
           "version": "repo-lines-v1:sha256:b6e9944267b6a470926dd2289a8fb8756181715e45fd46ac9eb3e5e6d5549066:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmMDliMjYxNDlhNzI0Y2E5ZGQ0ODJkOGZhMTc4YThiOGZhMDA0NzAzMjBhOGVlY2Y0YzRlZDU4Njk5ZTExNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliNjJmNjBkODU5MGE1NzljZjQ2ZjhkNjczNzhjNGM1NzJiOTYyY2VjY2RiOTBjN2E1ZjdiNDJiOTYwNzgyYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ1OTk3MzIwYTUzOTgxNzcyNTU5NjY5N2ExNGZjZWQzZGEzMGE0YmQxYjkyNjNhMGJmOGJlNjkxZDZlODdhNmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1NTQ1ZmIwYmYwNmFhYzU2OWFmNjYwNzQ2NTY1ZGQ4ZDFmZjQ0MjAwY2FkYTY3ZmYxYWM5YzMyYWU1NDEzZTAifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L88-L123",
+          "resource": "repo://src/utils/axiosConfig.js#L95-L130",
           "version": "repo-lines-v1:sha256:8848695b07c4a48cffce9d33f431ffaeb0937b89a11a5b08d009f91cec814a89:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhMjkwZDQ3ZjdmZWQ5NGMxZGZiZGQxZjdlMzJjYmRjNmQ5OGI3ZjQzMDUwNGFhMGU2OTBmNmNjMzE3YTI3M2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzYzFlMmIwNTMxYzFlODIxMTI2MGZjZDliOWI5ZmYyYzM1ZmEyZWFiZWIwNDFmYzg2YTdiYmIxZGMxOGU4MjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4YmFmN2RjNmU0OWEyMTdjMDk3YWM3NTQzZmFiMzkxNmExNDVlMzBiZjI1OGRhZDk3MWQzNGNkZDBiNmFjM2EifQ"
         }
       ]
@@ -201,11 +201,11 @@
       "statement": "isHandling401 构成 1 秒去重窗口：窗口内并发的 401 只 reject 不再清快照、派发事件或跳转；嵌套的 refresh 请求自身返回 401 时会先置位该标志，使外层请求从 await 返回后直接 reject，从而一次会话失效只产生一次副作用。",
       "evidence": [
         {
-          "resource": "repo://src/utils/axiosConfig.js#L173-L180",
+          "resource": "repo://src/utils/axiosConfig.js#L180-L187",
           "version": "repo-lines-v1:sha256:c9581fc29f389a7582036a10a0f9054051877d2c143bab6ba296860b69205b01:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmZjYTNmNjUwM2UzNDBjZWI1OTU5YTk5NzkzYThlMWVlYTNlODU5Yzc4MzEzNWMxMTA0YmE0ZThjNzYxMTJmOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzJmNDM0MzJkN2YxMWUyOTg5MDYyYjhlYTk2NzYzOTZkZWQyMDhlYjZhNzYxYWY0YWU3ZThlMzI0YmY1OWQyNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDMxNjFhMzczN2VlM2E0NjU0MzA1OGMyOTU0ZTQyMzJkYWNmYzIwOGQwZGIwZDcwNzkzMjQ2ZGU1ZDExOGE0NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjhiY2Q0NmM1NzNmOGI3MjNkNTc3ZTQ4OTYwNThhMDRkNDUxMTYyNmJmODA3YWI0NjA4YzRiYmI1NzRkMTI0ZCJ9"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L88-L110",
+          "resource": "repo://src/utils/axiosConfig.js#L95-L117",
           "version": "repo-lines-v1:sha256:338e0474b3b983c36a4b46695f1a441b5e46d2e367e47d8c21b4ceb571123256:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhMjkwZDQ3ZjdmZWQ5NGMxZGZiZGQxZjdlMzJjYmRjNmQ5OGI3ZjQzMDUwNGFhMGU2OTBmNmNjMzE3YTI3M2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhODY0OWRiMjkzYTM4MGE2MzNjNGUzN2IyYTFlYjY1YTUwNWRiMDAzOTVjM2Y5NTllN2VhZjMwZGU2NjNjNTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzYzFlMmIwNTMxYzFlODIxMTI2MGZjZDliOWI5ZmYyYzM1ZmEyZWFiZWIwNDFmYzg2YTdiYmIxZGMxOGU4MjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllYWEwNjJhZjRiZTBjMjM1MTIxMTMwNjc0NmVlNDM5OTMwZWQ1MDRlYWFhYjExZjUwMTg2NDg5NzY2Yjc5NTUifQ"
         }
       ]
@@ -215,11 +215,11 @@
       "statement": "收到 403 且响应体带 forceEmailChange 时只把 localStorage.user 里的 forceEmailChange 置真并派发 auth:force-email-change（软拦截），既不刷新会话也不登出。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L96-L99",
+          "resource": "repo://src/contexts/AuthContext.jsx#L97-L100",
           "version": "repo-lines-v1:sha256:0a3029b94ea596bbbd4ca6185b0b1e7ebb224fce563f4e513d64e91c71dd68fa:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWQ5YmY0ZmEzZjVmN2ZmMTFjMmFhYmZiZmJmOWQxNGFiMTcwZTE5YTBiNjIxZjU0Y2UzZWVlMzY3NjczNmFlZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGYxOTVmY2Q0ZTcxZjg0Y2Y2YjBmZGIwNjc1NGY0YjNkYTk3ODliNzZiZjgwZmI5N2QwNzM4ZmNmNTliNzhiMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjJkMTgyZTZiMGY3NTdmZjU5ZjQ5NzkyNWM2YTZiOGVlNDEzNTY4YzAzNWU3MzAzMTNiMTY0OTU1MWJiNGFiNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjU2ODhlYjQ0NjI0ODhlYmRlOTU4OGMwZGRhZWMzZDUxZWI0ZGNhMTZkZmMwNzQ1NWZkY2JjNjg2NTg0ZWRkNyJ9"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L110-L122",
+          "resource": "repo://src/utils/axiosConfig.js#L117-L129",
           "version": "repo-lines-v1:sha256:a6368126f5d064430073642376b812eba4758f2b4e8e08a9d91f76690a6a5472:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhODY0OWRiMjkzYTM4MGE2MzNjNGUzN2IyYTFlYjY1YTUwNWRiMDAzOTVjM2Y5NTllN2VhZjMwZGU2NjNjNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzNTZlMjRiMjg4Y2M0YmI3NzE0MTQyZGQ0ZWM2NGRkMWU4ZTk4ODA0NjAyMWI5MDY2MWIwMWQ5YWEyOTc3NWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1OTA2NzBmNTNiNDAxOGRiNGMxNDZiOWM5NmE5ZWMwZDg4ODI4MzNiZWEwZGY3MzFiYTZlYzQ4YjE4NGZkOGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJlYmMyYzgxNzljNTg2YTcyYzIwMzcxMmE4YjU5NTdmMzI1NjBkNGFhZTJmNTIyZDMwNzI3YzlhNzQ2NWQ2OWQifQ"
         }
       ]
@@ -229,11 +229,11 @@
       "statement": "状态码 >= 500 的响应会派发 api-error 事件，载荷含 status、message 与 messageKey 'common.serverUnavailable'，由 AppContent 显示 3 秒提示；401/419 等低于 500 的失败不会触发该提示。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L374-L383",
+          "resource": "repo://src/App.jsx#L378-L387",
           "version": "repo-lines-v1:sha256:b61ce423834635cfc24ad02be31d1184b0a35d8192ef8557245205bf66fb9a20:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwNTYzMDRiMGVlYWJkODhhZDRjYmRkNjBiZGY0NjY1MWFkODU3YWQxZTAxMDRlNDJhYmZmNmIwNDNhZThlYTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3ZmRkZmQ4ZDYwNzRmYTg0YjllODAzZDI2ODNmMDhhM2MyMGI3Yzk0M2Y4NDUyZTE5OTQ2NTFjNjdkODMzNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY4MjhlMjY1YmI1MTVjNmY4MTg0M2VkODY0YWQwOTJhZTI0NzA5ZTgwODc3YTVjZGEwNGZiNzRjYWZkYmE1NTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2NzkwZDFlZTUzZWUyZTM5ZDM5YzkxZDQ0NTUyYjMwMmU4MWM3ZThhOTlhYTRiNGUwMTBlNWMxNDE4NDA0NjkifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L126-L139",
+          "resource": "repo://src/utils/axiosConfig.js#L133-L146",
           "version": "repo-lines-v1:sha256:eea52512acdb3d3310d3a42f3efca5f847b6218a6300d68d64f10ca7a9c08ace:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyYTI5NzFhNTJmMjk2NjE2ZDk4MGQ5OTM0NjQzMjQyZjdiNzQ0YzQzNzExNzI2MTcxOGZhNTYyYTEwNmI4NDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJlYmMyYzgxNzljNTg2YTcyYzIwMzcxMmE4YjU5NTdmMzI1NjBkNGFhZTJmNTIyZDMwNzI3YzlhNzQ2NWQ2OWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJlM2FhY2Q5YzZlZjFkMmNmNGEzNmY0NzIyNDMwMDU4YzljZjA2NTY0MDljYzViZDExMzcwNWY5YmZlNTM2YmQifQ"
         }
       ]
@@ -243,12 +243,12 @@
       "statement": "认证凭据只存在于 httpOnly cookie：getAuthHeaders 恒返回空对象，login/logout 不写任何 token（登出改为 clearClientData 清快照与缓存），localStorage.user 只是 storeUserToLocalStorage 按固定字段写入的 UI 快照。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L12-L28",
-          "version": "repo-lines-v1:sha256:72c14e11ae3c8f32d6cdc6f68fc6de04c232815056eb5dc1c767249a6fc73d80:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZlMTk4NzE1NmI2Y2ZmOTFkNTAwMGEwN2VjNzNmYWU4NjVlNWI1NzUzNDE2NTdhYTVjNTk2NzE1ZjUyNjc3NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjOGUzYWZhYzE5NDRmY2JlNGVlYmFkNjViOWVhZWM5NmIwMWUxZjVhOWEwODRhNmU1MmUxMDVjMDJhN2E1NWEifQ"
+          "resource": "repo://src/contexts/AuthContext.jsx#L13-L31",
+          "version": "repo-lines-v1:sha256:a0681a7288d335a706dfdef6b02006d5b785cfc694725c28d6a96093ac800bc2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiYjllOTg4YjdjOTA2ZWY4NWQ5Nzc1NzYxZjc4ZGUzN2I3ZjMwNmQyMzRmMGVkMGU5M2Q2M2VlZWQ4ODMxN2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRmZDA2ZTliOTk3MjI4MjY2MDkwMjYzOTEwMWRkMDFjYjhiYmFlOTYxMjAwMmE1YTRlNmM1MDMzZGJlMGU1YjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0ZWI3MDE2NjUzNDY1OTEyZjkzYTM3Y2Y1NjQ4NmI5ZTJmOGIwMjhlMDAzZGIzMDE5Yjg5MGFhNmQwYmYyNWUifQ"
         },
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L156-L161",
-          "version": "repo-lines-v1:sha256:9e839ff4e5098d3fdec5b6bec275c5fbba648dc3505de1be7567ee182d55efb7:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjEyMDNiMTQxNGFmNzMyNzc3NTRjYjk4MTY2OWM0MTBkMTMwMTdjMGY4YmU4OGIyZjJkMWJiNzcwYmMxYTYyOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmI4NDI1ZWIwM2M1YTc0MjI4ZDZhYTczYWNkM2QzNjFlZmMzZDQ1NDhiOTMyNDM0M2QzN2YwYjNmYmE4MDc0NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjQyZWY4M2RkZmJhNzc4MzkwYzFkMjk1ZGM2NjE0MGZmMDcxYzBhYWJjNmVjYzdjZGE5ZGEwMzQ3MmVlYzExNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGMwNmI3YjZmNTEyNWI3MGQyOGJhYmU2YTQ4Nzg0ZjEwZmY4ZThiOWY5NGIxYWFiMGJkYTlkNTE2YWUxZmZmZCJ9"
+          "resource": "repo://src/contexts/AuthContext.jsx#L156-L166",
+          "version": "repo-lines-v1:sha256:2850d3ee546764d8f373996ea32fb334af6816e327e3e63888206348b207e0c9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjZWNmZmQ3ZDBjNTI3YTg5YmFiNzI1ZDM4ZDA1MmM3ZWJlMGIyN2YwMmU2ZjBiZTliZWMxODJlZjQ0Mzc3ZmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3ZGQ2ZmJlZDAwYTAwOTJhM2Q5NGJmOTQyMzI3NjVhMjc4ZjJiM2NjOGQ2NDNjY2UwZjM0MmQxM2JkMWZhYTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNkMTJkOTZiNmVlZThjNjZmZjhlNzc1ZTBkMmZlYjBlNWIwY2Y3YThkYjU4YTZjZThjZmEzOTBlNzUzNGQ4YTcifQ"
         },
         {
           "resource": "repo://src/utils/adminApi.js#L1-L4",
@@ -271,22 +271,22 @@
       "statement": "管理端守卫依赖同一枚 cookie 会话而非本地令牌：AdminLayout 在 GET /api/admin/verify 失败时直接 navigate('/login')。",
       "evidence": [
         {
-          "resource": "repo://src/components/AdminLayout.jsx#L99-L109",
+          "resource": "repo://src/components/AdminLayout.jsx#L102-L112",
           "version": "repo-lines-v1:sha256:c3ce43246e52cc650807e460bb3ce0fcf562e556d14470084b18d54e8df106a6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzMDIyNmIzN2I3NzhjNGEwNTEwZDQ0YmFhOTQ2ODM0NjQ3YTkxYTI2Yjc4MjYyMzQ2MDMyZTJjYmJjYjU5ZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmZGM2YjgxMjFkMzBlODEyNzQzMThiYjc4MzdlNTgxNGRjMTU5NTQ5N2FkODJlZjAyOWNhYWNhMzVkOGU1YmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwMzczYmI1YzUxYTM5YjJmNGQ3YzA4YzBkY2I2Yjk5NTAyNzRjYzU0YWI5NDhjMDJhYTVhMmM5MDc4ZjA0YzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVmNTZjOWNjYjEyODdhNWYxYzliZTE3OGRkODA5OGVlZjI1YzY3YjdhNzFkYjRhZDM2NDQzNmU4NzNiYmQ3NzUifQ"
         }
       ]
     },
     {
       "id": "claim_8029996931e6454eb5557ae7d103b993",
-      "statement": "绕过 axios 的客户端必须自行承担 CSRF 与会话失效：数据导出用原生 fetch（credentials include、无 X-XSRF-TOKEN、无刷新与跳转能力），通知流用 EventSource（无法设置自定义头，改用 GET /api/auth/sse-ticket 换取 ticket，出错只按 5 次上限指数退避重连且不参与 token 刷新协议）。",
+      "statement": "绕过 axios 的客户端必须自行承担 CSRF 与会话失效：数据导出用原生 fetch（credentials include、无 X-XSRF-TOKEN、无刷新与跳转能力），通知流用 EventSource（URL 经 apiUrl 补全为跨域 API 源站，无法设置自定义头，改用 GET /api/auth/sse-ticket 换取 ticket，出错只按 5 次上限指数退避重连且不参与 token 刷新协议）。",
       "evidence": [
         {
-          "resource": "repo://src/components/AccountSecurity.jsx#L24-L45",
-          "version": "repo-lines-v1:sha256:95a7115389395933d1de35da2a1ae54786d80549ec7ac27e0e0719072e724528:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3NDRiOWVjYjUzY2Y1MWU4NTU0ZjNlNzMxNTg2ZWNlMDlmMjNjYzYxN2JlNDczOTA3NjVmZDA4OTM2MGJlNWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhOGQ4ZjJkMTEzMTYxMTY1NmYwNDkxZDYzN2JmM2ZhYjgwOWQ5NTNkZGJkOTI1NTVmYjFlOTgwOWE3ZDQyYmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2MDg3NTI1OGMxMTBhZDY1NzZiNDAyOWZlYjg3MzE3YzRlNDgzYzdiNDkzM2NiMzM1OTgwNGFjZmFlNDg4MGYifQ"
+          "resource": "repo://src/components/AccountSecurity.jsx#L27-L48",
+          "version": "repo-lines-v1:sha256:5ccdc5a3559077ed4e8067b6990c7e080c7d42a597c519051e3c60f3e1fbc358:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3NDRiOWVjYjUzY2Y1MWU4NTU0ZjNlNzMxNTg2ZWNlMDlmMjNjYzYxN2JlNDczOTA3NjVmZDA4OTM2MGJlNWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhOGQ4ZjJkMTEzMTYxMTY1NmYwNDkxZDYzN2JmM2ZhYjgwOWQ5NTNkZGJkOTI1NTVmYjFlOTgwOWE3ZDQyYmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2MDg3NTI1OGMxMTBhZDY1NzZiNDAyOWZlYjg3MzE3YzRlNDgzYzdiNDkzM2NiMzM1OTgwNGFjZmFlNDg4MGYifQ"
         },
         {
-          "resource": "repo://src/hooks/useNotifications.js#L40-L81",
-          "version": "repo-lines-v1:sha256:e44aa771639e3653891ee615e1f064d39e977445a02e42f54a94ca3f65b1c8d3:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1NTdmMThlYjg3NDBlMjA5ZWQ2ZDM5MmJkNWQxMTUyMTE4MWQxZDAwN2Y2Yzk2OTAxZDhhNWRlMWY2ZDQ2NjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhlMDJiMjJmNmZmZjMxOTdmYjZhM2Y0NWM1ZmRiZWIzNWU5YzUzNjJmZDAwY2VjM2I1OWE4OGE3Zjc1ZjU3MmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcyMmMzOTA3ZGNhYTRkNTk4NTY3NjAyNTQ0MDZiODA2MDBkMTgxMDc5MjVmOGNlZjY4YmEwYTczODFjN2M5OGYifQ"
+          "resource": "repo://src/hooks/useNotifications.js#L41-L82",
+          "version": "repo-lines-v1:sha256:ac4ddf25ef4d98b0905344677a02dc4e764724e2f85e675c48441f181c7abea7:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1NTdmMThlYjg3NDBlMjA5ZWQ2ZDM5MmJkNWQxMTUyMTE4MWQxZDAwN2Y2Yzk2OTAxZDhhNWRlMWY2ZDQ2NjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhlMDJiMjJmNmZmZjMxOTdmYjZhM2Y0NWM1ZmRiZWIzNWU5YzUzNjJmZDAwY2VjM2I1OWE4OGE3Zjc1ZjU3MmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcyMmMzOTA3ZGNhYTRkNTk4NTY3NjAyNTQ0MDZiODA2MDBkMTgxMDc5MjVmOGNlZjY4YmEwYTczODFjN2M5OGYifQ"
         }
       ]
     },
@@ -295,7 +295,7 @@
       "statement": "离线队列通过调用方注入的 axios 实例重放请求（AuthContext 在 online 事件传入全局单例），因此仍会经过 CSRF 注入与刷新/登出拦截器，不属于绕过情形。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L141-L149",
+          "resource": "repo://src/contexts/AuthContext.jsx#L142-L150",
           "version": "repo-lines-v1:sha256:c1b97442cfbeeb48be7c24f90bc726f28c02a63d01bfc22571ab6b5ccd463ece:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk2NmZiZmE4ODk5OGRhNzQ2NTZjNTAxOTQ5NTZjMjVmMDg0OTQ1NzY2MGMwMDlmZTYzZDFlOWZhOWRjOTMxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWEyNTYxMTE3ZTM4NTM0MTE2NTZmMzllNmY4NTliZTcxNWM1MzNjNzM3MDIzNzBhMjg1MWUyNTI5NmVmN2YzYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWI5YzMyNGZhN2IwYTIzM2I0NGY3NmE1NzZmMjJmYzhlZDQ4YzE3YmRiZWEzMDcwNDI4MTMwMDMzNjg1Y2QyNSJ9"
         },
         {
@@ -306,15 +306,15 @@
     },
     {
       "id": "claim_e0a29d0a6d3a4f3fac07a44a54c2c749",
-      "statement": "/api/auth/refresh 与 /api/csrf-token 在 axiosConfig 中是硬编码字面量，apiEndpoints 的 AUTH 只有 CSRF_TOKEN 而无 REFRESH；跳过名单用 URL 子串匹配，因此新增认证端点必须同步维护该名单。",
+      "statement": "/api/auth/refresh 与 /api/csrf-token 在 axiosConfig 中是硬编码字面量，apiEndpoints 的 AUTH 只有 CSRF_TOKEN 而无 REFRESH（新增了 LOGIN_2FA/PASSKEY_* 等端点）；跳过名单用 URL 子串匹配，因此新增认证端点必须同步维护该名单。",
       "evidence": [
         {
-          "resource": "repo://src/utils/apiEndpoints.js#L1-L22",
-          "version": "repo-lines-v1:sha256:85cc72ee9d78078581486df35421a68665a4b3c56829e14f64e2fc3879fab7da:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2NjEwNTYyYjFhOGU0NGJmMTYwYTU0MTA0MWRmZmMwNTZlY2ExZjNlMjc3YjZkN2NiY2E0MzA3MTgwNTYxOGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUzMGFjZDQ4MTgyNzI0ZjRmNGE4ZTIzMTk3ZTM4OWY1YTk0ODU2N2IxNThjYjdhM2VhYzRjNDJiMWVmYTE1NDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI3ODVlYTMwODRjYWY3ZDRmMTQwMDE3ZGM0MTg5M2ZjMmI1ZDRlZTNmOTI0M2I3YTY5YjEzNDA0MDk0ZjViNTMifQ"
+          "resource": "repo://src/utils/apiEndpoints.js#L1-L45",
+          "version": "repo-lines-v1:sha256:4c63976bdd3f8dcfd9b0696d49612061ee3043baa083ba9613357266fa8a2684:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2NjEwNTYyYjFhOGU0NGJmMTYwYTU0MTA0MWRmZmMwNTZlY2ExZjNlMjc3YjZkN2NiY2E0MzA3MTgwNTYxOGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyYjA4ZTdjZmZiZDA2MTdmNmNiNTlkNmEyMmZjOWY4MjU5OTA2Y2IwYmJhYThjZDNiZjEyNzk1MDA0NGViYTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdjMjc3ZjdiYmQ4MWM4ZjMzYzg0ZjFkMGMwY2QxYjE2M2I2M2VhYmE3MDIzNzQyOTNlMjI1Y2UyNDcyNDgwMTIifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L165-L176",
-          "version": "repo-lines-v1:sha256:b2c2582f592ac79c0cd352547a1cd4d9b7d9142085e924455dacb01594547582:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2NWVjM2Y4MTdkYTI2MWExY2I1MjM0YzY5NzFlYmMwYWIxNzg3Y2ZhNjdkZWE5YzJjZmI2Yzc5Y2M5YjE2ZTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkOGM2MDY4OTRlMjhkZThiNjIxZDI0Y2Q0ZWMzZjdjOTcyM2NlOWZkZjIzYjQ5YzVmYjA1OGUxZDE1NmI0M2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQzNTY1YzhlZWYxOTBjMjhlYWE3ODI5NTE4YmE3ZTVmZDk5ZjQzMjA4MzhiZjE5YTViYmI5ODYzYjExZDc4MzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNiZjk1ZTAyZmExOGQzNjIwZGFkNDg5YTJjYzI3MjFhYjdlZjE4MDhjMDQ1MDQ1ZjgzYWViZTUzMDU4NTJjMWUifQ"
+          "resource": "repo://src/utils/axiosConfig.js#L149-L177",
+          "version": "repo-lines-v1:sha256:c8aecada090be2dca24f287a700e76cf1d109df3da4675218f735829f5c0c348:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmZDRiNDNhMmEwNDAyYTQyZmNmODM0MDNiYjkzNDMyMmUwY2Q5ODA4MTVmMzdmMDEyZGVlMjBhNzUzZGJjMzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhYTBiMmFjY2FiNjlhYjIwYjY3MTRjMThhYzQyMDU0MjBjOTJkYzg5NmUxNzc0Zjg0NGRjOGMwODUyNzUwOTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEwOTljNGI5MmRkYTk4NjM0YTcwZDA3ZTMxNTAzMThkMWEzMzkyZmMzOWVmZDhhYzcwNjhhNmUyYmE5YTM5ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwNjA0MmYzNmYwODk2Zjg2YWNkYTFiNGI5NTAwY2VkMzI5NmRkYWUyOGIwYmI4MWM5NTM5NmU5NjFlMmE2NTMifQ"
         }
       ]
     },
@@ -327,14 +327,32 @@
           "version": "repo-lines-v1:sha256:a3fc02af9377757b2cb1b9f93c1f897e7d26a380fb969d6c386eb435fde60436:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQ4MWFjYmM3Y2U5YjViMWQ1YThhNzI3NzU5OTMwMWRjODc4NTY2YTg3ZTQ1Y2ZmOTczMjlhNDU4Y2ZkOWQxYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTZiNzZiODI4OGNhMTY3YTllN2U3YmFhYWU3ZDhlZWY0MTJkNWQ1MzQxYjVhYmVkYzcyMzU5MDRlYzRjNjY2ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjI2ZDMwMWFhYWQ0MGVhOTI2ZTVjZTYxMGZmM2EyY2RiMzQ5ZmE3NDNmMDhhZmQ2NGJkNmE3NTJhYzQyNGRlMyJ9"
         },
         {
-          "resource": "repo://package.json#L7-L14",
+          "resource": "repo://package.json#L10-L17",
           "version": "repo-lines-v1:sha256:8c9ac56b88e52a26308029474548168524d5dc0ac548e79957b4c728c1af7e84:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmEzYjQ2OWQ5ZTA5NzU3MjI0NjY2NzM0YzllZjdiMjU0ZDg4NTM0ZjVkNWJiNzA5ODk2MDgwNWM1NTNkYzMwNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzUyMDMzNGJlN2IxYjUyMmU5YzNjNzU0N2Y4OWZkMDk0ZjE1MTAxNjMwOWY3NDk0YTdkYmMzNjg2MzIwMmJmYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjgyODNlNjM2ZmRkYWY5OWQxZjExZDk3MmRmYWI0MWU5NjUwNzVkZDNlODQyOTQ0YWQ4MWViMjA1NTQ2ZDU1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_402dfa9550f8409b87baba1b8f11edbc",
+      "statement": "Altcha 挑战地址显式使用跨域 API 源站：Login/Register 的 <altcha-widget challenge={apiUrl('/api/auth/captcha')}> 把挑战 URL 补全为后端源站，避免组件相对当前页面（前端域名）解析导致跨域部署下取不到挑战。",
+      "evidence": [
+        {
+          "resource": "repo://src/components/Login.jsx#L470-L475",
+          "version": "repo-lines-v1:sha256:a3d4101f0eae6f961b4ed05475cb73ba2219baf7a46bb62b21970ef1c43670b7:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGUwMDYzOTk3NmZhNzYzMWE1ZGJkMjdlM2U0Y2MyMjdiYjRjMzcxYzc1NWU2NWU3OWQ0OWRkMzAwZWQ4ZjQzYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjA3YTFmYWM3Y2MyOTQwYTJiNDM3OTExYmJlNzA1OTA4MzU5OWRlNTYyYzQ4Y2E0OWM2MjUyYmJlMGU0NTgyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDlhZmZlODNjODg4ZDBkYWIyZGVmYTY4YzQxMTIxNzg1YTA5NWFkMWYwOGY5NTBmMWM5OTI1Y2I5ZTNiYzY2MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjZjNDMxNWU5YzI1NDBhN2E0NjlmNDY3YTYwYjg5NjI2NWJmMDgwOTRmNjVkYTE5NjViYjJjOWYzNDM3OGIzOCJ9"
+        },
+        {
+          "resource": "repo://src/components/Login.jsx#L541-L546",
+          "version": "repo-lines-v1:sha256:6d56f71a2f07a0c2e06b301745ea7a5b9aa5600b13da0d19e13413bcb380913e:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWYyMTVmZDAzY2ZjMmJlZWJmODA0YTE3YWM1ZTk0Nzk1MWY3Y2QyZGMwNTYwNTIyNDk5YzYwNmZkYmNkNzE4NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzU0ZmU3YjlmY2YxNDYzMTkwNmNmNGI1YTUzZTQxYTU0NzQ1MmY1ZWU1ODM2NWRiODY0ZTBiODZjYTU2ZmIwNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODkwMDAzMGNiNTllN2Y0YjRhM2I0MjBkZjI2NDc0ZTM4NGE3Y2E3OGIxYjUwYTMwZWMzMDVmNzVlNTU3YjAzZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjE1ZGMyYjMwNzkyYmI3ZGJkMDU0YmI3ZjEyZWY5MGFkNzRiYWZhZjJkZjZkYjdiZmQ5YmYxNjZmYzA4MTIzMyJ9"
+        },
+        {
+          "resource": "repo://src/utils/apiBase.js#L28-L34",
+          "version": "repo-lines-v1:sha256:747b3fe2da2f626222c980dd4566be61c89f254eb15da518fd907735703066d2:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTcyYTQyOTM4MmIyZTE0NzE4ZTBlMzdiMDU3MGE4YTE3MDI5OTFmY2Q4NDk4Y2Q4NDA2MGE4YmY0ZjA1MDE3YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFmMjJjZjA3MzI1OTJjMjQ3MTQxY2JlNjFlZmExMTAxMjYxMmY1YTMxMjJiOWFmOWJiYWY1MmY1NzI0ZDE5NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjcxNWEzYzVmMGE5MTcyNTA0NmUzNDIyZTVmYmFjOTQyZjczYmQ4NDRkZmU2MWFmODE4ODAzZmE1NjQ2ZGQ3ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTNlZTU0NTBiZWQwNjU1Mjk5NjM0NzAxZDE5OTNhNWI3NGM1ODg5ZmI3MGFjMjI4MjU3NTNiZmNjZGM5ZThkYiJ9"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-04T16:54:50.811Z"
+    "at": "2026-11-13T19:07:27.754Z"
   }
 }

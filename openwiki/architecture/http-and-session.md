@@ -14,6 +14,8 @@ sources:
     resource: repo://src/components/AccountSecurity.jsx
   - id: openwiki-source-11c92b2033df029713925335
     resource: repo://src/components/AdminLayout.jsx
+  - id: openwiki-source-0563314e4e01b2956353b034
+    resource: repo://src/components/Login.jsx
   - id: openwiki-source-363227886f5861d63e167a11
     resource: repo://src/components/OfflineIndicator.jsx
   - id: openwiki-source-9793b3dd98a0e62ec68a07c3
@@ -24,16 +26,18 @@ sources:
     resource: repo://src/main.jsx
   - id: openwiki-source-254119f695d9c1c6bc387805
     resource: repo://src/utils/adminApi.js
+  - id: openwiki-source-397248f5d0f5e1b6d6a02a0d
+    resource: repo://src/utils/apiBase.js
   - id: openwiki-source-da4b9cb7c816d661a449ffcf
     resource: repo://src/utils/apiEndpoints.js
   - id: openwiki-source-37ca2d167bb7e856d4f1a11c
     resource: repo://src/utils/axiosConfig.js
   - id: openwiki-source-091078cd4f585582a9efba7a
     resource: repo://src/utils/offlineQueue.js
-generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
+generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-04T16:54:50.811Z
+    at: 2026-11-13T19:07:27.754Z
 ---
 
 # HTTP 层、CSRF 与双 Token 刷新
@@ -45,10 +49,12 @@ verified:
 ## 全局单例：默认值与「唯一的 axios」
 
 ```js
+axios.defaults.baseURL = API_BASE_URL; // 来自 apiBase.js：VITE_API_BASE_URL 或生产默认 https://fdt-api.xiedada.net
 axios.defaults.timeout = 15000;
 axios.defaults.withCredentials = true;
 ```
 
+- `baseURL` 由 `src/utils/apiBase.js` 的 `API_BASE_URL` 注入（2026-11 起生产默认直连后端源站 `https://fdt-api.xiedada.net`，ESA 托管改为纯静态、边缘函数反代已移除）；未配置/显式置空时保持同源相对路径（开发由 Vite 代理转发）。
 - `withCredentials` 必须显式为 `true`：axios 默认 `false`，而跨域部署（`VITE_API_BASE_URL`）下不带该标志浏览器不会附带认证 cookie。开发期 `/api` 与 `/uploads` 由 Vite 代理到 `http://localhost:5000`（`vite.config.js`），此时是同源请求。
 - 全仓库没有 `axios.create(...)`：所有模块 `import axios from 'axios'` 拿到的都是同一个对象、同一份默认值与同一条拦截器链。这正是 `adminApi` 能「直通」的前提（见[adminApi 为什么直通](#adminapi-为什么直通-axios)）。
 - `timeout = 15000` 是全局兜底；批量翻译、上传等长任务在单次调用上显式覆盖（例如 `/api/translate/batch` 用 `timeout: 120000`）。
@@ -205,7 +211,7 @@ window.dispatchEvent(new CustomEvent('auth:token-refreshed', { detail: { user: m
 `AuthContext` 监听该事件，把 `detail.user` 合并进 React 侧的 `user` 状态（角色、邮箱、`forceEmailChange` 都可能在刷新窗口内变化）。两个边界：
 
 - 合并**只在 `localStorage.user` 已存在时执行**（`if (stored)`）。没有快照（例如刚被登出清空）时即使刷新成功也不写、不派发，`AuthContext` 那边也保持 `user` 为 `null`。
-- 这次合并写入的字段集合与 `AuthContext.storeUserToLocalStorage` 的字段集合并不一致（后者写 `_id`/`accountId`/`username`/`isEmailVerified`/`role`/`avatar`；合并则补写 `forceEmailChange`，而 `avatar` 与 `email` 两边都不写）。快照字段是「谁最后写谁生效」，读取方不要假设某个字段一定存在——依赖 `user.email` 的 UI（例如注销密码校验）不能从快照取值，需要走服务端校验或重新拉取用户信息。`localStorage` 只是快照，权威会话状态始终在 cookie 与服务端，详见[状态与持久化](./state-and-persistence.md)。
+- 这次合并写入的字段集合与 `AuthContext.storeUserToLocalStorage` 的字段集合并不一致（后者写 `_id`/`uid`/`accountId`/`username`/`isEmailVerified`/`role`/`avatar`；合并则补写 `forceEmailChange`，不写 `uid`/`avatar`/`email`）。快照字段是「谁最后写谁生效」，读取方不要假设某个字段一定存在——依赖 `user.email` 的 UI（例如注销密码校验）不能从快照取值，需要走服务端校验或重新拉取用户信息。`localStorage` 只是快照，权威会话状态始终在 cookie 与服务端，详见[状态与持久化](./state-and-persistence.md)。
 
 ## 登出、软拦截与错误事件
 
@@ -234,7 +240,7 @@ window.dispatchEvent(new CustomEvent('auth:token-refreshed', { detail: { user: m
 拦截器链是**全局 axios 的**，不是网络的。任何不使用这个单例的客户端都要自己补齐两件事：**CSRF 头**与**会话失效处理**（刷新、登出、事件派发、跳转）。仓库里有两个现成的反面教材：
 
 - **原生 `fetch`**：`AccountSecurity` 导出个人数据用 `fetch(API.USERS.EXPORT, { headers: getAuthHeaders(), credentials: 'include' })`。它靠 `credentials: 'include'` 带 cookie，`getAuthHeaders()` 返回 `{}`（认证不靠头），因为这是 GET 所以不需要 `X-XSRF-TOKEN`；但它完全失去 401/419 的刷新与跳转能力，`res.ok` 为假时只能自己报错。**如果要新增非 axios 的写请求，必须自己取 CSRF token 写 `X-XSRF-TOKEN`，并自己处理 401 语义。**
-- **`EventSource`**：通知流 `new EventSource('/api/notifications/stream?ticket=...')` 无法设置自定义头，因此先用 axios 取一次性 `GET /api/auth/sse-ticket` 换 ticket，再用 ticket 过鉴权。会话失效在这里表现为 `onerror`：关闭连接后按 5 次上限、指数退避（5s × 1.5ⁿ，封顶 60s）重连，既不派发 `auth:session-expired` 也不跳登录。也就是说**长连接从来不参与 token 刷新协议**，它只能在用户已登录、`user` 变化时由 effect 重建。
+- **`EventSource`**：通知流 `new EventSource(apiUrl(API.NOTIFICATIONS.STREAM) + '?ticket=...')` 无法设置自定义头，URL 经 `apiUrl()` 补全为跨域 API 源站，先用 axios 取一次性 `GET /api/auth/sse-ticket` 换 ticket，再用 ticket 过鉴权。同样的补全也用于 Altcha 挑战地址：`Login`/`Register` 的 `<altcha-widget challenge={apiUrl('/api/auth/captcha')}>` 显式指向后端源站，避免组件相对当前页面解析挑战 URL。会话失效在这里表现为 `onerror`：关闭连接后按 5 次上限、指数退避（5s × 1.5ⁿ，封顶 60s）重连，既不派发 `auth:session-expired` 也不跳登录。也就是说**长连接从来不参与 token 刷新协议**，它只能在用户已登录、`user` 变化时由 effect 重建。
 
 反过来说，**离线队列是被拦截器覆盖的特例**：`processOfflineQueue(axios)` 接受调用方传入的 axios 实例（`AuthContext` 在 `online` 事件里传的就是全局单例），重放的请求因此仍会走 CSRF 注入与刷新/登出逻辑。
 

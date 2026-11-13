@@ -76,10 +76,10 @@ sources:
     resource: repo://src/utils/axiosConfig.js
   - id: openwiki-source-0772ae522304487a6af3bee6
     resource: repo://src/utils/clearClientData.js
-generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
+generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-11T16:33:24.381Z
+    at: 2026-11-13T19:07:27.754Z
 ---
 
 # 管理后台：布局、角色可见性与待办
@@ -132,7 +132,7 @@ sequenceDiagram
 | 控制台首页 | `navigate('/admin/dashboard')` | 后台的"总入口" |
 | 退出登录 | `POST /api/admin/logout` → `clearClientData()` → `navigate('/login', { replace: true })` | 即使接口失败也会清空本地 `admin` 状态；`clearClientData` 清掉 `localStorage` 快照（`user`/`offline_queue`）与全部 Cache Storage 后再跳转 |
 
-侧栏由 `NAV_GROUPS` 驱动，按「概览 / 内容管理 / 审核与治理 / 用户管理 / 主题外观 / 数据与系统」六组渲染，每个条目自带 `roles` 数组；渲染前用 `admin.role` 过滤掉无权条目与空组。**审核与单集回收站已收紧为 admin/superadmin（`ADMIN_UP`）**，所以创作者现在只会看到概览、剧集、创作者主页三个入口。侧栏用 `NavLink` 的 `isActive` 加 `.active`，内容区 `<main className="yl-content" key={location.pathname}>` 在换页时重挂载。
+侧栏由 `NAV_GROUPS` 驱动，按「概览 / 内容管理 / 审核与治理 / 用户管理 / 主题外观 / 数据与系统」六组渲染，每个条目自带 `roles` 数组；渲染前用 `admin.role` 过滤掉无权条目与空组。**审核与单集回收站已收紧为 admin/superadmin（`ADMIN_UP`）**，所以创作者现在只会看到概览、剧集、创作者主页三个入口。侧栏用 `NavLink` 的 `isActive` 加 `.active`，内容区 `<main className="yl-content" key={location.pathname}>` 在换页时重挂载。`admin-scope.css` 对 `.sidenav.yl-sidenav` 以更高优先级覆盖 components.css 写死的 `height: 852px; overflow: hidden`（矮屏会直接裁掉菜单）：改为 `height: auto`、`sticky` 定位加 `max-height: calc(100dvh - 48px)` 与纵向滚动，矮屏/移动端下侧栏自身可滚。
 
 除校验外，外壳还持有一个 **5 分钟间隔的心跳**：`POST /api/user-sessions/heartbeat`，失败静默吞掉（`.catch(() => {})`）。它刻意不依赖 `AuthContext` 的 `user` 状态——后台只持有 admin 会话 cookie 时也要维持设备会话记录，`AdminSessions`（设备管理）里的在线设备列表才能反映后台操作者。若同一浏览器同时存在登录用户，`AuthContext` 的心跳会并行打同一个端点，二者并不互斥。挂载时还会把 `document.body` 的底部内边距临时置 0，卸载时恢复，避免前台为页脚预留的空白在浅色后台画布底部留下一道空带。
 
@@ -240,7 +240,7 @@ flowchart TD
 
 这一组的分工对应剧集从创作、送审、上架到删除的生命周期；审核状态语义（`pending`/`approved`/`rejected`）通过共享的 `ReviewStatusBadge` 组件统一呈现。剧集审核与版本变更的完整流程见 [剧集发布与审核](../workflows/episode-publishing-and-review.md)。
 
-`AdminEpisodes` 是唯一按角色分裂数据源与列的页面：creator 走 `GET /api/creator/my-episodes`、其他角色走 `GET /api/episodes`，两者都按 `page`/`limit=100` 循环翻页拉全量（依赖响应 `totalPages`，上限 100 页）后再做本地搜索过滤；creator 视图把"审核状态"列换入、隐藏"创建者"与"授权编辑"列、没有删除按钮，且仅在 `reviewStatus === 'rejected'` 时出现"重新提交"按钮（`POST /api/episodes/:id/resubmit`）。单集管理表单新增「显示序号」字段（`episodeLabel`，选填、≤40 字符、读取回退链 `episodeLabelCustom ?? episodeLabel`），单集列表的序号列按 `episodeLabel || episodeNumber` 渲染。删除操作本身是软删除——记录进入回收站，由 `AdminEpisodeTrash` 承接恢复或彻底清除。
+`AdminEpisodes` 是唯一按角色分裂数据源与列的页面：creator 走 `GET /api/creator/my-episodes`、其他角色走 `GET /api/episodes`，两者都按 `page`/`limit=100` 循环翻页拉全量（依赖响应 `totalPages`，上限 100 页）后再做本地搜索过滤；creator 视图把"审核状态"列换入、隐藏"创建者"与"授权编辑"列、没有删除按钮，且仅在 `reviewStatus === 'rejected'` 时出现"重新提交"按钮（`POST /api/episodes/:id/resubmit`）。单集管理表单的「显示序号」字段（`episodeLabel`）改为**必填并自动预填「第N集」**（`formatEpisodeLabel(n)`，空提交被 `episodeLabelRequired` 拦截），编辑读取回退链 `episodeLabelCustom ?? episodeLabel ?? formatEpisodeLabel(episodeNumber)`；单集列表新增**排序序号列**（按当前数组顺序渲染 `index + 1`，与 `episodeLabel` 的显示序号解耦），拖拽排序重排 `episodeNumber` 后按并发 5 批量保存（只提交有变化的行，携带未改动的 `episodeLabel`，因此自定义显示序号不随排序漂移）。剧集标签输入支持中英文逗号混排（`split(/[,，]/)` 后逐项 trim 去空）。删除操作本身是软删除——记录进入回收站，由 `AdminEpisodeTrash` 承接恢复或彻底清除。
 
 ### 站点外观与内容
 

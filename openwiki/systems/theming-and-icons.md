@@ -3,10 +3,9 @@ type: system
 title: 主题与外观（壁纸与主题色）
 description: 前端外观机制的实现说明：ThemeContext 的 dark/light 全量 CSS 变量表与 accent 派生（generateColorShades 覆写 --primary 家族及派生变量、getOnPrimaryColor 决定黑/白字）；App 运行时壁纸注入与优先级（用户壁纸 enabled、壁纸槽为空回落站点默认主题、data-custom-bg 属性）；主题包收敛为单壁纸槽（编辑器只编辑壁纸与主题色、保存不写 icons、legacy 拒绝应用）；以及后台主题管理与主题审核。原自研图标引擎（IconContext/sanitizeSvg/图标槽）已整体删除，UI 图标改为 Font Awesome + Simple Icons 编译期组件。
 tags: [theming, css-variables, accent-color, wallpaper, theme-marketplace, admin-review, font-awesome]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-11-11T16:33:24.381Z
 sources:
+  - id: openwiki-source-5b54a58d1b51cd490b0e7162
+    resource: repo://package.json
   - id: openwiki-source-f17a4f083b3937123213d031
     resource: repo://src/admin-kit/admin-scope.css
   - id: openwiki-source-5f428c1e5bece3d98072e87f
@@ -29,7 +28,12 @@ sources:
     resource: repo://src/contexts/ThemeContext.jsx
   - id: openwiki-source-7c8446b7383bfa65b6d9e1b7
     resource: repo://src/index.css
+  - id: openwiki-source-397248f5d0f5e1b6d6a02a0d
+    resource: repo://src/utils/apiBase.js
 generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-13T19:07:27.754Z
 ---
 
 # 主题与外观（壁纸与主题色）

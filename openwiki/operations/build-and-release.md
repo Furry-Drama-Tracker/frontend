@@ -10,6 +10,10 @@ sources:
     resource: repo://.gitignore
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
+  - id: openwiki-source-996079b7f432e1920b006d01
+    resource: repo://docs/esa-deployment.md
+  - id: openwiki-source-b60ceaf48fd6cd2af5937725
+    resource: repo://esa.jsonc
   - id: openwiki-source-276795f6d5ad19adb078c64e
     resource: repo://eslint.config.js
   - id: openwiki-source-3613fcf4b04de948a73045ad
@@ -38,16 +42,16 @@ sources:
     resource: repo://src/hooks/useTranslation.js
   - id: openwiki-source-6f6201efb098b41d8f54920f
     resource: repo://src/main.jsx
-  - id: openwiki-source-37ca2d167bb7e856d4f1a11c
-    resource: repo://src/utils/axiosConfig.js
+  - id: openwiki-source-397248f5d0f5e1b6d6a02a0d
+    resource: repo://src/utils/apiBase.js
   - id: openwiki-source-d4b3b9732ac6eae1003ca59f
     resource: repo://src/utils/polyfills.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
+generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-11T16:33:24.381Z
+    at: 2026-11-13T19:07:27.754Z
 ---
 
 # 构建、配置与部署
@@ -159,16 +163,16 @@ flowchart TD
   V --> O["dist/：index.html 加带 hash 的 assets 加 manifest.webmanifest 加 sw.js"]
   S -.->|"vite dev 端口 3000"| D["开发服务器：/api 与 /uploads 代理到本机 5000、no-store、无 SW"]
   O --> T{"部署拓扑"}
-  T -->|"同域（推荐）"| S1["nginx：try_files 回退 index.html，/api 与 /uploads 反代本机 5000"]
-  T -->|"ESA 函数和 Pages"| S3["esa.jsonc：SPA 回退加边缘函数 api-proxy.js，函数变量 API_ORIGIN 指定后端"]
-  T -->|"跨域"| S2["需改代码设 axios baseURL、放宽 CSP connect-src 与 img-src 加后端 CORS"]
+  T -->|"ESA 纯静态（默认）"| S3["esa.jsonc：仅 SPA 回退；前端以 API_BASE_URL 直连后端源站"]
+  T -->|"同域 nginx"| S1["try_files 回退 index.html，/api 与 /uploads 反代本机 5000；需以 VITE_API_BASE_URL='' 构建"]
+  T -->|"跨域自管"| S2["设 VITE_API_BASE_URL 指向任意后端；后端需开 CORS 与放行凭据/自定义头"]
 ```
 
-上图给出本仓库支持的四条拓扑：开发代理、生产同域反代、ESA 边缘函数反代、以及需要额外代码改动的跨域。三者的共同前提是**前端假设自己与后端同源**。
+上图给出本仓库支持的拓扑：ESA 纯静态托管（默认，前端直连后端源站）、同域 nginx 反代（需显式置空基址构建）、以及任意跨域源站。开发代理不变；前端**不再假设与后端同源**。
 
-### 同域部署（推荐）
+### 同域 nginx 部署（需显式置空基址构建）
 
-`README.md` 给出的 nginx 骨架：
+`README.md` 仍给出 nginx 骨架；注意生产默认基址已改为直连源站，走同域反代必须以 `VITE_API_BASE_URL=''` 构建（空串 = 同源相对路径）：
 
 ```nginx
 server {
@@ -213,19 +217,18 @@ server {
 2. CSP `img-src 'self' data: blob:` 不含后端域名，跨域后所有 `/uploads` 图片加载失败；
 3. `withCredentials: true` 是全局默认，跨站 cookie 与自定义 CSRF 头（`X-XSRF-TOKEN`、`X-Requested-With`）会触发预检，后端必须放行对应源与头；`/api/rss` 这类写死在 `index.html` 里的同源链接也会指向错误域名。
 
-### ESA「函数和 Pages」部署（阿里云边缘）
+### ESA 纯静态托管（默认，阿里云边缘）
 
-除 nginx 同域外，本仓库还支持部署到阿里云 ESA 的「函数和 Pages」平台，仓库内由三个文件承载（权威操作手册是 `docs/esa-deployment.md`）：
+2026-11 起 ESA 部署改为**纯静态托管 + 前端直连后端源站**，边缘函数反代（`edge/api-proxy.js`）已删除，以节省 ESA 请求/流量配额。仓库内承载配置的文件收敛为两个（权威操作手册是 `docs/esa-deployment.md`）：
 
-- **`esa.jsonc`（项目声明，优先级高于控制台）**：声明 `installCommand: npm install`、`buildCommand: npm run build`、产物目录 `./dist`、SPA 回退 `notFoundStrategy: singlePageApplication` 与边缘函数入口 `./edge/api-proxy.js`。该文件存在时控制台里对应的构建配置不再生效，修改构建行为必须编辑此文件并推送 Git。
-- **`edge/api-proxy.js`（边缘函数）**：把同源的 `/api/*` 与 `/uploads/*` 反向代理到后端源站。请求头按白名单透传（`accept`、`authorization`、`cookie`、`content-type`、`x-xsrf-token`、`origin` 等 17 个头）——不遍历复制全部请求头，因为 ESA 黑名单头（`host`/`connection` 等）读取会抛异常，`content-length` 交给运行时按流式请求体自行编码；响应对象**原样返回**（`redirect: 'manual'` 透传 3xx，Set-Cookie 多值与流式响应体不经手重组，401/403/419 与错误 JSON 逐字透传，前端拦截器语义不变）。非代理前缀的未知路径明确返回 404，避免探测请求透传到后端。
-- **函数变量 `API_ORIGIN`（核心配置）**：后端地址配在 ESA 控制台的「函数变量」，键 `API_ORIGIN`、值仅填协议 + 域名（可带端口、不带路径，结尾斜杠自动去除）；生产/测试环境各自独立配置，**修改变量后需重新生成版本并发布才生效**。变量缺失时函数返回 502 并报出原因，避免误判为后端故障。
+- **`esa.jsonc`（项目声明，优先级高于控制台）**：只声明 `installCommand: npm install`、`buildCommand: npm run build`、产物目录 `./dist` 与 SPA 回退 `notFoundStrategy: singlePageApplication`（未命中静态资源返回 `index.html`，react-router 前端路由）。不再有 `entry` 边缘函数字段。
+- **构建期环境变量 `VITE_API_BASE_URL`（可选覆盖）**：ESA 控制台「函数变量」可以作为**构建期环境变量**入口——变量在构建阶段注入 `import.meta.env`；不设置时使用内置默认源站 `https://fdt-api.xiedada.net`，指向测试后端可设 `VITE_API_BASE_URL=https://fdt-api-test.xiedada.net`，或修改 `vite.config.js` 与 `src/utils/apiBase.js` 中保持同步的两处 `DEFAULT_API_BASE_URL` 常量。
 
-运行时限制（ESA 官方）：fetch 仅支持域名源站（不支持裸 IP）且仅 80/443 端口，因此后端必须挂在域名后；每次调用最多 4 个子请求（本代理每次只用 1 个）；网关等待 10 秒，超时向客户端返回 504，慢接口（如批量导入）需后端在 10 秒内首字节返回。后端看到的客户端 IP 是边缘节点 IP（代理透传入站 `X-Forwarded-For`），依赖 IP 的限流策略需评估。浏览器直接打开 `/api/rss` 属于导航请求，会命中 SPA 回退返回 `index.html`（RSS 阅读器不带导航头，取到的是正确 XML，不影响订阅）。
+直连形态下的运行时注意点：后端必须放行 ESA Pages 域名的 CORS 与跨站 cookie；浏览器直连意味着后端看到的是真实客户端 IP（不再经边缘函数转发，代理标头信任策略按直连拓扑配置）；`/api/rss` 的 RSS 订阅链接经 `__API_BASE_URL__` 指向后端源站，不再受 SPA 回退影响。
 
 ## 环境变量与密钥边界
 
-- Vite 只把 `VITE_` 前缀的变量注入客户端产物（`import.meta.env`）。`.env` 本身在 `.gitignore` 里；文档化的变量只有 `VITE_API_BASE_URL` 一个。
+- Vite 只把 `VITE_` 前缀的变量注入客户端产物（`import.meta.env`）。`.env` 本身在 `.gitignore` 里；文档化的变量只有 `VITE_API_BASE_URL` 一个，且现在**真实生效**：`apiBase.js` 读它决定 `API_BASE_URL`，`vite.config.js` 用 `loadEnv` 读它做 index.html 占位符替换——两处 `DEFAULT_API_BASE_URL` 常量必须保持同步（AGENTS.md 也有此约定）。三个取值分支：未设置 + 生产 → 默认源站；未设置 + 开发 → 空串（走 dev 代理）；显式设置 → 以该值为准（空串 = 同源相对路径）。
 - **任何进入产物字符串的配置都是公开的**：CSP 里的域名、manifest 里的名称、API base URL 都能被用户直接读到。SMTP 之类的敏感配置由服务器端 env/ini 提供，管理后台的邮件页是只读展示 + 发送测试邮件，不走前端配置。需要保密的常量（密钥、内部地址）只能放在后端，通过 API 间接使用。
 - CI 侧的密钥是 GitHub 仓库 secret/variable（`OPENAI_COMPATIBLE_API_KEY`、`OPENAI_COMPATIBLE_BASE_URL`、`OPENWIKI_LANGSMITH_API_KEY` 等），只存在于工作流运行环境，不进任何前端产物。
 
@@ -267,16 +270,16 @@ CSP meta 之外还有两条同层的配套声明：`<meta name="referrer" conten
 
 ## 构建期 manifest 与运行时 manifest 的分工
 
-这是 PWA 侧最容易混淆的一点：存在**两套 manifest**，浏览器最终用的那一套取决于 `siteSettingsData` 是否加载成功。
+这是 PWA 侧 2026-11 前后行为变化最大的一点：**曾经存在两套 manifest，现在只剩构建期一套**。旧实现会在站点设置加载后把 `<link rel="manifest">` 改指后端 `/api/site-content/pwa-manifest`；跨域直连部署后该端点会以 API 域名为基准解析 `start_url`/`scope`/icons，导致安装后的 PWA 指向 API 域名，因此改向逻辑已整体移除。
 
-| | 构建期静态 manifest | 运行时动态 manifest |
+| | 构建期静态 manifest（现在唯一的一套） | 后端动态 manifest（不再被前端消费） |
 |---|---|---|
-| 生成者 | `vite-plugin-pwa`，配置内联在 `vite.config.js` 的 `VitePWA({ manifest })` | 后端 `/api/site-content/pwa-manifest` |
-| 落地形态 | `dist/manifest.webmanifest`，并在构建后的 `index.html` `</head>` 前注入 `<link rel="manifest" href="/manifest.webmanifest">` | 由 `App.jsx` 在站点设置加载后把同一个 link 的 `href` 改指后端端点 |
-| 内容来源 | 源码里写死：名称"兽剧聚合平台"、`start_url: "/"`、`display: standalone`、`background_color: #f8fafc`、`theme_color: #1777ff`、192/512/svg 图标、两个 shortcuts、`share_target` | 后台"站点内容"里的 `pwaName`、`pwaShortName`、`pwaThemeColor`、`pwaIcon192`、`pwaIcon512` 等 |
-| 何时生效 | 构建即有；dev 阶段不产出（`devOptions.enabled: false`，既不生成 SW 也不注入 manifest link） | 站点设置请求成功之后；API 不可用或首屏未完成时保持构建期那一套 |
+| 生成者 | `vite-plugin-pwa`，配置内联在 `vite.config.js` 的 `VitePWA({ manifest })` | 后端 `/api/site-content/pwa-manifest`（端点仍在，前端不再改指） |
+| 落地形态 | `dist/manifest.webmanifest`，并在构建后的 `index.html` 注入 `<link rel="manifest">`（同源） | —— |
+| 内容来源 | 源码里写死：名称"兽剧聚合平台"、`start_url: "/"`、`display: standalone`、`background_color: #f8fafc`、`theme_color: #1777ff`、192/512/svg 图标、两个 shortcuts、`share_target` | 后台"站点内容"的 `pwaName` 等字段只影响 meta 与图标，不再影响 manifest |
+| 何时生效 | 构建即有；dev 阶段不产出（`devOptions.enabled: false`，既不生成 SW 也不注入 manifest link） | —— |
 
-同一段运行时逻辑还会一并更新 `apple-touch-icon`（用 `pwaIcon512 || pwaIcon192`）、`apple-mobile-web-app-title`、`application-name`、`theme-color`、`msapplication-TileColor`。**不随之改变的是** `index.html` 里写死的 `<link rel="icon" href="/icon.svg">`——浏览器标签页图标始终来自 `public/icon.svg`。
+运行时逻辑仍会更新 `apple-touch-icon`（用 `pwaIcon512 || pwaIcon192`）、`apple-mobile-web-app-title`、`application-name`、`theme-color`、`msapplication-TileColor`。**不随之改变的是** `index.html` 里写死的 `<link rel="icon" href="/icon.svg">`——浏览器标签页图标始终来自 `public/icon.svg`。
 
 后台还能配置 `pwaMaskableIcon` 与 `pwaBackgroundColor`，但 `App.jsx` 的运行时逻辑不消费这两项：它们只可能通过后端 manifest 端点生效（后端是否真的写进 manifest 需在该仓库核对）。站点设置各字段的完整语义见[站点设置与公告](../systems/site-settings-and-announcements.md)。
 
@@ -307,9 +310,9 @@ Service Worker 本身由构建产物提供：`registerType: 'autoUpdate'` + `mai
 | 新增运行时依赖 | `optimizeDeps.include`；离线兜底走应用层缓存（SW 运行时缓存已清空，恢复须连同登出清理评估）；若暴露全局符号要加 ESLint globals |
 | 新增 `define` 全局常量 | `eslint.config.js` 的 `globals` |
 | 引入新的第三方域名（字体、接口、嵌入播放器） | `index.html` 的 CSP 对应指令（`connect-src`/`font-src`/`frame-src`/`script-src`；图片由 `img-src https:` 通配放开，一般无需改） |
-| 换成跨域部署 | CSP `connect-src` 与 `img-src`、`axios.defaults.baseURL`（当前需改代码）、后端 CORS 与 cookie 策略、`/api/rss` 链接 |
+| 换成跨域部署 | 后端 CORS 与 cookie 策略（SameSite）；构建时设 `VITE_API_BASE_URL`（默认已直连源站，无需改代码）；`/uploads` 渲染经 `assetUrl` 已自动补全 |
 | 换域名或子路径部署 | `base`、`index.html` 里的根绝对路径、manifest 的 `start_url`/`scope`、nginx `try_files` |
-| 换后端地址（ESA 部署） | ESA 控制台「函数变量」`API_ORIGIN`（仅域名+端口），修改后重新发布版本；代理头部白名单在 `edge/api-proxy.js` |
+| 换后端地址 | 构建时设 `VITE_API_BASE_URL`（ESA 在控制台「函数变量」配置，会参与构建），或同步修改 `vite.config.js` 与 `src/utils/apiBase.js` 的 `DEFAULT_API_BASE_URL` 两处常量 |
 | 换应用图标 | `public/icon.svg` → `npm run generate-icons`；运行时图标在后台"站点内容"里配 |
 | 换 Node 版本 | `package.json` 的 `engines.node`（>=20.19，ESA 构建优先读取）、`README.md` 环境要求、CI `node-version` |
 | 升 Vite 大版本 | `oxc`/`esbuild` 选项位置、`build.target`、`optimizeDeps` 行为都可能变，先跑 `npm run build` 与 `npm run lint` |

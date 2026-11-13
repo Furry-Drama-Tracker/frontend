@@ -16,18 +16,22 @@ sources:
     resource: repo://README.md
   - id: openwiki-source-1fe4306a261748bda5b78973
     resource: repo://src/App.jsx
+  - id: openwiki-source-0563314e4e01b2956353b034
+    resource: repo://src/components/Login.jsx
   - id: openwiki-source-52f73cb87517cf05f876b0b4
     resource: repo://src/contexts/SiteSettingsContext.jsx
   - id: openwiki-source-6f6201efb098b41d8f54920f
     resource: repo://src/main.jsx
+  - id: openwiki-source-397248f5d0f5e1b6d6a02a0d
+    resource: repo://src/utils/apiBase.js
   - id: openwiki-source-37ca2d167bb7e856d4f1a11c
     resource: repo://src/utils/axiosConfig.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
+generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-11T16:33:24.381Z
+    at: 2026-11-13T19:07:27.754Z
 ---
 
 # 快速上手与任务路由
@@ -51,7 +55,7 @@ server: {
 }
 ```
 
-**关键前提：没有独立运行的后端时，所有 API 调用都会失败或挂起。** 这不是"少部分功能不可用"，而是应用根本起不来：入口副作用一加载就 `GET /api/csrf-token` 预热 CSRF，`SiteSettingsProvider` 拉 `/api/site-content/settings`，`AuthProvider` 拉 `/api/auth/me`（`skipRedirect`），`AppContent` 再拉 `/api/themes/active`，页脚 `FooterBeian` 又拉 `/api/site-content/about`。后端缺席时这些请求超时或静默失败（`console.error` 级别的 `Failed to fetch`），界面表现为长期 loading 空壳或功能静默缺省，而不是一个显式报错页。**做全栈调试必须先把后端起在 5000 端口**，遇到"页面空白/一直在转/点了没反应"先确认后端进程还活着，再去读前端代码。
+**关键前提：没有独立运行的后端时，所有 API 调用都会失败或挂起。** 这不是"少部分功能不可用"，而是应用根本起不来：入口副作用一加载就 `GET /api/csrf-token` 预热 CSRF，`SiteSettingsProvider` 拉 `/api/site-content/settings`，`AuthProvider` 拉 `/api/auth/me`（`skipRedirect`），`AppContent` 再拉 `/api/themes/active`，页脚 `FooterBeian` 又拉 `/api/site-content/about`。后端缺席时这些请求超时或静默失败（`console.error` 级别的 `Failed to fetch`），界面表现为长期 loading 空壳或功能静默缺省，而不是一个显式报错页。**做全栈调试必须先把后端起在 5000 端口**，遇到"页面空白/一直在转/点了没反应"先确认后端进程还活着，再去读前端代码。（生产形态不同：构建后前端以 `API_BASE_URL` 直连后端源站，不再有代理；同域反代部署需以 `VITE_API_BASE_URL=''` 构建。）
 
 ## 关键命令
 
@@ -92,10 +96,10 @@ src/App.jsx
 2. **`/admin` 前缀是一次硬分流**，不是在同一个布局里换皮肤：公共分区是 `NavBar` + `container` 包裹的 Routes，后台分区是 `/admin` 登录页加 `AdminLayout` 嵌套的 23 条子路由，每条子路由再包一层 `AdminGuard`（每次路径变化重新 `GET /api/admin/verify`，非 200 就 `Navigate to="/login"`）。
 3. **全局状态没有状态库**：`Auth`、`Theme`、`I18n`、`SiteSettings` 四个 Context 承担全部全局状态（原第五个 `Icon` 图标引擎已随 ac3e6c8 删除，UI 图标改为 Font Awesome/Simple Icons 编译期组件），跨组件的状态同步靠 `window` 自定义事件（`auth:session-expired`、`auth:token-refreshed`、`api-error`、`pwa-install-available` 等）。加一个"全局变量"意味着加一层 Context 或一个事件，而不是 `import` 一个模块级对象。
 
-还有两处**文档与实现已经漂移**，读 `AGENTS.md` 时要留意：
+两条曾经的"文档与实现漂移"已在 2026-11 修复，现在的现实是：
 
-- `AGENTS.md` 说认证状态在 `localStorage.token` / `localStorage.user`。实际上会话走 httpOnly cookie（`axios.defaults.withCredentials = true`，刷新成功后的注释也写明 "access token 在 cookie 中自动携带"），`localStorage` 里只有 `user` 快照；源码中不存在 `localStorage.token` 的写入。细节见 [HTTP 层、CSRF 与双 Token 刷新](architecture/http-and-session.md)。
-- `README.md` 的跨域部署章节让人设置 `VITE_API_BASE_URL` 并修改 `src/utils/axiosConfig.js`。实际源码里**没有任何地方读取 `VITE_API_BASE_URL`**（`src` 中唯一的 `import.meta.env` 用法是 `PROD`），所以跨域部署确实需要手工补 `axios.defaults.baseURL`，别以为配了 `.env` 就生效。见[构建、配置与部署](operations/build-and-release.md)。
+- 会话走 httpOnly cookie（`axios.defaults.withCredentials = true`），`localStorage` 里只有 `user` 快照；`AGENTS.md` 已改为正确表述。细节见 [HTTP 层、CSRF 与双 Token 刷新](architecture/http-and-session.md)。
+- 跨域直连现在是**内置默认**：`src/utils/apiBase.js` 的 `API_BASE_URL` 读 `VITE_API_BASE_URL`，生产未设置时默认 `https://fdt-api.xiedada.net`，`axiosConfig` 把它设为 `axios.defaults.baseURL`；`index.html` 里的 `__API_BASE_URL__` 占位符（CSP `connect-src`、RSS 链接、启动遮罩备案号请求）由构建期 `htmlApiBasePlugin` 替换，后端返回的 `/uploads/...` 资源渲染前经 `assetUrl()` 补全源站。ESA 托管已改为纯静态（边缘函数反代已移除）。见[构建、配置与部署](operations/build-and-release.md)。
 
 补充一条构建期事实：`__APP_VERSION__` 由 `vite.config.js` 读 `.git/HEAD` 解析出的 8 位 commit sha 注入（读取失败回落 `'dev'`），页脚与后台页脚展示它；生产构建同时 drop `console`/`debugger`，所以**只在 dev 可见的日志断言不会出现在 preview/生产产物里**。
 
@@ -123,13 +127,13 @@ src/App.jsx
 
 | 我要… | 读这页 | 为什么是它 |
 |---|---|---|
-| 改注册/登录/设备验证/2FA/找回密码/强制改邮箱/会话心跳 | [认证与账号体系](systems/auth-and-account.md) | 登录的多分支状态与 `AuthContext` 初始化时序都在这里 |
+| 改注册/登录（双标识 + Passkey）/2FA 方法页签（TOTP/邮箱 OTP）/Passkey 凭据管理/用户名改名/找回密码/强制改邮箱与强制设置 2FA/会话心跳 | [认证与账号体系](systems/auth-and-account.md) | 登录的多分支状态与 `AuthContext` 初始化时序都在这里；设备验证码链已移除 |
 | 改首页筛选排序分页、详情页装配、收藏/文件夹/历史/关注 | [内容发现、剧集详情与用户内容库](systems/content-catalog.md) | URL 查询参数作为单一真源、无限滚动与滚动位置恢复 |
 | 加 UI 文案、切换语言，或改后端内容的按需机器翻译 | [界面国际化与运行时内容翻译](systems/i18n-and-translation.md) | 静态 `locales` 文案与 `getLocalized*` 运行时翻译是两条独立路径 |
 | 改图片上传与裁剪、头像/封面/壁纸的上传参数 | [图片上传与裁剪管线](systems/media-upload.md) | `ImageUploader` + `useImageUpload` 的校验、FormData 字段与尺寸约束 |
 | 改通知面板、SSE 连接、轮询兜底、Web Push 订阅 | [通知投递：SSE、轮询与 Web Push](systems/notifications.md) | sse-ticket 换取、指数退避、未读数写 PWA 角标 |
 | 改 PWA 缓存、离线队列、安装提示、浏览器兼容遮罩 | [PWA、离线缓存与浏览器兼容](systems/pwa-offline-and-compat.md) | workbox 运行时缓存白名单、`offlineQueue` 重放、双层兼容检测 |
-| 改站点名称/Logo/favicon/manifest/公告/隐私条款等静态页 | [运行时站点配置、公告与静态页](systems/site-settings-and-announcements.md) | 站点配置 30 分钟 TTL 缓存与动态 manifest 端点 |
+| 改站点名称/Logo/favicon/公告/隐私条款等静态页 | [运行时站点配置、公告与静态页](systems/site-settings-and-announcements.md) | 站点配置 30 分钟 TTL 缓存；manifest 已固定为构建期同源版本（运行时只更新 meta） |
 | 改暗/亮主题、强调色、壁纸、主题工坊与主题审核 | [主题与外观（壁纸与主题色）](systems/theming-and-icons.md) | CSS 变量派生、壁纸注入优先级、单壁纸槽主题包 |
 | 改后台外壳、角色可见性、待办徽章、任一管理页 | [管理后台：布局、角色可见性与待办](systems/admin-console.md) | `AdminLayout` 二次 verify、creator/admin/superadmin 三档入口；审核 `/admin/review` 与单集回收站 `/admin/episode-trash` 已收紧为 admin/superadmin（`ADMIN_ROLES_UP`） |
 
@@ -139,7 +143,7 @@ src/App.jsx
 |---|---|---|
 | 走通剧集创建 → 送审 → 通过/驳回 → 版本与回收站 | [剧集创作、审核与版本流转](workflows/episode-publishing-and-review.md) | `reviewStatus` 流转与 `changeSummary` 版本语义的端到端串联 |
 | 找某个后端端点、错误码（401/403/409/419/5xx）的语义 | [后端契约地图（API 分组与错误语义）](integrations/backend-api-map.md) | 以 `apiEndpoints.js` 为索引的前端消费面清单 |
-| 改构建产物、代理、CSP、部署拓扑（nginx 同域或 ESA 边缘函数 `API_ORIGIN`）、图标生成、CI 工作流 | [构建、配置与部署](operations/build-and-release.md) | Vite 配置要点、环境变量暴露规则、nginx 同域方案、esa.jsonc + edge/api-proxy.js |
+| 改构建产物、代理、CSP、部署拓扑（ESA 纯静态直连 / 同域 nginx / 跨域自管）、`VITE_API_BASE_URL`、图标生成、CI 工作流 | [构建、配置与部署](operations/build-and-release.md) | Vite 函数式配置与 `htmlApiBasePlugin` 占位符注入、apiBase 三个取值分支、esa.jsonc 纯静态声明 |
 | 手头改动不知道算不算验证过 | [验证与质量门禁（无测试框架）](testing/verification-and-quality-gates.md) | 没有测试运行器时的验证阶梯与手工回归清单 |
 
 ## 最短起跑路径

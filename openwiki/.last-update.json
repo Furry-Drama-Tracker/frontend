@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-11-11T17:16:08.359Z",
+  "updatedAt": "2026-11-13T19:30:25.477Z",
   "command": "update",
-  "gitHead": "256044132ee7fd5ed35cf71b22991753efc123f9",
+  "gitHead": "d1d938b9c9dbac5f15854ac2be89d8e6768ca8e2",
   "model": "host-agent/zcode",
   "status": "complete",
   "language": "zh"

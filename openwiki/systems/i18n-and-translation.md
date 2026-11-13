@@ -39,7 +39,7 @@ sources:
 generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-11T16:33:24.381Z
+    at: 2026-11-13T19:07:27.754Z
 ---
 
 # 界面国际化与运行时内容翻译
