@@ -14,7 +14,7 @@
              └─ /uploads/...  图片等上传资源
 ```
 
-- 前端 API 基址默认硬编码为 `https://fdt-api.xiedada.net`（`src/utils/apiBase.js` 与 `vite.config.js` 各有一处常量，需同步修改），产物里是绝对地址。
+- 前端 API 基址默认硬编码为 `https://fdt-api.xiedada.net`（`src/utils/apiBase.js` 与 `vite.config.js` 各有一处常量，需同步修改），产物里是绝对地址；控制台**函数变量** `VITE_API_BASE_URL` 可覆盖默认值。
 - 后端返回的 `/uploads/...` 是根相对路径，渲染前由 `assetUrl()` 补全为源站地址；开发环境保持相对路径（Vite proxy 行为不变）。
 - 非 axios 直连（EventSource、altcha challenge、数据导出 fetch、RSS、启动遮罩里的备案号请求）统一走 `apiUrl()` 或 index.html 里的构建期占位符。
 
@@ -41,24 +41,35 @@
 
 ESA 控制台 → 边缘计算和 AI → 函数和 Pages → 创建项目 → 接入 GitHub 仓库。`esa.jsonc` 位于前端仓库根目录，构建配置会被自动读取。
 
-### 2. 后端地址（内置默认值）
+### 2. 后端地址（内置默认值，可用函数变量覆盖）
 
-ESA 控制台没有可用的构建环境变量入口，因此 API 基址直接硬编码在仓库里：
+ESA Pages 没有独立的「构建环境变量」表单：构建期环境变量通过项目详情页的**函数变量**配置，
+函数变量会参与构建流水线，可作为 `process.env` / Vite 的 `import.meta.env` 使用（阿里云工单确认）。
+
+默认值已硬编码在仓库，开箱即用：
 
 | 位置 | 作用 |
 | --- | --- |
 | `src/utils/apiBase.js` 的 `DEFAULT_API_BASE_URL` | 运行时请求前缀（axios / `assetUrl()` / `apiUrl()`） |
 | `vite.config.js` 的 `DEFAULT_API_BASE_URL` | 注入 index.html 的 CSP `connect-src`、RSS 链接、启动遮罩 XHR |
 
-默认值：`https://fdt-api.xiedada.net`。换源站时**两处常量必须同步修改**，然后重新构建发布。
+默认值：`https://fdt-api.xiedada.net`。直接改默认值时必须**两处常量同步修改**，然后重新构建发布。
 
-需要区分环境（测试分支指向测试后端）时，仍可在 `esa.jsonc` 的 `buildCommand` 里覆盖，例如：
+需要按环境切换源站时，优先用函数变量（无需改代码）：
 
-```jsonc
-"buildCommand": "VITE_API_BASE_URL=https://fdt-api-test.xiedada.net npm run build"
-```
+ESA 控制台 → 边缘计算和 AI → 函数和 Pages → 目标项目 → 详情页 → 基本信息 → **函数变量** → 添加变量：
 
-设置为空字符串（`VITE_API_BASE_URL=''`）则强制同源相对路径，适用于 nginx 反代部署。注意：`esa.jsonc` 是全分支共用的，覆盖后测试/生产会指向同一个后端。
+| 键 | 值 | 环境 |
+| --- | --- | --- |
+| `VITE_API_BASE_URL` | `https://fdt-api.xiedada.net` | 生产（可选，与默认值相同） |
+| `VITE_API_BASE_URL` | `https://fdt-api-test.xiedada.net` | 测试（可选） |
+
+注意事项：
+
+- 键名仅支持字母/数字/下划线，`VITE_API_BASE_URL` 符合要求；值只填协议 + 域名，可带端口，不带路径
+- 新增或修改变量后，需要**重新生成版本并发布**才会生效
+- 设置了该变量时优先于仓库里的默认值；设为空字符串（`VITE_API_BASE_URL=''`）则强制同源相对路径，适用于 nginx 反代部署
+- 备选方案是在 `esa.jsonc` 的 `buildCommand` 里内联覆盖（`VITE_API_BASE_URL=... npm run build`），但不推荐：该文件全分支共用，测试/生产会指向同一个后端
 
 历史配置的 `API_ORIGIN` 函数变量已不再使用，可在控制台删除。
 
@@ -89,5 +100,5 @@ ESA 控制台没有可用的构建环境变量入口，因此 API 基址直接�
 - **后端直接暴露在公网**：客户端 IP 是真实 IP，不再需要 `X-Forwarded-For` 透传；依赖 IP 的限流策略按真实客户端生效。
 - **CSP 由构建期注入**：`index.html` 的 `connect-src` 会带上硬编码的 API 源站；`img-src` 已允许 `https:`，上传资源域名无需单独列出。更换 API 域名必须同步改两处常量并重新构建。
 - **PWA manifest 使用构建期静态 manifest**：后端 `/api/site-content/pwa-manifest` 里的 `start_url`/`scope`/图标是根相对路径，跨域引用时会以 API 域名为基准解析，导致安装后的应用指向 API 域名，因此不再指向该动态端点。后台配置的 PWA 名称/图标目前只作用于 `apple-touch-icon` 与 meta，不进入安装清单。
-- **`esa.jsonc` 优先级高于控制台**：存在该文件时控制台里的构建配置不生效；环境变量不受该文件管理，仍在控制台维护。
-- **不再需要**：`edge/api-proxy.js`、函数变量 `API_ORIGIN`。
+- **`esa.jsonc` 优先级高于控制台**：存在该文件时控制台里的构建配置不生效；构建期环境变量（函数变量）不在该文件中，仍在控制台维护。
+- **不再需要**：`edge/api-proxy.js`；`API_ORIGIN` 函数变量已废弃，可删除（换源站改用 `VITE_API_BASE_URL`）。
