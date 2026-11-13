@@ -24,12 +24,16 @@ sources:
     resource: repo://src/components/AdminReview.jsx
   - id: openwiki-source-8e2cf47532f4659008db992a
     resource: repo://src/components/EpisodeDetail.jsx
+  - id: openwiki-source-0563314e4e01b2956353b034
+    resource: repo://src/components/Login.jsx
   - id: openwiki-source-9793b3dd98a0e62ec68a07c3
     resource: repo://src/contexts/AuthContext.jsx
   - id: openwiki-source-7898acfb0042c03f592a292f
     resource: repo://src/contexts/I18nContext.jsx
   - id: openwiki-source-a179f998ae5318f35e50729c
     resource: repo://src/contexts/ThemeContext.jsx
+  - id: openwiki-source-397248f5d0f5e1b6d6a02a0d
+    resource: repo://src/utils/apiBase.js
   - id: openwiki-source-37ca2d167bb7e856d4f1a11c
     resource: repo://src/utils/axiosConfig.js
   - id: openwiki-source-091078cd4f585582a9efba7a
@@ -39,7 +43,7 @@ sources:
 generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-11T16:33:24.381Z
+    at: 2026-11-13T19:07:27.754Z
 ---
 
 # 验证与质量门禁（无测试框架）

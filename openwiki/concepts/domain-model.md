@@ -58,10 +58,12 @@ sources:
     resource: repo://src/hooks/useNotifications.js
   - id: openwiki-source-ff495d7f24153076143f0ee8
     resource: repo://src/locales/zh.js
+  - id: openwiki-source-397248f5d0f5e1b6d6a02a0d
+    resource: repo://src/utils/apiBase.js
 generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-11T16:33:24.381Z
+    at: 2026-11-13T19:07:27.754Z
 ---
 
 # 领域模型与术语表

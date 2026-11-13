@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:c33c65d16c28d543f17d2b507cd04d2214d16802acd2f5fec60c879b7e839c9c",
+  "pageVersion": "sha256:0b447da83cbfe8c4217c48421dac0a35368791f7a679bbfe0064fc1e0bce9de3",
   "claims": [
     {
       "id": "claim_16dd3a0d22174b259245ef778ec0b67d",
-      "statement": "前端不依赖任何全局状态库（依赖中只有 React 生态、axios、altcha、qrcode 与图标库），全局客户端状态由 App.jsx 中 Theme/I18n/SiteSettings/Auth 四个 Context 持有（原第五个 IconContext 已随自研图标引擎删除），跨组件同步依赖 localStorage 键与 window 自定义事件两条通道。",
+      "statement": "前端不依赖任何全局状态库（依赖中只有 React 生态、axios、altcha、qrcode、@simplewebauthn/browser 与图标库），全局客户端状态由 App.jsx 中 Theme/I18n/SiteSettings/Auth 四个 Context 持有（原第五个 IconContext 已随自研图标引擎删除），跨组件同步依赖 localStorage 键与 window 自定义事件两条通道。",
       "evidence": [
         {
           "resource": "repo://package.json#L17-L31",
-          "version": "repo-lines-v1:sha256:624a670982625e62b3a51b59fcd7f43018fedb29ae58b239e7aa09ed1334efd5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhM2I0NjlkOWUwOTc1NzIyNDY2NjczNGM5ZWY3YjI1NGQ4ODUzNGY1ZDViYjcwOTg5NjA4MDVjNTUzZGMzMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyODhhZTE5NjcxMWE0M2U1ZTJjMGI0ZDBlOTUzZTgyZjg5Yzg3ZjI1ZWZiN2U5NTQxNmYyMzIwNjU1MDIwZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM2Y2IwN2NiMmM3MzMxZWE1OGI0Mzc0NzAwNDNiNzg4NjY5ZDZlMTExNDVmYmQ3N2ZkOWJlMWIxOWUxZTIxOWIifQ"
+          "version": "repo-lines-v1:sha256:71419da76a8cbdd1e314c7975d8b1e62b7330aede4bf483c66b32276663741a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhM2I0NjlkOWUwOTc1NzIyNDY2NjczNGM5ZWY3YjI1NGQ4ODUzNGY1ZDViYjcwOTg5NjA4MDVjNTUzZGMzMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxMGM4MGE5MzA0MTkwMGYxNjUzNGRiOGUzY2FkMzdhNTljMzBlMjg3NjM0NTBjMzEzMmJhY2JmMmEyMTIwOGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyODhhZTE5NjcxMWE0M2U1ZTJjMGI0ZDBlOTUzZTgyZjg5Yzg3ZjI1ZWZiN2U5NTQxNmYyMzIwNjU1MDIwZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwZmExMWVjMDc4MGJkMmEwMzBlY2MxYjY5NGM1MzVjYjZlMTgxNjBjNjFmOGMyNDdhNjAwMjIwMDczZGE5N2UifQ"
         },
         {
-          "resource": "repo://src/App.jsx#L622-L637",
-          "version": "repo-lines-v1:sha256:ffbe3b41b651bfc02676085a0931be10a5dc52b510927b92d9ffc100a37e90a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmYzMzZGE1MTNkZWZjMmZkZjg3YzNiNjY2OTkyYmMwZTUyMmZhZTA5N2YxMjYxZDg3MDIxOGUxNGY5ZTY5NzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmZTE0MDhjNWRjMzcyM2M2MGRhMmM0YTA3MmM0ZjBmNzc2ZjRkOTM5ZTc0YmIzOTFhNTI5ODAyMzM5ODhmODYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljZjcxZTI1Nzk0ZmMxNTA4NzA3OTMxOWI0MWFmZTk5ZjJjZjliMzFjMDdlZmEyZTFjYzEzYjQ1MzE1OWRmOTUifQ"
+          "resource": "repo://src/App.jsx#L614-L632",
+          "version": "repo-lines-v1:sha256:8d9e46040a6aa7dda467352287dc7681dba4228e63f1af6e17c1a8dcf7fba017:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzMzI5Njc4NjBhYjgyMjdkZWQzNjk4Yjk2ODMxZDJiNTIzZjgwODMzMmExOTIxYTExYzdiNjcyZDBmODgyNmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyMDcyMjYxZDY4YTI5Y2QzM2JlYjZkODc5N2E0MzI0Yjk1ZWRmOTZkNjFlODYxNzhkYzYxZjFlZjk5Y2M3NWEifQ"
         }
       ]
     },
@@ -21,8 +21,8 @@
       "statement": "四个 Context 各拥有明确的存储归属：ThemeContext 拥有 theme 与 accent_color，I18nContext 拥有 lang，SiteSettingsContext 拥有 site_settings_cache，AuthContext 拥有 user（并经 offlineQueue 间接拥有 offline_queue）；原 IconContext 不持久化任何键，已随自研图标引擎整体删除。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L18-L29",
-          "version": "repo-lines-v1:sha256:ffad436983b82b73cb14335f91c8278cb29124802b3abbf54e1a9c04739f1391:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzOGE5ZWYyZjUyMWMxMWZjZjU0YmY5Yjc1YzYxZTE2MzNmNTVkZDAxYjBjYWEzNWM4NTA0NmJhZjg2YTU0MWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiMWU4MTlkYmU5ODczM2UyZjc2ZGEzMWE0NmVkYjY0ZTY3NTQ0MjYyMDk3MzM4MTg3MmYzNjc1NDkxMWQyYzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRmNzAzYzZlNzc0ZTMxOTA2Y2Y1ZjU4NzZlYjhkMTgwYTZlNDY5MDQwNzRlMzUyZWFlYTUwMjVlYjkyMmY3ODEifQ"
+          "resource": "repo://src/contexts/AuthContext.jsx#L18-L31",
+          "version": "repo-lines-v1:sha256:abebbcc79fbe8bfa76fb54429baa54baa6082399dbbb493f0982e63ff092f5f7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzOGE5ZWYyZjUyMWMxMWZjZjU0YmY5Yjc1YzYxZTE2MzNmNTVkZDAxYjBjYWEzNWM4NTA0NmJhZjg2YTU0MWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiMWU4MTlkYmU5ODczM2UyZjc2ZGEzMWE0NmVkYjY0ZTY3NTQ0MjYyMDk3MzM4MTg3MmYzNjc1NDkxMWQyYzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0ZWI3MDE2NjUzNDY1OTEyZjkzYTM3Y2Y1NjQ4NmI5ZTJmOGIwMjhlMDAzZGIzMDE5Yjg5MGFhNmQwYmYyNWUifQ"
         },
         {
           "resource": "repo://src/contexts/I18nContext.jsx#L22-L105",
@@ -43,34 +43,34 @@
       "statement": "AuthProvider 冷启动从不用 localStorage.user 预填 user state：initAuth 忽略传入的 storedUser，而是 fetchCsrfToken 后请求 GET /api/auth/me 覆盖 user 并重写快照，再串行 POST /api/user-sessions/create（失败 1 秒后重试一次）；initializing 结束前 AppContent 只渲染加载文案。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L501-L508",
+          "resource": "repo://src/App.jsx#L492-L499",
           "version": "repo-lines-v1:sha256:a6f48747e022d81eced9516268acd6d3d0f7d8d5f33de9c1da870111d4c62203:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDZkYTZkNDMxYWMzOGZiYWRhYzE2MWZkMjMxZDkzNmQ1NDJlMzY2MGYzMGUzMmU1MWZiODIxNTVmNDVjZDNlYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ5ZTEyNTQ2NDI1NTc2ZDNkZWFlOGM5YjlkYmYxMjhkNWQ2ZGRhZjVkN2ZlODU3OTM0OTI3ZGVmZmEzYjlkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWQ3ODY5YjlhYzM5MjRiMDk2YzQ4MWU3ODlmMzRiOGM4OGFkMDZiZmZhYmFjNmFhZjhjOTZjNWViNDg3NjkyZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDlmMTZhNjUwZjdhMmUxZmRmZWM5ZTk5YWJhNTQ3YWRjMTk2NjA5MDBhM2QwYjQ3ZGUxZmIwY2NjZjllNmM3NyJ9"
         },
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L30-L89",
+          "resource": "repo://src/contexts/AuthContext.jsx#L31-L90",
           "version": "repo-lines-v1:sha256:4ad9cb70ec8312b52ac305ac3bc22afaa81af97b36a1b96c11c54bfb2e2389f3:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzZjljYzdkYTdhZjU5YTMwODc2NDRhMjI4ZTZmNGI3NjhkMzRiZWQ5ZmZkZWE0ZTAwZDE2MWZmM2IzMGI4YzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1NDNiNTg2OWZjOGY3OWQzMTc0Y2QyMDVjYmU1ODA0MDdlYjdkMmM0NWEyYTBkMDJhNWFiMDM3NTNkZjYxOTkifQ"
         }
       ]
     },
     {
       "id": "claim_8915902fec2e498ea50d09a82180d190",
-      "statement": "localStorage.user 快照被 AuthContext 刻意收窄为 _id、accountId、username、isEmailVerified、role、avatar 六个字段（不写 email/forceEmailChange），因此 updateUser 传入的 backgroundPrefs、emailNotificationPrefs、email 等字段不进快照；axiosConfig 在 token 刷新成功时合并写回的白名单同样不含 email 与 avatar，只补写 forceEmailChange，该键的实际 schema 由两个写者共同决定，读方不能假设字段齐全。",
+      "statement": "localStorage.user 快照被 AuthContext 刻意收窄为 _id、uid（数字用户锚，2026-11 新增）、accountId、username、isEmailVerified、role、avatar 七个字段（不写 email/forceEmailChange），因此 updateUser 传入的 backgroundPrefs、emailNotificationPrefs、email 等字段不进快照；axiosConfig 在 token 刷新成功时合并写回的白名单同样不含 uid/email 与 avatar，只补写 forceEmailChange，该键的实际 schema 由两个写者共同决定，读方不能假设字段齐全。",
       "evidence": [
         {
           "resource": "repo://src/contexts/AuthContext.jsx#L163-L172",
-          "version": "repo-lines-v1:sha256:16941ba1a5a4e1bb28af717782256677b4f28abf20b110feee7cec147832b865:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkYzUyZjA4YjM5YjA4YjAxYzhkMzA4YmY4ODBiMGJlZjAyZmQxZGZjYzlkOWFhOTNhNGQxYjVmNGQ1OGI2Y2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM5MzE1MGFiYTUxYWM4NGQ2NTM0MmRhNDMyY2QwY2VjYzBmNjJiZWNhMjFlYTg5MzU3NzU0NjczYjA1NGQxYmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZkMDY1ZmQyYmMwMDlkNDYwZWI0NzIwY2VkMTJlODRiYTE3YmI4NDQ2MjkwYWMyM2FkMWNkNzVlZGJmMGIyNDIifQ"
+          "version": "repo-lines-v1:sha256:09866cc61e4ede19fb65fcc860929f9057d5ee653d2ff1b208b14aced704f59f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkYzUyZjA4YjM5YjA4YjAxYzhkMzA4YmY4ODBiMGJlZjAyZmQxZGZjYzlkOWFhOTNhNGQxYjVmNGQ1OGI2Y2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyZDExY2FmNDNlOTdlZjM2OWU2YmVlZDFhMjY4YmQwNTgzOGYyOWI5ZGQyNTRiZjY5YmE2NDg4NDE0NzIzNGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiNDBkM2NmZWMxZjQ3OWJlMDFlZGNjYjY0NzllYzk4MTIwNGIyMmI5YWIwMzUzNTQzMjM2NDhhZGY1ODg2NTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM2M2VjYmFjN2Y1ZGM2NzMxYzk4NTkwYTFjZGI2MjhlMzZmMTU0ZWZhMWU5ZjllZGUzNDIwZDQyYTZkMThkZDEifQ"
         },
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L18-L28",
-          "version": "repo-lines-v1:sha256:67d672a2b394e9364e7e49f0ec23c2fda8163fecd7f090fbe31d7dec369d568f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzOGE5ZWYyZjUyMWMxMWZjZjU0YmY5Yjc1YzYxZTE2MzNmNTVkZDAxYjBjYWEzNWM4NTA0NmJhZjg2YTU0MWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiMWU4MTlkYmU5ODczM2UyZjc2ZGEzMWE0NmVkYjY0ZTY3NTQ0MjYyMDk3MzM4MTg3MmYzNjc1NDkxMWQyYzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjOGUzYWZhYzE5NDRmY2JlNGVlYmFkNjViOWVhZWM5NmIwMWUxZjVhOWEwODRhNmU1MmUxMDVjMDJhN2E1NWEifQ"
+          "resource": "repo://src/contexts/AuthContext.jsx#L18-L31",
+          "version": "repo-lines-v1:sha256:abebbcc79fbe8bfa76fb54429baa54baa6082399dbbb493f0982e63ff092f5f7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzOGE5ZWYyZjUyMWMxMWZjZjU0YmY5Yjc1YzYxZTE2MzNmNTVkZDAxYjBjYWEzNWM4NTA0NmJhZjg2YTU0MWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiMWU4MTlkYmU5ODczM2UyZjc2ZGEzMWE0NmVkYjY0ZTY3NTQ0MjYyMDk3MzM4MTg3MmYzNjc1NDkxMWQyYzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0ZWI3MDE2NjUzNDY1OTEyZjkzYTM3Y2Y1NjQ4NmI5ZTJmOGIwMjhlMDAzZGIzMDE5Yjg5MGFhNmQwYmYyNWUifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L228-L246",
-          "version": "repo-lines-v1:sha256:9c7b7188acb937ca432cb1900ecbce68942336c248c299b8788bf0a2de4a53c8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM4NzhhMDdmNWU3MGFhMjU1NTZlYTAwYWVkZmVhNGRmOWVmOTllZTg2ZDI3NDI3NWUwM2I3ZTk3YjRmY2FkNDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyODdkMTE2ZTY5YmE2Y2NmOTNjMDZiNWY5ODFmNGQ0M2Y5MDczYmYyNzk0YTFlOGJmNjYyZTFjZGJjYWRhMTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdkNjJhMWVhMjdlZDIzYWNhYjBmMDAzMGU4ZGFlOWExNzc4YmNkZDY1ZmYwZDc1Nzc5YzJkN2UwM2JhODZiNDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljMTJkZmEyZWMwYjRmMjExNWRkMTc1ZjFlYWIzNDg0NzMwZjUzM2Y2NGY2ODQwMDE0MzQ3ZjdkZWU5NzM2NjgifQ"
+          "resource": "repo://src/utils/axiosConfig.js#L238-L247",
+          "version": "repo-lines-v1:sha256:914949633a524dec5e08d7e6ee302085d9955c5c14be5283936cfc18bce67551:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiYTFhMjUwZTI3Mjg2NDI2MDkwOTg3NjNmZTU4Yjk2MmQ1NWJlYjBhMGZkNmZkNjc5MDM2MzI4N2U5MThmYTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyMjNhNmEyMGQ0ZDQwMTIzYTQxY2Y4ZTY4ZDJlOTRlYTdlMTIyNDY2NmVmMGZmMjAwMzc0ZjA5OWU1NTIyMDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkzNWJhNjFiMTg1MmIwOTA3Y2VhZGNiMGJmYzE4MjcwYjMyZmY5NzI4NjViMmE5OTVlZTg4Y2IwNDM2ODUyMTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAxZWY4ZThkNWNkN2RjMzYxZjVlMDY3OThkOGZlYWUyY2U5MWNmZTY4OGQ1ZTMzYTIzYjAwODIwYmJiZjk1ZmYifQ"
         },
         {
           "resource": "repo://src/utils/axiosConfig.js#L62-L82",
-          "version": "repo-lines-v1:sha256:51a38aa0d9dcfb0f81504315ed24366a135afe36f282147209d1901c5846da31:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkYjY1OWMzNjRiZGEzOTQyN2ZjOGFhNzE5ZmUxMDhkNmFkMWJmNjg0ZTUxZGVjOGMxOGZiNDM4MmJkODExZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4MDA1ZDU3MTA2YTM2MmViMDAwZGFmM2RhNDY3NGM4MmI1MThmZjVhMmUyZjY3ZWU4ZTc1N2EzMzNjMmFmNjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlNGFiYTJjMWJkYzg1MGI4NjcxZWY0ZWIwMTA3M2FhOTFjYmI4ZjAwODdjNGZmMGM1ZGE4NzJkNTY3NjM2MWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJlMjBlYjdkMDA2NzY4OTViYzcyMzA3M2FmYWQ1OWJmZjBlZGE0NmU2MWM1ZmRjNWE4ZTQ2ODc3YTQ2N2IxOTUifQ"
+          "version": "repo-lines-v1:sha256:a35d8878b8a5695a0ec6b8f5b0b6d24686524cdec92db322cb6e367c55941978:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4ZGFmZTJmMzkwNjViMTA2YWY4MTdmYzNhNTJkZWM4MDA4ZjI2YTNiNTM1Mjg3MjUyZDg2YTdkN2Y0ZjIzYWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2NGJmODJiMGQ4NGJjNGY0MWVjM2FmZWM5ODEwNDU2ZWM0ODQ4OWM4OGMyM2Y2MGNjZmRmNzgyNGYyOTg2NjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc3MDg5ZWY5ZTAyN2JiNDRiNzNlMTY3M2JmZWM2YTNlZmRkZTI5MjA5N2VkNWExYzRiYjM2MmE5YjNjYzk1N2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZiZGZhY2ViNjg4MWM0MTcyODA1YjBlZGZiZGRkYzc4YmMwYjQyZDA0M2EyYmUzNzU3ZjVkZWY5YjE5MGZhNzEifQ"
         }
       ]
     },
@@ -79,19 +79,19 @@
       "statement": "localStorage.user 有四个清理点（登出、GET /api/auth/me 失败、401 与 419 刷新失败、快照 JSON 解析失败），而登出现在经 clearClientData 删除 user 与 offline_queue 两个键并清空全部 Cache Storage（前后台登出共用），site_settings_cache、translation_cache_v2、search_history、home_scroll_pos、push-notifications-enabled 仍跨账号保留。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L156-L161",
+          "resource": "repo://src/contexts/AuthContext.jsx#L157-L162",
           "version": "repo-lines-v1:sha256:9e839ff4e5098d3fdec5b6bec275c5fbba648dc3505de1be7567ee182d55efb7:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjEyMDNiMTQxNGFmNzMyNzc3NTRjYjk4MTY2OWM0MTBkMTMwMTdjMGY4YmU4OGIyZjJkMWJiNzcwYmMxYTYyOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmI4NDI1ZWIwM2M1YTc0MjI4ZDZhYTczYWNkM2QzNjFlZmMzZDQ1NDhiOTMyNDM0M2QzN2YwYjNmYmE4MDc0NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjQyZWY4M2RkZmJhNzc4MzkwYzFkMjk1ZGM2NjE0MGZmMDcxYzBhYWJjNmVjYzdjZGE5ZGEwMzQ3MmVlYzExNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGMwNmI3YjZmNTEyNWI3MGQyOGJhYmU2YTQ4Nzg0ZjEwZmY4ZThiOWY5NGIxYWFiMGJkYTlkNTE2YWUxZmZmZCJ9"
         },
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L65-L88",
+          "resource": "repo://src/contexts/AuthContext.jsx#L66-L89",
           "version": "repo-lines-v1:sha256:722678a92636a7f3b27db489a7a2bb681a12402cec670e11f5f389483209fa2f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkYzUyZjA4YjM5YjA4YjAxYzhkMzA4YmY4ODBiMGJlZjAyZmQxZGZjYzlkOWFhOTNhNGQxYjVmNGQ1OGI2Y2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiMDZmNWFmODJjYjM1NTgyODZjMjE5Y2NmNDIxMTUzMzM4OWE2MmE4NmMzMTlmNjI2ZTc2YzlmOWU1YWEwNzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhNDEwNzU0YzUzMTQ1ZDM0OGVmOTIwMWUzYjYxY2Q5YWQ3ZjlmZDdjZmFlM2MzOTE0Yjc5YThmNTBjYmY4MDkifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L102-L111",
+          "resource": "repo://src/utils/axiosConfig.js#L109-L118",
           "version": "repo-lines-v1:sha256:1882b3e9fe01fbfc4d6291ece5f622e8b69ef63f2a561a3620e181685ad2c461:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjYjFhMTM1NWM2YzViNDNhY2Y2NTVkMDRmODU1NTc3M2ZhZjQyODZhZjUwYTI2MjFlZWM1ZjlkOGYxY2FlOWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxODFiNjcwMThlYTRmMGM3Yjc1OWIzMGE2OTVlOWYxMzhmOGE1ODkzZDllNjY1MTI3NThlMmRjNmQ1OTI5MzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjOTY2OTczMmEzMDIxYjQ2MzExYmRiMzk3OTI1OWIwZTQ2N2Y2NTIwY2FmMDNlYWJhNmIwYzZkMmY5MGU2YmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiNjljYzA1NjVmZDVhMzliMzIzOWY0OGMyZDYxNmUxNDhmZWVjN2U5ODdlNDYzYTc5MzA3ZTI1NWIxZGFlN2EifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L249-L262",
+          "resource": "repo://src/utils/axiosConfig.js#L256-L269",
           "version": "repo-lines-v1:sha256:b6e9944267b6a470926dd2289a8fb8756181715e45fd46ac9eb3e5e6d5549066:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmMDliMjYxNDlhNzI0Y2E5ZGQ0ODJkOGZhMTc4YThiOGZhMDA0NzAzMjBhOGVlY2Y0YzRlZDU4Njk5ZTExNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliNjJmNjBkODU5MGE1NzljZjQ2ZjhkNjczNzhjNGM1NzJiOTYyY2VjY2RiOTBjN2E1ZjdiNDJiOTYwNzgyYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ1OTk3MzIwYTUzOTgxNzcyNTU5NjY5N2ExNGZjZWQzZGEzMGE0YmQxYjkyNjNhMGJmOGJlNjkxZDZlODdhNmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1NTQ1ZmIwYmYwNmFhYzU2OWFmNjYwNzQ2NTY1ZGQ4ZDFmZjQ0MjAwY2FkYTY3ZmYxYWM5YzMyYWU1NDEzZTAifQ"
         },
         {
@@ -105,7 +105,7 @@
       "statement": "AuthContext 在运行期维护三个行为：登录后每 5 分钟一次心跳（document 隐藏时跳过）、visibilitychange 回到前台时重取 /api/auth/me 与 CSRF token、以及 online 时动态导入 offlineQueue 并执行 processOfflineQueue。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L115-L149",
+          "resource": "repo://src/contexts/AuthContext.jsx#L116-L150",
           "version": "repo-lines-v1:sha256:f8ca024577c5373f7d72f72d7c3fbfe04684f0b43fda2079312fa0481e29cf24:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0YzFjNjc3MmRiNWY0ODViNDVmYzVjYTE1ZTkyOTk4N2E4MDFmZTJjOTNiNzExNmNkODRhZTI5MWJhMjZmNDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjliOWMzMjRmYTdiMGEyMzNiNDRmNzZhNTc2ZjIyZmM4ZWQ0OGMxN2JkYmVhMzA3MDQyODEzMDAzMzY4NWNkMjUifQ"
         }
       ]
@@ -115,11 +115,11 @@
       "statement": "AuthContext 作为消费者注册三个 window 事件：auth:session-expired（仅 detail.type 为 user 时置空 user）、auth:force-email-change（给 user 打 forceEmailChange 标记以触发强制改邮箱）、auth:token-refreshed（用 detail.user 合并当前 user）。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L90-L114",
+          "resource": "repo://src/contexts/AuthContext.jsx#L91-L115",
           "version": "repo-lines-v1:sha256:0d9ae3d7b450f463fae2bc907c9b535b8f9d63019a0ab4468cae61ea29df192c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZkODZhYjZmMTMzMTJhMDI0MGY2OGVlNTA4N2IwNjBlMGYxZDk0NmFjZjkwYjE4ZjczOWExZDkyMjk0ZDNmZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjZWZmMzM3Nzg0YjFhNzllMTQwM2UzMDFhY2E1Mzc4NzlhNjJkMmFjMTk1ODgzZTAwODQ1MTAzNzk1OGYyYjUifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L110-L121",
+          "resource": "repo://src/utils/axiosConfig.js#L117-L128",
           "version": "repo-lines-v1:sha256:417ab96f193fa80436ea6e0e5197f5dba1bf2a87e5fc812c5c714f3793c4207e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhODY0OWRiMjkzYTM4MGE2MzNjNGUzN2IyYTFlYjY1YTUwNWRiMDAzOTVjM2Y5NTllN2VhZjMwZGU2NjNjNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1OTA2NzBmNTNiNDAxOGRiNGMxNDZiOWM5NmE5ZWMwZDg4ODI4MzNiZWEwZGY3MzFiYTZlYzQ4YjE4NGZkOGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4NzVhMGZhMDQ5OTFlNTg0NTY2OWY0YTk1ZmYxMmViM2Q2ZTg1NDExOWRjODY5NzZjMDA0MTdjZmU4OWY0ZTcifQ"
         }
       ]
@@ -129,7 +129,7 @@
       "statement": "离线队列的存储契约是：条目按方法、URL 与请求体的拼接哈希去重，超过 24 小时的条目在读写时被过滤，单个动作重试超过 3 次后不再回写；入队目前只有一个来源——EpisodeDetail 在离线且评分请求失败时加入。",
       "evidence": [
         {
-          "resource": "repo://src/components/EpisodeDetail.jsx#L291-L299",
+          "resource": "repo://src/components/EpisodeDetail.jsx#L293-L301",
           "version": "repo-lines-v1:sha256:5285c5fd0f32c872e349e2e1444e6a24d0cf2c587e0c969a456004fb231b30db:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTljMTM1OTA2NjU2MzIzZDFjNWVhNDE2NTRlZTY2YWZiNTg1YWNkY2ZhZWFjYTEyMWQ1ZTMwYmYxOTNlZWRkNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWI2MmY2MGQ4NTkwYTU3OWNmNDZmOGQ2NzM3OGM0YzU3MmI5NjJjZWNjZGI5MGM3YTVmN2I0MmI5NjA3ODJhNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2RmY2I4ZDcyMTdlZmQ1YmI2MDMxMWUxZTEyM2VjNjE5MGRlODVhZDc0ZGJiYWQ5YWQwYzk4MTRmZTM1YTk3NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTFlMzcyNWRhMDAyYjQ2ZWQ4YjRkZTg4MDAzYWQ5NzEwZGNhZjE4ZDU3YzQ3MDFkYzNiZWZmMGIyYzVjYjEzZiJ9"
         },
         {
@@ -143,7 +143,7 @@
       "statement": "offline_queue 不按用户隔离：冲刷发生在任意一次 online 事件中，登录期间切换账号（不经登出）不清队列，队列会以当前会话 cookie 重放；登出已改为经 clearClientData 整键清空（而非 offlineQueue 自己的 clearOfflineQueue，后者仍是无调用方的导出），队列日常收缩只依赖 TTL 与重试上限。",
       "evidence": [
         {
-          "resource": "repo://src/contexts/AuthContext.jsx#L156-L161",
+          "resource": "repo://src/contexts/AuthContext.jsx#L157-L162",
           "version": "repo-lines-v1:sha256:9e839ff4e5098d3fdec5b6bec275c5fbba648dc3505de1be7567ee182d55efb7:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjEyMDNiMTQxNGFmNzMyNzc3NTRjYjk4MTY2OWM0MTBkMTMwMTdjMGY4YmU4OGIyZjJkMWJiNzcwYmMxYTYyOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmI4NDI1ZWIwM2M1YTc0MjI4ZDZhYTczYWNkM2QzNjFlZmMzZDQ1NDhiOTMyNDM0M2QzN2YwYjNmYmE4MDc0NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjQyZWY4M2RkZmJhNzc4MzkwYzFkMjk1ZGM2NjE0MGZmMDcxYzBhYWJjNmVjYzdjZGE5ZGEwMzQ3MmVlYzExNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGMwNmI3YjZmNTEyNWI3MGQyOGJhYmU2YTQ4Nzg0ZjEwZmY4ZThiOWY5NGIxYWFiMGJkYTlkNTE2YWUxZmZmZCJ9"
         },
         {
@@ -227,7 +227,7 @@
       "statement": "site_settings_cache 的唯一主动失效入口是 refreshSettings（复位 ref、置 loading 后重拉），目前只有 AdminSiteContent 在保存站点内容后调用，因此其它标签页或管理员看到的是最多滞后 30 分钟的缓存。",
       "evidence": [
         {
-          "resource": "repo://src/components/AdminSiteContent.jsx#L177-L185",
+          "resource": "repo://src/components/AdminSiteContent.jsx#L178-L186",
           "version": "repo-lines-v1:sha256:f78c0716eba9b9bf18cb4968d7263706801d9095aa3f8ae2bc36154b385c3e5a:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWI1Nzc2MDQzNDc1NDYyYjYyNDMyMTJhYjk4YmY0MGE3ODE3NWE2NDc3ZWEyYmZlZTljYTI2OGViYjQyY2JiNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTI4ZTFiYzM4ZjZlMTU0YjJlMmIwMzBmMzcyZTRiZmRhODA5ZmViMzVmNDJjMTc5MjQzMWYyNDYzM2Y5ODdjNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmUzNjY0NzQyOWU4ZmZjY2EzMGVlNDkwOTcxODY4ZTg4MGE3M2RlNTJhNTkxMTQxNDJkYzc3OGM4NWI0NTM1ZiJ9"
         },
         {
@@ -241,11 +241,11 @@
       "statement": "应用或取消主题的写入顺序是契约：PUT /api/themes/selection → 用响应的 backgroundPrefs 调 updateUser 使壁纸立即生效 → 响应带合法 accentColor 时 setAccentColor（写 accent_color）。图标引擎删除后不再派发 theme-selection-changed 事件。",
       "evidence": [
         {
-          "resource": "repo://src/components/ThemeColorPicker.jsx#L83-L95",
+          "resource": "repo://src/components/ThemeColorPicker.jsx#L84-L96",
           "version": "repo-lines-v1:sha256:73fba61f8205eb4b4605ffd40ed4569095113b5a14e171bc916e4798bf2a2a1c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwNTFiYWI2ODNmODlkN2ZmNzEwNDZmNmViMDUxNDFkOTdiNDZiZTk1NmQ3Y2I0ZmVhMzFlNTZiZjk5YTZkNzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlOTI0OWZlODIzNTg3NWJlYjYyZmFiM2U0YTMwODkwZWNiODAwNjdhZDFiMzQwOGJkZWJlZGU2YWVlNGExYzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjOTQ5NmMyY2I2Y2E2OGU3ZjVkYjQzMWMxMDZmZTBmODgxNTExZGRjNTZkM2I4OTdhNDc1MGZkNjViNDcwOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2MjJjZWZlZDYwMzNjNTBkZmE5NThlMGJjZTA3ZjAxYjI0ZjlmNDJjYzZjYzA0NjM4MjBlNmQxMTEyMGNmOTQifQ"
         },
         {
-          "resource": "repo://src/components/ThemeWorkshop.jsx#L86-L96",
+          "resource": "repo://src/components/ThemeWorkshop.jsx#L87-L97",
           "version": "repo-lines-v1:sha256:9f3cc09e8fc01edf494386addbf4876e2875ede5bacf3230d88b9268c9355c15:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNDgwY2I4ZWZhODg5YzQ2NTA0MWNkZDI5MjEzNjcwMzEyZmNlZTM4MTM4MDY1OWUyODQzYjk4OGY2OGI3MWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA3ZmZkZDkwN2M0ZDY5YWVkMjE5ZWY0NjBhZmFjYWUyZjczZWM5MmI4M2E3NzU4NzliMDcwZmI4YjAyOTVhNTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU2NjgxMjJiMDgxZmE3YThkNDE5YmI5NTRiNGE4MTlhYjZmYzgxMGFiYTI1NjE3ZWZiMTM1ODI5ZWRkNTFlM2UifQ"
         }
       ]
@@ -267,7 +267,7 @@
           "version": "repo-lines-v1:sha256:43c0478d31964855b8d0e746e10f2962399c3297b05d5def5e7543c3592c737a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1NjVjNDNmMjE4MmVjMzZkZjFjZDBmYmY2MjI2ZGU5MjY3YTM3ZDllZWNkOWZkZmQ3NjFmNTllMjdjYzQxNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiYzdkODc5Y2MzZjY2MjY3ZGFkYzY0MGNmMjY2NzIxYmViMmY5N2U3NzZkOWZhYTlkYmZmZTMwNGI1OWY2OGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjViY2Y0YzY0ZWMwNWUyYTBjMzBlODU2MjgwNjE1YzdlMzEyMjkyYjk2MDk4NDJiNjhkMDRmODBjODJhOTAxZTAifQ"
         },
         {
-          "resource": "repo://src/components/Home.jsx#L74-L100",
+          "resource": "repo://src/components/Home.jsx#L75-L101",
           "version": "repo-lines-v1:sha256:3322b62a664bbc58b8393a55c9896b3385a1462aaa7561f9ce4e8ffd253c861f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhMmMxM2IzOTYzNzBkYWFjYTRkNTZiZjUwOTJiNzUxMDU4NzEwMGJjNDRjM2E4Nzk0MThlNGJiNmNmN2UwMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM1MGRiYzQyZGMwNDU4MTQwYmRhZTE4OGE0MDgyODJhYjczMThiM2ZkNzJlMjk2ZWM4OTQzZmUyNzhjNjVjODQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2YmM4MDNmZmRjYzRiMzhiOTEyOThkYzcyM2I1ZWM4MzBmZjVhMzAzYjIyOTkxZGEzMjBiMTI0YTBhNDdlNGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0YzFjNjc3MmRiNWY0ODViNDVmYzVjYTE1ZTkyOTk4N2E4MDFmZTJjOTNiNzExNmNkODRhZTI5MWJhMjZmNDkifQ"
         },
         {
@@ -328,11 +328,11 @@
     },
     {
       "id": "claim_1e8447d309a44b6fba8343c5ca4a9743",
-      "statement": "存储层不含任何认证 token：凭据只存在于 httpOnly cookie，代码中的 token 仅作为 URL query 参数出现在 Login、ResetPassword、VerifyEmailChange 等页面；AGENTS.md 中「token in localStorage」的描述与源码不符。",
+      "statement": "存储层不含任何认证 token：凭据只存在于 httpOnly cookie，localStorage.user 只是启动提示缓存（权威来源是 GET /api/auth/me）；代码中的 token 仅作为 URL query 参数出现在 Login、ResetPassword、VerifyEmailChange 等页面（AGENTS.md 已修正为 httpOnly cookie 语义，原「token in localStorage」描述已不存在）。",
       "evidence": [
         {
-          "resource": "repo://AGENTS.md#L38-L39",
-          "version": "repo-lines-v1:sha256:bb32e3b6cb90197dd5a2cd4b34bebaad9e23c04c4f56f5df0c2f1cfe74cafc79:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDkxZDUzYzM0MTEwZGMxZTdmZTdlY2RhZDFhNmYyMDNjYTRkZjYxNGU5ZmYzZTI3NGUxYTU3NzI1MjgzNzM0NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGMxYjBiYjljYTMzYzMyYmIwNTJjYzlkM2RhM2QyZDM3N2Y2ZWI5MWM3Yjk1MjZlOTIzNzcwZjI2ZDRhOTE0NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGE1Y2Q4ZTZkZTZiN2ZiMjY3NmE5ZjBhMDViMWUzOTRiMTM0YjM1NzM5MGM5YWQ0MDFlY2QxOGFlZmNmZmIyOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2YxNWNmMGUxOTI4ZWJmNjc5OWU0YjVmMmZhMDkzZGQxN2RlMjAyYzMzNGQyMGM3MjJiMTBmNzE3ZWRiMTllZSJ9"
+          "resource": "repo://AGENTS.md",
+          "version": "repo-file-v1:sha256:cfedc36c77469afc8a0c12ba1e924e286cdd16a7cadd5cf527cef8144842dc66"
         },
         {
           "resource": "repo://src/components/ResetPassword.jsx#L10-L11",
@@ -356,15 +356,15 @@
     },
     {
       "id": "claim_1bb1e90f83364bfe8ce0c1135910c106",
-      "statement": "_icp 是 ICP 备案号的跨层缓存：index.html 的旧浏览器遮罩用 XHR 拉取后写入并在渲染时读取（读/写两侧都先经 escapeHtml 转义再拼 HTML），React 侧的 BrowserCompat 在 API 成功时同样写入、失败时从该键回退。",
+      "statement": "_icp 是 ICP 备案号的跨层缓存：index.html 的旧浏览器遮罩用 XHR 拉取后写入并在渲染时读取（读/写两侧都先经 escapeHtml 转义再拼 HTML；跨域部署下 XHR 目标经构建期 __API_BASE_URL__ 占位符直连后端源站），React 侧的 BrowserCompat 在 API 成功时同样写入、失败时从该键回退。",
       "evidence": [
         {
           "resource": "repo://index.html#L156-L163",
           "version": "repo-lines-v1:sha256:1a4e60f7df1fb32736423de3fca11596ff415cb49cd6fafad56ad3f1360e07a5:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDI1ZWNjNDViZGRjNzFlNDMzMTAzMzFjNTg1ZDBmM2E4ODRiODNiYWVhYWQ1OGRjZDZjY2FiNzVhNzg1OWRjOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODgwMDVkNTcxMDZhMzYyZWIwMDBkYWYzZGE0Njc0YzgyYjUxOGZmNWEyZTJmNjdlZThlNzU3YTMzM2MyYWY2NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGM5MDI2ZTFkYmYyZGM5NzY2MTMzNmJhOTI0OGE3NjYwZGIxMmM5ZWU1MTcxZTdiOWYwNzU3ZWI0NTYzM2ZkZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjBmZDNmYzY2YjVjY2MzZjQ5MzJlNjYwNTI5NmY3N2U0OGE4NDI4ZDdkZTc2OTliN2ExOWRjYTc3ZjE4MzZmNyJ9"
         },
         {
-          "resource": "repo://index.html#L203-L232",
-          "version": "repo-lines-v1:sha256:cdb5ac5290cefc03954cf0781c655df114c6d0612f4e8c08cdf3d93737dd5349:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1YmEyMGI2MDgxMzFiNTUyZjViYmY1MTI1N2QzNTY4NTQzNTc1MmExYmMxN2ViOTBiZjMzNDY2MDBkNGJmNTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiY2U3ZDdmNjMzNGU0Nzk2NDFhZDA2NDhjMTFhN2YxZDM0OGI1YTYwMTNkZDVmMjE0ODVhYWE2ZmU5MzFmN2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmMzBiNDAyYjI0MzJkMjMzNDQ3YjY1YjE0NzlmYTAxYWNmZjllN2M1YTQxYWU4M2Q4NzJmOTIxMjUwZDVjODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2MDM2N2Q0ZjQxZjFhY2NjNDExMmVhYzM1N2IzMDU3Zjc2MjcwMzE1NjFmMjIzZWQzNThjNjgwZTUwYTZjM2MifQ"
+          "resource": "repo://index.html#L203-L238",
+          "version": "repo-lines-v1:sha256:23f90e2ba761768b92a85ab829ec581ef2f33ee8415f2466d65aec7cfcdfbfe9:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1YmEyMGI2MDgxMzFiNTUyZjViYmY1MTI1N2QzNTY4NTQzNTc1MmExYmMxN2ViOTBiZjMzNDY2MDBkNGJmNTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzZWQ4MWNkMTZkZjg4ZDY5MjE2NjQ2ZDhkYWRhNzYzNGIzM2E2OTg2ZTljMjNhNzI2MzFkMTkzM2I2MzVhNTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmMzBiNDAyYjI0MzJkMjMzNDQ3YjY1YjE0NzlmYTAxYWNmZjllN2M1YTQxYWU4M2Q4NzJmOTIxMjUwZDVjODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         },
         {
           "resource": "repo://src/components/BrowserCompat.jsx#L215-L234",
@@ -395,6 +395,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-11T16:33:24.381Z"
+    "at": "2026-11-13T19:07:27.754Z"
   }
 }

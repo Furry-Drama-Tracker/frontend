@@ -26,6 +26,8 @@ sources:
     resource: repo://src/locales/zh.js
   - id: openwiki-source-6f6201efb098b41d8f54920f
     resource: repo://src/main.jsx
+  - id: openwiki-source-397248f5d0f5e1b6d6a02a0d
+    resource: repo://src/utils/apiBase.js
   - id: openwiki-source-da4b9cb7c816d661a449ffcf
     resource: repo://src/utils/apiEndpoints.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
@@ -33,7 +35,7 @@ sources:
 generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-11T16:33:24.381Z
+    at: 2026-11-13T19:07:27.754Z
 ---
 
 # 通知投递：SSE、轮询与 Web Push

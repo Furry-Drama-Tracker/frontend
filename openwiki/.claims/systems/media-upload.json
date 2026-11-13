@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:afb67ca3eaace9fd063f20a84282de3011735667ff048f6c0fed0fcac02c1cd6",
+  "pageVersion": "sha256:5cf99b6133fd329dd7d6e669231971eb62c3be340ca95a5a96c945bb7095102f",
   "claims": [
     {
       "id": "claim_b34b804e8556438e821b4a02ab9b38c7",
       "statement": "ImageUploader 是受控组件，只通过 value/onChange 与父表单交互；它在内部维护 mode（默认 'url' 的 URL 输入 / 'upload' 本地上传）与 urlInput（用 useEffect 跟随 value 同步），并且当 showCropper 为真时组件提前返回、整块替换为裁剪界面。",
       "evidence": [
         {
-          "resource": "repo://src/components/ImageUploader.jsx#L195-L210",
+          "resource": "repo://src/components/ImageUploader.jsx#L196-L211",
           "version": "repo-lines-v1:sha256:19cb44624f4ae6df81cac29db391271f3497e62ac708f96a18377d3bfb005c1d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhZWZmZjM1MTA0Njc4YTNiZjRiNTMyZmQwOTE3NzM0Mzc1MmQ4MjE4MDliZDlkYjM5YzNkYThhYTVmOGM1M2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY3NzhkZDE4MjkxNzNhZTMzYjdlZDE2ZmJkZDA1MWI1YWI4ZDNkZmY2YjkyYzVmMTVmY2Q3N2ZmODkyNTJhZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0YzI3ZDMxODM5NjU0NjNlODQ5ZDIyNjEyYWNjNWE5ZDkyYzg3MjM0NDcyY2Y1OWUwOTM4YjY5MDA3NWU0MGUifQ"
         },
         {
-          "resource": "repo://src/components/ImageUploader.jsx#L7-L15",
+          "resource": "repo://src/components/ImageUploader.jsx#L8-L16",
           "version": "repo-lines-v1:sha256:ac0125ed439d3c728e558d64ddfbb1c800b6dbc1b2f29a8ec9fe4e5aa15e6080:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmFkY2ZhODQxNWM2ZDMxYzAwZWNmZDBiMWNjODU2ZWNkNmM4MjIwMzdjN2EwMDk0ZDE0ZDAyMzYyYTJmZDUzMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjBiZWJkOThjNDU0NzY2MDMyMjg2ZmRlN2FkMjE2OTZlNmZjMTRkYWI1MDNlNWIzNDk4MzNlODFjZmQxM2RkZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmE2YWYwMGE3MWQzMzgwOGExZGYwYmJkMThmYmNlMjAzMmEwYTk1ZjcyNjlhZmQxZmQ1OWZmMjcxMjZkY2VmMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDVmODQ5MDE2N2Y3NWUxMjk1MWJjMTc4MTljNjc5ZjY4MDcyZDVhN2E0NjFjYjUxYzBlYzQ3NjFkZDViM2UwZiJ9"
         }
       ]
@@ -21,15 +21,15 @@
       "statement": "裁剪指针坐标被归一化到 0–1（getPointerPos 用容器 getBoundingClientRect 换算并夹取，触摸取 e.touches[0]），容器同时绑定 onMouseDown 与 onTouchStart 并设 touchAction: none；拖拽开始后 mousemove/mouseup/touchmove/touchend 挂到 window（touchmove 用 passive: false 以便 preventDefault），拖拽结束即解绑，因此拖出容器边界不会中断拖拽。",
       "evidence": [
         {
-          "resource": "repo://src/components/ImageUploader.jsx#L130-L145",
+          "resource": "repo://src/components/ImageUploader.jsx#L131-L146",
           "version": "repo-lines-v1:sha256:1508d94d16766adafe3aeb01555849a15b67a3f5b73bf0cdc8275e8640be6246:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJhNjE3MTlhZDM3N2EwMjBmMWNmNjAyYmRmNDBhMzJjNTgwMzhjYWViMzE2Mzk5NTc5MTkwM2E1MzIwMGNmMjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhNzY3N2M1MGI4M2RkZjE0YjM5NzA4MzFiMDcwMGRlMzFjOGE5YjQxN2QzOGFkYjk0MzM5OTM1MzA1NWRkMTYifQ"
         },
         {
-          "resource": "repo://src/components/ImageUploader.jsx#L29-L54",
+          "resource": "repo://src/components/ImageUploader.jsx#L30-L55",
           "version": "repo-lines-v1:sha256:7d84747264ccf4ddf4d1affda5b9b7a2e1e53d6ceef37ade5369b2bc9c528f75:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyYzkxOTcyZWQxOGNkMmVkNGRkODg4Y2M4YThlM2NjMWY2OTFlMzc2MjU5ZmRmMGJhZGFmMjExNmQ0NjFjMzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM3MTk5ODUzYTA0NmRkYWUzMDRkN2VlZjZlNGQ1MzNiYTgxMjZkNjM5ODQwNzllMzhiYTdhNThjOThkMGY5MTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdkY2MwMTc5ZDlmZGRjNzZjOTMyNmU3ZmNhYjJhN2RjYTdiYmVlZTc0YmI5M2MzNDA1YTQwNTc5YzdjYmY0YmIifQ"
         },
         {
-          "resource": "repo://src/components/ImageUploader.jsx#L279-L285",
+          "resource": "repo://src/components/ImageUploader.jsx#L280-L286",
           "version": "repo-lines-v1:sha256:edeb70e8b7a0bcb41dec034de5dae32ef40727d8ef5b9a4e54869bdd3522a9fa:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDExZWExZjA4ZmZhNTk2MTJkYTFkM2Q5OTcwOWY0MzJlYWFmZDk4MGE2OTc0NzYyZmRiZWU5MjRmZjA0MTBmMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzZkMWRlYTBiNTc0MTBmODhlYjc5YTBhMTA2ZGYwOTRjMDE3NzBkOWZkOGYwYWNjMjliMTc4N2MyNDJjMzJmOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTllNGQwMDZmZDRmNDZjOTA1NDBjZDFhMzkwNjRhMGIzMDE1ODg3ZjFlZWUzNGJiZjRiYjc2OWI1MTAzODkxOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDNhNjBhYzg0ODY3MTc0ODY3Nzk2YTYwNDdmNjIwMjc4ZmZjMzViNTI3YTcyZWY0NDllNTFmNGI3MTExMzM2NCJ9"
         }
       ]
@@ -39,11 +39,11 @@
       "statement": "裁剪框只有两种拖拽语义：落点在已有矩形内为 move（位移叠加到起始矩形快照并对四条边做 0–1 夹取以保持宽高），落点在矩形外为 create（以落点为锚点重建矩形）；覆盖层的四个白色角块只是装饰，没有 resize 处理器，改尺寸必须重新起拖。",
       "evidence": [
         {
-          "resource": "repo://src/components/ImageUploader.jsx#L296-L305",
+          "resource": "repo://src/components/ImageUploader.jsx#L297-L306",
           "version": "repo-lines-v1:sha256:59f50093a8c68efefc52592a306b18d124a57867953974a3016bd1fb4044d0b7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5ZjkzYjUwNmEwNTYzYThjODBiNDExMTdlNzJlYjBmMTNhZjY5ZGUzOGQxYzgzYjQzODkzNmFlZTgxYjAzZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4ODNlODNhNjM2NzFlMjhjOTVmZmVmZjA2NTA3ODE3MzU1Mzk3OTBlNTU4MTU1YTk1ZGZiYzJlYjA0ZTQ2NTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBmODg2ZWU2ZjhkNTA3ODIwMTEwMDc3YjYyZWFlMzZkMzVmYzIxYjVjNTU2NTZkNTZlM2UyNzhiNmNmYTRlMWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ1ODg3Yzk0ZmU4MDU3OTQxMTUzOWNkM2JkNWExZmUxY2VlYWEwMDcwYTE3N2MxMDhiYzdiYTliZTYyYjAxMjEifQ"
         },
         {
-          "resource": "repo://src/components/ImageUploader.jsx#L83-L129",
+          "resource": "repo://src/components/ImageUploader.jsx#L84-L130",
           "version": "repo-lines-v1:sha256:4b6f0608e72fea21149ff3856b839e5c543232be2327a32bbdb994ed196e241e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjNjg2MmJhMjJhY2M1ZGMyOGMxYTVmM2RiOWFkNGJmMWI3ODkwNmJjNDE3ZjkxNjc1ODM4YzY3NzE0YWQzZWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlOGFlYThjZTZmZWE0Y2M5NTI2Zjk4YjFhYzUxZTE1YTQ3NTM1N2FiY2U3OGY5MmMwNGE3N2Q2MzU2NGE2MjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkxODJhZmQ4MTU3MjgwZmFlNTUyYmFiMzFkZTZlMmYzODY3ZWFkOTM3NWUxZDMzOGFkODQyNTYyM2FmNzRkNjQifQ"
         }
       ]
@@ -53,11 +53,11 @@
       "statement": "constrainAspectRatio 在归一化坐标空间强制 dx/dy 等于 aspectRatio（先按主轴收窄另一轴，再把终点夹回 0–1 并用比例反算另一轴），因此屏幕上的裁剪框像素比等于 aspectRatio ×（图宽/图高），只有正方形源图才与 outputWidth:outputHeight 一致。",
       "evidence": [
         {
-          "resource": "repo://src/components/ImageUploader.jsx#L261-L267",
+          "resource": "repo://src/components/ImageUploader.jsx#L262-L268",
           "version": "repo-lines-v1:sha256:b4a594eb3f0a53cb73a5ae8fbe559d02d4d31a422797602c81f28238efd95b8d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGNmZjY2MzczNmI0NGUzMjhiYzE3NDUwZDg3M2RkMTgxNDI4MmRiZTg0ZjQ1ZmY3YjA0YzY0NTFkNjhmZWNkZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTBmNDU4NTI3Y2FkMWNhZGUzNjU3OGE4MGJjYjJkY2FjOTRlNzhiN2IyYWJmYWZjNzU2MDYyNTY3NzFhNjZkNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjUyNTU0NTU5Mjg5MjMyMmZmNGQ2MmMyYWM1NWFlYjFlZTY4NGZhMjBhZmFiMTNkNmFlMjUzZTg5ZDMwNzAxMyJ9"
         },
         {
-          "resource": "repo://src/components/ImageUploader.jsx#L55-L82",
+          "resource": "repo://src/components/ImageUploader.jsx#L56-L83",
           "version": "repo-lines-v1:sha256:19dbf43e0ceb1e65d422c045bd4bb3fd677ea194ac406b944e3b746858e3d2aa:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5YjkxZTJlNGQyM2E2MDU3NmFkZmNhNzZkMjI3MjljMzg5ZWZjYTRlMzJiMjI2OTk5YWM2MWY0NTM2ZTE3YzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3ZDVhODA2ZDJmZjAwMGI4NWJkNjA2MTVlOTRlMjdiMWFhMTBiZmM5NjgyMDczYThlYjA3MzJiNzAxZTFjMmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhOTExZDU3ODZlODFiYzI2MmM4NWQyNzQxOGFmMTFlNWIxNzU3ZTUyYmRjM2ZkZDI0ZWMzMmI0ODcxZWI3YjUifQ"
         }
       ]
@@ -67,7 +67,7 @@
       "statement": "handleCropConfirm 用 crossOrigin='anonymous' 的 Image 把归一化矩形换算成源像素矩形；无 cropRect、宽高均小于归一化 0.01、或 sw/sh 小于 10px 时退让为「使用裁剪前地址」，否则建立 targetW=outputWidth||round(sw)、targetH=outputHeight||round(sh) 的 canvas，并用 drawImage 把裁剪区拉伸填满目标尺寸后再上传。",
       "evidence": [
         {
-          "resource": "repo://src/components/ImageUploader.jsx#L211-L252",
+          "resource": "repo://src/components/ImageUploader.jsx#L212-L253",
           "version": "repo-lines-v1:sha256:4012c5f839bd389665187e4162c24dd4a88105097a43d60d10b71aba5c0e3b31:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiNDY2NDMxZmY2YzQxMTBjYmFkNTg1MjUzZjU1YmIyYjU1MGM5YjRmNGIzNWY5MjUzODRmMThiNzA5NDBiNDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUxZTM3MjVkYTAwMmI0NmVkOGI0ZGU4ODAwM2FkOTcxMGRjYWYxOGQ1N2M0NzAxZGMzYmVmZjBiMmM1Y2IxM2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxNDI4ZGRjYzA3ZDVhZTgyNzMzYzExZGFhZTUzZDhjZDgzMGVkNWQ1Y2E3ZjNjY2MzNmQ4Y2Q2MDQwN2I1MGMifQ"
         }
       ]
@@ -77,7 +77,7 @@
       "statement": "uploadCroppedImage 以 canvas.toBlob('image/jpeg', 0.9) 生成 Blob，用字段名 image、文件名 cropped.jpg、端点 uploadEndpoint || '/api/site-content/upload' POST；POST 失败时会回退到 canvas.toDataURL('image/jpeg', 0.9)，把 base64 字符串当作 value 交给 onChange，即上传失败也可能写入非服务器 URL 的值。",
       "evidence": [
         {
-          "resource": "repo://src/components/ImageUploader.jsx#L146-L169",
+          "resource": "repo://src/components/ImageUploader.jsx#L147-L170",
           "version": "repo-lines-v1:sha256:1a5f2e96f444991db75e1675988048d2f620cef76fa2a8b1cac9ffcdb6983f0d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MzY2ODBiMDNjOTMxZTczN2M0MjdhZDVjNzRhNGFmNjliZWM4ZmIzNWJiOTc3OTcxNDA5YmExYmM3ZjI5ODAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkYWZhZWQwZTMwMjA0ODE5MTk5NDZhNzYxN2NmMWU5MDRjY2VhOGMxYTVjNDg2OTllOGY2MmMwYTUxODg2MjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA0MGJmYTkwNjIzOGQxYTNhNWI3MTY0Y2MwNGRkMmZmOTg2NTc4M2QyM2ZmNjJiOWY4NDU5MjAxODczZDQ0OTYifQ"
         }
       ]
@@ -87,15 +87,15 @@
       "statement": "handleFileUpload 先上传原始文件取得 URL，再按是否存在 aspectRatio 决定「立刻 onChange」还是「打开裁剪界面二次上传」；上传失败只 alert(imageUploader.uploadFailedRetry)，组件自身不校验文件大小与 MIME（accept 属性仅是选择器提示），且「移除」与「取消裁剪」都只改前端值、不删除服务器文件。",
       "evidence": [
         {
-          "resource": "repo://src/components/ImageUploader.jsx#L170-L198",
+          "resource": "repo://src/components/ImageUploader.jsx#L171-L199",
           "version": "repo-lines-v1:sha256:8648fa562ebff5502d505b07b28cb6ee04f7c44297c2f35da9805d02e4390ee1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1MTJhNDUzYmEwYjhjZTBiNmQ2MmQzYjFjYmY3NDhhMDhkODU5MDQ3NWFlOWNhY2JkNDkwYWNhZGE1ZjU4YjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFmYzE3MTA0N2E2YWI4YTAyNTY5NjZkMzEwNGE2MWVhNmI5NDk4YzY1MDMyZDhmOWY0N2RmMmUyNzNiMzhiMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlOTM2NzcwYjllY2NkMDY3ZTk0Y2JiZjVlYTYzOWQyYWIzMmU1NDUxMWI1MDg5NTk5ZmQwODVlZjYxOTcyZmUifQ"
         },
         {
-          "resource": "repo://src/components/ImageUploader.jsx#L253-L259",
+          "resource": "repo://src/components/ImageUploader.jsx#L254-L260",
           "version": "repo-lines-v1:sha256:04a7b09707fb971b6b36c116f1123bdde2393881fbdd1256d9973b6246019e78:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQ0MjIzZjgyNTY4ZjRjMWQwYzdiY2M3NWIzNDBmN2U4NTUwM2I1ZTllMjc5NDkzOThmZDhhOWQyNzA0YmRjOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDNlMzZkZjM2YjY4YTYzZmQ1NzlmNzQ2N2NiZTY4NTVjZDczN2QwYWZjZDU1MTMzNTJiMDZiMGZmMTFhNmRiOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjViYWQ1ZDFlOGY0Y2ZmYzdkZDk0Mjg1ZTEzODA4OWEzYmU5ZWJlYWIxMTYzMmRkZThiN2MxMmJmYzY4ZTcxNiJ9"
         },
         {
-          "resource": "repo://src/components/ImageUploader.jsx#L335-L336",
+          "resource": "repo://src/components/ImageUploader.jsx#L336-L337",
           "version": "repo-lines-v1:sha256:7be075d63f46dd5befd5b27de6a26e9d8a6e3f3c07b62713f8bbf5f1809a3636:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk5OTEwOTMxNmViM2ZjODFmNTk2NmZlODJhZjIxOGZkOWE2MzdlZjE3MDY5YWRkOGM2MjFlNDZkNGYwN2I0ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTAwNWFkNzk1NDU0NjFmMzc2NmJjYzY4MWRiZDNjZWYzYWQ3MzA2NmQxMTkzOTI0NDUzZTAxNGJmZmQ5YmJjOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGIzNWJhMDFkNGM2MDYxODIzZjIzYzhlYTE5M2QyOTE3YjJjMmE1YzVlNTg4ZWExZjgzMzZhZjQ0ZjYwYTQyZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjBjNmJkMTQwZGExYmE3MzQwNzg0YjNmYjI2YzdlYjFiNjVhNDIzYWNmOTc5YTBkNGMwMzZiZjM4NTg5NDY5YyJ9"
         }
       ]
@@ -113,7 +113,7 @@
           "version": "repo-lines-v1:sha256:9326f99940db79d95391a02bd934d535dfa1b8db0a9867ba4410a88b76876232:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0ZThlMjcwNzBmYThhZGQ0NTY1NTk1YzVmZTQxYTdhODFlMDYyM2JmN2E5NzYzYWQ3NjlmZTk3YTkyM2Q4MzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBjNmY5M2VkMmI1YTE5NmFlMjRmMWY4MjBhNWM5YzUzYzUzNzJlNjVlMzQxMzAzYjIzYmE0ZDc1NDBjYTUzNTMifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L3-L36",
+          "resource": "repo://src/utils/axiosConfig.js#L10-L43",
           "version": "repo-lines-v1:sha256:693e030404f3c93cf55f56da7158e2995459164930e5194c96ff898d1e405c36:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViNTdkMzgxNGZlMzZkMTM4NzY5YTUwZmZhNTViZjc4YWI3NDFlMmVjN2I0ZmVjNTEzZTQzZmNhMzFlMWI4NDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhlYjhmYzVkM2VkYjM2YzcxNTExNzdhYTI3NGExNGE5MmNhMWQ2MDFkMDA5N2MwYTQ0YmM1ZWRiNjA2ZTMxZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3NWNhMjBhMmM5ZTZiOGZjZGY4YTZlODc0YTE2ZjI4MTcxYzgzMjRkMzE3M2VhZjgwYzk2ZTZiYTA5YTYxY2IifQ"
         }
       ]
@@ -123,15 +123,15 @@
       "statement": "ImageUploader 的调用点固定以字段名 image 提交，但端点分两类：剧集封面（EpisodeFormModal、AdminEpisodes）用 /api/episodes/upload，站点素材（AdminSiteContent 的 favicon/navLogo/PWA 图标/关于页素材、创作者头像）走组件默认的 /api/site-content/upload，而 AdminBanners 的轮播图借用了 /api/episodes/upload。",
       "evidence": [
         {
-          "resource": "repo://src/components/AdminBanners.jsx#L129-L140",
+          "resource": "repo://src/components/AdminBanners.jsx#L130-L141",
           "version": "repo-lines-v1:sha256:597b3bbaa2673efd55a9d33c50065ca1e2bc9494557ea1bca09132b527798f78:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4MTM5MDJkN2JhN2FkMTQ5MDM0ODk1OTY2MWYwMmI3NzVlY2Y5Yjg4MjI2OGY1MzIwZjkyOGY4ZDNmNzQwNDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyZjNjZmQxMWRhNjE1MDE5N2FjZWVkMDg0MDZhYzY0YjA1MDM0MGRlN2JjMDQxMjRhNGNiN2VmYTY3MTM0MGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVhMGFiNGE0YmIyYWViYjViM2NhYmIxNzExNjEyYzk1OGVjY2QwNzEwOTA4NTBiMDk1ZDZjOTkwNjhmMDE0MjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzZjc3NjliZmY1ZWU3ZjVkODJmMzdmNzU4YTJkNTY4YWFmZjkzYzg5OTJhMzNhYzEzMmVkMDZjYjYxNTAxNTkifQ"
         },
         {
-          "resource": "repo://src/components/AdminCreatorProfiles.jsx#L158-L169",
+          "resource": "repo://src/components/AdminCreatorProfiles.jsx#L159-L170",
           "version": "repo-lines-v1:sha256:25a60d2fce59b31a73086fe047f723c49a521318f04e80f77f7a54c80e46f4ad:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlYmZjNjJkNzgyMWEwNmY4Y2Y0Mjc4MDg5NThjMzM3NmJmMDJkYzc3YTg2YTBmMGVjYmU5NTdkMjAzY2Y2NWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU5YmQ0Yjg1NDFlYTE5ODYyYjY5N2U1ZDMzMzZhYjJiZWYzMjRmZjkyMDA1ZGFkNTg5MGY4NzE3MTBjY2YwYzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNjNzg1ZWFiOGY0Y2Y4Y2U2NzFmZjQwZGFmODdlMjAzMDVlMjQ2M2ZiY2Q5ZWE1NGFhMTljNjFlNTI3MDUxOGUifQ"
         },
         {
-          "resource": "repo://src/components/AdminEpisodes.jsx#L530-L541",
+          "resource": "repo://src/components/AdminEpisodes.jsx#L601-L612",
           "version": "repo-lines-v1:sha256:c223857ad74b6f4bc6f59264739933f441579ebab06d37696665700925748924:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4MTM5MDJkN2JhN2FkMTQ5MDM0ODk1OTY2MWYwMmI3NzVlY2Y5Yjg4MjI2OGY1MzIwZjkyOGY4ZDNmNzQwNDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyZjNjZmQxMWRhNjE1MDE5N2FjZWVkMDg0MDZhYzY0YjA1MDM0MGRlN2JjMDQxMjRhNGNiN2VmYTY3MTM0MGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVlZDFhYTBmYTlkMmM4MzQ2ZmQyZmUzOTZkYjIwMWQyYTkxY2U5NTE2MWIxNmViNTBmZjdmMmQ1MDU0NTY2ZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg2ZjdjZmFlYmZlNjJkNmY0NTc4YTQ1NWE5YzIxZjZkODdjZmRmOTUzZTA2MjA3MzQ3OGExOWM1OTc0NTE5ZTkifQ"
         },
         {
@@ -145,11 +145,11 @@
       "statement": "默认端点字符串 '/api/site-content/upload' 内联在 ImageUploader 中、没有登记进 apiEndpoints.js；注册表里的 THEMES.UPLOAD_WALLPAPER（/api/themes/upload-wallpaper）仍无前端调用点，实际的主题壁纸上传走 WALLPAPERS.PERSONAL；原 ICONS 分组与 THEMES.UPLOAD_ICON 已从注册表删除（图标引擎移除）。",
       "evidence": [
         {
-          "resource": "repo://src/components/ImageUploader.jsx#L150-L180",
+          "resource": "repo://src/components/ImageUploader.jsx#L151-L181",
           "version": "repo-lines-v1:sha256:3dcc115a8bbdb334a564bf3fa11aeee81c3ab38104d15b5ad62e4e9fbb6134ab:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM4NzhhMDdmNWU3MGFhMjU1NTZlYTAwYWVkZmVhNGRmOWVmOTllZTg2ZDI3NDI3NWUwM2I3ZTk3YjRmY2FkNDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxN2FmMTEwMWM5N2I3YzJmNTI1NDA3ODJlNjM0Y2M0NDQwZjBlOTcwMzQxZTUyZjk3NTIzMTFkNzhiN2Q3ZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjViYmIzNTNiMTg3ODRiM2I5MDE5MTIyYzUxZGMwZjY1OWJlOGFhODkzOWM1YWNkYWFkZDk3ZjdjMmU5YzEyODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ1N2E2ZTEwM2UyNDhmMTgxN2RhZWI2YWIyOWEyMzQyMTUyNzQwNmU4MmY5ZmY5OWViY2FkNDdiYmEyNTY5NTIifQ"
         },
         {
-          "resource": "repo://src/utils/apiEndpoints.js#L32-L52",
+          "resource": "repo://src/utils/apiEndpoints.js#L53-L73",
           "version": "repo-lines-v1:sha256:e6f97bd3c15fbf70cfcef528cbfbdc864c6d7c62bf1ae7c6554003ab0f89b789:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhNTg4MTk2MjdlMjViNzg4YTg1MzIxNDczMjU3MmY5OTg1NmMyNzYzNDNlY2ZhYmY1MjBiODBhN2RiYzQ0MzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2YjE0ZjM2MzFhYzM1MWQzMTU2ZjE4MDEyNmU1MGNjNTBiZDNjZGY1M2NmNGJhYTAzODBjMmMzMGMyNzkyMTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhYWE4YThlYTQxYzFhMTEzOGQwZTJhOTQ4ZGE2MGY5MDI2Y2EyY2MzODMxZDViOTZiODRmODFmMjJlOWFkOTcifQ"
         }
       ]
@@ -159,11 +159,11 @@
       "statement": "useImageUpload 在客户端做 5MB（adminEpisodes.imageSizeExceeded）与 ['image/jpeg','image/jpg','image/png','image/gif','image/webp'] 白名单（adminEpisodes.imageFormatUnsupported）校验，并把文件以字段名 coverImage 发到 /api/episodes/upload——与同一端点下 ImageUploader/AdminEpisodes 使用的 image 字段名不一致，且该 hook 目前没有调用点。",
       "evidence": [
         {
-          "resource": "repo://src/components/AdminEpisodes.jsx#L453-L485",
+          "resource": "repo://src/components/AdminEpisodes.jsx#L524-L556",
           "version": "repo-lines-v1:sha256:04b422b6ff8d81fa67117bb14def3cd68b52723d821b087baad61c71f861995e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1MTJhNDUzYmEwYjhjZTBiNmQ2MmQzYjFjYmY3NDhhMDhkODU5MDQ3NWFlOWNhY2JkNDkwYWNhZGE1ZjU4YjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFmYzE3MTA0N2E2YWI4YTAyNTY5NjZkMzEwNGE2MWVhNmI5NDk4YzY1MDMyZDhmOWY0N2RmMmUyNzNiMzhiMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2OTE0Zjg2MzAwMGZhOGZiNzNmMDY0ZjFiNzJmZTFjNTI5ODNhNDJiYjU1YjA1NGY4NGEzODJiYzg0NzlmOGMifQ"
         },
         {
-          "resource": "repo://src/components/ImageUploader.jsx#L175-L181",
+          "resource": "repo://src/components/ImageUploader.jsx#L176-L182",
           "version": "repo-lines-v1:sha256:8bf78c26bf3aefdd89d11a60c94739e8571d73d68374eb3f0a2ce6249955bfa9:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTg0NGMyYTRhNGNhYWJhYWMwN2JkZDFhODNjMmMyNmQzZGM1ZGZhZTRjNGEzMzdlNDRiYjg4YWEwNjY4MDA4MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzFjODM3YTcxMDA5MjJlMzNiZmNjNjI1ZmUyNDJkYjk0NjY3OWQyM2MyMzI0MjgxYjU1YzRhNzgzNDBhOWFmNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTk5YWYwZjNhZTc2NzVkYjM4ODI1ZDNkNjA5MTBjMmFmYTk2NmQzNGY4ODVkOTg3M2Y3YjgwM2U3NDU0Njc5NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTlmNjllMzY5ZDc0MDY5MTRjODdmZDMyMTJjNWIyY2ZkMTkzZWZiMTBkM2Y1NDI3ZmIzMGNkNmYwY2QxNDZlYSJ9"
         },
         {
@@ -177,22 +177,26 @@
       "statement": "用户头像不复用 ImageUploader：Profile 自建隐藏文件输入，先校验 file.size > 2MB（profile.avatarSizeLimit）与 file.type.startsWith('image/')（profile.selectImageFile），再以字段名 avatar POST API.USERS.AVATAR（/api/users/avatar）并写回 user.avatar；源码注释说明复用 ImageUploader 需要先适配用户认证。",
       "evidence": [
         {
-          "resource": "repo://src/components/Profile.jsx#L107-L120",
+          "resource": "repo://src/components/Profile.jsx#L117-L130",
           "version": "repo-lines-v1:sha256:6e188e2442a9479d539539544e46edb159795bfba7d145a0e9a4ecfad8e8760a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ4ZmFhNmRiNjg1OTIwMjQzZWNjOWM2M2YzZmNiNzliZDE5MDY2NWI0MWIwYzM5OTZlMjRiYjA0NjViNWNhMWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjMzU5ZThjZDRlNmJhMzI5MWZhOTkxMTA5NzhiNDQyMjYwOWQ0MjZmNDgzMDYxZWQ5NGEzN2UyYjdhN2Y2YmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiOWY5NGQ1MGM2N2QwZjU2ODc1MjRlM2RiOGYxZjFhNmFkZWM3ODAyNjcxNmM4MjBiZWYyYWQ5ZmJhNDA0MmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzZWIzYzYxNDIyZDhmN2RmZjM1OGNiZDRiYjBlY2Q5ZGE3Yzg1ZTYzYTlhMjE2MGRkZDQ5YzI0MmI2OWRmMzgifQ"
         }
       ]
     },
     {
       "id": "claim_63ca2ec3438741bc9c3e16c75915df1b",
-      "statement": "系统壁纸库与主题素材各自直发上传：SystemWallpaperManager 用 FormData 的 image 与 name 字段 POST /api/wallpapers/system 且无客户端大小/类型校验；ThemeEditorModal 的壁纸用字段 image 发 API.WALLPAPERS.PERSONAL 并用 URL_RE = /^(\\/uploads\\/|https?:\\/\\/)/ 校验响应中的 url；主题图标上传通道（API.THEMES.UPLOAD_ICON）已随图标引擎删除。",
+      "statement": "系统壁纸库与主题素材各自直发上传：SystemWallpaperManager 用 FormData 的 image 与 name 字段 POST /api/wallpapers/system 且无客户端大小/类型校验（预览经 assetUrl 补全源站）；ThemeEditorModal 的壁纸用字段 image 发 API.WALLPAPERS.PERSONAL 并用 URL_RE = /^(\\/uploads\\/|https?:\\/\\/)/ 校验响应中的 url；主题图标上传通道（API.THEMES.UPLOAD_ICON）已随图标引擎删除。",
       "evidence": [
         {
           "resource": "repo://src/components/SystemWallpaperManager.jsx#L1-L60",
-          "version": "repo-lines-v1:sha256:818880f5c14d44870df5228378e2d09db50877308fbf920ef67e9608bd1e3076:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyOWVmNzk1MmUyZjUxOTgxNjhlYmJhNmFlODNhNzlmYzJjYzgwZTczNDU1MzJjOWY2NjA2OTU3MWVjNDM5ZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxMjU2MTZiMWUxODE3OGFhNDhlODEzNWExMmM5OWFiZWY1ZjE3ZWYwYzg0YWU0MzFjNzc5ODM5NjNmOWZiZjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJlZTI3MTFlNzg1OGNlYzhkMDU5YjgzNjM0MTc1NjY2ODdkZmU5NWNhZTM4YWFlMTk5N2I1OTU1NDQyN2Y0OWYifQ"
+          "version": "repo-lines-v1:sha256:c8f4e7cc758af22e5c6fb49f93962ff713eecb3a9be839aa37b27fde2883a888:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyOWVmNzk1MmUyZjUxOTgxNjhlYmJhNmFlODNhNzlmYzJjYzgwZTczNDU1MzJjOWY2NjA2OTU3MWVjNDM5ZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNiZDgwNmU2MmMyNTA4ZTU3Mzk4M2I5YWY2YzM1MGZlNmNiN2M0YmI3YjY2ODM2YjYyMDE0NGFiMDc4ZTRlMGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZhZDU0OTFjOGRkM2I5ZTlmOGU4YmVmMjk3ZTYxOWMzMThmMzkzOGYzYjAwMzU5ZmY1MzhmYzFhMzJmNTM2MDAifQ"
+        },
+        {
+          "resource": "repo://src/components/SystemWallpaperManager.jsx#L90-L100",
+          "version": "repo-lines-v1:sha256:d944aa862d9ab9e93c2ed3e37d148e8d17fc8696b5435c6905e561757041c984:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlNzg4MjY5ZThkMmE5NmI4MGZiNjJlZmFkZWMzNmM0MGI3M2U1MjUyZWNiZjVjMmU5MGEzOTQ1ZjgxMTY5NmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNlZWEwYzk2ZmYyM2FkNjUzODgwZjk1MmU5Y2MyZjUwNDVkNjZmMmEwYTlmYTc5MjUzYjliZTU4MjkxNWNhY2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRmMGQxODg4YmNmOTZiNjdjZDEwYTA0ZjBjNzI1YTk2NmQxNTI4MDQ0N2MxMmIyODUzODY0NmI2MDVmN2ZiN2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM2MTZlNjQ5NTNhMmUyN2E0ZDBjYzBmYjI2NzdlMGMwMmE2MGMwZWZjZDkyOWExNmUzNjg4YzEzOWFhOWRhZjMifQ"
         },
         {
           "resource": "repo://src/components/ThemeEditorModal.jsx#L128-L145",
-          "version": "repo-lines-v1:sha256:b982987321cfdcf5d9b7becb91102d48e6d25297532c18d4b7f624951cabe1b6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxOGI4Yzk0ZjhlNTE3NTc0YjVlNTNlNjhkNzE0NWI0NGIxMzQ0NjlmYjM4NjdiNTlmOThlMmZhOGU2NWEzOWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliNjJmNjBkODU5MGE1NzljZjQ2ZjhkNjczNzhjNGM1NzJiOTYyY2VjY2RiOTBjN2E1ZjdiNDJiOTYwNzgyYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiMDBlODc2Y2U0MjA5MTkxMTQzZjc0NzBhZDhjMjFmNWQ1ODdiYjAwMjM5NzRlNjZkNmQ1YWJhNDJlZWQ5YWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNkZDllZWE5NDcyOTQ4YWIyNWM0MTdlMTgzNjUwNDBlMDVkMjEwZjM3YTBiMGE3YjdkNDUwNWFlZjcxZTIyMzYifQ"
+          "version": "repo-lines-v1:sha256:71adcbd9825350244b37efb7d2b8d7e6464320c0a70818ea47060b21ed9eea6d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2NjlhMTBhZmJlOTQ2ODdiYjU5Nzc0MjBkMjY4MWVkNDk1ZDFhYTI5ZDViNjkxZTYzNDllNGE1ZWIwMzdiNDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhNDE5YjRlZTg1YWM5ZGEzYTMwM2JiZTUxNTc5N2U1Y2E4MDQ4ZGUyZjI3NTU4ZTU1NzczNDYzMmMxZmJkMTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ5Njg4NzVjN2E2NmJkNzM2MmNjZGNkYzNmZDkwNzhiNGNkOTNiNDUzNWY5YTU0NzY0YzRlNGNkOWFkOThmN2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI0NDQyZWNmOTgxYTcyZWE4Nzg1OTRkMWFlM2I0MzIxZDgyNWI2ODc4MGJkZmZjNGI2Y2Q2NzU1YmJiMDliNTYifQ"
         }
       ]
     },
@@ -205,11 +209,11 @@
           "version": "repo-lines-v1:sha256:23ccce1ecfe2fdc641ede9c411e8377126ffd63c15be5067620417a79e0040c2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlYTJkOTBiMmE1OTFlMGI5ZWQyYTk2ZjRmMTlhYzkwMjgwODZmYWIwYjI2NjdmYThmYjAwZjE0Y2RlNWQ4OTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2ZjBjOWE2MmNlMDA2YmM4MWJjZmQ5NDQxZmFjMmQyZjkxMGExMzU1Y2I5ZjZkODYxN2VkMzZjY2E4ZDUxNWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMxMzVjMTYwMTg1MmVjZGZmNmU2MjljNjk0YTdlZGIwM2Q5ZTJkMTA2OWI3NjY5YjY0MzRlZWNmNTRjNzc4OGQifQ"
         },
         {
-          "resource": "repo://src/components/AdminEpisodes.jsx#L453-L468",
+          "resource": "repo://src/components/AdminEpisodes.jsx#L524-L539",
           "version": "repo-lines-v1:sha256:f78dd9a9b905f40f952a50a005a9a962ff0f1dc3bde3894eea2735e489b699d4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1MTJhNDUzYmEwYjhjZTBiNmQ2MmQzYjFjYmY3NDhhMDhkODU5MDQ3NWFlOWNhY2JkNDkwYWNhZGE1ZjU4YjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlNTk0ZmI3ZTFmYTBiNDVjM2NkZTlkMWQwODZiZmNjMzk0NDAxYTU4MTA2NGMwODk4YjU4ZDY2YjUzMDMxYzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFmYzE3MTA0N2E2YWI4YTAyNTY5NjZkMzEwNGE2MWVhNmI5NDk4YzY1MDMyZDhmOWY0N2RmMmUyNzNiMzhiMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgwMDQ5YmFlMGFhYTM2NTdkZTdlZmVmYWMzNzFiZWY1M2Y4N2Y1NWRhOWE2NTc3N2M2N2Y4NmY4YTZlZWNhZTMifQ"
         },
         {
-          "resource": "repo://src/components/Profile.jsx#L107-L113",
+          "resource": "repo://src/components/Profile.jsx#L117-L123",
           "version": "repo-lines-v1:sha256:a1f679f10042514f860465d27dcdd31f350844acd640c4587b71e00fcab0db4a:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDhmYWE2ZGI2ODU5MjAyNDNlY2M5YzYzZjNmY2I3OWJkMTkwNjY1YjQxYjBjMzk5NmUyNGJiMDQ2NWI1Y2ExZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTFkZjg3YTQ3MzE2YzcwOGM1NTAyMDk4ZTlhZjZjNDQ1MzRlYjgwYmVhZGNmNjA2MzAyOGVmY2E4NTkzN2FiZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmI5Zjk0ZDUwYzY3ZDBmNTY4NzUyNGUzZGI4ZjFmMWE2YWRlYzc4MDI2NzE2YzgyMGJlZjJhZDlmYmE0MDQyYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTlmNDgxNmQzNjFkNjNhYzY0MDZlZWRjNzA0MmQzMmExMzU1N2IyZDUyODMyODkwNzYyMDdjYjliMjgyODMxNSJ9"
         }
       ]
@@ -219,11 +223,11 @@
       "statement": "站点素材是「先上传、再保存」两步：AdminSiteContent 把含图片 URL 的 settings/about 序列化成 JSON 后 PUT /api/site-content/:key，因此上传成功而保存失败会留下无引用的文件；删除素材（如 ThemeEditorModal 删除个人壁纸走 DELETE /api/wallpapers/personal）由后端顺带清理 /uploads/ 下的自有文件，前端不做回收。",
       "evidence": [
         {
-          "resource": "repo://src/components/AdminSiteContent.jsx#L162-L188",
+          "resource": "repo://src/components/AdminSiteContent.jsx#L163-L189",
           "version": "repo-lines-v1:sha256:54e73f5968d541b15ab289d4ec3dfe5cd573f00252315102a8df093bdb913093:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1ZTM0NTQwZTJhOTk0YjQwMWVmYzYyMjBkZDNkOThkYjc4NGYyMjI0ODE3OTI4NDlmODhhMjJkOWM0N2IyZGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUxZTM3MjVkYTAwMmI0NmVkOGI0ZGU4ODAwM2FkOTcxMGRjYWYxOGQ1N2M0NzAxZGMzYmVmZjBiMmM1Y2IxM2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFkZTQ5OTJiYzMyOGEyZjkyZDQ3OWQ4OTViOWZmMjEzMzE0YjI1OWJiOTMwMTU3MWQwY2EyNDljMGIwYWQ0YWIifQ"
         },
         {
-          "resource": "repo://src/components/ThemeEditorModal.jsx#L114-L125",
+          "resource": "repo://src/components/ThemeEditorModal.jsx#L115-L126",
           "version": "repo-lines-v1:sha256:d1bb13dfa75e8b7847a24863965620e39a8f4cdee09b939560d50cabdf450463:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyNmRhMTUwMmExMzQ0Yjg0YmU4NzRlNjRlNDIxYTc5YjVlZmI3NGY4NjE0N2UzMmIzOTk0NGMyYTkzY2JjOTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjExMjMwY2JkZDRlNDMwNzUxNzE4NzkzMDJkZTBiNGQ2ODIzOGYxZWI0NTRkNTBlNzZjYjAyMzZmMzY5NzFkODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1NTVjNGQxY2VhODNiY2QxYzZhMDgxMzdkOTkxNmFmZjFmODY4ZGNhZjU5NDk4YjVjYjU3NmEyYWRkYjI5YWYifQ"
         }
       ]
@@ -233,38 +237,42 @@
       "statement": "剧集封面 URL 被前台多处渲染：EpisodeCard 的懒加载缩略图、Home 列表与推荐位、EpisodeDetail、UpdateCalendar、SearchInput、Timeline、Profile 的收藏/关注/历史，以及 AdminReview/AdminEpisodeTrash 的后台预览；首页轮播图则由 Home 拉 /api/banners 交给 BannerCarousel 用 banner.image 渲染。",
       "evidence": [
         {
-          "resource": "repo://src/components/BannerCarousel.jsx#L94-L95",
+          "resource": "repo://src/components/BannerCarousel.jsx#L95-L96",
           "version": "repo-lines-v1:sha256:c402d683b5e87fbbfa82c9be7c80fa87725c5706c72a2efc1d5149287ab284a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWMxMzExYmU4NDIyZTU5YzI0NWViY2Q4MmY0YjY1MjEwY2EwYzNiNjgyZjZkNzBmYTk5NjJmYTA0MTM2ZGVlMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDJhMmNiMjVhMTIyYjQ0MjIxYTYyMzRlYzY2MGE3YjVmYjdmOWJkZTdiM2I5ZTJiM2M1NTlhMGQ5NmZhYzczOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGJlNWMyZDdmYjkwMzMwMTRmZjIyM2RjYWU5OTgzMTJmM2QwZWQ1OWRjYWM0ZjQxMDRjOGNlMjRlZGM5MGMyMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWIwN2E5OWQyZDM4YmQ2NzY2NmY2YTlkZjYxMDM0Yzg4ODc1ODE0OGIzYzMxZWExZGM1YWQ1ZjFmNzg2MTkyYSJ9"
         },
         {
-          "resource": "repo://src/components/EpisodeCard.jsx#L80-L81",
+          "resource": "repo://src/components/EpisodeCard.jsx#L81-L82",
           "version": "repo-lines-v1:sha256:38c6b27d56a7ccdd3ef1f3f749ad5f3268ea6db92b4cae700a4b02256f6816d8:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjE2ZDc4NzVjMDU4YTgzMDhlODk4NDk3NmViNjJiMzgwNjM4MTQxM2RmYTVhNWI0ZjE4ZjEzY2NlYWIzODg5YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWYxZmEwZDgwNGJlN2M0YmU4NjYzMzk0Y2E2ZGJkMTVlMTQzZTA0Mjk0OTMyNGI0MWQ5ZjdiZTAzNGVjMmEyMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDhmMTNmNjU0MDAyZTVjY2RmMzExODNhODhkZWIwZGI0MzhiMzZjNzBmOWI1ZjNiOGEyNTAzZmYxYjA4NDRiOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGMwMmJiMTNlNDM1M2YyYjZiYmNkM2M0MmU0MzBjZTQ3ZmVlODg0ZTQ1YzFiNzU4MzFjMWQ4YzgxNDZiYmEyNyJ9"
         },
         {
-          "resource": "repo://src/components/EpisodeDetail.jsx#L402-L403",
+          "resource": "repo://src/components/EpisodeDetail.jsx#L428-L429",
           "version": "repo-lines-v1:sha256:1569e5473bae3d33595b638927b358e95d861253d6a88aabfb35f30a6adc03f9:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGE2MjU1ZTdjNjAyN2JjZjI4ODVlYjNmNGI0MDc0MjQ3Yzc5NDRjMzc5MTBkMTdhOGU2NzhhYjlmZjMzNWRiMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzJhNDM4M2Y1Yzg3MTQxYTFkNjk3MmY1ZjE5OGRlMWM2MDlmOGZjM2NmYjBmNThlYTE2ZjhmNDhlMGIwZGMyMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTE2OTQ4NmFjZDdjMGNhZTlkNjRkMjNjNDQxZGM4ZGM0YjI1M2M2YjI0OTRiY2IzYTI0ZDE5ODU5ZGQwYTI2MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2QxNTk0NGQ2NTQ5MjI2OTkzMGRlMWQ1ODg0MjEzZjc2ZWY1NTk3ODcxMTFjYTRiZDliMDAzYTNkYWE3Mzk5MyJ9"
         },
         {
-          "resource": "repo://src/components/Home.jsx#L101-L106",
+          "resource": "repo://src/components/Home.jsx#L102-L107",
           "version": "repo-lines-v1:sha256:e1ab5114196da8214e73c841bf70d46da2a48328d2cc78a9589f62893e816d1b:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ5ZTEyNTQ2NDI1NTc2ZDNkZWFlOGM5YjlkYmYxMjhkNWQ2ZGRhZjVkN2ZlODU3OTM0OTI3ZGVmZmEzYjlkZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQyMzdlZGU4ZmQ3MzJkZjNmM2NjM2RkN2ZhNGRkNzE5OWNiZDFiOTI0YWUyZDc0ZDYzYjMzMTU4ZWY3MjBhZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzk3YTIzMzg3NDY5NGRmMDVlNzU5MGM4ZDQyYjk0YmM0YWNkOTMyZjJmZjRjODIzY2E4MzdmNzE2OTYzMDE5ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWYwMDM3ZTczNDdlODY5MDI4ZDhiZDQ5MGViOGZkMzYyMzYxNjczZWNjMzAyYjBjMjIzNWE2NDgwMzBmNDVhOCJ9"
         }
       ]
     },
     {
       "id": "claim_8093edd6f21649a2a6385842a3eb7f0c",
-      "statement": "站点素材 URL 在运行时被注入文档头：App 用 siteSettingsData.favicon 设置 link[rel=icon]，把 manifest 链接指向后端动态端点 /api/site-content/pwa-manifest，并用 pwaIcon512 || pwaIcon192 设置 apple-touch-icon；NavBar 直接渲染 navLogo。",
+      "statement": "站点素材 URL 在运行时被注入文档头：App 用 assetUrl(siteSettingsData.favicon) 设置 link[rel=icon]，用 pwaIcon512 || pwaIcon192 设置 apple-touch-icon（不再把 manifest 链接改指后端动态端点——动态 manifest 在跨域部署下会以 API 域名解析 start_url/scope/icons）；NavBar 渲染 assetUrl(navLogo)。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L393-L401",
-          "version": "repo-lines-v1:sha256:0eb834eeaaa96cfb2baf5fd9cceb6e6d212b9caf495d02267cb0032f503e9e92:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2ZlYmI5ZDc1MTU0MTIwOTdmNTRhYjgwMjI4Mzg5YTg4M2IzYmVmMGE2NDY0OWY4MjQ1M2YzMTYxYWE1ZGI0YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDYwNzYzODc5M2Y2NzRlOTFiNTM2ZDA1ZjM5MTM4NjZhYWYxY2FkZGQ0NjYzOWRjMzVlZDE0YTJlMzkwZTg2NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWNiN2U1MGJmMmM0MjY1MTg4ODc0MmE4NzZlNGM0NzA5MGU2MTdiZTQ0NjY2N2JhNDllNDFlMTY2ZTI4YzdkNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWE1ZWYyYzlmNTI1M2ZkMDkyNWEwZDY5ZjIyYzU5ZjI2ZTI2ZTFlNTY5NDQ4ZjQ3MDNlNzRmY2JlZjJlYmRlMSJ9"
+          "resource": "repo://src/App.jsx#L404-L420",
+          "version": "repo-lines-v1:sha256:b4813b8ab93513d88638acb94f0e5f4591b06a9cbf1a3c18e113832a3c3cffb4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzYTI4ZjU1MDc4ODEyMjVkNjljZTYxNTlhYjZjMzhkNjQwMDk3NWFmZjQyYWE3NGMzYTlhOTEyZWI1MjlhMTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVhYjM3ZDNlZTIwYmJlZTU3ZWE0NzcyZWZmNzFlNTkyM2QxODVjOWI0NmIzY2E4ZTU1OTMxZmI4OGI0MjY3YzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0NDkxYmE2NGNhN2RhNTE2ZDhlYjQ4MTBhZjE1YWQ1NGE1OTQ0NjAzZjlhNGFjZmIyZTQwMjMxN2JhOTA0NzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMxMzQ1M2VkM2IyODM4MWJhZjFiMTI4ZjU5ZmIwMWRlOGVkZTM2Mjk5ZjBhYTZlMDI3ODJjZGU1YjBmMDNkYjIifQ"
         },
         {
-          "resource": "repo://src/App.jsx#L452-L483",
-          "version": "repo-lines-v1:sha256:57f8d5075dd81d281ae8246d8c1d02bd0bcd7f4719a6cc1e48cb13bec896a943:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4ZjNlYmVjMDQ4M2E0YzZkNjQ0YmM2ZDlkMjI0MWQ3MDhjYzA4YTk5MjgzNjNmYjU4MDZhZjNmMzgzMTU2MTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1MWIyZTExNDYyNmU1NTgzYTVlZjE1Y2VlMWU2ZTJmNzUzZWZkZDgzYjZiZDUxYTgwYjA1OGU2YTI2NWRjZTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU4MWYwZjg5Y2Q2N2RjZjYwZjNkYzQ0ZDE0ZjVlOGMzZjIxYjY1NDUyNjdiZTNkYjgxZTE4ZTYxNGQ1MTM0N2UifQ"
+          "resource": "repo://src/App.jsx#L452-L500",
+          "version": "repo-lines-v1:sha256:493196aef98d3e897685454ef3ba6967560d75f15efa698dd283bd8a31b1a5c6:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlNzlmZjEwN2E0ZGI1ZmNhMTgxNWNhYmFiODA0MjIyNDAzNDliZDdiNTJiMzZmNGQzZGY3ZDkwZmI1ZjJhMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmOTMwZjlmMjc4ZWZlNmFhNGViNGJiOGIwZWE5ZWExOWY4MTU4M2RjODg5Zjk0Yjg1MTIzN2E0YmRjMTA2M2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0ZGEyN2IxOGIwNzJlZTFhNmZkNmQxN2NjNmNkN2RjMjM4MzAyYmQ1ZTk0YWUzNjg5YzU5NzBjOWZiYjA4YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkNWI2MjJkN2EyMjU3MTY4MGNmMzlkNWQ3NmU4ZjAwZmUwNjU0YWQwMDg0MGFhZWQyNDBiOWI0YmJmNjI0NjkifQ"
         },
         {
-          "resource": "repo://src/components/NavBar.jsx#L257-L260",
-          "version": "repo-lines-v1:sha256:d5d098e22795169f8fea3e13bb6d6acd669d1450191e38fde68da870b4835ba7:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDczNjk1NjgzOWM2MzViYWQ3NGZlMzc2Zjk4OGYzZjVlY2I5MDIyZGZmZjczNTJlODgzNmQxMDc3ZDUyZTI3YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDFlMWM0NTkxMDU2YTBhOGZiODU2OTJiMjVjOTJkMjM1YjA5YTc0NzZmZmIyMjJiZjU0MzdiMTBmZDQ3ZGRmNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2YyNWZkNGYyZjg5ZGNkODEyMDBlODU2OGMwZDQyNWI3MmNjYzI0YmJhOTBhMTJkNjk4ODc2NjUzN2QwYjVhZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWFjYWFhYzEwOGFmZDdmOWNkYTNmNGQ5MjM5YjQ3MWE2ZjYwZjNjNGI0ZGM3OGM4ZTNhM2I4ZjE3YmRhZWZkYiJ9"
+          "resource": "repo://src/App.jsx#L469-L472",
+          "version": "repo-lines-v1:sha256:9f40a02390938a4cc934b369a7dc6a239c6c57794bd7e105c537782a0ac9e714:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWVhMjA5YmI1NWUwODI2YmFlZGE5MzU1NDk0OTBkODQ4ZDE1NDNhOWJlZmVhOTA4OTBiYjYwOTI4OWNmNzFjNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk2NmZiZmE4ODk5OGRhNzQ2NTZjNTAxOTQ5NTZjMjVmMDg0OTQ1NzY2MGMwMDlmZTYzZDFlOWZhOWRjOTMxYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjJmN2U0ZGE0NTY4NmQwZWU5NmMxMDRjYjMxMzhmNWViOWY2Zjk5Y2NhMGNjMzZjMzVlYjQwMWZmZDJiMWU0NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTE0ZWY5OTBkMDRjMWZjN2JkMDI1Mjk1Y2I0NWZhODA1YzMyNTY1ZjM0Mjg4ZmNkYzA1ZmMyMTZmNjY4NTFiMSJ9"
+        },
+        {
+          "resource": "repo://src/components/NavBar.jsx#L262-L270",
+          "version": "repo-lines-v1:sha256:78eb263f9aca71e7b2e235161af844015aa16e4d3c3b5d13d5e4b803643ac1d9:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTcyMTZlOGU5YzBhMWE2OGQwNmMyZmJhYTVmZDIxMzk0ODJiOGVmZDBhMTkzMTViOTE1ZTZjY2U4NDlkODlkYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjZkNjQ4NGY2NDA4YjBiNTRlY2NiNGNhMWQ5YTQ4NmI5NjRmYWNkMDg1ZTg0MWY2NmQ4Y2UxNDE4MGYyMGU4ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjA4OWVhMGI5YmE0Mjg0ZjU0NmFiZmFjNTdjYjZjNzAyNzAyNjk4ZTg1ZTdkMjAyZTZhYzVlZDMzODY3ZTZlMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTA0M2YxZmNkZmQxOGY1NDc3OTZjMzEyM2UyZmE0ODEyOWVjMjVhMmM3MGE2MWIwN2Q0NWRkN2JhZDMyMDdhMCJ9"
         }
       ]
     },
@@ -291,14 +299,32 @@
           "version": "repo-lines-v1:sha256:565ac99a2c6febc146e348985629ec76630308e9030c6f6fa80ea7f279d3b118:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlMDIzZmZkNDA2MjI2YjIzNWYwOTk4Mjc3ZTNmYjI5ZjllOTA0YzBjMzg2YWViZjBiMWQwMmI2ZjI0NTE5ZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiZTg4NzhkOWI3ZTcwMThmZjZkOTFmNjQ1OGQyOWU2YTdmNTMxODJjZjRhYzEyZDk5NmNlNTIwYTI3NWI1YjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         },
         {
-          "resource": "repo://vite.config.js#L56-L70",
-          "version": "repo-lines-v1:sha256:3bb2343d48e75de68d0a06f1d150c325347d7b70632befdf24ff1c3ff8a321a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5NzhlMjUwM2I4Y2YzN2EwNmY3ZDZmMGEzYTZiNmZlMzU2OTFmYmNhYjUwYjg3NzVjYWI2ZmFiYzcxYzU5MmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjExYjYxZDQ1NWZhNTk5YTQ5M2EzZGNmMGIyNzVlNGRhYWJkYzVlZDMzMDRlNTY0MmI4NjI4NmNjYzFlODc5NDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3YWRjZDVjNDQ3NjUyMDNhZDQzM2EzYzA1NDUyMTRmZjg0ZTY3MTc0YzE4MTVlYzdhYjQyNjNkNjBkZGMxYjcifQ"
+          "resource": "repo://vite.config.js#L83-L89",
+          "version": "repo-lines-v1:sha256:44dcc04375b5baba23f06d1875ad9256fb244314b99671a501160b1a4e15d4cb:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWI5NjM5MGMzMGY1MTc1YzliYjQyNjI0NDVkYTUwZjkwNWNiOWI1OTZkZDE2MWFjZDQ5NTk3MWEyMDk2MjIxZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjkwOTg3MjdmYTJhOGMzNjZkZGEwMWM1ZDQxMGE2MTIyNjJmOGRlM2I2MDBhNjZlNTdmYWJmNDFiZTEzZmZmMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjI3OGYxN2I5Y2EzNDY5ZDRjZGVmMjgzMDI0ZDRjOTMxYmU0ODUyNDM3YTlkMGI3YTcwNWUwMzZlNDE1NGZkOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDgwYTFmNjlkMGFkZDBmYWNhNmM1OWE3NTE3ODNmNDMwN2M2M2Y0OGUyZWZmNWRmMDlkZGU4NjEwZWZmMDQ3YyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3d631903f5434a60b7fbd16cb12e9b3a",
+      "statement": "assetUrl 是 /uploads 资产的统一补全器：后端返回的根相对路径在跨域部署下必须经 assetUrl() 渲染（否则请求打到前端域名，ESA Pages 回退 index.html 返回 HTML 而非图片），已接入 ImageUploader 预览、SystemWallpaperManager、ThemeColorPicker 主题缩略图、NavBar logo、App favicon/背景等所有展示点；外链 https:// 与空值原样返回。",
+      "evidence": [
+        {
+          "resource": "repo://src/components/ImageUploader.jsx#L340-L350",
+          "version": "repo-lines-v1:sha256:0f4e898e459bc116b17977948aa6f522a82434134aa31675b46a32e06f67c1f6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5OGY1NzQzMjkxNGQ4NjlhNThmMGYzNmEzMzA4OTk4ZmFmZWUwMGQwMmI0OTUyNWVmMjk3MTNiODM5NjA5MzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlMDkzMTgyOTYwYzhmZTlmODZiOWQ2MzJjMzQ4NmM4NWM0ZjhlMDAzNjdmZWE0MDlmMDI0NGMwMzI5NzE2OWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2MDkzMzIzMWMzN2YyMDc3NmM2N2E0ZDQ0NTRmYzg2M2IxNmMwNDM2NWNiNjE3YjNiNDA1Y2FhODk4ZGNlY2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY1YTY0MGVkMjk2ZmE1NDg3NDY1NzAwZmZkYjA5NjNjZWM1NzZlZDVlZDk3Mjk2ODZiOTVkNDgzMjUwYTc0NTEifQ"
+        },
+        {
+          "resource": "repo://src/components/ThemeColorPicker.jsx#L420-L426",
+          "version": "repo-lines-v1:sha256:aec7e0732c7dcab39cc15917c1208679add810a47525a8c913a21ffb58f479f8:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWIzN2MzNDAzN2YwYWUxNGI4ZTU4YzdlNDU2NTY4YzNhY2M2YmM2YWFkODE4ZTVhOGVlZDA5ZWVjMGIzNmQ0NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDJmODIzZDhjNmRmYTllZTlkMjU5OTY2MzRjOGQ4N2NmMmM4MjY1MTI3MDE2NzJmMTM5YzlmNjAxNzFhOTFmYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTI4MDJiYzI2Nzk5MmQ4ZGQ5ZWZlZDhiYzQ4OTk0ZDE5MGZjOGMwZTZjZmJmMmE4YTZlZjM4OWZjOWExZjYwNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTA4YmIzZjlkMmRhNDg3MjRiYmM5YmZkYzBhN2MxMWIxMWQ0MDJhYzBjZGZkZmM1OTM1ZDRmYjBjNTdiYWVjOSJ9"
+        },
+        {
+          "resource": "repo://src/utils/apiBase.js#L18-L27",
+          "version": "repo-lines-v1:sha256:e0e23afb861ed4a7e07a18c73cb7a55b1cee78784f73c383814471d4a6f0927b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE5MWM0YjQ1ZGNiNTJjN2ZkOTZlYWQwMzU1NTliODYzZDVkOGMwMDNhNTk4MTg4MTNjYzBjZGVkN2I1NWNiYzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhZDc2YzdkNjE2NzAwMzM1MGYwMDRmM2VhZGRkMjQ2NjQ2NTc1MmU5MWNkN2IwYmFjZGNiZTQ2ZDIzYWI0YWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0MzU0MDNiNDAzMjYxOGNjZDc5ZTZkZjlkYTAxZjVjZTE1Y2JhMDg3ZTMzOTg3YThhYWI3ZDVkNTVjYjNkM2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA0ZjI0YjBmNDM3NmMwNTRhMWNmMjU1Nzk3MGYzMDljM2JlN2IxM2RkOTc2MDNjOTBmNzEzNTZlNmIyMDRlYjYifQ"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-11T16:33:24.381Z"
+    "at": "2026-11-13T19:07:27.754Z"
   }
 }

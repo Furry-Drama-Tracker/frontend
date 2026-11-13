@@ -6,6 +6,8 @@ tags: [architecture, spa-layering, backend-boundary, react-context, css-variable
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
+  - id: openwiki-source-b60ceaf48fd6cd2af5937725
+    resource: repo://esa.jsonc
   - id: openwiki-source-276795f6d5ad19adb078c64e
     resource: repo://eslint.config.js
   - id: openwiki-source-f8d10828394c4129061d5b0e
@@ -40,6 +42,8 @@ sources:
     resource: repo://src/main.jsx
   - id: openwiki-source-254119f695d9c1c6bc387805
     resource: repo://src/utils/adminApi.js
+  - id: openwiki-source-397248f5d0f5e1b6d6a02a0d
+    resource: repo://src/utils/apiBase.js
   - id: openwiki-source-da4b9cb7c816d661a449ffcf
     resource: repo://src/utils/apiEndpoints.js
   - id: openwiki-source-37ca2d167bb7e856d4f1a11c
@@ -52,10 +56,10 @@ sources:
     resource: repo://src/utils/translationCache.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
+generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-11T16:33:24.381Z
+    at: 2026-11-13T19:07:27.754Z
 ---
 
 # 架构总览：浏览器侧分层与后端边界
@@ -164,7 +168,7 @@ UI 图标不再是运行时资源：原 `IconContext`/`IconProvider` 图标引�
 
 这带来三个直接后果，改路由时必须一并考虑：后台页面拿不到 `NavBar` 提供的任何上下文 UI；所有后台子路由都被 `AdminGuard` 逐条包裹（再叠加 `AdminLayout` 自身的 `/api/admin/verify`），即同一个校验会触发两次；两套树共享同一个全局 `ErrorBoundary`，没有后台专属边界。
 
-**懒加载边界是这一层的第二职责。** 同步导入的只有外壳与首屏：`NavBar`、`Modal`、`Home`、`EpisodeDetail`、`Login`、`Register`、`NotFound`、`BrowserCompat`、`AnnouncementBanner`、`AnnouncementPopup`、`OfflineIndicator`、`InstallPrompt`、`ForceEmailChange`（`FooterBeian`、`AdminGuard`、两个错误边界等则定义在 `App.jsx` 内部）；其余 47 个路由页面、弹窗与编辑器用 `React.lazy` + 单个 `<Suspense fallback={<LoadingFallback />}>` 切成独立 chunk，后台页面整体在首屏 bundle 之外。
+**懒加载边界是这一层的第二职责。** 同步导入的只有外壳与首屏：`NavBar`、`Modal`、`Home`、`EpisodeDetail`、`Login`、`Register`、`NotFound`、`BrowserCompat`、`AnnouncementBanner`、`AnnouncementPopup`、`OfflineIndicator`、`InstallPrompt`、`ForceEmailChange`、`Force2FASetup`（`FooterBeian`、`AdminGuard`、两个错误边界等则定义在 `App.jsx` 内部）；其余 47 个路由页面、弹窗与编辑器用 `React.lazy` + 单个 `<Suspense fallback={<LoadingFallback />}>` 切成独立 chunk，后台页面整体在首屏 bundle 之外。
 
 **页面标题依赖一张硬编码的路径映射。** `getRoutePageTitleKey(pathname)` 用前缀匹配把路径映射成 i18n key，再由 `AppContent` 的 effect 拼成 `${pageTitle} - ${siteName}` 写入 `document.title`。新增路由若不同步这个函数，标题会静默退化成站点名。分区、守卫与标题映射的完整规则见[路由分区与访问守卫](./routing-and-guards.md)。
 
@@ -178,10 +182,10 @@ UI 图标不再是运行时资源：原 `IconContext`/`IconProvider` 图标引�
 
 ## L5：一个 axios 单例、一张端点注册表、两层浏览器缓存
 
-- **唯一客户端**：`axiosConfig.js` 在模块顶层改写全局 axios 默认值（`timeout = 15000`、`withCredentials = true`）并注册拦截器，全仓库没有 `axios.create()`。`adminApi.js` 只是对同一实例的转调，因此管理端与前台共享 CSRF 注入、401/419 刷新重试与 `api-error` 提示；给它单独建实例会立刻丢掉这一整套行为。
+- **唯一客户端**：`axiosConfig.js` 在模块顶层改写全局 axios 默认值（`baseURL = API_BASE_URL`（来自 `apiBase.js`：`VITE_API_BASE_URL` 或生产默认 `https://fdt-api.xiedada.net`）、`timeout = 15000`、`withCredentials = true`）并注册拦截器，全仓库没有 `axios.create()`。`adminApi.js` 只是对同一实例的转调，因此管理端与前台共享 CSRF 注入、401/419 刷新重试与 `api-error` 提示；给它单独建实例会立刻丢掉这一整套行为。
 - **端点注册表**：`apiEndpoints.js` 以分组对象列出认证、会话、剧集、主题、壁纸、通知、管理、统计、翻译等路径（含 `:id` 风格的函数式端点；`ICONS` 分组与 `THEMES.UPLOAD_ICON`、`ADMIN.LOGIN` 已随图标引擎移除而删除）。它是导航索引而非唯一真源——仍有调用点内联字符串（如 `useTranslation` 的 `/api/translate`、`useNotifications` 的 `/api/auth/sse-ticket`、`useImageUpload` 的 `/api/episodes/upload`），改动路径时要全仓搜索。
 - **两层缓存**：(1) 应用层——`SiteSettingsContext` 的 30 分钟站点配置缓存、`translationCache` 的 `localStorage` 机器翻译缓存（上限 2000 条、24 小时 TTL）、`offlineQueue` 的离线写操作队列（24 小时、单动作最多重试 3 次）、`Home` 的 `sessionStorage` 滚动位置（`home_scroll_pos`）；(2) 浏览器层——`vite-plugin-pwa` 生成的 Service Worker，但 `workbox.runtimeCaching` 已被刻意清空：API 响应可能包含当前用户的追番、历史、通知状态甚至超管的站点配置，登出后 Cache Storage 不会被自动清理，会构成共享设备上的隐私泄露，因此不再缓存任何 `/api/` 或 `/uploads/` 响应，并以 `navigateFallbackDenylist` 排除这两个前缀；离线数据一律由应用层（localStorage/离线队列）承担，登出时由 `clearClientData` 兜底清空。
-- **绕过 axios 的通道**：`EventSource`（通知流）与个别原生 `fetch`（导出个人数据）不经过拦截器，必须自行处理 CSRF 与会话失效。既有做法是 SSE 先 `GET /api/auth/sse-ticket` 换一次性 ticket，再用 `new EventSource('/api/notifications/stream?ticket=…')` 连接，失败后指数退避最多重连 5 次，并以 60 秒轮询 `unread-count` 兜底。
+- **绕过 axios 的通道**：`EventSource`（通知流）、Altcha 挑战地址与个别原生 `fetch`（导出个人数据）不经过拦截器，必须自行处理 CSRF 与会话失效。既有做法是 SSE 先 `GET /api/auth/sse-ticket` 换一次性 ticket，再用 `new EventSource(apiUrl(API.NOTIFICATIONS.STREAM) + '?ticket=…')` 连接（URL 经 `apiUrl()` 补全为后端源站），失败后指数退避最多重连 5 次，并以 60 秒轮询 `unread-count` 兜底；`Login`/`Register` 的 Altcha 挑战地址同样经 `apiUrl('/api/auth/captcha')` 显式指向后端源站。
 
 ## 与 Furry-Drama-Tracker/backend 的契约边界
 
@@ -194,10 +198,10 @@ UI 图标不再是运行时资源：原 `IconContext`/`IconProvider` 图标引�
 | 会话 | 凭据只在 httpOnly cookie；`localStorage.user` 是快照 | access / refresh cookie 与 `/api/auth/refresh`、`419`、`409` 语义 |
 | SSE | `useNotifications`：ticket + `/api/notifications/stream` | 一次性 ticket 端点与事件流 |
 | 静态媒体 | `<img>`、壁纸、头像直接引用 `/uploads/...`；上传走 multipart POST（`/api/episodes/upload`、`/api/wallpapers/personal`、`/api/site-content/upload`、`/api/users/avatar`） | 接收文件、落盘并返回 `/uploads/...` URL |
-| 站点品牌与分发 | `AppContent` 把 `link[rel=manifest]` 指向 `/api/site-content/pwa-manifest`；`index.html` 声明 `/api/rss` | 动态 manifest、RSS、`/api/site-content/settings` 与 `/api/site-content/about` |
+| 站点品牌与分发 | `AppContent` 运行时只更新 apple-touch-icon 与 theme-color 等 meta（manifest 不再改向，保持构建期同源 manifest）；`index.html` 声明 `__API_BASE_URL__/api/rss` 订阅链接 | RSS、`/api/site-content/settings` 与 `/api/site-content/about`；动态 manifest 端点仍存在但前端不再使用 |
 | 错误语义 | 拦截器把 `401`/`403 + forceEmailChange`/`419`/`409`/`5xx` 翻译成登出、打标、刷新、事件提示 | 稳定使用这套状态码约定 |
 
-**同源是隐含假设。** `axiosConfig.js` 没有设置 `baseURL`，`src/` 内没有任何 `VITE_API_BASE_URL` 引用——`README.md` 描述的跨域部署要求手动给 axios 设 `baseURL` 并让后端开 CORS，也就是说跨域是一次**代码改动**，而不是改个环境变量。开发期由 `vite.config.js` 在 3000 端口把 `/api` 与 `/uploads` 代理到 `http://localhost:5000`；生产有两条同源路径：同域 nginx（`try_files $uri $uri/ /index.html` 做 SPA 回退，`/api/` 与 `/uploads/` 反代后端），或阿里云 ESA「函数和 Pages」——`esa.jsonc` 声明构建与 SPA 回退，边缘函数 `edge/api-proxy.js` 把 `/api`、`/uploads` 同源反向代理到 ESA 函数变量 `API_ORIGIN` 指定的后端（细节见[构建、配置与部署](../operations/build-and-release.md)）。
+**跨域直连是默认部署形态（2026-11 起）。** `src/utils/apiBase.js` 的 `API_BASE_URL` 来自构建期环境变量 `VITE_API_BASE_URL`，生产未设置时默认直连后端源站 `https://fdt-api.xiedada.net`；`axiosConfig` 把它设为 `axios.defaults.baseURL`，`index.html` 里的 `__API_BASE_URL__` 占位符（CSP `connect-src`、RSS 订阅链接、启动遮罩备案号请求）由构建期 `htmlApiBasePlugin` 替换，后端返回的 `/uploads/...` 资源渲染前经 `assetUrl()` 补全源站，绕过 axios 的请求（SSE、Altcha 挑战、fetch 下载）经 `apiUrl()` 补全。设 `VITE_API_BASE_URL=''` 可退回同源相对路径（nginx 反代部署）。开发期由 `vite.config.js` 在 3000 端口把 `/api` 与 `/uploads` 代理到 `http://localhost:5000`。生产另有两条路径：同域 nginx（`try_files $uri $uri/ /index.html` 做 SPA 回退，`/api/` 与 `/uploads/` 反代后端，需配合空基址构建），或阿里云 ESA 纯静态托管——`esa.jsonc` 只声明构建与 SPA 回退，边缘函数反代（`edge/api-proxy.js`）已移除，API 由前端直连（细节见[构建、配置与部署](../operations/build-and-release.md)）。
 
 ```mermaid
 flowchart LR

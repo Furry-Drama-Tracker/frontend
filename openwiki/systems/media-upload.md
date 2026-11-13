@@ -38,6 +38,8 @@ sources:
     resource: repo://src/components/Profile.jsx
   - id: openwiki-source-1777ed2dca32c9c1e627a91f
     resource: repo://src/components/SystemWallpaperManager.jsx
+  - id: openwiki-source-7e928ce9bc440cb586b778ee
+    resource: repo://src/components/ThemeColorPicker.jsx
   - id: openwiki-source-60afaaf20197f317d132c4b1
     resource: repo://src/components/ThemeEditorModal.jsx
   - id: openwiki-source-a86d1bac36bce13e7dd195ac
@@ -46,6 +48,8 @@ sources:
     resource: repo://src/main.jsx
   - id: openwiki-source-254119f695d9c1c6bc387805
     resource: repo://src/utils/adminApi.js
+  - id: openwiki-source-397248f5d0f5e1b6d6a02a0d
+    resource: repo://src/utils/apiBase.js
   - id: openwiki-source-da4b9cb7c816d661a449ffcf
     resource: repo://src/utils/apiEndpoints.js
   - id: openwiki-source-37ca2d167bb7e856d4f1a11c
@@ -57,7 +61,7 @@ sources:
 generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-11T16:33:24.381Z
+    at: 2026-11-13T19:07:27.754Z
 ---
 
 # 图片上传与裁剪管线

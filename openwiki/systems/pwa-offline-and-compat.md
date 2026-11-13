@@ -38,10 +38,10 @@ sources:
     resource: repo://src/utils/polyfills.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
+generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-11T16:33:24.381Z
+    at: 2026-11-13T19:07:27.754Z
 ---
 
 # PWA、离线缓存与浏览器兼容
@@ -59,7 +59,7 @@ verified:
 | 层 | 由谁产生 | 生效时机 | 失效后果 |
 | --- | --- | --- | --- |
 | Service Worker（预缓存 + 运行时缓存） | `vite-plugin-pwa` 在 `npm run build` 时生成 `sw.js` | `window.load` 后由 `main.jsx` 注册，接管本域请求 | 断网时白屏 / 无数据，只剩浏览器原生错误页 |
-| manifest（可安装性） | 构建期 `vite.config.js` 内联 + 运行时后端 `/api/site-content/pwa-manifest` | 构建即有；站点设置加载后 link 被改指后端 | 安装提示不弹、已安装应用的名称/图标不更新 |
+| manifest（可安装性） | 仅构建期 `vite.config.js` 内联（vite-plugin-pwa 注入同源 `<link rel=manifest>`） | 构建即有；运行时**不再改指**后端动态端点（2026-11：跨域部署下动态 manifest 会以 API 域名解析 start_url/scope/icons，安装后的 PWA 会指向 API 域名） | meta（theme-color/apple-touch-icon/名称）仍由站点设置运行时更新，manifest 本身固定 |
 | 安装提示 | `main.jsx` 的 `beforeinstallprompt` 桥 + `InstallPrompt` 卡片 | 浏览器认为可安装且未安装时 | 用户只能靠浏览器菜单手动安装 |
 | 兼容闸门 | `index.html` 内联 ES5 遮罩 + `BrowserCompat` | 首字节解析期 / React 挂载时 | 老浏览器看到白屏或错误堆栈而不是解释页 |
 
@@ -116,13 +116,14 @@ flowchart TD
 运行时 `AppContent` 会在站点设置就绪后覆盖它（`src/App.jsx`）：
 
 1. `pwaName` / `pwaShortName` / `pwaThemeColor` 取自 `SiteSettingsContext`，缺省回落到 `siteName` 与构建期颜色；
-2. 找到（或创建）`link[rel="manifest"]`，**仅当 href 尚未包含 `/api/site-content/pwa-manifest` 时**改指该端点；源码注释明确记录了为什么不用 `blob:` URL——浏览器无法验证 blob manifest，安装提示不会弹出；
+2. manifest 链接**不再被改指**：旧实现会把 `link[rel="manifest"]` 指向 `/api/site-content/pwa-manifest`（该逻辑连同"不用 blob: URL"的注释一起移除）——跨域直连部署下动态 manifest 会以 API 域名为基准解析 `start_url`/`scope`/icons，导致安装后的 PWA 指向 API 域名，因此保持构建期 vite-plugin-pwa 注入的同源 manifest；
 3. 顺带更新 `apple-touch-icon`（`pwaIcon512 || pwaIcon192`）、`apple-mobile-web-app-title`、`application-name`、`theme-color`、`msapplication-TileColor`。
 
 **缓存与安装性在这里互相影响，改缓存策略前必须一起想：**
 
-- 运行时缓存清空后，浏览器拉 manifest 的请求**不再有任何 SW 缓存**（`/api/site-content/pwa-manifest` 同时被 `navigateFallbackDenylist` 排除）：后台改完名称/图标后客户端**立即**拉到新值，不再有 api-data 里最长 1 小时的旧副本——这是本次缓存策略反转顺带解除的一处耦合。
-- 代价是断网时动态 manifest 一定拿不到：安装提示不会弹、已安装应用的元数据也刷新不了。缓解手段只剩让站点设置尽早成功（`SiteSettingsContext` 自身还有 30 分钟 localStorage 缓存，见[状态与持久化](../architecture/state-and-persistence.md)）。
+- manifest 改向移除后，可安装性完全由构建期那份同源 `manifest.webmanifest` 承担；站点设置仍运行时更新 theme-color/apple-touch-icon/application-name 等 meta，但 manifest 的 `start_url`/`scope`/icons 固定为构建期值（要改 manifest 内容必须改 `vite.config.js` 并重新构建）。
+
+
 - 站点设置**取不到**时 link 保持构建期那一套，而 `/manifest.webmanifest` 是预缓存资源，因此「离线且设置未加载」的首次访问仍然有 manifest 可用——这是双份 manifest 设计里唯一的兜底路径。
 - 后台还能配 `pwaMaskableIcon`、`pwaBackgroundColor`，但上述运行时逻辑不消费这两项，它们只能通过后端 manifest 端点生效；字段语义与保存链路见[站点设置与公告](site-settings-and-announcements.md)，端点清单见[后端契约地图](../integrations/backend-api-map.md)。
 
@@ -297,7 +298,7 @@ stateDiagram-v2
 | --- | --- |
 | 新增需要离线可读的 GET 接口 | `vite.config.js` 的 `workbox.runtimeCaching`（当前为空、刻意不缓存）；恢复任何条目都要连同登出清理 `clearClientData` 一起评估，且不得缓存鉴权接口 |
 | 调整 `uploads` 行为 | 上传路径改名/加指纹仍推荐（URL 唯一性好习惯）；SW 不再缓存，图片永远走网络 |
-| 改 manifest 字段（名称/图标/主题色/启动参数） | 记住用户可见值来自后端 `/api/site-content/pwa-manifest`，构建期那份只是首次加载占位；动态 manifest 无缓存、改动立即生效 |
+| 改 manifest 字段（名称/图标/主题色/启动参数） | 只能改 `vite.config.js` 的 `VitePWA({ manifest })` 并重新构建——运行时动态 manifest 端点已不被前端消费；meta 层（theme-color/名称/图标）仍由站点设置运行时覆盖 |
 | 实现 `shortcuts` / `share_target` | `Home` 需要新增 `tab`/`action`/分享参数分支，否则 manifest 里的声明永远无效 |
 | 改安装提示行为 | `src/main.jsx` 的事件桥（全局变量 + `pwa-install-available`）、`InstallPrompt`、`Settings` 里同名的 `pwa-install-dismissed` 键；`NavBar` 里那份监听是死代码，改不改都不生效 |
 | 新增离线写操作 | `offlineQueue` 的去重键与丢弃策略（见上文"硬性要求"）；给用户一个"待同步"提示，因为当前没有任何 UI 或重放入口 |
@@ -311,9 +312,9 @@ stateDiagram-v2
 
 - [启动链路与 Provider](../architecture/boot-and-providers.md)——`index.html` 两段内联脚本、`main.jsx` 的模块级副作用、Provider 与 `BrowserCompat` 的位置。
 - [状态与持久化](../architecture/state-and-persistence.md)——`offline_queue`、`browserCompat_bypass_*`、`_icp` 等 localStorage 键的全表与归属。
-- [构建、配置与部署](../operations/build-and-release.md)——构建期与运行时两套 manifest 的分工、`sw.js` 的缓存头要求、图标生成脚本。
+- [构建、配置与部署](../operations/build-and-release.md)——构建期 manifest（现在唯一的一套）、`sw.js` 的缓存头要求、图标生成脚本。
 - [站点设置与公告](site-settings-and-announcements.md)——`pwaName`/`pwaIcon512` 等字段的保存链路与 `settings` JSON 结构。
 - [通知投递：SSE、轮询与 Web Push](notifications.md)——未读数写入 PWA 角标（`setAppBadge`）的那条链路。
 - [内容目录与剧集详情](content-catalog.md)——离线评分的入队现场与 `POST /api/ratings` 的响应处理。
 - [HTTP 与会话](../architecture/http-and-session.md)——401/419 刷新流程，决定了"登录已过期"提示何时可见。
-- [后端契约地图](../integrations/backend-api-map.md)——`/api/site-content/pwa-manifest` 与站点内容多路复用的端点清单。
+- [后端契约地图](../integrations/backend-api-map.md)——站点内容多路复用的端点清单（动态 manifest 端点仍登记但前端不再消费）。

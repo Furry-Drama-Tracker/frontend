@@ -58,14 +58,12 @@ sources:
     resource: repo://src/components/ThemeWorkshop.jsx
   - id: openwiki-source-3e3cca2b994f3eee9e9afa07
     resource: repo://src/components/TranslatableText.jsx
-  - id: openwiki-source-cc593f31fc84c5849299b505
-    resource: repo://src/components/TwoFactorAuth.jsx
+  - id: openwiki-source-34d0caaf874aa56fa84329b1
+    resource: repo://src/components/TwoFactorPage.jsx
   - id: openwiki-source-8648ccdfa2e22601aa1af4f4
     resource: repo://src/components/UpdateCalendar.jsx
   - id: openwiki-source-a43f536adabeb8d0bed5bda9
     resource: repo://src/components/UserDevices.jsx
-  - id: openwiki-source-d2b2001ac5199c100cadf66d
-    resource: repo://src/components/VerifyEmail.jsx
   - id: openwiki-source-9793b3dd98a0e62ec68a07c3
     resource: repo://src/contexts/AuthContext.jsx
   - id: openwiki-source-52f73cb87517cf05f876b0b4
@@ -80,6 +78,8 @@ sources:
     resource: repo://src/main.jsx
   - id: openwiki-source-254119f695d9c1c6bc387805
     resource: repo://src/utils/adminApi.js
+  - id: openwiki-source-397248f5d0f5e1b6d6a02a0d
+    resource: repo://src/utils/apiBase.js
   - id: openwiki-source-da4b9cb7c816d661a449ffcf
     resource: repo://src/utils/apiEndpoints.js
   - id: openwiki-source-37ca2d167bb7e856d4f1a11c
@@ -90,10 +90,10 @@ sources:
     resource: repo://src/utils/offlineQueue.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
+generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-11T16:33:24.381Z
+    at: 2026-11-13T19:07:27.754Z
 ---
 
 # 后端契约地图（API 分组与错误语义）
@@ -171,9 +171,9 @@ flowchart TD
 
 | 端点 | 方法 | 消费方 | 说明 |
 | --- | --- | --- | --- |
-| `/api/auth/login` | POST | `Login` | 请求体含邮箱/密码 + `deviceInfo` + `altcha`；响应分支见[错误与分支语义](#错误与分支语义) |
-| `/api/auth/login-2fa` | POST | `Login` | 二步验证第二步，提交 `email`/`twoFactorToken`/`twoFactorChallenge`/`deviceInfo` |
-| `/api/auth/verify-device`、`/api/auth/confirm-device-login` | POST | `Login` | 邮件链接带 `?token=` 调前者，响应 `{ verified, loginCode }`（只回显登录码、不建会话）；原浏览器回填 `loginCode` 调后者；**未注册** |
+| `/api/auth/login` | POST | `Login` | 请求体含 `identifier`（用户名或邮箱，含 @ 按邮箱分流；兼容旧 `email` 字段）+ `deviceInfo` + `altcha`；响应分支见[错误与分支语义](#错误与分支语义) |
+| `/api/auth/login-2fa` | POST | `Login`（`AUTH.LOGIN_2FA`） | 二步验证第二步，提交 `identifier`/`twoFactorToken`/`twoFactorChallenge`/`method`（`totp`/`emailOtp`） |
+| `/api/auth/passkey/options`、`/api/auth/passkey/verify` | POST | `Login`（`AUTH.PASSKEY_OPTIONS/VERIFY`） | Passkey 单因素登录仪式：`identifier` 可空走可发现凭据模式；开 2FA 也不再挑战第二因素 |
 | `/api/auth/register` | POST | `Register` | 含 altcha 载荷 |
 | `/api/auth/logout` | POST | `AuthContext.logout` | 失败被吞掉，前端仍清本地快照 |
 | `/api/auth/me` | GET | `AuthContext` 启动与 `visibilitychange` | 带 `params._t = Date.now()` 破缓存与 `skipRedirect: true` |
@@ -185,7 +185,10 @@ flowchart TD
 | `/api/auth/email-notification-prefs` | PUT | `Settings` | 请求体是 `{ [偏好键]: 新值 }` 的单字段补丁 |
 | `/api/auth/refresh`、`/api/auth/sse-ticket` | POST / GET | `axiosConfig`、`useNotifications` | **两者都不在注册表**；refresh 见 [HTTP 层](../architecture/http-and-session.md)，ticket 见下文 |
 | `/api/csrf-token` | GET | `axiosConfig` 预热与 `fetchCsrfToken()` | 注册表登记为 `AUTH.CSRF_TOKEN` 但拦截器硬编码字面量；响应 `{ csrfToken }` |
-| `/api/2fa/enable`、`/api/2fa/verify-enable`、`/api/2fa/disable` | POST | `TwoFactorAuth`、`TwoFactorPage` | **未注册** |
+| `/api/2fa/enable`、`/api/2fa/verify-enable`、`/api/2fa/disable`、`/api/2fa/verify` | POST | `TwoFactorPage`、`Force2FASetup`（注册表 `TWOFACTOR` 分组） | enable 响应含 `secret`/`secretBase32`/`backupCodes`/`otpauthUrl`；disable 角色门控（admin/superadmin 403） |
+| `/api/auth/2fa/email-otp/send` | POST | `TwoFactorPage`、`Login`（`TWOFACTOR.EMAIL_OTP_SEND`） | 凭 `twoFactorChallenge` 发送邮箱 OTP 第二因素（仅已验证邮箱） |
+| `/api/passkeys`、`/api/passkeys/register/options`、`/api/passkeys/register/verify?ceremonyKey=&name=`、`/api/passkeys/:id` | GET / POST / DELETE | `TwoFactorPage`（注册表 `PASSKEYS` 分组） | Passkey 凭据管理：注册仪式需 `currentPassword` 密码再认证 |
+| `/api/users/login-name`、`/api/users/check-login-name?name=` | PUT / GET | `Profile`（`USERS.LOGIN_NAME/CHECK_LOGIN_NAME`） | 用户名改名（`newLoginName` + `currentPassword` 密码再认证，冷却/保留期由后端返回）与改名前预检 `{available, reason}` |
 
 用户会话是 `AuthContext` 与后台共用的"在线设备"契约：
 
@@ -396,10 +399,10 @@ flowchart LR
 
 | 响应 | 标志 | 前端行为 |
 | --- | --- | --- |
-| `2xx` | `need2FA`（+ `email`、`twoFactorChallenge`） | 切到二步验证视图，再 `POST /api/auth/login-2fa` |
+| `2xx` | `need2FA`（+ `email`、`twoFactorChallenge`、`twoFactorMethods`：`totp`/`emailOtp`） | 切到二步验证视图（按 `twoFactorMethods` 渲染方法页签），再 `POST /api/auth/login-2fa` |
 | `2xx` | 无标志 | `login(res.data)`，写 `localStorage.user` 快照并跳首页 |
 | `4xx` | `needVerification` + `email` | 展示邮箱验证码表单 → `POST /api/auth/verify-email` |
-| `4xx` | `needDeviceVerify` + `email` + `deviceInfo` | 展示设备验证（邮件链接 `POST /api/auth/verify-device` 或回填 `loginCode`） |
+
 | `4xx` | `accountNotFound` | 展示"去注册"引导 |
 | `4xx` | 仅 `message` | 常规错误提示 |
 
@@ -411,7 +414,7 @@ flowchart LR
 
 1. **注册表与代码互相矛盾**：`ADMIN.BACKUP_*` 指 `/api/admin/backup/*`，代码打 `/api/backup/*`；`NOTIFICATIONS.LIST` 是 `/api/notifications`，实际请求是 `${LIST}/list`；`ADMIN.SITE_CONTENT(key)` 与公开读取路径完全相同（同一个 URL 既当后台写入口又当公开读取，权限只能靠方法区分）。改任一侧前先用后端路由确认真实路径。
 2. **注册表整组空转**：`API.ADMIN.*` 没有任何组件引用，后台 20+ 页全部用内联字面量；`THEMES.UPLOAD_WALLPAPER`、`THEMES.SET_DEFAULT`、`AUTH.CSRF_TOKEN`、`SERIES`、`FAVORITES`、`FOLLOWS`、`HISTORIES`、`TRANSLATE_BATCH`、`HEALTH` 等同样空转（`ICONS` 分组与 `THEMES.UPLOAD_ICON`、`ADMIN.LOGIN` 已随图标引擎移除与后台登录改版删除）。删条目不会破坏功能，但"改注册表 = 改接口"的假设不成立。
-3. **关键端点未注册**：`/api/auth/refresh`（会话续命）、`/api/auth/sse-ticket`（实时通知）、`/api/translate`（运行时翻译）、`/api/notifications/clear-read`、`/api/announcements/*`、`/api/categories`、`/api/banners`、`/api/review/*`、`/api/version(s)/*`、`/api/episode-trash/*`、`/api/saved-folders`、`/api/activity/*`、`/api/stats/calendar|activity-heatmap|episode-lifecycle`、`/api/2fa/*`、`/api/auto-status/*`、`/api/backup/*`、`/api/rss/api-usage`、`/api/admin/creators|register|role|user-admin-access|verify-password`。
+3. **关键端点未注册**：`/api/auth/refresh`（会话续命）、`/api/auth/sse-ticket`（实时通知）、`/api/translate`（运行时翻译）、`/api/notifications/clear-read`、`/api/announcements/*`、`/api/categories`、`/api/banners`、`/api/review/*`、`/api/version(s)/*`、`/api/episode-trash/*`、`/api/saved-folders`、`/api/activity/*`、`/api/stats/calendar|activity-heatmap|episode-lifecycle`、`/api/auto-status/*`、`/api/backup/*`、`/api/rss/api-usage`、`/api/admin/creators|register|role|user-admin-access|verify-password`。
 4. **字符串模板被当路径工厂**：`API.THEMES.LIST.replace('/list', '')` 生成 `POST /api/themes`；`API.STATS.RECOMMENDATIONS('personalized')` 把"id 参数"当魔法值。两者都把语义藏在字符串处理里。
 5. **路径前缀与缓存耦合（已反转）**：`vite.config.js` 的 workbox `runtimeCaching` 已被刻意清空——出于隐私考虑（API 响应含个人追番/历史/通知与站点配置，登出后 Cache Storage 不自动清理）不再缓存任何 `/api/` 或 `/uploads/` 响应，另用 `navigateFallbackDenylist` 排除这两个前缀；离线读取完全依赖应用层缓存（`site_settings_cache`、`translation_cache_v2`、`offline_queue`）。若未来要恢复运行时缓存，必须同时评估登出清理（`clearClientData` 会删除全部 Cache Storage）。
 6. **URL 字面量会长期存活**：`offline_queue` 存 `{ method, url, data }`；`index.html` 静态写死 `/api/rss`；`ThemeEditorModal` 用 `/^(\/uploads\/|https?:\/\/)/` 校验壁纸地址，只接受 `/uploads/...` 或绝对 http(s) 地址——后端若把上传目录改名或返回相对无前缀路径，主题壁纸会静默失效。

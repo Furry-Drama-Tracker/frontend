@@ -54,10 +54,10 @@ sources:
     resource: repo://src/utils/offlineQueue.js
   - id: openwiki-source-a40ec8eba1327ab0c96f271f
     resource: repo://src/utils/translationCache.js
-generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
+generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-11T16:33:24.381Z
+    at: 2026-11-13T19:07:27.754Z
 ---
 
 # 状态管理与浏览器持久化契约
@@ -100,9 +100,9 @@ flowchart TD
 
 **冷启动不会用快照渲染。** `localStorage.user` 只在启动 effect 里被读出、`JSON.parse` 校验一次格式，然后 `initAuth()` 被调用——注意它接收的 `storedUser` 参数在函数体里根本没有被使用。真正的流程是：`fetchCsrfToken()` → `GET /api/auth/me`（带 `skipRedirect: true`、`_t: Date.now()` 破缓存、`AbortController`）→ 用响应覆盖 `user` 并重写快照 → 再串行 `POST /api/user-sessions/create`（上报 `screen.width/height` 与 `navigator.language`，失败 1 秒后重试一次）。`initializing` 直到 `me` 结束才置假，而 `AppContent` 在 `initializing` 为真时只渲染加载文案，所以**冷启动的可见结果完全取决于 `/api/auth/me`，与快照内容无关**。
 
-快照的字段是**刻意收窄的六个字段**：`_id`、`accountId`、`username`、`isEmailVerified`、`role`、`avatar`（外加 `role` 兜底 `user`、`avatar` 兜底空串）。这意味着 `updateUser()` 传入的 `backgroundPrefs`、`emailNotificationPrefs`、`email` 等字段只活在 React state 里，不进快照——刷新后由 `/api/auth/me` 重新带回。唯一例外是 `axiosConfig` 在 token 刷新成功时会把 `me` 风格的对象合并写回 `user` 键，但白名单同样收窄（补写 `forceEmailChange`，不写 `email` 与 `avatar`），因此该键的实际 schema 由两个写者共同决定，读方不要假设字段齐全——依赖 `user.email` 的 UI 必须改走服务端校验或重新拉取。
+快照的字段是**刻意收窄的七个字段**：`_id`、`uid`（数字用户锚，2026-11 用户系统重构新增）、`accountId`、`username`、`isEmailVerified`、`role`、`avatar`（外加 `role` 兜底 `user`、`avatar` 兜底空串）。这意味着 `updateUser()` 传入的 `backgroundPrefs`、`emailNotificationPrefs`、`email` 等字段只活在 React state 里，不进快照——刷新后由 `/api/auth/me` 重新带回。唯一例外是 `axiosConfig` 在 token 刷新成功时会把 `me` 风格的对象合并写回 `user` 键，但白名单同样收窄（补写 `forceEmailChange`，不写 `email` 与 `avatar`），因此该键的实际 schema 由两个写者共同决定，读方不要假设字段齐全——依赖 `user.email` 的 UI 必须改走服务端校验或重新拉取。
 
-**读方几乎都把它当布尔量用。** `EpisodeDetail`、`Profile`、`UpdateCalendar` 读 `localStorage.getItem('user')` 只为判断「有没有会话」再发请求（真正的用户数据来自 Context 或 API），`axiosConfig` 则把它当合并基底。这是它可以只存六个字段的前提。
+**读方几乎都把它当布尔量用。** `EpisodeDetail`、`Profile`、`UpdateCalendar` 读 `localStorage.getItem('user')` 只为判断「有没有会话」再发请求（真正的用户数据来自 Context 或 API），`axiosConfig` 则把它当合并基底。这是它可以只存七个字段的前提。
 
 **清理点有四个**：登出（`POST /api/auth/logout` 后无论成败都清）、`GET /api/auth/me` 失败、`401` 刷新失败与 `419` 刷新失败（两段响应拦截器各自 `removeItem('user')` 并派发 `auth:session-expired`）、以及快照 JSON 解析失败（此时直接 `initializing = false`，连 `me` 都不发）。**登出经 `src/utils/clearClientData.js` 清理**：删除 `user` 与 `offline_queue` 两个键并删除**全部** Cache Storage 条目（对 localStorage/Cache Storage 不可用静默容忍），前台 `AuthContext.logout` 与后台 `AdminLayout.handleLogout` 共用这一个工具；而 `site_settings_cache`、`translation_cache_v2`、`search_history`、`home_scroll_pos`、`push-notifications-enabled` 仍跨账号保留，登出依然不是「重置浏览器状态」。配合 Service Worker 侧已清空的 `runtimeCaching`（不再缓存 `/api/` 响应），登出清理现在能覆盖绝大多数用户私有数据残留。
 
@@ -240,6 +240,6 @@ ThemeContext 另外导出三个纯函数供 UI 复用：`relativeLuminance(hex)`
 - **`offline_queue` 不按用户隔离**：队列里只有 `method/url/data`，冲刷发生在任意一次 `online`。登出已经 `clearClientData` 清空队列，但登录期间切换账号（不经过登出）仍不清：若 A 用户离线评分后未登出而 B 用户在同一会话接管，队列会带着 B 的 cookie 重放，失败会走 `401` → 清快照 → 跳登录。
 - **`clearOfflineQueue` 是死代码**：导出了但无人调用，队列的收缩完全依赖 24 小时 TTL 与 3 次重试上限。
 - **`push-notifications-enabled` 会失真**：它只在 `subscribe`/`unsubscribe` 成功时更新，浏览器侧被系统设置撤销或服务端清理订阅后，本地仍显示已开启。
-- **`user` 快照字段不完整**：`AuthContext` 收窄写（含 `avatar`、不含 `email`/`forceEmailChange`），`axiosConfig` 刷新合并补写 `forceEmailChange`（同样不写 `email`/`avatar`），两者对同一键的 schema 不一致；`email` 现在完全不入快照，依赖它的读取方必须改走服务端。
+- **`user` 快照字段不完整**：`AuthContext` 收窄写（含 `uid` 与 `avatar`、不含 `email`/`forceEmailChange`），`axiosConfig` 刷新合并补写 `forceEmailChange`（不写 `uid`/`email`/`avatar`），两者对同一键的 schema 不一致；`email` 现在完全不入快照，依赖它的读取方必须改走服务端。
 - **`site_settings_cache` 不随管理端改动作废**：只有 `AdminSiteContent` 自己调 `refreshSettings()`，其它标签页/其它管理员的缓存最多滞后 30 分钟。
 - **无测试防护网**：`package.json` 只有 `dev/build/lint/preview/generate-icons`，没有测试运行器。状态契约的验证只能靠 `npm run lint` 加手动场景：登出后刷新（`user` 已清）、断网评分后恢复网络（队列冲刷）、切换 `system` 主题后改系统外观（`matchMedia` 生效）、清空 `site_settings_cache` 后首帧（站点名回退）、以及应用主题后壁纸是否立即生效（`backgroundPrefs` 是否同步进 `user`）。

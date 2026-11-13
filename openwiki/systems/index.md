@@ -1,7 +1,7 @@
 # 文件
 
 - [管理后台：布局、角色可见性与待办](admin-console.md) - 归纳 /admin/* 管理后台的外壳与校验链（AdminLayout 二次 verify、心跳、登出、useOutletContext 传 admin）、仪表盘按 creator/admin/superadmin 分层的入口与 pending-counts 红色徽章、各管理页按职责域的边界，以及 adminApi + 表格 + Modal 的共用模式与新增后台页的同步清单。
-- [认证与账号体系](auth-and-account.md) - 前端用户账号全流程：altcha 人机校验下的注册与登录多分支状态机（needVerification / needDeviceVerify / need2FA / accountNotFound）、跨浏览器设备验证登录码、2FA 启停、密码找回与重置、邮箱验证与变更、强制改邮箱拦截、AuthContext 初始化与心跳、设备会话管理、数据导出与账号注销。
+- [认证与账号体系](auth-and-account.md) - 前端用户账号全流程：altcha 人机校验下的注册与登录多分支状态机（needVerification / need2FA / accountNotFound）、双标识登录（用户名/邮箱）、Passkey 单因素登录、2FA 方法页签（TOTP/邮箱 OTP）、TwoFactorPage 的 2FA 与 Passkey 凭据管理、Force2FASetup 强制设置、Profile 用户名改名、密码找回与重置、邮箱验证与变更、AuthContext 初始化与心跳、数据导出与账号注销。
 - [内容发现、剧集详情与用户内容库](content-catalog.md) - 用户侧内容消费链路的实现说明：Home 以 URL 查询参数作为筛选/排序状态的复原依据并叠加无限滚动与 sessionStorage 滚动恢复，EpisodeDetail 用三个独立 AbortController 请求装配详情、推荐与登录态并串联 view 计数、历史记录与通知已读；另含更新日历、时间线、创作者页、搜索/标签云，以及 Profile 的收藏夹、分享文件夹、关注与历史管理。
 - [界面国际化与运行时内容翻译](i18n-and-translation.md) - 前端的两条互不替代的翻译路径：locales 静态 UI 文案与 t() 的插值/回退语义、切换语言整页 reload 的原因，以及后端多语言字段缺失时经 requestTranslation 队列调用 /api/translate 的按需机器翻译、跨实体去重缓存与失败标记；另含 CSP 翻译域名与改动检查清单。
 - [图片上传与裁剪管线](media-upload.md) - 前端共享媒体管线的实现说明：ImageUploader 的 URL/本地文件双模式与归一化坐标裁剪框、aspectRatio 与 canvas 输出尺寸如何决定上传内容、各调用点实际使用的 uploadEndpoint 与 FormData 字段名、useImageUpload 的 5MB 与图片类型白名单校验，以及上传结果 URL 在剧集封面、头像、站点素材、主题壁纸与图标、系统壁纸库等处的消费位置。

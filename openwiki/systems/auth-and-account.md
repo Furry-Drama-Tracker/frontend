@@ -1,9 +1,11 @@
 ---
 type: system
 title: 认证与账号体系
-description: 前端用户账号全流程：altcha 人机校验下的注册与登录多分支状态机（needVerification / needDeviceVerify / need2FA / accountNotFound）、跨浏览器设备验证登录码、2FA 启停、密码找回与重置、邮箱验证与变更、强制改邮箱拦截、AuthContext 初始化与心跳、设备会话管理、数据导出与账号注销。
-tags: [auth, account, login, two-factor, device-verification, altcha, session, frontend]
+description: 前端用户账号全流程：altcha 人机校验下的注册与登录多分支状态机（needVerification / need2FA / accountNotFound）、双标识登录（用户名/邮箱）、Passkey 单因素登录、2FA 方法页签（TOTP/邮箱 OTP）、TwoFactorPage 的 2FA 与 Passkey 凭据管理、Force2FASetup 强制设置、Profile 用户名改名、密码找回与重置、邮箱验证与变更、AuthContext 初始化与心跳、数据导出与账号注销。
+tags: [auth, account, login, passkey, webauthn, two-factor, email-otp, altcha, session, frontend]
 sources:
+  - id: openwiki-source-8037e2358a2c4f9b2c722a11
+    resource: repo://AGENTS.md
   - id: openwiki-source-5b54a58d1b51cd490b0e7162
     resource: repo://package.json
   - id: openwiki-source-7e75b7923fe8a8860d28572b
@@ -12,20 +14,24 @@ sources:
     resource: repo://src/App.jsx
   - id: openwiki-source-58fe76657644a586e9a1d83d
     resource: repo://src/components/AccountSecurity.jsx
+  - id: openwiki-source-b6b927ec6f935695cd90fed6
+    resource: repo://src/components/BackupCodesPanel.jsx
   - id: openwiki-source-dfbd4ce3ae4f649cb0bca207
     resource: repo://src/components/ChangeEmail.jsx
   - id: openwiki-source-285a5179c11e9744d8e7e9e1
     resource: repo://src/components/DeleteAccount.jsx
+  - id: openwiki-source-796bf829c11f93de2a5a3aea
+    resource: repo://src/components/Force2FASetup.jsx
   - id: openwiki-source-1d160b0a5a99aa918edefd21
     resource: repo://src/components/ForceEmailChange.jsx
   - id: openwiki-source-0563314e4e01b2956353b034
     resource: repo://src/components/Login.jsx
+  - id: openwiki-source-1da4a02941128bfa6b293d67
+    resource: repo://src/components/Profile.jsx
   - id: openwiki-source-341c046c54d7f9ed9459b9cf
     resource: repo://src/components/Register.jsx
   - id: openwiki-source-bc5251d12339f1f57c9d933f
     resource: repo://src/components/ResetPassword.jsx
-  - id: openwiki-source-cc593f31fc84c5849299b505
-    resource: repo://src/components/TwoFactorAuth.jsx
   - id: openwiki-source-34d0caaf874aa56fa84329b1
     resource: repo://src/components/TwoFactorPage.jsx
   - id: openwiki-source-a43f536adabeb8d0bed5bda9
@@ -42,15 +48,17 @@ sources:
     resource: repo://src/utils/clearClientData.js
   - id: openwiki-source-4846c3b27b770d3975fb2c4e
     resource: repo://src/utils/deviceInfo.js
-generated: { by: "zcode", at: "2026-11-04T16:54:50.811Z" }
+generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-11T16:33:24.381Z
+    at: 2026-11-13T19:07:27.754Z
 ---
 
 # 认证与账号体系
 
 这一页覆盖用户侧账号的全部前端行为。先给出最重要的立场：**登录态的真相在 httpOnly cookie 与服务端，前端只持有一份可丢弃的快照**。所有「已登录」判断（`user` 非空）都是体验层的，真正的准入由后端按 cookie 会话判定；cookie、CSRF 与 401/419 刷新重试的机制在[HTTP 请求与会话生命周期](../architecture/http-and-session.md)，本页只讲账号流程如何消费它们。路由层的分区与守卫（谁能进入 `/profile`、`/admin`）见[路由分区与访问守卫](../architecture/routing-and-guards.md)。
+
+2026-11 用户系统重构后，本页的主线变化是：登录标识符改为 `identifier`（用户名或邮箱，含 `@` 按邮箱分流）；登录第一因素支持 **Passkey 单因素登录**（即使账号开启 2FA 也不再挑战第二因素）；2FA 第二因素来自登录响应的 `twoFactorMethods`（`totp`/`emailOtp`）并渲染成方法页签；原设备验证码链（`/verify-device`、`needDeviceVerify`）整体移除——新设备登录只发提醒邮件；`/two-factor` 页面扩展为 2FA 管理 + Passkey 凭据管理 + 备份码面板；管理员未开启 2FA 时被全局 `Force2FASetup` 模态拦截；`Profile` 展示 UID 并支持用户名改名。
 
 ## 页面地图
 
@@ -58,7 +66,7 @@ verified:
 
 | 路由 | 组件 | 路由层登录态 | 主要端点 |
 | --- | --- | --- | --- |
-| `/login`、`/verify-device` | `Login` | 公开 | `POST /api/auth/login`、`login-2fa`、`verify-device`、`confirm-device-login`、`forgot-password` |
+| `/login` | `Login` | 公开 | `POST /api/auth/login`、`login-2fa`、`/api/auth/passkey/options|verify`、`forgot-password` |
 | `/register` | `Register` | 公开 | `POST /api/auth/register`、`verify-email` |
 | `/reset-password` | `ResetPassword` | 公开（凭 `?token=`） | `POST /api/auth/reset-password` |
 | `/verify-email` | `VerifyEmail` | 公开（凭 `?email=`） | `POST /api/auth/verify-email`、`resend-verification-by-email` |
@@ -67,11 +75,12 @@ verified:
 | `/change-password` | `ChangePassword` | 同上 | `PUT /api/auth/change-password` |
 | `/change-email` | `ChangeEmail` | 同上 | `POST /api/auth/request-email-change` |
 | `/devices` | `UserDevices` | 同上 | `/api/user-sessions/*` |
-| `/two-factor` | `TwoFactorPage` | 同上 | `/api/2fa/enable`、`verify-enable`、`disable` |
+| `/two-factor` | `TwoFactorPage` | 同上 | `/api/2fa/enable|verify-enable|disable`、`/api/auth/2fa/email-otp/send`、`/api/passkeys/*` |
+| `/profile` | `Profile` | 同上 | `PUT /api/users/login-name`、`GET /api/users/check-login-name` |
 | `/delete-account` | `DeleteAccount` | 同上 | `/api/auth/deletion-status`、`request-deletion`、`cancel-deletion` |
-| 全局浮层（公共分支） | `ForceEmailChange` | 仅当 `user.forceEmailChange` | `PUT /api/auth/change-email` |
+| 全局浮层（公共分支） | `ForceEmailChange`、`Force2FASetup` | 仅当 `user.forceEmailChange` / `user.force2FASetup`（前者优先） | `PUT /api/auth/change-email`、`/api/2fa/enable`、`verify-enable` |
 
-`/login` 与 `/verify-device` 复用同一个组件：设备验证邮件里的链接指向后者，`Login` 只看 `?token=` 查询参数来判断自己是「登录页」还是「验证落地页」。`Login`、`Register` 是少数没有走 `React.lazy` 的首屏组件，因此它们的 altcha 依赖必须在入口就注册好（见[altcha 人机校验](#altcha-人机校验)）。
+`Login` 是少数没有走 `React.lazy` 的首屏组件，因此它的 altcha 依赖必须在入口就注册好（见[altcha 人机校验](#altcha-人机校验)）。
 
 ### 新增账号页的三件套
 
@@ -86,8 +95,8 @@ verified:
 `src/contexts/AuthContext.jsx` 暴露 `{ user, login, logout, initializing, getAuthHeaders, updateUser }`，但它不持有任何 token：
 
 - `getAuthHeaders()` **恒返回空对象**，保留它只是历史兼容——凭据由 `axios.defaults.withCredentials` 自动携带的 httpOnly cookie 承担。账号页组件普遍把它透传给 axios，看起来像在加鉴权头，实际不起作用。
-- `login(userData)` 只做两件事：`setUser`，以及把快照子集写进 `localStorage.user`（`_id`、`accountId`、`username`、`isEmailVerified`、`role`、`avatar`）。注意**快照里没有 email**：`AccountSecurity` 显示的 `user.email` 来自 `/api/auth/me` 或登录响应，而不是本地快照。
-- `updateUser(next)` 支持函数式更新，并在结果非空时重写快照。`TwoFactorPage`、`ForceEmailChange`、`Profile` 都靠它同步 `twoFactorEnabled`、`forceEmailChange`、邮箱变更等字段。
+- `login(userData)` 只做两件事：`setUser`，以及把快照子集写进 `localStorage.user`（`_id`、`uid`、`accountId`、`username`、`isEmailVerified`、`role`、`avatar`）。注意**快照里没有 email**：`AccountSecurity` 显示的 `user.email` 来自 `/api/auth/me` 或登录响应，而不是本地快照。
+- `updateUser(next)` 支持函数式更新，并在结果非空时重写快照。`TwoFactorPage`、`ForceEmailChange`、`Force2FASetup`、`Profile` 都靠它同步 `twoFactorEnabled`、`forceEmailChange`、`force2FASetup`、邮箱变更等字段。
 - `logout()` 先 `POST /api/auth/logout`，**无论成败**都清空 `user`，再 `await clearClientData()` 清掉 `localStorage` 的 `user`/`offline_queue` 与全部 Cache Storage（与后台登出共用同一工具），且不负责跳转；调用方（`NavBar` 的登出按钮、`ForceEmailChange` 成功页）自己决定去哪。
 
 `initializing` 是渲染门禁：`AppContent` 在它为真时只渲染加载占位，所以任何账号页面都要等一次 `/api/auth/me` 结束才会出现。快照字段与 `localStorage` 侧的完整清单见[状态管理与持久化](../architecture/state-and-persistence.md)。
@@ -145,10 +154,10 @@ flowchart TD
 
 ## altcha 人机校验
 
-注册、登录、忘记密码、按邮箱重发验证码这四个入口都受 altcha 保护，形态完全一致：`challenge="/api/auth/captcha"`、`auto="onload"`、`hidefooter`/`hidelogo`。
+注册、登录、忘记密码、按邮箱重发验证码这四个入口都受 altcha 保护，形态一致：`auto="onload"`、`hidefooter`/`hidelogo`，挑战地址显式指向后端源站 `challenge={apiUrl('/api/auth/captcha')}`（跨域直连部署下，Web Component 不会相对前端域名解析挑战 URL）。
 
 - 组件是 Web Component `<altcha-widget>`，`public/altcha.js` 是它的本地副本（自执行并 `customElements.define('altcha-widget', …)`）。运行时真正生效的注册发生在 `src/main.jsx` 的 `import 'altcha'`：它必须在首屏执行，因为使用它的表单一半在首屏（`Login`、`Register`）、一半在懒加载路由里（`VerifyEmail`、`FriendLinks`），等路由 chunk 再注册就晚了。
-- **payload 只能通过 `statechange` 事件拿**：监听器读 `ev.detail.payload`，存进组件 state，提交时作为 `altcha` 字段随请求发送。`Login` 与 `VerifyEmail` 用 callback ref 实现（元素切换时先解绑旧监听、清空 payload 再绑新的），因为同一组件会在「登录表单」和「忘记密码表单」两个分支里各渲染一次；`Register` 则用普通的 `useRef` + 一次性 `useEffect`。
+- **payload 只能通过 `statechange` 事件拿**：监听器读 `ev.detail.payload`，存进组件 state，提交时作为 `altcha` 字段随请求发送。`Login` 用 callback ref 实现（元素切换时先解绑旧监听、清空 payload 再绑新的），因为同一组件会在「登录表单」和「忘记密码表单」两个分支里各渲染一次；`Register` 则用普通的 `useRef` + 一次性 `useEffect`。
 - **未通过校验时提交是被静默吞掉的**：`Login.handleSubmit` 与 `Register.handleSubmit` 都以 `if (!altchaPayload) return;` 开头，而提交按钮只受 `submitting`（以及注册页的协议勾选）控制，不会因为 altcha 未完成而禁用；只有 `VerifyEmail` 的重发按钮把 `!altchaPayload` 用在 `disabled` 上。
 - 仓库里**没有任何源码引用 `public/altcha.js`**（`index.html` 也没有 `<script>` 指向它）。它是随包发布的离线兜底/历史副本，与 `package.json` 的 `altcha` 依赖并列存在；改动验证码接入方式时不要误以为改那个文件就会生效。
 
@@ -160,7 +169,6 @@ flowchart TD
 | --- | --- | --- |
 | 密码 ≥ 8 位 | 提交前 + 失焦 | `auth.passwordHint` |
 | 密码含字母与数字 | 提交前 | `auth.passwordMustContainLetterAndNumber` |
-| 两次密码一致 | 无（注册只有一个密码框） | —— |
 | `accountId` 匹配 `[A-Za-z0-9_]+`，3–20 位 | `pattern` + `minLength`/`maxLength` + 失焦 | `auth.accountIdHint` |
 | 必须勾选协议与隐私政策 | 提交前 + 按钮 `disabled` | `auth.agreeTermsFirst` |
 
@@ -175,92 +183,94 @@ flowchart TD
 ```mermaid
 stateDiagram-v2
     [*] --> LoginForm
-    LoginForm --> Submitting: 提交邮箱 密码 altcha deviceInfo
+    LoginForm --> Submitting: 提交 identifier 密码 altcha deviceInfo
+    LoginForm --> PasskeyLogin: 点击 Passkey 按钮（浏览器支持且本机有平台验证器）
+    PasskeyLogin --> LoggedIn: options→浏览器仪式→verify 通过
     Submitting --> LoggedIn: 2xx 且无 need2FA
-    Submitting --> TwoFactor: 2xx 且 need2FA
+    Submitting --> TwoFactor: 2xx 且 need2FA（携带 twoFactorMethods）
     Submitting --> EmailVerify: 4xx 且 needVerification
-    Submitting --> DeviceVerify: 4xx 且 needDeviceVerify
     Submitting --> LoginForm: 4xx 仅 message
     LoginForm --> RegisterGuide: 4xx 且 accountNotFound
     EmailVerify --> LoginForm: 验证码通过 需重新登录
-    DeviceVerify --> LoggedIn: 登录码确认成功
-    DeviceVerify --> TwoFactor: 登录码确认返回 need2FA
-    DeviceVerify --> MailBrowserCode: 邮件内置浏览器打开链接
-    TwoFactor --> LoggedIn: login-2fa 通过
+    TwoFactor --> LoggedIn: login-2fa 通过（totp/emailOtp 任一方法）
     TwoFactor --> LoginForm: 返回登录
     LoginForm --> Forgot: 忘记密码
     Forgot --> LoginForm: 已发送重置链接
     LoggedIn --> [*]
 ```
 
-这张图是理解整个账号模块的入口：2FA 既可能从密码登录进入，也可能从设备验证的登录码确认进入。
-
 | 响应 | 标志 | 前端行为 |
 | --- | --- | --- |
-| `2xx` | `need2FA`（+ `email`、`twoFactorChallenge`） | 不调用 `login()`，切到 2FA 视图并保留 challenge |
+| `2xx` | `need2FA`（+ `email`、`twoFactorChallenge`、`twoFactorMethods`） | 不调用 `login()`，切到 2FA 视图；`twoFactorMethods` 驱动方法页签（多于一种方法时渲染页签条，默认选 `totp`） |
 | `2xx` | 无标志 | `login(response.data)` 写状态与快照，`navigate('/')` |
 | `4xx` | `needVerification`（+ `email`） | 切到邮箱验证码视图 |
-| `4xx` | `needDeviceVerify`（+ `email`、`deviceInfo`） | 切到新设备验证视图，回显浏览器/系统/设备类型/IP |
 | `4xx` | `accountNotFound` | 登录表单上方替换为「去注册」引导条（同样带邮箱跳 `/register?email=`） |
 | `4xx` | 仅 `message` | 普通错误提示 |
 
 两条硬性细节：
 
-- **每次提交先重置所有分支 state**（`needVerification`/`needDeviceVerify`/`need2FA`/`suggestRegister` 及验证码与错误），所以重复提交不会把上一次的视图叠在当前视图上。
+- **每次提交先重置所有分支 state**，所以重复提交不会把上一次的视图叠在当前视图上。原 `needDeviceVerify`/`deviceLoginCode`/`fromDeviceVerify` 分支已随设备验证链移除。
 - **登录成功固定 `navigate('/')`**，不读 `location.state` 也不读 `from`。深链被守卫踢到 `/login` 后，登录完成只会回到首页——这是账号流程里最容易让人误期望落空的地方。
 
-视图渲染顺序是固定的 `if` 链：`deviceLoginCode` → `deviceVerifyLoading` → `needDeviceVerify` → `need2FA` → `needVerification` → 重置 → 忘记密码 → 登录表单。调整顺序会改变多条分支同时为真时的优先级。
+### Passkey 单因素登录
 
-## 新设备验证：邮件链接与登录码回填
+登录表单在浏览器支持 WebAuthn 且本机有平台验证器时（`browserSupportsWebAuthn()` + `platformAuthenticatorIsAvailable()`，来自 `@simplewebauthn/browser`）渲染「使用 Passkey 登录」按钮。点击后三步：
 
-新设备登录是唯一跨浏览器/跨客户端的流程，因此它**故意不共享 cookie**，改用一次性登录码传递结果：
+1. `POST /api/auth/passkey/options`，体含 `identifier`（可空——空走可发现凭据/无用户名模式，非空限定用户）；
+2. 浏览器弹出的指纹/面容/PIN 仪式由 `startAuthentication({ optionsJSON: publicKey })` 发起；
+3. 把 attestation 响应 `POST /api/auth/passkey/verify?ceremonyKey=…` 交给后端，成功即 `login(verRes.data)` 并跳首页。
 
-```mermaid
-sequenceDiagram
-    participant Old as 原浏览器 Login
-    participant Srv as 后端 auth API
-    participant Mail as 邮件内置浏览器
+Passkey 是**单因素登录**：即使账号开启 2FA 也不再挑战第二因素（抗钓鱼的硬件级因素视为足够）。后端会照常执行注销宽限与邮箱验证门槛，失败语义与普通登录一致。
 
-    Old->>Srv: POST /api/auth/login 带 deviceInfo
-    Srv-->>Old: 4xx needDeviceVerify 与 deviceInfo 回显
-    Old->>Old: 渲染新设备验证页 展示设备与 IP
-    Srv->>Mail: 发送带 token 的验证邮件
-    Mail->>Srv: 落地页挂载后 POST /api/auth/verify-device token
-    Srv-->>Mail: verified 与 loginCode 不建会话
-    Mail-->>Old: 用户把 6 位登录码抄回原浏览器
-    Old->>Srv: POST /api/auth/confirm-device-login loginCode
-    alt 未开启 2FA
-        Srv-->>Old: 用户快照 前端 login 并跳首页
-    else 已开启 2FA
-        Srv-->>Old: need2FA 与 twoFactorChallenge
-        Old->>Srv: POST /api/auth/login-2fa 动态码与 deviceInfo
-        Srv-->>Old: 用户快照
-    end
-```
+### 2FA 第二步与邮箱 OTP
 
-实现上分成两半，落在同一个组件里：
+`need2FA` 视图按 `twoFactorMethods` 渲染方法页签（`totp` 恒有；`emailOtp` 仅邮箱已验证时由后端下发）：
 
-- **落地页半边**：`?token=` 存在时，挂载即 `POST /api/auth/verify-device`。成功且响应带 `loginCode` 时，整个组件只渲染一个「验证成功 + 6 位大字登录码」页面（配「回到发起登录的浏览器输入」文案与 10 分钟有效期提示）。邮件 App 内置浏览器与发起登录的浏览器不共享 cookie，所以这里刻意**不执行登录**。等待期间渲染「正在验证设备」，失败则把 `deviceVerifyFailed` 写进错误条并回落到登录表单。
-- **原浏览器半边**：`needDeviceVerify` 视图同时展示两样东西——「验证码已发送至某邮箱」和**一个 6 位登录码输入框**。输入框只接受数字、`maxLength=6`，长度不足 6 时确认按钮禁用。提交走 `POST /api/auth/confirm-device-login { loginCode }`：若响应 `need2FA`，则置 `fromDeviceVerify`（该标志目前只写不读）、带上 `twoFactorChallenge` 转入 2FA 视图；否则直接 `login(res.data)` 并跳首页。页面还提供「返回登录」按钮重置状态。
+- **TOTP 页签**：输入验证器 6 位码或备份码，`POST /api/auth/login-2fa { identifier, twoFactorToken, twoFactorChallenge, method: 'totp', deviceInfo }`。
+- **emailOtp 页签**：先「发送验证码」——`POST /api/auth/2fa/email-otp/send { twoFactorChallenge }`（`TWOFACTOR.EMAIL_OTP_SEND`），再输入邮件里的 6 位码，以 `method: 'emailOtp'` 提交同一端点。
 
-设备信息由 `src/utils/deviceInfo.js` 的 `getDeviceInfo()` 解析 `navigator.userAgent` 得出：`browser`/`browserVersion`/`os`/`osVersion`/`deviceType`/`deviceModel`/`carrier`，外加 `screenWidth`/`screenHeight`/`language`。它包含了三处针对 Apple 的版本号纠偏——macOS 11+ 的 Safari 把 `Mac OS X` 冻结在 `10.15.x`、iOS 26+ 冻结 `iPhone OS`、iPadOS 26+ 同理，真实版本要从 `Version/` 反推；`UserDevices` 与设备验证视图都会对 `iOS`/`iPadOS`/`macOS` 条目加一条「版本号可能不准」的星标说明。
+成功后与普通登录相同：`login(res.data)` 并 `navigate('/')`。
 
-## 二步验证
+## 新设备登录：事后提醒而非拦截
+
+设备验证码链已移除：登录不再返回 `needDeviceVerify`，也没有 `/verify-device` 路由。「已知设备」由服务端判定——后端在每次登录成功时签发 `fdt-device` cookie（会话文档存其哈希），未识别设备只在登录成功后收到一封提醒邮件（受 `emailNotificationPrefs.newDeviceLogin` 控制），不再需要用户抄验证码或打开邮件链接。前端对这条链路零参与；`deviceInfo.js` 的 `getDeviceInfo()` 仍在注册/登录请求体里上报浏览器/系统/屏幕信息（含针对 Apple 版本号冻结的三处纠偏），仅作展示用途。
+
+## 二步验证与 Passkey 管理（TwoFactorPage）
 
 2FA 有两个入口、两套端点，别混：
 
 | 场景 | 入口 | 请求 |
 | --- | --- | --- |
-| 登录时的 2FA | `Login` 的 `need2FA` 视图 | `POST /api/auth/login-2fa`，体含 `email`、`twoFactorToken`、`twoFactorChallenge`、`deviceInfo` |
-| 账号内启停 2FA | `/two-factor` → `TwoFactorPage` | `POST /api/2fa/enable` → `verify-enable` → 之后 `disable` |
+| 登录时的 2FA | `Login` 的 `need2FA` 视图 | `POST /api/auth/login-2fa`（见上节） |
+| 账号内启停 2FA | `/two-factor` → `TwoFactorPage` | `POST /api/2fa/enable` → `verify-enable` → 之后 `disable`（`TWOFACTOR` 分组） |
 
 `TwoFactorPage` 是一个四态向导（`disabled`/`setup`/`enabled`，外加一次性 `success` 展示）：
 
-1. `enable` 返回 `{ secret, otpauthUrl, backupCodes }`，页面用 `qrcode` 库把 `otpauthUrl` 画成 data URL 的二维码（纯前端生成，不请求第三方），同时给出可手动输入的密钥和可展开的备份码。
-2. 输入 6 位动态码后 `verify-enable`，成功即 `setUser({ ...user, twoFactorEnabled: true })` 并切到 `enabled`。
-3. `enabled` 视图反过来要求输入 6 位码才能 `disable`，成功后置 `twoFactorEnabled: false`。
+1. `enable` 返回 `{ secret, otpauthUrl, backupCodes, secretBase32 }`，页面用 `qrcode` 库把 `otpauthUrl` 画成 data URL 的二维码（纯前端生成，不请求第三方），同时给出 `secretBase32`（RFC 4648 Base32，供验证器二维码/手动输入识别；内部存储格式是 base64，两个字段都会返回）和可展开的备份码。
+2. 输入 6 位动态码后 `verify-enable`，成功即 `setUser({ ...user, twoFactorEnabled: true })` 并切到 `enabled`。角色门控由后端执行：普通用户调 `enable` 得 403「普通用户不可开启两步验证」。
+3. `enabled` 视图反过来要求输入 6 位码才能 `disable`，成功后置 `twoFactorEnabled: false`；admin/superadmin 会被后端 403 拒绝（不可自行关闭，解锁走 `useradmin clear-2fa`）。
 
-要点：初始步骤是 `useState(user?.twoFactorEnabled ? 'enabled' : 'disabled')`，**只在挂载时取值一次**，之后 `user` 变化不会重算；所有输入框都用 `replace(/\D/g, '').slice(0, 6)` 过滤；三处按钮都以 `token.length !== 6` 作为禁用条件。`components/TwoFactorAuth.jsx` 是一个未被任何路由或组件引用的旧实现，路由使用的是 `TwoFactorPage.jsx`，改 2FA 界面时要改后者。
+**备份码展示统一走 `BackupCodesPanel`**（`TwoFactorPage` 与 `Force2FASetup` 共用）：2×5 对称网格大字排版，带「复制全部」（Clipboard API）与「导出 .txt」（Blob + 临时 `<a download>` 生成 `backup-codes-<accountId>-<时间戳>.txt`）两个操作。
+
+**Passkey 凭据管理**（同一页面内）：列出 `GET /api/passkeys`（名称、创建时间），注册新 Passkey 需先输当前密码做再认证 → `POST /api/passkeys/register/options?name=…`（带 `currentPassword`）→ 浏览器仪式（`@simplewebauthn/browser` 的 `startRegistration`）→ `POST /api/passkeys/register/verify?ceremonyKey=&name=`；`DELETE /api/passkeys/:id` 删除单条。页面会先探测 `browserSupportsWebAuthn()` 与 `platformAuthenticatorIsAvailable()` 决定是否展示注册区块。`components/TwoFactorAuth.jsx` 已删除——改 2FA 界面只改 `TwoFactorPage.jsx`。
+
+## 强制设置 2FA（Force2FASetup）
+
+角色化 2FA 的前端执行点是全局阻断模态 `Force2FASetup`（`App.jsx` 公共分支按 `user?.force2FASetup && !user?.forceEmailChange` 渲染，邮箱优先于 2FA）：
+
+1. 后端在登录/`me` 响应携带 `force2FASetup: true`（admin/superadmin 且未开启 2FA），`AuthContext` 快照与刷新合并都会携带。
+2. 模态不可关闭，强制完成 TOTP 注册：`POST /api/2fa/enable`（展示 `secretBase32` 二维码）→ 输入动态码 `verify-enable` → 展示 `BackupCodesPanel`。
+3. 成功后 `onUpdate({ twoFactorEnabled: true, force2FASetup: false })` 解除拦截；后端的 force2FASetup 门禁同步拦截其余写操作（403 + `force2FASetup`），把管理员锁定在设置流程中。
+
+与 `ForceEmailChange` 一样，它只挂在公共分支——超管在 `/admin/*` 上被门禁拦截时弹窗不出现，要回前台才能看到。
+
+## Profile：UID 与用户名改名
+
+`Profile` 顶部在用户名旁展示 `UID`（数字用户锚，`user.uid`，非数字显示 `-`）与「改名」入口。改名弹窗流程：
+
+1. 输入新用户名，失焦时调 `GET /api/users/check-login-name?name=…` 预检，实时显示 `{available, reason}`；
+2. 提交 `PUT /api/users/login-name { newLoginName, currentPassword }`（密码再认证由后端校验，冷却/占用/黑名单错误直接展示后端 `message`）；
+3. 成功后返回 `{ accountId, cooldownDays }`，前端 `updateUser` 同步快照中的 `accountId` 并提示冷却天数（默认 7 天内不可再改）。
 
 ## 密码找回与重置
 
@@ -269,7 +279,7 @@ sequenceDiagram
 1. `Login` 的忘记密码视图收集邮箱，连同 altcha 一起 `POST /api/auth/forgot-password`。无论后端真实结果如何，前端只显示「如果该邮箱已注册，重置链接已发送」（`auth.resetLinkSent`），不做账号存在性泄露。
 2. 邮件里的链接指向 `/reset-password?token=…`，由 `ResetPassword` 组件处理：无 `token` 直接渲染「链接无效或已过期」页；有 token 则校验新密码（≥8 位、含字母与数字、两次一致）后 `POST /api/auth/reset-password { token, newPassword }`，成功后显示提示并在 2 秒后 `navigate('/login')`。
 
-`Login` 里还留着一套内嵌的重置分支（`showReset` + `resetToken`），但**它是死代码**：全文件没有任何地方调用 `setShowReset(true)`，`resetToken` 也从未被赋值（只有清空）。排查「密码重置为什么不生效」时应直接改 `ResetPassword.jsx`，不要在那段分支上花时间。
+`Login` 里还留着一套内嵌的重置分支（`showReset` + `resetToken`），但**它仍是死代码**：全文件没有任何地方调用 `setShowReset(true)`（只有两处置回 false）。排查「密码重置为什么不生效」时应直接改 `ResetPassword.jsx`，不要在那段分支上花时间。
 
 ## 邮箱验证与邮箱变更
 
@@ -292,7 +302,7 @@ sequenceDiagram
 2. `AuthContext` 监听该事件，给 `user` 打标。
 3. `AppContent` 在**公共分支**的返回值里按 `user?.forceEmailChange` 渲染 `ForceEmailChange`：一个 `closeOnOverlay={false}`、`closeOnEsc={false}`、`onClose` 为空函数的 `Modal`，提交 `PUT /api/auth/change-email { newEmail, password }`，成功后 `onUpdate({ email, isEmailVerified: false, forceEmailChange: false })` 解除拦截，并给出「登出」按钮。
 
-因为 `ForceEmailChange` 只挂在公共分支，后台 `/admin/*` 上被拦截时弹窗不会出现，只有写操作失败——这与路由分区的不对称是同一件事，改动时需一并考虑。
+因为 `ForceEmailChange` 与 `Force2FASetup` 都只挂在公共分支，后台 `/admin/*` 上被拦截时弹窗不会出现，只有写操作失败——这与路由分区的不对称是同一件事，改动时需一并考虑。
 
 ## 设备与会话管理
 
@@ -310,7 +320,7 @@ sequenceDiagram
 
 ## 账号安全入口与数据导出
 
-`AccountSecurity` 是账号侧的聚合页，六个区块依次是：邮箱（默认掩码显示 `a***z@domain`，可切换显示完整值，并展示 `isEmailVerified` 徽标）、密码、管理设备、两步验证（按 `user.twoFactorEnabled` 显示已启用/未启用与「管理/启用」按钮）、导出数据、注销账号。除了导出与注销，其余都只是跳转到对应子页面。
+`AccountSecurity` 是账号侧的聚合页，区块依次是：邮箱（默认掩码显示 `a***z@domain`，可切换显示完整值，并展示 `isEmailVerified` 徽标）、密码、管理设备、两步验证（按 `user.twoFactorEnabled` 显示已启用/未启用与「管理/启用」按钮）、导出数据、注销账号。除了导出与注销，其余都只是跳转到对应子页面。
 
 数据导出是账号模块里**唯一绕过 axios 的请求**：`fetch(API.USERS.EXPORT, { headers: getAuthHeaders(), credentials: 'include' })` 拿到 blob，再用临时 `<a download>` 存成 `my_data_YYYY-MM-DD.json`。因为是 `GET`，缺少 CSRF 头无影响；但它也不享受 axios 拦截器的 401 自动刷新与 419 重试，会话刚过期时导出会直接失败并显示「导出失败」文案。
 
@@ -328,15 +338,15 @@ sequenceDiagram
 
 | 现象 | 位置 | 影响 |
 | --- | --- | --- |
-| `showReset` 分支不可达、`resetToken` 从未赋值 | `Login` | 内嵌重置流程是死代码，改动请去 `ResetPassword` |
+| `showReset` 分支不可达（`setShowReset(true)` 从未被调用） | `Login` | 内嵌重置流程是死代码，改动请去 `ResetPassword` |
 | 注销密码改由服务端校验 | `DeleteAccount` | 旧「复用 login 端点自验」的 2FA 误放行缺陷已修复：`password` 随 `request-deletion` 提交，校验失败回退步骤 1；改这块时不要再引入前端自验 |
 | 回前台的 `/api/auth/me` 响应被丢弃 | `AuthContext` | 长时间挂起后回前台，`user` 的角色/邮箱变化要等下一次刷新或重新挂载才反映 |
 | 心跳不补发 | `AuthContext` | 后台标签页休眠时可能出现超过 5 分钟的空档 |
 | 「登出其他设备」后不重新拉取 | `UserDevices` | 列表与真实会话状态短暂不一致 |
 | `public/altcha.js` 无任何引用 | 仓库根 | 误以为改它就能改验证码行为 |
-| `TwoFactorAuth.jsx` 未被引用 | `components/` | 改错文件的典型陷阱 |
-| `fromDeviceVerify`、`codeResend*` 只写不读 | `Login`、`Register` | 无害但会误导后续维护者 |
+| `codeResend*` 只写不读 | `Register` | 无害但会误导后续维护者 |
 | 登录成功固定回首页 | `Login` | 受保护页面的深链体验丢失 |
+| `TwoFactorAuth.jsx` 已删除 | —— | 旧陷阱消失：改 2FA 界面只改 `TwoFactorPage.jsx` |
 
 改动账号相关代码时，按此顺序自查：**先确认端点契约**（响应标志位与状态码是前后端唯一协议，见[后端 API 地图](../integrations/backend-api-map.md)）→ **再确认凭据路径**（不要在组件里加 `Authorization`，会话续命交给拦截器）→ **最后补路由、i18n 与判空**。
 
@@ -345,7 +355,7 @@ sequenceDiagram
 仓库没有自动化测试脚本（`package.json` 只有 `dev`/`build`/`lint`/`preview`/`generate-icons`），因此账号流程只能靠质量门禁加手动冒烟：
 
 - 静态：`npm run lint`、`npm run build`。
-- 冒烟主路径：注册（含错邮箱/重复邮箱）→ 邮箱验证码 → 登录 → 新设备验证（另一浏览器打开邮件链接抄码）→ 2FA 登录 → 忘记密码 → 重置后重新登录。
-- 边界：未完成 altcha 直接点提交（应无任何反馈）、在 `/login?token=` 打开设备链接（应只显示登录码）、会话过期时点数据导出（应显示失败而不是白屏）。
+- 冒烟主路径：注册（含错邮箱/重复邮箱）→ 邮箱验证码 → 登录（用户名与邮箱各一次，验证大小写折叠）→ Passkey 注册与登录 → 2FA（TOTP 与邮箱 OTP 两种方法）→ 管理员账号验证 force2FASetup 阻断 → 用户名改名（预检 + 冷却）→ 忘记密码 → 重置后重新登录。
+- 边界：未完成 altcha 直接点提交（应无任何反馈）、普通用户访问 `/two-factor` 点启用（应得 403 文案）、会话过期时点数据导出（应显示失败而不是白屏）。
 
 更完整的门禁清单见[验证与质量门禁](../testing/verification-and-quality-gates.md)；通知与邮件偏好（`/settings` 的 `email-notification-prefs`）见[通知与实时推送](notifications.md)。
