@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
 import API from '../utils/apiEndpoints';
+import { apiUrl } from '../utils/apiBase';
 
 const useNotifications = () => {
   const { user } = useAuth();
@@ -47,7 +48,7 @@ const useNotifications = () => {
       try {
         const ticketRes = await axios.get('/api/auth/sse-ticket');
         const ticket = ticketRes.data.ticket;
-        const eventSource = new EventSource(`${API.NOTIFICATIONS.STREAM}?ticket=${ticket}`);
+        const eventSource = new EventSource(`${apiUrl(API.NOTIFICATIONS.STREAM)}?ticket=${ticket}`);
         sseRef.current = eventSource;
 
         eventSource.addEventListener('notification', (event) => {

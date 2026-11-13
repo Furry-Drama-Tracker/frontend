@@ -5,6 +5,7 @@ import { useI18n } from '../contexts/I18nContext';
 import useTranslation from '../hooks/useTranslation';
 import { useAuth } from '../contexts/AuthContext';
 import API from '../utils/apiEndpoints';
+import { assetUrl } from '../utils/apiBase';
 import useScrollReveal from '../hooks/useScrollReveal';
 import ShareModal from './ShareModal';
 import FolderShareModal from './FolderShareModal';
@@ -302,7 +303,7 @@ const Profile = ({ user, setUser, logout }) => {
     return (
       <div key={episode._id} className="followed-episode-card">
         <Link to={`/episode/${episode._id}`}>
-          <img src={episode.coverImage} alt={episode.title} loading="lazy" />
+          <img src={assetUrl(episode.coverImage)} alt={episode.title} loading="lazy" />
         </Link>
         <div className="followed-episode-info">
           <h4>
@@ -363,7 +364,7 @@ const Profile = ({ user, setUser, logout }) => {
     return (
       <div key={episode._id} className="followed-episode-card">
         <Link to={`/episode/${episode._id}`}>
-          <img src={episode.coverImage} alt={episode.title} loading="lazy" />
+          <img src={assetUrl(episode.coverImage)} alt={episode.title} loading="lazy" />
         </Link>
         <div className="followed-episode-info">
           <h4>{getLocalizedTitle(episode)}</h4>
@@ -429,7 +430,7 @@ const Profile = ({ user, setUser, logout }) => {
               fontSize: '24px', fontWeight: 700, color: 'var(--btn-text)', overflow: 'hidden'
             }}>
               {user.avatar ? (
-                <img src={user.avatar} alt="" style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+                <img src={assetUrl(user.avatar)} alt="" style={{width: '100%', height: '100%', objectFit: 'cover'}} />
               ) : (
                 user.username?.charAt(0)?.toUpperCase()
               )}
@@ -969,7 +970,7 @@ const Profile = ({ user, setUser, logout }) => {
                 return (
                   <div key={fav._id} className="followed-episode-card" style={{position: 'relative'}}>
                     <Link to={`/episode/${episode._id}`}>
-                      <img src={episode.coverImage} alt={episode.title} loading="lazy" />
+                      <img src={assetUrl(episode.coverImage)} alt={episode.title} loading="lazy" />
                     </Link>
                     <div className="followed-episode-info">
                       <h4>{getLocalizedTitle(episode)}</h4>

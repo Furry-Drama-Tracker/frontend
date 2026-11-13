@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import API from '../utils/apiEndpoints';
+import { assetUrl } from '../utils/apiBase';
 import { EpisodeCardSkeletonFixed as EpisodeCardSkeleton } from './Skeleton';
 import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -362,7 +363,7 @@ const Home = () => {
                 >
                   <div style={{ position: 'relative', overflow: 'hidden' }}>
                     <img
-                      src={ep.coverImage}
+                      src={assetUrl(ep.coverImage)}
                       alt={ep.title}
                       loading="lazy"
                       decoding="async"
@@ -501,7 +502,7 @@ const Home = () => {
                 >
                   <div style={{ position: 'relative', overflow: 'hidden' }}>
                     <img
-                      src={rec.coverImage}
+                      src={assetUrl(rec.coverImage)}
                       alt={rec.title}
                       loading="lazy"
                       decoding="async"

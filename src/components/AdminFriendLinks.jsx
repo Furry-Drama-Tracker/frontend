@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import adminApi from '../utils/adminApi';
+import { assetUrl } from '../utils/apiBase';
 import { useOutletContext } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -203,7 +204,7 @@ const AdminFriendLinks = () => {
               flexWrap: 'wrap'
             }}>
               {link.logo ? (
-                <img src={link.logo} alt="" style={{ width: '36px', height: '36px', borderRadius: '8px', objectFit: 'cover', flexShrink: 0 }} />
+                <img src={assetUrl(link.logo)} alt="" style={{ width: '36px', height: '36px', borderRadius: '8px', objectFit: 'cover', flexShrink: 0 }} />
               ) : (
                 <div style={{
                   width: '36px', height: '36px', borderRadius: '8px',

@@ -4,18 +4,16 @@
   // 注意：本文件优先于控制台配置，存在时控制台中对应的构建配置不再生效，
   // 修改构建行为需编辑本文件并推送 Git。
   "name": "furry-drama-tracker",
-  // 边缘函数入口：同源反向代理 /api、/uploads 到后端源站。
-  // 后端地址配在 ESA 控制台「函数变量」API_ORIGIN（生产/测试环境各自配置），
-  // 修改后重新发布版本即可换后端，无需改动前端代码或重新构建。
-  "entry": "./edge/api-proxy.js",
+  // 纯静态托管：不再使用边缘函数反代 /api、/uploads，以节省 ESA 请求/流量。
+  // 前端默认直连后端源站 https://fdt-api.xiedada.net（内置默认值，见 vite.config.js 与
+  // src/utils/apiBase.js），无需控制台配置；需要换源站时修改这两处常量或构建命令。
   "installCommand": "npm install",
   "buildCommand": "npm run build",
   "assets": {
     // Vite 构建产物目录
     "directory": "./dist",
-    // SPA 回退：未命中静态资源时，
-    //   导航请求（Sec-Fetch-Mode: navigate）→ 返回 index.html（react-router 前端路由）
-    //   非导航请求（/api、/uploads 的 XHR/图片等）→ 交给上面的边缘函数代理
+    // 未命中静态资源时返回 index.html（react-router 前端路由）。
+    // API 与上传资源已改为跨域直连后端，不再需要边缘函数处理 /api、/uploads。
     "notFoundStrategy": "singlePageApplication"
   }
 }

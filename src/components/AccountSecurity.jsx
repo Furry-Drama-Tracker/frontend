@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
 import API from '../utils/apiEndpoints';
+import { apiUrl } from '../utils/apiBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faBox, faCheck, faCircleCheck, faEnvelope, faKey, faMobileScreenButton, faShieldHalved, faTrashCan, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 
@@ -27,7 +28,7 @@ const AccountSecurity = ({ user }) => {
     setExportLoading(true);
     setExportError('');
     try {
-      const res = await fetch(API.USERS.EXPORT, {
+      const res = await fetch(apiUrl(API.USERS.EXPORT), {
         headers: getAuthHeaders(),
         credentials: 'include'
       });

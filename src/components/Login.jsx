@@ -5,6 +5,7 @@ import { getDeviceInfo } from '../utils/deviceInfo';
 import { useI18n } from '../contexts/I18nContext';
 import PasswordToggle from './PasswordToggle';
 import API from '../utils/apiEndpoints';
+import { apiUrl } from '../utils/apiBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 
@@ -527,7 +528,7 @@ const Login = ({ login }) => {
           </div>
           <altcha-widget
             ref={altchaRef}
-            challenge="/api/auth/captcha"
+            challenge={apiUrl('/api/auth/captcha')}
             auto="onload"
             hidefooter="true"
             hidelogo="true"

@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFire, faStar } from '@fortawesome/free-solid-svg-icons';
 import TransitionLink from './TransitionLink';
+import { assetUrl } from '../utils/apiBase';
 
 const EpisodeCard = React.memo(({ episode, highlightQuery, t, getLocalizedTitle, getLocalizedDescription, onTagClick }) => {
   const imgRef = useRef(null);
@@ -83,7 +84,7 @@ const EpisodeCard = React.memo(({ episode, highlightQuery, t, getLocalizedTitle,
         {imgError ? (
           <span className="ec-media-fallback" aria-hidden="true" />
         ) : (
-          <img src={imgVisible ? episode.coverImage : undefined} alt={episode.title} loading="lazy" decoding="async" className="ec-img" onLoad={() => setImgLoaded(true)} onError={() => { setImgError(true); setImgLoaded(true); }} style={{
+          <img src={imgVisible ? assetUrl(episode.coverImage) : undefined} alt={episode.title} loading="lazy" decoding="async" className="ec-img" onLoad={() => setImgLoaded(true)} onError={() => { setImgError(true); setImgLoaded(true); }} style={{
             opacity: imgLoaded ? 1 : 0,
             transition: 'opacity 0.35s var(--ease-out), transform 0.6s var(--ease-out)',
           }} />

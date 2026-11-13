@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
 import { useI18n } from '../contexts/I18nContext';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
+import { assetUrl } from '../utils/apiBase';
 import useTranslation from '../hooks/useTranslation';
 import useNotifications from '../hooks/useNotifications';
 import usePushNotifications from '../hooks/usePushNotifications';
@@ -264,7 +265,7 @@ const NavBar = ({ onFeedback }) => {
         <div className="logo">
           <a href="/" onClick={(e) => { e.preventDefault(); if (document.startViewTransition) { document.startViewTransition(() => navigate('/')); } else { navigate('/'); } }} style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}>
             {siteSettingsData?.navLogo && (
-              <img src={siteSettingsData.navLogo} alt="Logo" style={{ width: '32px', height: '32px', borderRadius: '6px', objectFit: 'cover' }} />
+              <img src={assetUrl(siteSettingsData.navLogo)} alt="Logo" style={{ width: '32px', height: '32px', borderRadius: '6px', objectFit: 'cover' }} />
             )}
             <h1>{siteSettingsLoading ? '' : (getLocalizedContent(siteSettingsData || {}, 'siteName') || t('site.defaultName'))}</h1>
           </a>

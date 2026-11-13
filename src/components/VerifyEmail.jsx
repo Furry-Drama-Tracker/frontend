@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
+import { apiUrl } from '../utils/apiBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faCircleXmark, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
@@ -157,7 +158,7 @@ const VerifyEmail = () => {
         </p>
         <altcha-widget
           ref={altchaRef}
-          challenge="/api/auth/captcha"
+          challenge={apiUrl('/api/auth/captcha')}
           auto="onload"
           hidefooter="true"
           hidelogo="true"

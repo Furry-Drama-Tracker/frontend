@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import adminApi from '../utils/adminApi';
+import { assetUrl } from '../utils/apiBase';
 import { useOutletContext } from 'react-router-dom';
 import ImageUploader from './ImageUploader';
 import { useI18n } from '../contexts/I18nContext';
@@ -210,7 +211,7 @@ const AdminBanners = () => {
           {banners.map(banner => (
             <div key={banner._id} style={{background: 'var(--card)', borderRadius: '12px', border: '1px solid var(--border)', overflow: 'hidden', opacity: banner.active ? 1 : 0.5}}>
               <div style={{width: '100%', height: '160px', overflow: 'hidden'}}>
-                <img src={banner.image} alt={banner.title} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+                <img src={assetUrl(banner.image)} alt={banner.title} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
               </div>
               <div style={{padding: '16px'}}>
                 <h4 style={{marginBottom: '4px'}}>{banner.title}</h4>

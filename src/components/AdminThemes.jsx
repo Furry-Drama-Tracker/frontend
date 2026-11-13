@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import API from '../utils/apiEndpoints';
+import { assetUrl } from '../utils/apiBase';
 import ThemeEditorModal, { computeThemeType, themeTypeBadge } from './ThemeEditorModal';
 import { useI18n } from '../contexts/I18nContext';
 
@@ -229,7 +230,7 @@ const AdminThemes = () => {
                     {(th.wallpaperThumb || th.wallpaperUrl) && (
                       <div style={{
                         aspectRatio: '21 / 9', borderRadius: '8px', border: '1px solid var(--border)',
-                        backgroundImage: `url(${th.wallpaperThumb || th.wallpaperUrl})`,
+                        backgroundImage: `url(${assetUrl(th.wallpaperThumb || th.wallpaperUrl)})`,
                         backgroundSize: 'cover', backgroundPosition: 'center',
                       }} />
                     )}

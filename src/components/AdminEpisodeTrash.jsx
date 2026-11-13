@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
+import { assetUrl } from '../utils/apiBase';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -130,7 +131,7 @@ const AdminEpisodeTrash = () => {
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                       {item.coverImage && (
-                        <img src={item.coverImage} alt="" style={{ width: '36px', height: '52px', objectFit: 'cover', borderRadius: '4px', flexShrink: 0 }} />
+                        <img src={assetUrl(item.coverImage)} alt="" style={{ width: '36px', height: '52px', objectFit: 'cover', borderRadius: '4px', flexShrink: 0 }} />
                       )}
                       <div>
                         <div style={{ fontWeight: 600 }}>{item.title}</div>

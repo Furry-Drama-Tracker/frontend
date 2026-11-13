@@ -1,58 +1,66 @@
-# 阿里云 ESA 部署指南（函数和 Pages）
+# 阿里云 ESA 部署指南（函数和 Pages，静态托管 + 跨域直连后端）
 
-本项目部署到阿里云 [ESA（边缘安全加速）](https://help.aliyun.com/zh/edge-security-acceleration/esa/esa-2) 的「[函数和 Pages](https://help.aliyun.com/zh/edge-security-acceleration/esa/user-guide/what-is-functions-and-pages)」平台（对标 Cloudflare Pages + Workers）。
+本项目部署到阿里云 [ESA（边缘安全加速）](https://help.aliyun.com/zh/edge-security-acceleration/esa/esa-2) 的「[函数和 Pages](https://help.aliyun.com/zh/edge-security-acceleration/esa/user-guide/what-is-functions-and-pages)」平台（对标 Cloudflare Pages）。
+
+前端只做静态托管，**不使用边缘函数反代**：API 与上传资源由浏览器直连后端源站，ESA 不再承担 `/api`、`/uploads` 的转发流量。
 
 ## 架构
 
 ```
-浏览器 ──> ESA 边缘节点
-             ├─ 静态资源（dist/，命中直接返回）
-             ├─ 导航请求未命中 ──> index.html（SPA 前端路由，esa.jsonc 配置）
-             └─ 其余请求（/api/*、/uploads/* 的 XHR/图片）
-                    └─> 边缘函数 edge/api-proxy.js
-                           └─ fetch ──> 后端源站（地址 = 函数变量 API_ORIGIN）
+浏览器 ──> ESA 边缘节点（只托管 dist/ 静态资源 + SPA 回退）
+   │
+   └────> https://fdt-api.xiedada.net（后端源站，直连，不经 ESA）
+             ├─ /api/...      XHR / SSE
+             └─ /uploads/...  图片等上传资源
 ```
 
-**后端 API Endpoint 通过 ESA 控制台的「函数变量」`API_ORIGIN` 指定**（生产/测试环境独立配置），修改后重新发布版本即可切换后端，无需改前端代码、无需重新构建。
-
-前端全部使用相对路径请求（`/api/...`、`/uploads/...`），代理保持同源，因此：
-
-- cookie `SameSite=Strict` 正常携带（登录/刷新令牌流程不变）
-- CSP `connect-src 'self'` 无需调整
-- CSRF（`X-XSRF-TOKEN`）流程不变
-- 后端 CORS 白名单无需加入任何前端域名
+- 前端 API 基址默认硬编码为 `https://fdt-api.xiedada.net`（`src/utils/apiBase.js` 与 `vite.config.js` 各有一处常量，需同步修改），产物里是绝对地址。
+- 后端返回的 `/uploads/...` 是根相对路径，渲染前由 `assetUrl()` 补全为源站地址；开发环境保持相对路径（Vite proxy 行为不变）。
+- 非 axios 直连（EventSource、altcha challenge、数据导出 fetch、RSS、启动遮罩里的备案号请求）统一走 `apiUrl()` 或 index.html 里的构建期占位符。
 
 仓库内相关文件：
 
 | 文件 | 作用 |
 | --- | --- |
-| `esa.jsonc` | Pages 项目声明：构建命令、产物目录、SPA 回退、边缘函数入口 |
-| `edge/api-proxy.js` | 边缘函数：`/api`、`/uploads` 同源反向代理 |
+| `esa.jsonc` | Pages 项目声明：构建命令、产物目录、SPA 回退（已无 `entry`） |
+| `src/utils/apiBase.js` | `API_BASE_URL` / `assetUrl()` / `apiUrl()` |
+| `vite.config.js` | 内置默认 API 源站，注入 index.html 的 CSP、RSS 链接与 API 路径占位符 |
+| `index.html` | `__API_BASE_URL__` 占位符（CSP `connect-src`、RSS、启动遮罩 XHR） |
 
 ## 前置条件
 
-1. **后端必须有域名**：边缘函数 fetch 仅支持域名源站（不支持裸 IP），且仅 80/443 端口。建议 `https://api.你的域名`（ECS/nginx/Caddy 自备证书均可）。
-2. **Node 版本**：本仓库 `package.json` 已声明 `"engines": { "node": ">=20.19" }`（Vite 8 要求），ESA 构建时会优先读取该声明。
-3. **ICP 备案**：绑定自定义域名并使用中国内地边缘节点加速时需要备案；使用 ESA 分配的默认域名（`*.esa.onaliyun.com`）不涉及。
+1. **前后端必须同站（same-site）**：后端 cookie 在生产使用 `SameSite=Strict`（CSRF）与 `SameSite=Lax`（access/refresh）。前端与 API 需处于同一可注册域名之下，例如 `fdt.xiedada.net` ↔ `fdt-api.xiedada.net`。若前端在完全不同的站点（例如 ESA 默认域名 `*.esa.onaliyun.com`），浏览器不会携带这些 cookie，登录/CSRF 流程会直接失效。
+2. **后端 CORS 白名单包含前端源**：`ALLOWED_ORIGINS` / `FRONTEND_URL` 需包含 `https://fdt.xiedada.net`。跨域请求会带 `Origin`，后端 CORS 中间件对不在白名单的源直接返回 403。
+3. **后端有 HTTPS 域名**：浏览器直连要求 HTTPS（`withCredentials` + `SameSite=None` 场景同样要求安全上下文）。
+4. **Node 版本**：`package.json` 已声明 `"engines": { "node": ">=20.19" }`（Vite 8 要求），ESA 构建时会优先读取该声明。
+5. **ICP 备案**：绑定自定义域名并使用中国内地边缘节点加速时需要备案；使用 ESA 分配的默认域名不涉及。
 
 ## 部署步骤
 
 ### 1. 创建 Pages 项目
 
-ESA 控制台 → 边缘计算和 AI → 函数和 Pages → 创建项目 → 接入 GitHub 仓库（本仓库）。`esa.jsonc` 位于仓库根目录，构建配置（安装命令、构建命令、产物目录）会被自动读取，控制台中无需重复填写。
+ESA 控制台 → 边缘计算和 AI → 函数和 Pages → 创建项目 → 接入 GitHub 仓库。`esa.jsonc` 位于前端仓库根目录，构建配置会被自动读取。
 
-### 2. 配置函数变量 `API_ORIGIN`（核心步骤）
+### 2. 后端地址（内置默认值）
 
-ESA 控制台 → 边缘计算和 AI → 函数和 Pages → 进入项目的函数详情 → 基本信息 → **函数变量**：
+ESA 控制台没有可用的构建环境变量入口，因此 API 基址直接硬编码在仓库里：
 
-| 键 | 值 | 环境 |
-| --- | --- | --- |
-| `API_ORIGIN` | `https://api.你的域名` | 生产 |
-| `API_ORIGIN` | `https://api-test.你的域名` | 测试（可选） |
+| 位置 | 作用 |
+| --- | --- |
+| `src/utils/apiBase.js` 的 `DEFAULT_API_BASE_URL` | 运行时请求前缀（axios / `assetUrl()` / `apiUrl()`） |
+| `vite.config.js` 的 `DEFAULT_API_BASE_URL` | 注入 index.html 的 CSP `connect-src`、RSS 链接、启动遮罩 XHR |
 
-- 值只填协议 + 域名（可带端口），**不带路径**，结尾斜杠会被自动去除
-- 键名仅支持字母/数字/下划线，创建后不可改名（只能删除重建）
-- **修改变量后需重新生成版本并发布才生效**（不是即时热更新）
+默认值：`https://fdt-api.xiedada.net`。换源站时**两处常量必须同步修改**，然后重新构建发布。
+
+需要区分环境（测试分支指向测试后端）时，仍可在 `esa.jsonc` 的 `buildCommand` 里覆盖，例如：
+
+```jsonc
+"buildCommand": "VITE_API_BASE_URL=https://fdt-api-test.xiedada.net npm run build"
+```
+
+设置为空字符串（`VITE_API_BASE_URL=''`）则强制同源相对路径，适用于 nginx 反代部署。注意：`esa.jsonc` 是全分支共用的，覆盖后测试/生产会指向同一个后端。
+
+历史配置的 `API_ORIGIN` 函数变量已不再使用，可在控制台删除。
 
 ### 3. 构建与发布
 
@@ -60,26 +68,26 @@ ESA 控制台 → 边缘计算和 AI → 函数和 Pages → 进入项目的函�
 
 ### 4. 绑定域名
 
-项目设置中绑定自定义域名（CNAME 到 ESA 分配的地址），或在测试环境使用默认域名验证。
+项目设置中绑定自定义域名（CNAME 到 ESA 分配的地址），并确认该域名与 API 域名同站。
 
 ## 部署后验证清单
 
 | 检查项 | 预期 |
 | --- | --- |
-| `GET https://你的域名/api/csrf-token` | 返回 `{"csrfToken": "..."}` |
-| 登录 → 刷新页面仍保持登录 | cookie 同源正常 |
+| 浏览器 Network 里 `csrf-token` 请求 | 指向 `https://fdt-api.xiedada.net/api/csrf-token` |
+| `GET https://前端域名/api/csrf-token`（直接访问前端域名） | 返回 `index.html`（已无边缘代理，属正常现象） |
+| 登录 → 刷新页面仍保持登录 | 同站 cookie 正常携带 |
 | 前端路由（如 `/admin`）直开 | 返回应用（SPA 回退） |
-| `/uploads/...` 图片 | 正常显示（经边缘函数代理） |
-| 后端 401/419 行为 | 前端自动刷新/跳登录逻辑不变 |
+| `/uploads/...` 图片/头像/壁纸 | 指向 API 域名并正常显示 |
+| 浏览器控制台 | 无 CSP `connect-src` / CORS 报错 |
+| 通知（SSE） | `EventSource` 连接 API 域名的 `/api/notifications/stream` |
+| RSS 订阅 | 页面源码里 `rel="alternate"` 指向 `https://fdt-api.xiedada.net/api/rss` |
 
 ## 限制与注意事项
 
-- **网关超时 10 秒**：边缘函数网关等待 10s，超时返回 504。慢接口（如批量导入）需后端控制在 10s 内首字节返回。
-- **每次调用最多 4 个子请求**：本代理每次请求只发起 1 个 fetch，远低于上限。
-- **后端看到的客户端 IP 是边缘节点 IP**：代理透传了入站 `X-Forwarded-For`，后端如有信任代理配置可据此取真实 IP；依赖 IP 的限流策略需评估。
-- **浏览器直接打开 `/api/rss`**：属于导航请求，会命中 SPA 回退返回 `index.html`（RSS 阅读器不带导航头，取到的是正确 XML，不影响订阅）。
-- **`esa.jsonc` 优先级高于控制台**：存在该文件时控制台里的构建配置不生效，修改构建行为请编辑文件并推送 Git。
-
-## 为什么不用 `VITE_API_BASE_URL` 跨域直连？
-
-文档中提到的 `VITE_API_BASE_URL`（构建环境变量）方案会把 API 指向另一个域名，但当前架构为此需要三处配套改动（后端 CORS 白名单 + cookie `SameSite` 改 `None; Secure` + CSP `connect-src` 加域名），并削弱现有 CSRF/cookie 防护模型。同源反代方案零代码改动即可达成"环境变量指定后端"的目标，是更优解。若未来确需跨域直连，再评估该方案。
+- **不再有边缘函数，因此也不再有网关 10s 超时与 4 子请求限制**：慢接口只受后端与浏览器超时约束（前端 axios 默认 15s）。
+- **后端直接暴露在公网**：客户端 IP 是真实 IP，不再需要 `X-Forwarded-For` 透传；依赖 IP 的限流策略按真实客户端生效。
+- **CSP 由构建期注入**：`index.html` 的 `connect-src` 会带上硬编码的 API 源站；`img-src` 已允许 `https:`，上传资源域名无需单独列出。更换 API 域名必须同步改两处常量并重新构建。
+- **PWA manifest 使用构建期静态 manifest**：后端 `/api/site-content/pwa-manifest` 里的 `start_url`/`scope`/图标是根相对路径，跨域引用时会以 API 域名为基准解析，导致安装后的应用指向 API 域名，因此不再指向该动态端点。后台配置的 PWA 名称/图标目前只作用于 `apple-touch-icon` 与 meta，不进入安装清单。
+- **`esa.jsonc` 优先级高于控制台**：存在该文件时控制台里的构建配置不生效；环境变量不受该文件管理，仍在控制台维护。
+- **不再需要**：`edge/api-proxy.js`、函数变量 `API_ORIGIN`。

@@ -4,6 +4,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
 import useTranslation from '../hooks/useTranslation';
+import { assetUrl } from '../utils/apiBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
 
@@ -66,7 +67,7 @@ const CreatorPage = () => {
       }}>
         {profile.avatar ? (
           <img
-            src={profile.avatar}
+            src={assetUrl(profile.avatar)}
             alt={profile.displayName}
             style={{width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', border: '3px solid var(--border)'}}
           />
@@ -167,7 +168,7 @@ const CreatorPage = () => {
                 }}
               >
                 <img
-                  src={ep.coverImage}
+                  src={assetUrl(ep.coverImage)}
                   alt={ep.title}
                   loading="lazy"
                   style={{width: '100%', aspectRatio: '3/4', objectFit: 'cover'}}

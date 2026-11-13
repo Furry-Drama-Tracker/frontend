@@ -1,4 +1,11 @@
 import axios from 'axios';
+import { API_BASE_URL } from './apiBase';
+
+// 跨域部署：把相对路径 /api/... 指向构建期环境变量 VITE_API_BASE_URL 指定的后端源站。
+// 未设置时保持同源相对路径（开发环境由 Vite proxy 转发，同源部署由反向代理转发）。
+if (API_BASE_URL) {
+  axios.defaults.baseURL = API_BASE_URL;
+}
 
 axios.defaults.timeout = 15000;
 axios.defaults.withCredentials = true;

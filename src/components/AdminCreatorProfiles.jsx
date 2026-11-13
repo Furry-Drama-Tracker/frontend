@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
+import { assetUrl } from '../utils/apiBase';
 import ImageUploader from './ImageUploader';
 import ReviewStatusBadge from './ReviewStatusBadge';
 import { useI18n } from '../contexts/I18nContext';
@@ -282,7 +283,7 @@ const AdminCreatorProfiles = () => {
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
                     {profile.avatar ? (
-                      <img src={profile.avatar} alt={profile.displayName} style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover' }} />
+                      <img src={assetUrl(profile.avatar)} alt={profile.displayName} style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover' }} />
                     ) : (
                       <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--hover-bg-strong)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px' }}><FontAwesomeIcon icon={faUser} aria-hidden="true" /></div>
                     )}
@@ -359,7 +360,7 @@ const AdminCreatorProfiles = () => {
                         <div>
                           <p style={{ margin: '0 0 8px 0', fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)' }}>{t('adminCreatorProfiles.currentVersion')}</p>
                           {profile.avatar ? (
-                            <img src={profile.avatar} alt="" style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', marginBottom: '6px' }} />
+                            <img src={assetUrl(profile.avatar)} alt="" style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', marginBottom: '6px' }} />
                           ) : (
                             <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--hover-bg-strong)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', marginBottom: '6px' }}><FontAwesomeIcon icon={faUser} aria-hidden="true" /></div>
                           )}
@@ -376,7 +377,7 @@ const AdminCreatorProfiles = () => {
                         <div style={{ borderLeft: '2px solid var(--warning-border)', paddingLeft: '12px' }}>
                           <p style={{ margin: '0 0 8px 0', fontSize: '12px', fontWeight: 600, color: 'var(--warning-text)' }}>{t('adminCreatorProfiles.pendingVersion')}</p>
                           {pc.avatar ? (
-                            <img src={pc.avatar} alt="" style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', marginBottom: '6px' }} />
+                            <img src={assetUrl(pc.avatar)} alt="" style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', marginBottom: '6px' }} />
                           ) : (
                             <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--hover-bg-strong)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', marginBottom: '6px' }}><FontAwesomeIcon icon={faUser} aria-hidden="true" /></div>
                           )}

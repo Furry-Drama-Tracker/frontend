@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { assetUrl } from '../utils/apiBase';
 
 
 const prefersReducedMotion = () =>
@@ -176,7 +177,7 @@ const BannerCarousel = React.memo(({ bannerImages, welcomeTitle, welcomeSubtitle
             role={banner.link ? 'link' : undefined}
           >
             <img
-              src={banner.image}
+              src={assetUrl(banner.image)}
               alt={banner.title}
               fetchPriority="high"
               decoding="async"
