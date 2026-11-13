@@ -6,7 +6,8 @@
   "name": "furry-drama-tracker",
   // 纯静态托管：不再使用边缘函数反代 /api、/uploads，以节省 ESA 请求/流量。
   // 前端默认直连后端源站 https://fdt-api.xiedada.net（内置默认值，见 vite.config.js 与
-  // src/utils/apiBase.js），无需控制台配置；需要换源站时修改这两处常量或构建命令。
+  // src/utils/apiBase.js），无需控制台配置；需要换源站时可在控制台「函数变量」里设置
+  // VITE_API_BASE_URL 覆盖（会参与构建），或修改这两处常量。
   "installCommand": "npm install",
   "buildCommand": "npm run build",
   "assets": {

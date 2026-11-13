@@ -180,13 +180,13 @@ server {
 
 ### 跨域部署
 
-生产构建默认直连 `https://fdt-api.xiedada.net`（硬编码在 `src/utils/apiBase.js` 与 `vite.config.js` 的 `DEFAULT_API_BASE_URL`，两处需同步修改），无需任何环境变量——ESA 控制台没有可用的构建环境变量入口。
+生产构建默认直连 `https://fdt-api.xiedada.net`（硬编码在 `src/utils/apiBase.js` 与 `vite.config.js` 的 `DEFAULT_API_BASE_URL`，两处需同步修改），无需任何环境变量即可上线。
 
-1. 换后端源站：同步修改上述两处常量后重新构建。
+1. 换后端源站：优先在 ESA 控制台的项目详情页「**函数变量**」里设置 `VITE_API_BASE_URL`（ESA 的构建期环境变量就配在这里，变量会参与构建流水线）；或同步修改上述两处默认常量。
 2. 无需改动业务代码：`axios.defaults.baseURL` 指向后端；`/uploads/...` 资源由 `assetUrl()` 补全为源站地址；CSP `connect-src`、RSS 链接与启动阶段的 API 请求由 `vite.config.js` 在构建时注入。
 3. 确保后端已配置 CORS，允许前端域名访问；同时前后端需处于同一站点（`SameSite` cookie 要求），否则登录与 CSRF 流程会失效。
 
-如需临时覆盖（例如测试分支指向测试后端），可设置构建期环境变量 `VITE_API_BASE_URL`；设为空字符串则强制同源相对路径（nginx 反代部署）。详见 [docs/esa-deployment.md](docs/esa-deployment.md)。
+`VITE_API_BASE_URL` 设为空字符串则强制同源相对路径（nginx 反代部署）；修改函数变量后需重新生成版本并发布才生效。详见 [docs/esa-deployment.md](docs/esa-deployment.md)。
 
 ## 环境变量
 
@@ -194,7 +194,7 @@ Vite 使用 `.env` 文件管理环境变量。只有 `VITE_` 前缀的变量会�
 
 | 变量 | 说明 | 必填 |
 |---|---|---|
-| `VITE_API_BASE_URL` | 可选：覆盖内置的后端 API 基址；空字符串表示同源相对路径（开发环境始终同源） | 否 |
+| `VITE_API_BASE_URL` | 可选：覆盖内置的后端 API 基址（ESA 部署时配在控制台的「函数变量」里，会参与构建）；空字符串表示同源相对路径（开发环境始终同源） | 否 |
 
 ## 功能特性
 
