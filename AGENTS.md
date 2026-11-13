@@ -34,7 +34,7 @@ Vite proxies `/api` and `/uploads` to `http://localhost:5000` (the backend). If 
 - **No TypeScript** — plain JSX throughout.
 - **ESLint** — flat config in `eslint.config.js` (ESLint 9). Run `npm run lint` to check.
 - **Production builds strip console/debugger** — configured in `vite.config.js` via `esbuild.drop`.
-- **Env vars** must be prefixed `VITE_` to be exposed to client code. Only `VITE_API_BASE_URL` is used (for cross-origin deployment).
+- **Env vars** must be prefixed `VITE_` to be exposed to client code. `VITE_API_BASE_URL` is an optional override for the hardcoded production API origin (`DEFAULT_API_BASE_URL` lives in both `src/utils/apiBase.js` and `vite.config.js` — keep them in sync). It drives axios, `/uploads` asset URLs, and the `index.html` injections (CSP `connect-src`, RSS link, boot-time API path).
 - **Auth** — unified role-based system: `localStorage.token` / `localStorage.user` for all users. Admin permissions are determined by the `User.role` field (`user`/`creator`/`admin`/`superadmin`). The 401 interceptor redirects accordingly.
 - **i18n** — `t('key.path')` function from `useI18n()` hook. Fallback language is `zh`. New strings must be added to both `src/locales/zh.js` and `src/locales/en.js`.
 - **Components** are flat files in `src/components/`. No folder-per-component pattern. Admin components are prefixed `Admin*`.
@@ -42,6 +42,7 @@ Vite proxies `/api` and `/uploads` to `http://localhost:5000` (the backend). If 
 ## Gotchas
 
 - The CSRF token is fetched on app init via `fetchCsrfToken()` and attached to all non-GET requests. If you add a new API call outside axios (e.g. `fetch`), you must handle CSRF yourself.
+- Backend-sourced upload URLs are root-relative (`/uploads/...`). Render them through `assetUrl()` from `src/utils/apiBase.js`; a bare `/uploads/...` resolves to the frontend origin and breaks under cross-origin deployment. Non-axios URL consumers (EventSource, altcha `challenge`, downloads) must use `apiUrl()`.
 - `axiosConfig.js` is imported as a side effect in `main.jsx` (`import './utils/axiosConfig'`). Do not remove this import.
 - `AuthContext` sends a session heartbeat every 5 minutes when a user is logged in.
 - The `ErrorBoundary` class component at the bottom of `App.jsx` uses `I18nContext` via `static contextType` — a legacy pattern, do not convert to hooks.

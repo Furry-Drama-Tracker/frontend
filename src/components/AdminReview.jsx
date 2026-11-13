@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
+import { assetUrl } from '../utils/apiBase';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilm, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -134,7 +135,7 @@ const AdminReview = () => {
     if (value === undefined) return '-';
     if (field === 'coverImage') {
       if (!value) return '-';
-      return <img src={value} alt="" style={{ width: '50px', height: '75px', objectFit: 'cover', borderRadius: '4px', display: 'block' }} />;
+      return <img src={assetUrl(value)} alt="" style={{ width: '50px', height: '75px', objectFit: 'cover', borderRadius: '4px', display: 'block' }} />;
     }
     if (field === 'hideCreator') return value ? t('common.yes') : t('common.no');
     if (field === 'status') {
@@ -376,7 +377,7 @@ const AdminReview = () => {
             </div>
             <div style={{padding: '20px 24px'}}>
               {detailEpisode?.coverImage && (
-                <img src={detailEpisode.coverImage} alt={detailEpisode.title} style={{width: '100%', maxHeight: '200px', objectFit: 'cover', borderRadius: '8px', marginBottom: '16px'}} />
+                <img src={assetUrl(detailEpisode.coverImage)} alt={detailEpisode.title} style={{width: '100%', maxHeight: '200px', objectFit: 'cover', borderRadius: '8px', marginBottom: '16px'}} />
               )}
               <p style={{color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '16px'}}>{detailEpisode?.description || t('adminReview.noDescription')}</p>
               <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '14px'}}>

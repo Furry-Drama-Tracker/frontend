@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
 import useTranslation from '../hooks/useTranslation';
+import { assetUrl } from '../utils/apiBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartColumn, faChevronRight, faFilm, faInbox, faStar, faThumbtack } from '@fortawesome/free-solid-svg-icons';
 
@@ -229,7 +230,7 @@ const Timeline = () => {
 
                 {activity.coverImage && (
                   <img
-                    src={activity.coverImage}
+                    src={assetUrl(activity.coverImage)}
                     alt=""
                     style={{
                       width: '44px',

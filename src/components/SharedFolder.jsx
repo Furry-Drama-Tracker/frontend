@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
 import useTranslation from '../hooks/useTranslation';
+import { assetUrl } from '../utils/apiBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFaceFrown, faFolderOpen, faStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
@@ -171,7 +172,7 @@ const SharedFolder = () => {
               onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 8px 24px var(--shadow-modal)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
               >
-                <img src={ep.coverImage} alt={ep.title} style={{
+                <img src={assetUrl(ep.coverImage)} alt={ep.title} style={{
                   width: '100%', aspectRatio: '3/4', objectFit: 'cover',
                   borderBottom: '1px solid var(--border)'
                 }} />

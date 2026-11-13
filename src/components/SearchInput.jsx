@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
+import { assetUrl } from '../utils/apiBase';
 import useTranslation from '../hooks/useTranslation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
@@ -164,7 +165,7 @@ const SearchInput = () => {
               }}
             >
               {episode.coverImage && (
-                <img src={episode.coverImage} alt="" style={{
+                <img src={assetUrl(episode.coverImage)} alt="" style={{
                   width: '36px', height: '48px', borderRadius: '4px',
                   objectFit: 'cover', flexShrink: 0
                 }} />

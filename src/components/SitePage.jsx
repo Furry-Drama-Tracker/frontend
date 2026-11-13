@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import useTranslation from '../hooks/useTranslation';
+import { assetUrl } from '../utils/apiBase';
 import TranslatableText from './TranslatableText';
 import { TranslatableBlock } from './TranslatableText';
 import Modal from './Modal';
@@ -75,7 +76,7 @@ const SitePage = ({ pageKey }) => {
         }}>
           {aboutData.banner && (
             <div style={{ height: '220px', overflow: 'hidden', position: 'relative' }}>
-              <img src={aboutData.banner} alt="Banner" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src={assetUrl(aboutData.banner)} alt="Banner" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '60px', background: 'linear-gradient(transparent, var(--card))' }} />
             </div>
           )}
@@ -84,7 +85,7 @@ const SitePage = ({ pageKey }) => {
             marginTop: aboutData.banner ? '-30px' : '0', position: 'relative'
           }}>
             {aboutData.logo && (
-              <img src={aboutData.logo} alt="Logo" style={{ width: '80px', height: '80px', borderRadius: '16px', objectFit: 'cover', marginBottom: '16px', border: '3px solid var(--card)', boxShadow: '0 4px 12px var(--shadow-modal)' }} />
+              <img src={assetUrl(aboutData.logo)} alt="Logo" style={{ width: '80px', height: '80px', borderRadius: '16px', objectFit: 'cover', marginBottom: '16px', border: '3px solid var(--card)', boxShadow: '0 4px 12px var(--shadow-modal)' }} />
             )}
             <h1 style={{ margin: '0 0 8px 0', color: 'var(--foreground)' }}>
               <TranslatableText text={content.title} />

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
+import { assetUrl } from '../utils/apiBase';
 import ImageUploader from './ImageUploader';
 import SystemWallpaperManager from './SystemWallpaperManager';
 import { useI18n } from '../contexts/I18nContext';
@@ -335,7 +336,7 @@ const AdminSiteContent = () => {
             <h4 style={{ margin: '0 0 12px 0', color: 'var(--foreground)', fontSize: '14px' }}><FontAwesomeIcon icon={faEye} style={{ fontSize: 14 }} aria-hidden="true" /> {t('adminContent.effectPreview')}（{currentLang.label}）</h4>
             <div style={{ borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--card)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 16px', borderBottom: '1px solid var(--border)' }}>
-                {settingsData.navLogo && <img src={settingsData.navLogo} alt="Logo" style={{ width: '28px', height: '28px', borderRadius: '4px', objectFit: 'cover' }} />}
+                {settingsData.navLogo && <img src={assetUrl(settingsData.navLogo)} alt="Logo" style={{ width: '28px', height: '28px', borderRadius: '4px', objectFit: 'cover' }} />}
                 <span style={{ fontWeight: 700, fontSize: '16px', color: 'var(--foreground)' }}>
                   {getLocVal(settingsData, 'siteName', editLang) || settingsData.siteName || t('adminContent.siteName')}
                 </span>
@@ -380,7 +381,7 @@ const AdminSiteContent = () => {
               display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
             }}>
               {settingsData.favicon ? (
-                <img src={settingsData.favicon} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src={assetUrl(settingsData.favicon)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               ) : (
                 <FontAwesomeIcon icon={faGlobe} style={{ fontSize: 10 }} aria-hidden="true" />
               )}
@@ -417,7 +418,7 @@ const AdminSiteContent = () => {
           <h4 style={{ margin: '0 0 12px 0', color: 'var(--foreground)', fontSize: '14px' }}><FontAwesomeIcon icon={faEye} style={{ fontSize: 14 }} aria-hidden="true" /> {t('adminContent.effectPreview')}</h4>
           <div style={{ borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--card)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 16px', borderBottom: '1px solid var(--border)' }}>
-              {settingsData.navLogo && <img src={settingsData.navLogo} alt="Logo" style={{ width: '28px', height: '28px', borderRadius: '4px', objectFit: 'cover' }} />}
+              {settingsData.navLogo && <img src={assetUrl(settingsData.navLogo)} alt="Logo" style={{ width: '28px', height: '28px', borderRadius: '4px', objectFit: 'cover' }} />}
               <span style={{ fontWeight: 700, fontSize: '16px', color: 'var(--foreground)' }}>{settingsData.siteName || t('adminContent.siteName')}</span>
             </div>
             <div style={{ textAlign: 'center', padding: '24px 16px' }}>
@@ -489,7 +490,7 @@ const AdminSiteContent = () => {
             <h5 style={{ margin: '0 0 8px 0', fontSize: '12px', color: 'var(--text-secondary)' }}><FontAwesomeIcon icon={faEye} style={{ fontSize: 12 }} aria-hidden="true" /> {t('adminContent.pwaPreview')}</h5>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               {(settingsData.pwaIcon192 || settingsData.pwaIcon512) && (
-                <img src={settingsData.pwaIcon512 || settingsData.pwaIcon192} alt="PWA Icon" style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover', border: `2px solid ${settingsData.pwaThemeColor}` }} />
+                <img src={assetUrl(settingsData.pwaIcon512 || settingsData.pwaIcon192)} alt="PWA Icon" style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover', border: `2px solid ${settingsData.pwaThemeColor}` }} />
               )}
               <div>
                 <div style={{ fontWeight: 700, fontSize: '14px', color: 'var(--foreground)' }}>{settingsData.pwaName || t('adminContent.pwaNamePlaceholder')}</div>
@@ -530,11 +531,11 @@ const AdminSiteContent = () => {
             <div style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--card)' }}>
               {aboutData.banner && (
                 <div style={{ height: '100px', overflow: 'hidden' }}>
-                  <img src={aboutData.banner} alt="Banner" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={assetUrl(aboutData.banner)} alt="Banner" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
               )}
               <div style={{ textAlign: 'center', padding: '20px 16px' }}>
-                {aboutData.logo && (<img src={aboutData.logo} alt="Logo" style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover', marginBottom: '10px' }} />)}
+                {aboutData.logo && (<img src={assetUrl(aboutData.logo)} alt="Logo" style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover', marginBottom: '10px' }} />)}
                 <h3 style={{ margin: '0 0 4px 0', color: 'var(--foreground)', fontSize: '15px' }}>{t('adminContent.aboutUs')}</h3>
                 {(getLocVal(aboutData, 'description', editLang) || aboutData.description) && (
                   <p style={{ color: 'var(--text-secondary)', fontSize: '12px', margin: '6px 0 0 0', lineHeight: 1.5 }}>
@@ -772,11 +773,11 @@ const AdminSiteContent = () => {
           <div style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--card)' }}>
             {aboutData.banner && (
               <div style={{ height: '100px', overflow: 'hidden' }}>
-                <img src={aboutData.banner} alt="Banner" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src={assetUrl(aboutData.banner)} alt="Banner" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
             )}
             <div style={{ textAlign: 'center', padding: '20px 16px' }}>
-              {aboutData.logo && (<img src={aboutData.logo} alt="Logo" style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover', marginBottom: '10px' }} />)}
+              {aboutData.logo && (<img src={assetUrl(aboutData.logo)} alt="Logo" style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover', marginBottom: '10px' }} />)}
               <h3 style={{ margin: '0 0 4px 0', color: 'var(--foreground)', fontSize: '15px' }}>{t('adminContent.aboutUs')}</h3>
               {aboutData.description && (<p style={{ color: 'var(--text-secondary)', fontSize: '12px', margin: '6px 0 0 0', lineHeight: 1.5 }}>{aboutData.description}</p>)}
               {aboutData.version && <p style={{ color: 'var(--text-tertiary)', fontSize: '11px', margin: '6px 0 0 0' }}>{t('adminContent.version')} {aboutData.version}</p>}

@@ -6,6 +6,7 @@ import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
+import { assetUrl } from '../utils/apiBase';
 import useTranslation from '../hooks/useTranslation';
 import '../admin-kit/index.css';
 
@@ -173,7 +174,7 @@ const AdminLayout = () => {
             {siteSettings?.navLogo ? (
               <img
                 className="yl-brand-mark"
-                src={siteSettings.navLogo}
+                src={assetUrl(siteSettings.navLogo)}
                 alt=""
                 style={{ objectFit: 'cover' }}
               />

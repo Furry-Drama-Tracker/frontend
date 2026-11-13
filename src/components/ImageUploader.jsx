@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import adminApi from '../utils/adminApi';
+import { assetUrl } from '../utils/apiBase';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faFolderOpen, faRulerCombined, faScissors, faThumbtack, faTrashCan } from '@fortawesome/free-solid-svg-icons';
@@ -341,7 +342,7 @@ const ImageUploader = ({ value, onChange, label, aspectRatio, outputWidth, outpu
       )}
       {value && (
         <div style={{ marginTop: '10px', display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-          <img src={value} alt={t('imageUploader.preview')} style={{ maxWidth: '200px', maxHeight: '120px', borderRadius: '8px', border: '1px solid var(--border)', objectFit: 'cover' }} />
+          <img src={assetUrl(value)} alt={t('imageUploader.preview')} style={{ maxWidth: '200px', maxHeight: '120px', borderRadius: '8px', border: '1px solid var(--border)', objectFit: 'cover' }} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             {aspectRatio && (
               <button type="button" onClick={handleStartCrop} style={{ background: 'var(--primary-bg)', border: '1px solid var(--primary-border)', color: 'var(--primary-light)', borderRadius: '6px', padding: '5px 12px', cursor: 'pointer', fontSize: '12px' }}><FontAwesomeIcon icon={faScissors} aria-hidden="true" /> {t('imageUploader.crop')}</button>

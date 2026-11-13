@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useI18n } from '../contexts/I18nContext';
 import API from '../utils/apiEndpoints';
+import { assetUrl } from '../utils/apiBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faImage, faSpinner, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons';
 
@@ -92,7 +93,7 @@ const SystemWallpaperManager = () => {
             }}>
               <div style={{
                 width: '100%', paddingTop: '56.25%',
-                backgroundImage: `url(${wp.url})`, backgroundSize: 'cover', backgroundPosition: 'center',
+                backgroundImage: `url(${assetUrl(wp.url)})`, backgroundSize: 'cover', backgroundPosition: 'center',
               }} />
               <div style={{
                 position: 'absolute', top: '4px', right: '4px', display: 'flex', gap: '4px',

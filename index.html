@@ -5,7 +5,7 @@
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; connect-src 'self' https://api.mymemory.translated.net https://translate.googleapis.com https://api.cognitive.microsofttranslator.com; frame-src 'self' https://player.bilibili.com https://www.youtube.com https://embed.nicovideo.jp; object-src 'none'; base-uri 'self'; form-action 'self';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; connect-src 'self' __API_BASE_URL__ https://api.mymemory.translated.net https://translate.googleapis.com https://api.cognitive.microsofttranslator.com; frame-src 'self' https://player.bilibili.com https://www.youtube.com https://embed.nicovideo.jp; object-src 'none'; base-uri 'self'; form-action 'self';" />
     <meta name="referrer" content="no-referrer" />
     <meta name="permissions-policy" content="camera=(), microphone=(), geolocation=(), payment=()" />
     <title>兽剧聚合平台</title>
@@ -27,7 +27,7 @@
     <meta name="apple-mobile-web-app-title" content="兽剧" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="msapplication-TileColor" content="#6366f1" />
-    <link rel="alternate" type="application/rss+xml" title="兽剧聚合平台 - 更新订阅" href="/api/rss" />
+    <link rel="alternate" type="application/rss+xml" title="兽剧聚合平台 - 更新订阅" href="__API_BASE_URL__/api/rss" />
     <script>
       // 早期语言检测：在 React 挂载前就根据用户偏好设置 <html lang>，
       // 让浏览器翻译功能在初始加载时就能正确识别页面语言，而非回退到"检测到的语言"。
@@ -211,7 +211,7 @@
             }
           }
           if (!xhr) return;
-          xhr.open('GET', '/api/site-content/about', true);
+          xhr.open('GET', '__API_BASE_URL__/api/site-content/about', true);
           xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
               try {

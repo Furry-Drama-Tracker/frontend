@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import useTranslation from '../hooks/useTranslation';
+import { assetUrl } from '../utils/apiBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowsLeftRight, faBell, faCalendarDays, faCircleCheck, faFilm } from '@fortawesome/free-solid-svg-icons';
 
@@ -469,7 +470,7 @@ const UpdateCalendar = () => {
                           <Link to={`/episode/${item._id}`} style={{ display: 'flex', gap: '12px', alignItems: 'center', textDecoration: 'none', color: 'var(--foreground)', padding: '8px', flex: 1, transition: 'background 0.2s', border: isFollowed ? '2px solid var(--primary)' : '2px solid transparent', borderRadius: '8px' }}
                             onMouseEnter={e => e.currentTarget.style.background = 'var(--hover-bg-strong)'}
                             onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
-                            <img src={item.coverImage} alt="" style={{ width: '40px', height: '56px', borderRadius: '6px', objectFit: 'cover', flexShrink: 0 }} />
+                            <img src={assetUrl(item.coverImage)} alt="" style={{ width: '40px', height: '56px', borderRadius: '6px', objectFit: 'cover', flexShrink: 0 }} />
                             <div style={{ flex: 1, minWidth: 0 }}>
                               <div style={{ fontSize: '14px', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{getLocalizedTitle(item)}</div>
                               <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>

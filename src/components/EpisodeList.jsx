@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClapperboard } from '@fortawesome/free-solid-svg-icons';
 import useTranslation from '../hooks/useTranslation';
 import { useI18n } from '../contexts/I18nContext';
+import { assetUrl } from '../utils/apiBase';
 
 const EpisodeList = ({ episodes, onEdit, onDelete }) => {
   const { getLocalizedTitle, getLocalizedDescription } = useTranslation();
@@ -27,7 +28,7 @@ const EpisodeList = ({ episodes, onEdit, onDelete }) => {
           <div className="episode-cover">
             {episode.coverImage && (
               <img
-                src={episode.coverImage}
+                src={assetUrl(episode.coverImage)}
                 alt={episode.title}
                 loading="lazy"
                 style={{

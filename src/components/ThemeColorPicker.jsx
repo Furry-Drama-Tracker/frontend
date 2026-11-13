@@ -5,6 +5,7 @@ import { useTheme, getAccentContrastWarning, getOnPrimaryColor } from '../contex
 import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
 import API from '../utils/apiEndpoints';
+import { assetUrl } from '../utils/apiBase';
 import { computeThemeType, themeTypeBadge } from './ThemeEditorModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -419,7 +420,7 @@ const ThemeColorPicker = () => {
                       <span style={{
                         width: '40px', height: '24px', borderRadius: '5px', flexShrink: 0,
                         background: th.wallpaperThumb || th.wallpaperUrl
-                          ? `url(${th.wallpaperThumb || th.wallpaperUrl}) center/cover`
+                          ? `url(${assetUrl(th.wallpaperThumb || th.wallpaperUrl)}) center/cover`
                           : 'var(--bg-tertiary)',
                         border: '1px solid var(--border)',
                       }} />

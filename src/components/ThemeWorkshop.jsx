@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import API from '../utils/apiEndpoints';
+import { assetUrl } from '../utils/apiBase';
 import ThemeEditorModal, { computeThemeType, themeTypeBadge } from './ThemeEditorModal';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
@@ -264,7 +265,7 @@ const ThemeWorkshop = () => {
         {(theme.wallpaperThumb || theme.wallpaperUrl) && (
           <div style={{
             aspectRatio: '21 / 9', borderRadius: '8px', border: '1px solid var(--border)',
-            backgroundImage: `url(${theme.wallpaperThumb || theme.wallpaperUrl})`,
+            backgroundImage: `url(${assetUrl(theme.wallpaperThumb || theme.wallpaperUrl)})`,
             backgroundSize: 'cover', backgroundPosition: 'center',
           }} />
         )}

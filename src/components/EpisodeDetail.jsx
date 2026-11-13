@@ -11,6 +11,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
 
 import API from '../utils/apiEndpoints';
+import { assetUrl } from '../utils/apiBase';
 import useScrollReveal from '../hooks/useScrollReveal';
 import ScrollProgress from './ScrollProgress';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -437,7 +438,7 @@ const EpisodeDetail = ({ user }) => {
       </div>
       <div ref={infoRef} className={`reveal ${infoVisible ? 'visible' : ''}`}>
       <div className="episode-info">
-        <img src={episode.coverImage} alt={episode.title} decoding="async" className="img-fade" onLoad={(e) => e.currentTarget.classList.add('is-loaded')} />
+        <img src={assetUrl(episode.coverImage)} alt={episode.title} decoding="async" className="img-fade" onLoad={(e) => e.currentTarget.classList.add('is-loaded')} />
         <div className="episode-details">
           <h2>{getLocalizedTitle(episode)}</h2>
           <p>{getLocalizedDescription(episode)}</p>
@@ -819,7 +820,7 @@ const EpisodeDetail = ({ user }) => {
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 8px 24px var(--shadow-modal)'; }}
               onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
               >
-                <img src={rec.coverImage} alt="" loading="lazy" decoding="async" style={{width: '100%', aspectRatio: '3/4', objectFit: 'cover'}} />
+                <img src={assetUrl(rec.coverImage)} alt="" loading="lazy" decoding="async" style={{width: '100%', aspectRatio: '3/4', objectFit: 'cover'}} />
                 <div style={{padding: '10px 12px'}}>
                   <div style={{fontSize: '14px', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{getLocalizedTitle(rec)}</div>
                   <div style={{fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px'}}>
@@ -977,7 +978,7 @@ const EpisodeDetail = ({ user }) => {
           {episode.coverImage ? (
             <img
               className="ep-preview-cover"
-              src={episode.coverImage}
+              src={assetUrl(episode.coverImage)}
               alt=""
               onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
             />

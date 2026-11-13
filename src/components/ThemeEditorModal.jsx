@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
 import Modal from './Modal';
 import API from '../utils/apiEndpoints';
+import { assetUrl } from '../utils/apiBase';
 import { useAuth } from '../contexts/AuthContext';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -216,7 +217,7 @@ const ThemeEditorModal = ({ isOpen, onClose, initial, onSave, saving = false, ti
           <>
             <div style={{
               position: 'absolute', inset: 0,
-              backgroundImage: `url(${url})`, backgroundSize: 'cover', backgroundPosition: 'center',
+              backgroundImage: `url(${assetUrl(url)})`, backgroundSize: 'cover', backgroundPosition: 'center',
             }} />
             {selected && (
               <div style={{
@@ -366,7 +367,7 @@ const ThemeEditorModal = ({ isOpen, onClose, initial, onSave, saving = false, ti
             <div style={{
               position: 'relative', aspectRatio: '21 / 9', borderRadius: '8px', overflow: 'hidden',
               marginBottom: '4px', border: '1px solid var(--border)',
-              backgroundImage: `url(${wallpaperUrl})`, backgroundSize: 'cover', backgroundPosition: 'center',
+              backgroundImage: `url(${assetUrl(wallpaperUrl)})`, backgroundSize: 'cover', backgroundPosition: 'center',
             }}>
               {/* 站点线框示意：壁纸将作为全站背景铺在导航与内容之下 */}
               <div style={{

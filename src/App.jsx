@@ -6,6 +6,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { I18nContext, I18nProvider, useI18n } from './contexts/I18nContext';
 import { SiteSettingsProvider, useSiteSettings } from './contexts/SiteSettingsContext';
 import useTranslation from './hooks/useTranslation';
+import { assetUrl } from './utils/apiBase';
 import NavBar from './components/NavBar';
 import Modal from './components/Modal';
 import AdminErrorBoundary from './components/AdminErrorBoundary';
@@ -411,7 +412,7 @@ function AppContent() {
         link.rel = 'icon';
         document.head.appendChild(link);
       }
-      link.href = siteSettingsData.favicon;
+      link.href = assetUrl(siteSettingsData.favicon);
     }
   }, [siteSettingsData, lang, location.pathname, t]);
 
@@ -451,7 +452,7 @@ function AppContent() {
     }
 
     if (bg) {
-      root.style.setProperty('--bg-image', `url(${bg.image})`);
+      root.style.setProperty('--bg-image', `url(${assetUrl(bg.image)})`);
       root.style.setProperty('--bg-opacity', ((bg.opacity !== undefined ? bg.opacity : 30) / 100).toString());
       root.style.setProperty('--bg-blur', `${bg.blur || 0}px`);
       root.setAttribute('data-custom-bg', 'true');
@@ -463,26 +464,15 @@ function AppContent() {
     }
   }, [user, defaultThemeWallpaper]);
 
-  // ===== PWA 运行时更新：指向后端动态 manifest 端点，并更新图标、主题色等 meta =====
+  // ===== PWA 运行时更新：主题色与图标等 meta =====
+  // manifest 保持使用构建期生成的同源 manifest（vite-plugin-pwa）：
+  // 后端动态 manifest 在跨域部署下会以 API 域名为基准解析 start_url/scope/icons，
+  // 导致安装后的应用指向 API 域名，因此不再改指向 /api/site-content/pwa-manifest。
   useEffect(() => {
     if (!siteSettingsData) return;
     const pwaName = siteSettingsData.pwaName || siteSettingsData.siteName || t('site.defaultName');
     const pwaShortName = siteSettingsData.pwaShortName || (pwaName || '').slice(0, 12);
     const pwaThemeColor = siteSettingsData.pwaThemeColor || '#6366f1';
-
-    // 将 manifest 链接指向后端动态端点（同源 HTTP，满足浏览器可安装性要求）
-    // 不再使用 blob: URL，因为 blob: URL 会导致浏览器无法验证 manifest，安装提示不弹出
-    let manifestLink = document.querySelector("link[rel='manifest']");
-    if (!manifestLink) {
-      manifestLink = document.createElement('link');
-      manifestLink.rel = 'manifest';
-      document.head.appendChild(manifestLink);
-    }
-    const currentHref = manifestLink.getAttribute('href') || '';
-    // 仅在尚未指向动态端点时更新，避免重复设置
-    if (!currentHref.includes('/api/site-content/pwa-manifest')) {
-      manifestLink.setAttribute('href', '/api/site-content/pwa-manifest');
-    }
 
     // 更新 apple-touch-icon
     if (siteSettingsData.pwaIcon512 || siteSettingsData.pwaIcon192) {
@@ -492,7 +482,7 @@ function AppContent() {
         appleLink.rel = 'apple-touch-icon';
         document.head.appendChild(appleLink);
       }
-      appleLink.href = siteSettingsData.pwaIcon512 || siteSettingsData.pwaIcon192;
+      appleLink.href = assetUrl(siteSettingsData.pwaIcon512 || siteSettingsData.pwaIcon192);
     }
 
     // 更新 apple-mobile-web-app-title
