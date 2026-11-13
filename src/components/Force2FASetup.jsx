@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import QRCode from 'qrcode';
 import { useI18n } from '../contexts/I18nContext';
+import { useAuth } from '../contexts/AuthContext';
 import API from '../utils/apiEndpoints';
 import Modal from './Modal';
+import BackupCodesPanel from './BackupCodesPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 
@@ -11,6 +13,7 @@ import { faLock } from '@fortawesome/free-solid-svg-icons';
 // 拦截在全局模态里完成 TOTP 注册（后端 force2FASetup 门禁同步拦截其余写操作）。
 const Force2FASetup = ({ onUpdate, onLogout }) => {
   const { t } = useI18n();
+  const { user } = useAuth();
   const [step, setStep] = useState('idle'); // idle | setup
   const [secret, setSecret] = useState('');
   const [secretBase32, setSecretBase32] = useState('');
@@ -105,11 +108,7 @@ const Force2FASetup = ({ onUpdate, onLogout }) => {
           </div>
           <div style={{ padding: '10px', background: 'var(--hover-bg)', borderRadius: '6px', marginBottom: '12px' }}>
             {showBackupCodes ? (
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                {backupCodes.map((code, i) => (
-                  <code key={i} style={{ padding: '3px 8px', background: 'var(--card)', borderRadius: '4px', fontSize: '12px' }}>{code}</code>
-                ))}
-              </div>
+              <BackupCodesPanel codes={backupCodes} accountId={user?.accountId} />
             ) : (
               <button type="button" onClick={() => setShowBackupCodes(true)} style={{
                 padding: '6px 14px', borderRadius: '6px', fontSize: '12px',

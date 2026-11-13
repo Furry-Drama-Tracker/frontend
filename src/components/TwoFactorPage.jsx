@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
 import API from '../utils/apiEndpoints';
+import BackupCodesPanel from './BackupCodesPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faArrowLeft, faCircleCheck, faLock, faFingerprint, faPlus, faTrashCan,
@@ -269,14 +270,7 @@ const TwoFactorPage = ({ user, setUser }) => {
             marginBottom: '16px'
           }}>
             {showBackupCodes ? (
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                {backupCodes.map((code, i) => (
-                  <code key={i} style={{
-                    padding: '4px 10px', background: 'var(--card)', borderRadius: '4px',
-                    fontSize: '13px', color: 'var(--foreground)'
-                  }}>{code}</code>
-                ))}
-              </div>
+              <BackupCodesPanel codes={backupCodes} accountId={user?.accountId} />
             ) : (
               <button onClick={() => setShowBackupCodes(true)} style={{
                 ...btnStyle, background: 'var(--hover-bg-strong)', border: '1px solid var(--border)',
