@@ -11,10 +11,11 @@ import ShareModal from './ShareModal';
 import FolderShareModal from './FolderShareModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faArrowRotateLeft, faCamera, faCheck, faEllipsisVertical, faFolder,
+  faArrowRotateLeft, faCamera, faCheck, faEllipsisVertical, faEye, faEyeSlash, faFolder,
   faFolderOpen, faGlobe, faLink, faPenToSquare, faStar, faTrashCan,
   faTriangleExclamation, faXmark,
 } from '@fortawesome/free-solid-svg-icons';
+import Modal from './Modal';
 
 const maskEmail = (email) => {
   if (!email) return '';
@@ -58,6 +59,14 @@ const Profile = ({ user, setUser, logout }) => {
   const [editingNickname, setEditingNickname] = useState(false);
   const [nicknameValue, setNicknameValue] = useState('');
   const [nicknameLoading, setNicknameLoading] = useState(false);
+  // 用户名（登录名）改名弹窗
+  const [renameOpen, setRenameOpen] = useState(false);
+  const [renameName, setRenameName] = useState('');
+  const [renamePassword, setRenamePassword] = useState('');
+  const [renameLoading, setRenameLoading] = useState(false);
+  const [renameError, setRenameError] = useState('');
+  const [renameCheck, setRenameCheck] = useState(null); // {available, reason}
+  const [showRenamePassword, setShowRenamePassword] = useState(false);
   const [nicknameError, setNicknameError] = useState('');
 
   const [fetchError, setFetchError] = useState(null);
@@ -519,7 +528,19 @@ const Profile = ({ user, setUser, logout }) => {
             )}
             {nicknameError && <p style={{color: 'var(--destructive-text)', fontSize: '12px', margin: '2px 0 0 0'}}>{nicknameError}</p>}
             <p style={{margin: '4px 0 0 0', color: 'var(--text-secondary)', fontSize: '13px'}}>
+              {t('profile.uidLabel')}: <span style={{color: 'var(--text-tertiary)', letterSpacing: '0.5px'}}>{typeof user.uid === 'number' ? user.uid : '-'}</span>
+              {'　'}
               {t('profile.accountIdLabel')}: <span style={{color: 'var(--text-tertiary)', letterSpacing: '0.5px'}}>{user.accountId || '-'}</span>
+              <button
+                onClick={() => { setRenameOpen(true); setRenameName(''); setRenamePassword(''); setRenameError(''); setRenameCheck(null); }}
+                style={{
+                  marginLeft: '8px', background: 'none', border: 'none',
+                  color: 'var(--primary)', cursor: 'pointer', fontSize: '12px',
+                  textDecoration: 'underline', padding: 0
+                }}
+              >
+                {t('profile.renameLoginName')}
+              </button>
             </p>
             <p style={{margin: '4px 0 0 0', color: 'var(--text-secondary)', fontSize: '14px'}}>
               {showFullEmail ? user.email : maskEmail(user.email)}
@@ -1075,6 +1096,100 @@ const Profile = ({ user, setUser, logout }) => {
           folder={shareFolder}
         />
       )}
+      {/* 用户名（登录名）改名弹窗：密码再认证 + 冷却/占用/黑名单错误由后端返回 */}
+      <Modal
+        isOpen={renameOpen}
+        onClose={() => setRenameOpen(false)}
+        maxWidth="420px"
+        contentStyle={{ padding: '24px' }}
+      >
+        <h3 style={{ margin: '0 0 12px 0' }}>{t('profile.renameLoginNameTitle')}</h3>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '13px', lineHeight: 1.7, margin: '0 0 14px 0' }}>
+          {t('profile.renameLoginNameDesc')}
+        </p>
+        {renameError && <div className="error-message">{renameError}</div>}
+        <div className="form-group">
+          <label htmlFor="rename-login-name">{t('profile.newLoginName')}</label>
+          <input
+            id="rename-login-name"
+            type="text"
+            value={renameName}
+            onChange={(e) => { setRenameName(e.target.value); setRenameCheck(null); }}
+            onBlur={async (e) => {
+              const name = e.target.value.trim();
+              if (!name || name === user.accountId) { setRenameCheck(null); return; }
+              try {
+                const res = await axios.get(`${API.USERS.CHECK_LOGIN_NAME}?name=${encodeURIComponent(name)}`);
+                setRenameCheck(res.data);
+              } catch { setRenameCheck(null); }
+            }}
+            maxLength={32}
+            autoComplete="username"
+            placeholder={t('profile.newLoginNamePlaceholder')}
+          />
+          {renameCheck && (
+            <p style={{ color: renameCheck.available ? 'var(--success-text)' : 'var(--destructive-text)', fontSize: '12px', margin: '4px 0 0 0' }}>
+              {renameCheck.available ? t('profile.loginNameAvailable') : renameCheck.reason}
+            </p>
+          )}
+        </div>
+        <div className="form-group" style={{ position: 'relative' }}>
+          <label htmlFor="rename-password">{t('auth.currentPassword')}</label>
+          <input
+            id="rename-password"
+            type={showRenamePassword ? 'text' : 'password'}
+            value={renamePassword}
+            onChange={(e) => setRenamePassword(e.target.value)}
+            autoComplete="current-password"
+            style={{ paddingRight: '40px' }}
+          />
+          <button type="button" onClick={() => setShowRenamePassword(!showRenamePassword)} aria-label={showRenamePassword ? t('common.hidePassword') : t('common.showPassword')} style={{
+            position: 'absolute', right: '10px', bottom: '8px',
+            background: 'none', border: 'none', cursor: 'pointer',
+            color: 'var(--text-secondary)', padding: 0, width: '24px', height: '24px'
+          }}>
+            {showRenamePassword ? <FontAwesomeIcon icon={faEyeSlash} style={{ fontSize: 18 }} aria-hidden="true" /> : <FontAwesomeIcon icon={faEye} style={{ fontSize: 18 }} aria-hidden="true" />}
+          </button>
+        </div>
+        <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+          <button
+            onClick={() => setRenameOpen(false)}
+            style={{
+              padding: '8px 16px', borderRadius: '8px', fontSize: '14px',
+              background: 'var(--hover-bg)', color: 'var(--foreground)',
+              border: '1px solid var(--border)', cursor: 'pointer'
+            }}
+          >
+            {t('common.cancel')}
+          </button>
+          <button
+            disabled={renameLoading || !renameName.trim() || !renamePassword}
+            onClick={async () => {
+              setRenameError('');
+              setRenameLoading(true);
+              try {
+                const res = await axios.put(API.USERS.LOGIN_NAME, {
+                  newLoginName: renameName.trim(),
+                  currentPassword: renamePassword,
+                });
+                setUser({ ...user, accountId: res.data.accountId });
+                setRenameOpen(false);
+              } catch (err) {
+                setRenameError(err.response?.data?.message || t('profile.renameFailed'));
+              }
+              setRenameLoading(false);
+            }}
+            style={{
+              padding: '8px 16px', borderRadius: '8px', fontSize: '14px', fontWeight: 600,
+              background: 'var(--btn-gradient)', color: 'var(--btn-text)',
+              border: 'none', cursor: renameLoading ? 'wait' : 'pointer',
+              opacity: renameLoading || !renameName.trim() || !renamePassword ? 0.6 : 1,
+            }}
+          >
+            {renameLoading ? t('common.saving') : t('common.save')}
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };

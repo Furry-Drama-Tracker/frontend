@@ -11,6 +11,7 @@ import NavBar from './components/NavBar';
 import Modal from './components/Modal';
 import AdminErrorBoundary from './components/AdminErrorBoundary';
 import ForceEmailChange from './components/ForceEmailChange';
+import Force2FASetup from './components/Force2FASetup';
 import Home from './components/Home';
 import EpisodeDetail from './components/EpisodeDetail';
 import Login from './components/Login';
@@ -103,7 +104,7 @@ const getRoutePageTitleKey = (pathname) => {
   // 公共路由
   if (pathname === '/') return 'pageTitle.home';
   if (pathname.startsWith('/episode/')) return 'pageTitle.episodeDetail';
-  if (pathname === '/login' || pathname === '/verify-device') return 'pageTitle.login';
+  if (pathname === '/login') return 'pageTitle.login';
   if (pathname === '/register') return 'pageTitle.register';
   if (pathname === '/profile') return 'pageTitle.profile';
   if (pathname === '/devices') return 'pageTitle.devices';
@@ -574,7 +575,6 @@ function AppContent() {
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/verify-email-change" element={<VerifyEmailChange />} />
             <Route path="/shared-folder/:shareToken" element={<SharedFolder />} />
-            <Route path="/verify-device" element={<Login login={login} />} />
             <Route path="/calendar" element={<UpdateCalendar />} />
             <Route path="/timeline" element={<Timeline />} />
             <Route path="/creator/:id" element={<CreatorPage />} />
@@ -596,6 +596,9 @@ function AppContent() {
       <AnnouncementPopup />
       {user?.forceEmailChange && (
         <ForceEmailChange onUpdate={updateUser} onLogout={logout} />
+      )}
+      {user?.force2FASetup && !user?.forceEmailChange && (
+        <Force2FASetup onUpdate={updateUser} onLogout={logout} />
       )}
       {apiError && (
         <div style={{

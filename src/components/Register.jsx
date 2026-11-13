@@ -69,8 +69,14 @@ const Register = () => {
 
   const handleBlur = (field, value) => {
     const errors = { ...fieldErrors };
-    if (field === 'accountId' && value && !/^[A-Za-z0-9_]+$/.test(value)) {
-      errors.accountId = t('auth.accountIdHint');
+    // 用户名：字母/数字/下划线/连字符，3-32 位，字母或下划线开头；允许大小写
+    // （登录不区分大小写，后端为权威校验，这里做即时预检）。
+    if (field === 'accountId' && value) {
+      if (!/^[A-Za-z_][A-Za-z0-9_-]{2,31}$/.test(value)) {
+        errors.accountId = t('auth.accountIdHint');
+      } else {
+        delete errors.accountId;
+      }
     } else {
       delete errors.accountId;
     }
@@ -254,8 +260,9 @@ const Register = () => {
             onBlur={(e) => handleBlur('accountId', e.target.value)}
             required
             minLength={3}
-            maxLength={20}
-            pattern="[A-Za-z0-9_]+"
+            maxLength={32}
+            pattern="[A-Za-z_][A-Za-z0-9_-]{2,31}"
+            autoComplete="username"
             placeholder={t('auth.accountIdPlaceholder')}
           />
           {fieldErrors.accountId && <p style={{color: 'var(--destructive-text)', fontSize: '12px', margin: '2px 0 0 0'}}>{fieldErrors.accountId}</p>}

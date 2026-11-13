@@ -7,11 +7,13 @@ import PasswordToggle from './PasswordToggle';
 import API from '../utils/apiEndpoints';
 import { apiUrl } from '../utils/apiBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleCheck, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck, faEnvelope, faLock, faFingerprint } from '@fortawesome/free-solid-svg-icons';
+import { browserSupportsWebAuthn, platformAuthenticatorIsAvailable, startAuthentication } from '@simplewebauthn/browser';
 
 const Login = ({ login }) => {
   const { t } = useI18n();
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  // identifier：用户名或邮箱（后端按是否含 @ 分流查找）。
+  const [formData, setFormData] = useState({ identifier: '', password: '' });
   const [fieldErrors, setFieldErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -31,20 +33,19 @@ const Login = ({ login }) => {
   const [emailVerifyCodeSubmitting, setEmailVerifyCodeSubmitting] = useState(false);
   const [emailVerifyCodeError, setEmailVerifyCodeError] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [needDeviceVerify, setNeedDeviceVerify] = useState(false);
-  const [deviceVerifyEmail, setDeviceVerifyEmail] = useState('');
-  const [deviceVerifyInfo, setDeviceVerifyInfo] = useState(null);
-  const [deviceVerifyLoading, setDeviceVerifyLoading] = useState(false);
-  const [deviceLoginCode, setDeviceLoginCode] = useState('');      // 邮箱验证页面返回的登录码
-  const [deviceCodeInput, setDeviceCodeInput] = useState('');       // 用户在原浏览器输入的登录码
-  const [deviceCodeSubmitting, setDeviceCodeSubmitting] = useState(false);
-  const [deviceCodeError, setDeviceCodeError] = useState('');
-  const [fromDeviceVerify, setFromDeviceVerify] = useState(false);  // 2FA是否来自设备验证流程
   const [need2FA, setNeed2FA] = useState(false);
   const [twoFAEmail, setTwoFAEmail] = useState('');
   const [twoFAToken, setTwoFAToken] = useState('');
   const [twoFALoading, setTwoFALoading] = useState(false);
   const [twoFactorChallenge, setTwoFactorChallenge] = useState('');
+  // 2FA 方法页签：totp（验证器/备份码）| emailOtp（邮箱验证码，仅后端返回该方法时出现）
+  const [twoFAMethods, setTwoFAMethods] = useState(['totp']);
+  const [twoFAMethod, setTwoFAMethod] = useState('totp');
+  const [emailOTPSent, setEmailOTPSent] = useState(false);
+  const [emailOTPSending, setEmailOTPSending] = useState(false);
+  // Passkey 登录
+  const [passkeyAvailable, setPasskeyAvailable] = useState(false);
+  const [passkeyLoading, setPasskeyLoading] = useState(false);
   const [altchaPayload, setAltchaPayload] = useState(null);
   // 登录检测到邮箱未注册时引导去注册（后端 accountNotFound 标志）。
   const [suggestRegister, setSuggestRegister] = useState(false);
@@ -66,33 +67,32 @@ const Login = ({ login }) => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
+  // Passkey 可用性检测（浏览器支持 + 本机有平台验证器）。
   useEffect(() => {
-    const token = searchParams.get('token');
-    if (!token) return;
-    setDeviceVerifyLoading(true);
-    axios.post('/api/auth/verify-device', { token })
-      .then(res => {
-        // 邮箱App内置浏览器中打开：只显示验证码，不执行登录（cookie无法跨浏览器共享）
-        if (res.data.verified && res.data.loginCode) {
-          setDeviceLoginCode(res.data.loginCode);
-        }
-      })
-      .catch(err => {
-        setError(err.response?.data?.message || t('auth.deviceVerifyFailed'));
-      })
-      .finally(() => setDeviceVerifyLoading(false));
-  }, [searchParams, t]);
+    let cancelled = false;
+    (async () => {
+      if (!browserSupportsWebAuthn()) return;
+      try {
+        const hasPlatform = await platformAuthenticatorIsAvailable();
+        if (!cancelled) setPasskeyAvailable(hasPlatform);
+      } catch {
+        /* 检测失败时按不可用处理 */
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
-  // 从注册页切换过来时预填邮箱（/login?email=xxx）。
+  // 从注册页切换过来时预填（/login?email=xxx）。
   useEffect(() => {
     const email = searchParams.get('email');
-    if (email) setFormData(prev => (prev.email ? prev : { ...prev, email }));
+    if (email) setFormData(prev => (prev.identifier ? prev : { ...prev, identifier: email }));
   }, [searchParams]);
 
-  // 带/不带当前邮箱跳转注册页（预填邮箱，减少重复输入）。
+  // 带/不带当前标识跳转注册页（预填邮箱，减少重复输入）。
   const goRegister = () => {
-    const email = formData.email.trim();
-    navigate(email ? `/register?email=${encodeURIComponent(email)}` : '/register');
+    const value = formData.identifier.trim();
+    // 含 @ 才作为 email 参数透传，用户名不透传。
+    navigate(value.includes('@') ? `/register?email=${encodeURIComponent(value)}` : '/register');
   };
 
   const handleChange = (e) => {
@@ -101,10 +101,11 @@ const Login = ({ login }) => {
 
   const handleBlur = (field, value) => {
     const errors = { ...fieldErrors };
-    if (field === 'email' && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-      errors.email = t('auth.invalidEmail');
+    // identifier 允许用户名或邮箱，只做非空校验（邮箱格式由后端按含 @ 分流校验）。
+    if (field === 'identifier' && !value) {
+      errors.identifier = t('auth.identifierRequired');
     } else {
-      delete errors.email;
+      delete errors.identifier;
     }
     if (field === 'password' && !value) {
       errors.password = t('auth.passwordRequired');
@@ -120,7 +121,6 @@ const Login = ({ login }) => {
     if (!altchaPayload) return;
     setError('');
     setNeedVerification(false);
-    setNeedDeviceVerify(false);
     setNeed2FA(false);
     setSuggestRegister(false);
     setEmailVerifyCode('');
@@ -128,14 +128,24 @@ const Login = ({ login }) => {
     setSubmitting(true);
     try {
       const response = await axios.post(API.AUTH.LOGIN, {
-        ...formData,
+        // 兼容后端：identifier 为主，email 字段同步携带（老后端/代理不受影响）。
+        identifier: formData.identifier,
+        email: formData.identifier,
+        password: formData.password,
         deviceInfo: getDeviceInfo(),
         altcha: altchaPayload,
       });
       if (response.data.need2FA) {
         setNeed2FA(true);
-        setTwoFAEmail(response.data.email || formData.email);
+        setTwoFAEmail(response.data.email || formData.identifier);
         setTwoFactorChallenge(response.data.twoFactorChallenge || '');
+        const methods = Array.isArray(response.data.twoFactorMethods) && response.data.twoFactorMethods.length > 0
+          ? response.data.twoFactorMethods
+          : ['totp'];
+        setTwoFAMethods(methods);
+        setTwoFAMethod(methods.includes('totp') ? 'totp' : methods[0]);
+        setTwoFAToken('');
+        setEmailOTPSent(false);
         setSubmitting(false);
         return;
       }
@@ -145,13 +155,8 @@ const Login = ({ login }) => {
       const data = error.response?.data;
       if (data?.needVerification) {
         setNeedVerification(true);
-        setVerifyEmail(data.email || formData.email);
+        setVerifyEmail(data.email || formData.identifier);
         setError(data.message || t('auth.verifyEmailFirst'));
-      } else if (data?.needDeviceVerify) {
-        setNeedDeviceVerify(true);
-        setDeviceVerifyEmail(data.email || formData.email);
-        setDeviceVerifyInfo(data.deviceInfo || null);
-        setError('');
       } else {
         setError(data?.message || t('auth.loginFailed'));
         // 邮箱不存在：后端附带 accountNotFound 标志，展示"去注册"引导。
@@ -159,6 +164,29 @@ const Login = ({ login }) => {
       }
     }
     setSubmitting(false);
+  };
+
+  // Passkey 单因素登录：指纹/面容直接通过（开 2FA 也不再挑战第二因素）。
+  const handlePasskeyLogin = async () => {
+    if (passkeyLoading) return;
+    setError('');
+    setPasskeyLoading(true);
+    try {
+      const optRes = await axios.post(API.AUTH.PASSKEY_OPTIONS, {
+        identifier: formData.identifier.trim() || undefined,
+      });
+      const { publicKey, ceremonyKey } = optRes.data;
+      const attResp = await startAuthentication({ optionsJSON: publicKey });
+      const verRes = await axios.post(
+        `${API.AUTH.PASSKEY_VERIFY}?ceremonyKey=${encodeURIComponent(ceremonyKey)}`,
+        attResp
+      );
+      login(verRes.data);
+      navigate('/');
+    } catch (err) {
+      setError(err.response?.data?.message || t('auth.passkeyFailed'));
+    }
+    setPasskeyLoading(false);
   };
 
   // 验证邮箱验证码（登录时邮箱未验证场景）
@@ -180,39 +208,15 @@ const Login = ({ login }) => {
     setEmailVerifyCodeSubmitting(false);
   };
 
-  // 用户在原浏览器输入验证码完成设备登录
-  const handleConfirmDeviceLogin = async (e) => {
-    e.preventDefault();
-    setDeviceCodeError('');
-    setDeviceCodeSubmitting(true);
-    try {
-      const res = await axios.post('/api/auth/confirm-device-login', {
-        loginCode: deviceCodeInput.trim()
-      });
-      if (res.data.need2FA) {
-        // 开启了 2FA，切换到 2FA 输入界面
-        setFromDeviceVerify(true);
-        setTwoFAEmail(res.data.email);
-        setTwoFactorChallenge(res.data.twoFactorChallenge);
-        setNeedDeviceVerify(false);
-        setNeed2FA(true);
-      } else {
-        login(res.data);
-        navigate('/');
-      }
-    } catch (err) {
-      setDeviceCodeError(err.response?.data?.message || t('auth.deviceVerifyFailed'));
-    }
-    setDeviceCodeSubmitting(false);
-  };
-
   const handle2FAVerify = async (e) => {
     e.preventDefault();
     setError('');
     setTwoFALoading(true);
     try {
-      const response = await axios.post('/api/auth/login-2fa', {
+      const response = await axios.post(API.AUTH.LOGIN_2FA, {
+        identifier: twoFAEmail,
         email: twoFAEmail,
+        method: twoFAMethod,
         twoFactorToken: twoFAToken,
         twoFactorChallenge,
         deviceInfo: getDeviceInfo()
@@ -223,6 +227,19 @@ const Login = ({ login }) => {
       setError(err.response?.data?.message || t('twoFactor.invalidCode'));
     }
     setTwoFALoading(false);
+  };
+
+  // 发送 2FA 邮箱验证码（凭挑战令牌）。
+  const handleSendEmailOTP = async () => {
+    setError('');
+    setEmailOTPSending(true);
+    try {
+      await axios.post(API.TWOFACTOR.EMAIL_OTP_SEND, { twoFactorChallenge });
+      setEmailOTPSent(true);
+    } catch (err) {
+      setError(err.response?.data?.message || t('twoFactor.emailOtpSendFailed'));
+    }
+    setEmailOTPSending(false);
   };
 
   const handleForgotPassword = async (e) => {
@@ -260,137 +277,62 @@ const Login = ({ login }) => {
     }
   };
 
-  // 邮箱App内置浏览器中打开验证链接：显示验证码，引导用户回到原浏览器
-  if (deviceLoginCode) {
-    return (
-      <div className="auth-form" style={{textAlign: 'center', padding: '40px 20px'}}>
-        <div aria-hidden="true" style={{fontSize: '48px', marginBottom: '16px'}}><FontAwesomeIcon icon={faCircleCheck} /></div>
-        <h2>{t('auth.deviceVerifiedTitle')}</h2>
-        <p style={{color: 'var(--text-secondary)', lineHeight: 1.7, marginTop: '12px'}}>
-          {t('auth.deviceVerifiedDesc')}
-        </p>
-        <div style={{
-          background: 'var(--primary-bg)', border: '2px dashed var(--primary-border)',
-          borderRadius: '12px', padding: '20px', margin: '20px 0',
-        }}>
-          <p style={{color: 'var(--text-tertiary)', fontSize: '12px', margin: '0 0 8px'}}>
-            {t('auth.yourLoginCode')}
-          </p>
-          <div className="code-display">{deviceLoginCode}</div>
-        </div>
-        <p style={{color: 'var(--text-secondary)', fontSize: '13px', lineHeight: 1.7}}>
-          {t('auth.deviceCodeExpiry')}
-        </p>
-      </div>
-    );
-  }
-
-  if (deviceVerifyLoading) {
-    return (
-      <div className="auth-form" style={{textAlign: 'center', padding: '60px 20px'}}>
-        <div aria-hidden="true" style={{fontSize: '48px', marginBottom: '16px'}}><FontAwesomeIcon icon={faLock} /></div>
-        <h2>{t('auth.verifyingDevice')}</h2>
-        <p style={{color: 'var(--text-secondary)'}}>{t('common.pleaseWait')}</p>
-      </div>
-    );
-  }
-
-  if (needDeviceVerify) {
-    const isAppleDevice = deviceVerifyInfo?.os === 'iOS' || deviceVerifyInfo?.os === 'iPadOS' || deviceVerifyInfo?.os === 'macOS';
-    return (
-      <div className="auth-form" style={{textAlign: 'center', padding: '40px 20px'}}>
-        <div aria-hidden="true" style={{fontSize: '48px', marginBottom: '16px'}}><FontAwesomeIcon icon={faEnvelope} /></div>
-        <h2>{t('auth.newDeviceVerify')}</h2>
-        <p style={{color: 'var(--text-secondary)', lineHeight: 1.7, marginTop: '12px'}}>
-          {t('auth.newDeviceDesc')}<br/>
-          <strong>{deviceVerifyEmail}</strong><br/>
-          {t('auth.clickToVerifyDevice')}
-        </p>
-        {deviceVerifyInfo && (
-          <div style={{
-            background: 'var(--hover-bg)', border: '1px solid var(--border)',
-            borderRadius: '10px', padding: '14px 18px', margin: '16px 0',
-            textAlign: 'left', fontSize: '13px', lineHeight: 1.8
-          }}>
-            {deviceVerifyInfo.browser && (
-              <div><strong>{t('devices.browser')}:</strong> {deviceVerifyInfo.browser} {deviceVerifyInfo.browserVersion}</div>
-            )}
-            {deviceVerifyInfo.os && (
-              <div><strong>{t('devices.os')}:</strong> {deviceVerifyInfo.os} {deviceVerifyInfo.osVersion}{isAppleDevice ? ' *' : ''}</div>
-            )}
-            {deviceVerifyInfo.deviceType && (
-              <div><strong>{t('devices.deviceType')}:</strong> {deviceVerifyInfo.deviceType}</div>
-            )}
-            {deviceVerifyInfo.ip && (
-              <div><strong>IP:</strong> {deviceVerifyInfo.ip}</div>
-            )}
-          </div>
-        )}
-        {isAppleDevice && (
-          <p style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontStyle: 'italic' }}>
-            * {t('devices.appleVersionNote')}
-          </p>
-        )}
-
-        {/* 验证码输入区 */}
-        <div style={{
-          background: 'var(--primary-bg)', border: '1px solid var(--primary-border)',
-          borderRadius: '10px', padding: '16px', margin: '20px 0 0',
-        }}>
-          <p style={{color: 'var(--text-secondary)', fontSize: '13px', margin: '0 0 12px', lineHeight: 1.6}}>
-            {t('auth.enterDeviceCode')}
-          </p>
-          <form onSubmit={handleConfirmDeviceLogin} style={{display: 'flex', gap: '8px', flexDirection: 'column'}}>
-            <input
-              type="text"
-              value={deviceCodeInput}
-              onChange={(e) => setDeviceCodeInput(e.target.value.replace(/\D/g, '').slice(0, 6))}
-              placeholder={t('auth.deviceCodePlaceholder')}
-              inputMode="numeric"
-              maxLength="6"
-              className="code-input"
-            />
-            {deviceCodeError && (
-              <div className="error-message" style={{margin: 0, fontSize: '13px'}}>{deviceCodeError}</div>
-            )}
-            <button
-              type="submit"
-              disabled={deviceCodeInput.length !== 6 || deviceCodeSubmitting}
-              style={{
-                padding: '10px', borderRadius: '8px', fontSize: '14px', fontWeight: 600,
-                background: 'var(--btn-gradient)', color: 'var(--btn-text)',
-                border: 'none', cursor: deviceCodeSubmitting ? 'wait' : 'pointer',
-                opacity: (deviceCodeInput.length !== 6 || deviceCodeSubmitting) ? 0.6 : 1,
-              }}
-            >
-              {deviceCodeSubmitting ? t('common.pleaseWait') : t('auth.confirmLogin')}
-            </button>
-          </form>
-        </div>
-
-        <p style={{color: 'var(--text-secondary)', fontSize: '13px', marginTop: '16px'}}>
-          {t('auth.verifyLinkExpiry')}
-        </p>
-        <button onClick={() => setNeedDeviceVerify(false)} style={{
-          marginTop: '16px', padding: '10px 24px', borderRadius: '8px',
-          background: 'var(--hover-bg)', border: '1px solid var(--border)',
-          color: 'var(--foreground)', cursor: 'pointer', fontSize: '14px'
-        }}>{t('auth.backToLogin')}</button>
-      </div>
-    );
-  }
-
   if (need2FA) {
     return (
       <div className="auth-form">
         <h2><FontAwesomeIcon icon={faLock} aria-hidden="true" /> {t('twoFactor.title')}</h2>
-        <p style={{color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '20px', lineHeight: 1.7}}>
+        <p style={{color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '16px', lineHeight: 1.7}}>
           {t('twoFactor.loginDesc')}
         </p>
+        {/* 方法页签：验证器 / 邮箱验证码（仅后端告知可用时展示） */}
+        {twoFAMethods.length > 1 && (
+          <div style={{display: 'flex', gap: '8px', marginBottom: '16px'}}>
+            {twoFAMethods.map((m) => (
+              <button
+                key={m}
+                type="button"
+                onClick={() => { setTwoFAMethod(m); setTwoFAToken(''); setError(''); setEmailOTPSent(false); }}
+                style={{
+                  flex: 1, padding: '8px 12px', borderRadius: '8px', fontSize: '13px', fontWeight: 500,
+                  cursor: 'pointer', transition: 'all 0.2s',
+                  background: twoFAMethod === m ? 'var(--primary-bg)' : 'var(--hover-bg)',
+                  border: `1px solid ${twoFAMethod === m ? 'var(--primary-border)' : 'var(--border)'}`,
+                  color: 'var(--foreground)',
+                }}
+              >
+                {m === 'totp' ? t('twoFactor.methodTotp') : t('twoFactor.methodEmailOtp')}
+              </button>
+            ))}
+          </div>
+        )}
         {error && <div className="error-message">{error}</div>}
+        {twoFAMethod === 'emailOtp' && (
+          <div style={{marginBottom: '14px'}}>
+            {!emailOTPSent ? (
+              <button
+                type="button"
+                onClick={handleSendEmailOTP}
+                disabled={emailOTPSending}
+                style={{
+                  width: '100%', padding: '10px', borderRadius: '8px', fontSize: '14px', fontWeight: 600,
+                  background: 'var(--hover-bg-strong)', border: '1px solid var(--border)',
+                  color: 'var(--foreground)', cursor: emailOTPSending ? 'wait' : 'pointer',
+                }}
+              >
+                {emailOTPSending ? t('common.pleaseWait') : t('twoFactor.sendEmailOtp')}
+              </button>
+            ) : (
+              <p style={{color: 'var(--success-text)', fontSize: '13px', margin: 0}}>
+                {t('twoFactor.emailOtpSent')} <strong>{twoFAEmail}</strong>
+              </p>
+            )}
+          </div>
+        )}
         <form onSubmit={handle2FAVerify}>
           <div className="form-group">
-            <label htmlFor="twoFAToken">{t('twoFactor.code')}</label>
+            <label htmlFor="twoFAToken">
+              {twoFAMethod === 'emailOtp' ? t('twoFactor.emailCode') : t('twoFactor.code')}
+            </label>
             <input
               type="text"
               id="twoFAToken"
@@ -569,9 +511,19 @@ const Login = ({ login }) => {
       {successMsg && <div className="success-message" style={{padding: '10px', background: 'var(--success-bg-strong)', border: '1px solid var(--success-border)', borderRadius: '6px', color: 'var(--success-text)'}}>{successMsg}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="email">{t('auth.email')}</label>
-          <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} onBlur={(e) => handleBlur('email', e.target.value)} required />
-          {fieldErrors.email && <p style={{color: 'var(--destructive-text)', fontSize: '12px', margin: '2px 0 0 0'}}>{fieldErrors.email}</p>}
+          <label htmlFor="identifier">{t('auth.identifier')}</label>
+          <input
+            type="text"
+            id="identifier"
+            name="identifier"
+            value={formData.identifier}
+            onChange={handleChange}
+            onBlur={(e) => handleBlur('identifier', e.target.value)}
+            required
+            autoComplete="username"
+            placeholder={t('auth.identifierPlaceholder')}
+          />
+          {fieldErrors.identifier && <p style={{color: 'var(--destructive-text)', fontSize: '12px', margin: '2px 0 0 0'}}>{fieldErrors.identifier}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="password">{t('auth.password')}</label>
@@ -598,6 +550,25 @@ const Login = ({ login }) => {
           <button type="submit" disabled={submitting}>{submitting ? t('common.loading') : t('auth.loginButton')}</button>
         </div>
       </form>
+      {passkeyAvailable && (
+        <div className="form-group" style={{marginTop: '-6px'}}>
+          <button
+            type="button"
+            onClick={handlePasskeyLogin}
+            disabled={passkeyLoading}
+            style={{
+              width: '100%', padding: '10px', borderRadius: '8px', fontSize: '14px', fontWeight: 600,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+              background: 'var(--hover-bg-strong)', border: '1px solid var(--border)',
+              color: 'var(--foreground)', cursor: passkeyLoading ? 'wait' : 'pointer',
+              opacity: passkeyLoading ? 0.6 : 1,
+            }}
+          >
+            <FontAwesomeIcon icon={faFingerprint} aria-hidden="true" />
+            {passkeyLoading ? t('common.pleaseWait') : t('auth.passkeyLogin')}
+          </button>
+        </div>
+      )}
       <div style={{textAlign: 'center', marginTop: '10px', position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px'}}>
         <span onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowForgot(true); setError(''); setSuccessMsg(''); }} style={{color: 'var(--primary)', cursor: 'pointer', fontSize: '14px', padding: '4px 8px', display: 'inline-block', userSelect: 'none'}}>{t('auth.forgotPassword')}</span>
         <div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>

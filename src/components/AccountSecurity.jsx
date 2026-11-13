@@ -163,7 +163,7 @@ const AccountSecurity = ({ user }) => {
         </div>
       </div>
 
-      {/* 两步验证 */}
+      {/* 两步验证（角色化：普通用户禁开 / 创作者可选 / 管理员强制） */}
       <div style={sectionStyle}>
         <div style={rowStyle}>
           <div style={labelStyle}>
@@ -171,15 +171,27 @@ const AccountSecurity = ({ user }) => {
             <div>
               <div style={{fontWeight: 500, fontSize: '15px'}}>{t('twoFactor.title')}</div>
               <div style={{fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px'}}>
-                {user?.twoFactorEnabled ? <><FontAwesomeIcon icon={faCircleCheck} aria-hidden="true" /> {t('twoFactor.enabled')}</> : t('twoFactor.disabled')}
+                {user?.twoFactorEnabled ? (
+                  <><FontAwesomeIcon icon={faCircleCheck} aria-hidden="true" /> {t('twoFactor.enabled')}</>
+                ) : (user?.role === 'admin' || user?.role === 'superadmin') ? (
+                  <span style={{color: 'var(--warning-text)'}}><FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" /> {t('twoFactor.adminMissing')}</span>
+                ) : (user?.role === 'user' || !user?.role) ? (
+                  t('twoFactor.userForbiddenShort')
+                ) : (
+                  t('twoFactor.disabled')
+                )}
               </div>
             </div>
           </div>
-          <Link to="/two-factor">
-            <button className="btn btn-secondary" style={{fontSize: '13px', padding: '6px 14px'}}>
-              {user?.twoFactorEnabled ? t('common.manage') : t('common.enable')}
-            </button>
-          </Link>
+          {(user?.role === 'user' || !user?.role) ? (
+            <span style={{fontSize: '13px', color: 'var(--text-tertiary)'}}>{t('twoFactor.userUnavailable')}</span>
+          ) : (
+            <Link to="/two-factor">
+              <button className="btn btn-secondary" style={{fontSize: '13px', padding: '6px 14px'}}>
+                {user?.twoFactorEnabled ? t('common.manage') : t('common.enable')}
+              </button>
+            </Link>
+          )}
         </div>
       </div>
 

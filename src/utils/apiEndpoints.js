@@ -18,6 +18,25 @@ const API = {
     REQUEST_DELETION: '/api/auth/request-deletion',
     CANCEL_DELETION: '/api/auth/cancel-deletion',
     EMAIL_NOTIFICATION_PREFS: '/api/auth/email-notification-prefs',
+    LOGIN_2FA: '/api/auth/login-2fa',
+    // Passkey（WebAuthn）登录仪式
+    PASSKEY_OPTIONS: '/api/auth/passkey/options',
+    PASSKEY_VERIFY: '/api/auth/passkey/verify',
+  },
+  // 2FA（角色化：user 禁开 / creator 可选 / admin+ 强制）
+  TWOFACTOR: {
+    ENABLE: '/api/2fa/enable',
+    VERIFY_ENABLE: '/api/2fa/verify-enable',
+    DISABLE: '/api/2fa/disable',
+    VERIFY: '/api/2fa/verify',
+    EMAIL_OTP_SEND: '/api/auth/2fa/email-otp/send',
+  },
+  // Passkey 凭据管理（已登录）
+  PASSKEYS: {
+    LIST: '/api/passkeys',
+    REGISTER_OPTIONS: '/api/passkeys/register/options',
+    REGISTER_VERIFY: '/api/passkeys/register/verify',
+    DETAIL: (id) => `/api/passkeys/${id}`,
   },
   // 剧集
   EPISODES: '/api/episodes',
@@ -28,6 +47,8 @@ const API = {
     AVATAR: '/api/users/avatar',
     EXPORT: '/api/users/export-my-data',
     PROFILE: '/api/users/profile',
+    LOGIN_NAME: '/api/users/login-name',
+    CHECK_LOGIN_NAME: '/api/users/check-login-name',
   },
   WALLPAPERS: {
     SYSTEM: '/api/wallpapers/system',
