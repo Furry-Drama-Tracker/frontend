@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import CaptchaWidget from './CaptchaWidget';
 import axios from 'axios';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
-import { apiUrl } from '../utils/apiBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faCircleXmark, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
@@ -156,13 +156,7 @@ const VerifyEmail = () => {
         <p style={{color: 'var(--text-secondary)', fontSize: '13px', margin: '0 0 12px'}}>
           {t('auth.resendVerification')}
         </p>
-        <altcha-widget
-          ref={altchaRef}
-          challenge={apiUrl('/api/auth/captcha')}
-          auto="onload"
-          hidefooter="true"
-          hidelogo="true"
-        ></altcha-widget>
+        <CaptchaWidget ref={altchaRef} />
         <button
           onClick={handleResend}
           disabled={!altchaPayload || resendLoading}

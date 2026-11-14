@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import CaptchaWidget from './CaptchaWidget';
 import axios from 'axios';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getDeviceInfo } from '../utils/deviceInfo';
 import { useI18n } from '../contexts/I18nContext';
 import PasswordToggle from './PasswordToggle';
 import API from '../utils/apiEndpoints';
-import { apiUrl } from '../utils/apiBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faEnvelope, faLock, faFingerprint } from '@fortawesome/free-solid-svg-icons';
 import { browserSupportsWebAuthn, platformAuthenticatorIsAvailable, startAuthentication } from '@simplewebauthn/browser';
@@ -468,13 +468,7 @@ const Login = ({ login }) => {
             <label htmlFor="forgotEmail">{t('auth.email')}</label>
             <input type="email" id="forgotEmail" value={forgotEmail} onChange={(e) => setForgotEmail(e.target.value)} required placeholder={t('auth.enterRegisteredEmail')} />
           </div>
-          <altcha-widget
-            ref={altchaRef}
-            challenge={apiUrl('/api/auth/captcha')}
-            auto="onload"
-            hidefooter="true"
-            hidelogo="true"
-          ></altcha-widget>
+          <CaptchaWidget ref={altchaRef} />
           <div className="form-group"><button type="submit" disabled={submitting}>{t('auth.verifyEmail')}</button></div>
         </form>
         <div style={{textAlign: 'center', marginTop: '15px', position: 'relative', zIndex: 1}}>
@@ -539,13 +533,7 @@ const Login = ({ login }) => {
           />
           {fieldErrors.password && <p style={{color: 'var(--destructive-text)', fontSize: '12px', margin: '2px 0 0 0'}}>{fieldErrors.password}</p>}
         </div>
-        <altcha-widget
-          ref={altchaRef}
-          challenge={apiUrl('/api/auth/captcha')}
-          auto="onload"
-          hidefooter="true"
-          hidelogo="true"
-        ></altcha-widget>
+        <CaptchaWidget ref={altchaRef} />
         <div className="form-group">
           <button type="submit" disabled={submitting}>{submitting ? t('common.loading') : t('auth.loginButton')}</button>
         </div>

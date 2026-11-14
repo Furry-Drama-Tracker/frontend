@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { getDeviceInfo } from '../utils/deviceInfo';
 import { useI18n } from '../contexts/I18nContext';
 import PasswordToggle from './PasswordToggle';
-import { apiUrl } from '../utils/apiBase';
+import CaptchaWidget from './CaptchaWidget';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
@@ -101,7 +101,33 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (submitting) return;
-    if (!altchaPayload) return;
+    const accountId = formData.accountId.trim();
+    const username = formData.username.trim();
+    const email = formData.email.trim();
+    if (!accountId) {
+      setError(t('auth.accountIdPlaceholder'));
+      return;
+    }
+    if (!/^[A-Za-z_][A-Za-z0-9_-]{2,31}$/.test(accountId)) {
+      setError(t('auth.accountIdHint'));
+      return;
+    }
+    if (!username) {
+      setError(t('auth.nicknamePlaceholder'));
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError(t('auth.invalidEmail'));
+      return;
+    }
+    if (!formData.password) {
+      setError(t('auth.passwordHint'));
+      return;
+    }
+    if (!altchaPayload) {
+      setError(t('auth.captchaRequired'));
+      return;
+    }
     setSuggestLogin(false);
     if (formData.password.length < 8) {
       setError(t('auth.passwordHint'));
@@ -248,7 +274,7 @@ const Register = () => {
           >{t('auth.goToLogin')}</button>
         </div>
       )}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <div className="form-group">
           <label htmlFor="accountId">{t('auth.accountId')}</label>
           <input
@@ -261,7 +287,7 @@ const Register = () => {
             required
             minLength={3}
             maxLength={32}
-            pattern="[A-Za-z_][A-Za-z0-9_-]{2,31}"
+            pattern="[A-Za-z_][A-Za-z0-9_\-]{2,31}"
             autoComplete="username"
             placeholder={t('auth.accountIdPlaceholder')}
           />
@@ -312,13 +338,7 @@ const Register = () => {
           {fieldErrors.password && <p style={{color: 'var(--destructive-text)', fontSize: '12px', margin: '2px 0 0 0'}}>{fieldErrors.password}</p>}
           <span style={{fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px', display: 'block'}}>{t('auth.passwordHint')}</span>
         </div>
-        <altcha-widget
-          ref={altchaRef}
-          challenge={apiUrl('/api/auth/captcha')}
-          auto="onload"
-          hidefooter="true"
-          hidelogo="true"
-        ></altcha-widget>
+        <CaptchaWidget ref={altchaRef} />
         <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px' }}>
           <input
             type="checkbox"

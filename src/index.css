@@ -4819,3 +4819,17 @@ header.nav-scrolled {
 .episode-card:focus-visible .ec-title {
   color: var(--primary);
 }
+
+/* ---- ALTCHA 人机验证：固定横向排版，避免在窄容器中文字竖排 ---- */
+altcha-widget {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 8px 0;
+  writing-mode: horizontal-tb;
+  word-break: normal;
+  overflow-wrap: break-word;
+  letter-spacing: normal;
+  line-height: normal;
+  text-align: left;
+}

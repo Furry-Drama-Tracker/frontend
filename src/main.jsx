@@ -5,6 +5,8 @@ import './utils/polyfills'
 import './index.css'
 import './utils/axiosConfig'
 import 'altcha'
+import 'altcha/i18n/zh-cn'
+import 'altcha/i18n/en'
 
 if ('serviceWorker' in navigator) {
   import('virtual:pwa-register').then(({ registerSW }) => {

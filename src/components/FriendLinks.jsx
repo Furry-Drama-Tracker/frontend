@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
+import CaptchaWidget from './CaptchaWidget';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useI18n } from '../contexts/I18nContext';
 import useTranslation from '../hooks/useTranslation';
-import { assetUrl, apiUrl } from '../utils/apiBase';
+import { assetUrl } from '../utils/apiBase';
 import { useAuth } from '../contexts/AuthContext';
 import Modal from './Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -311,13 +312,7 @@ const FriendLinks = () => {
                 <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '6px', fontWeight: 500 }}>
                   {t('friendLink.captchaLabel')} <span style={{ color: 'var(--destructive-text)' }}>*</span>
                 </label>
-                <altcha-widget
-                  ref={altchaRef}
-                  challenge={apiUrl('/api/auth/captcha')}
-                  auto="onload"
-                  hidefooter="true"
-                  hidelogo="true"
-                ></altcha-widget>
+                <CaptchaWidget ref={altchaRef} />
               </div>
 
               {applyMsg && (
