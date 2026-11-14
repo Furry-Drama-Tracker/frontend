@@ -118,7 +118,18 @@ const Login = ({ login }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (submitting) return;
-    if (!altchaPayload) return;
+    if (!formData.identifier.trim()) {
+      setError(t('auth.enterIdentifier'));
+      return;
+    }
+    if (!formData.password) {
+      setError(t('auth.enterLoginPassword'));
+      return;
+    }
+    if (!altchaPayload) {
+      setError(t('auth.captchaRequired'));
+      return;
+    }
     setError('');
     setNeedVerification(false);
     setNeed2FA(false);
@@ -245,7 +256,14 @@ const Login = ({ login }) => {
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     if (submitting) return;
-    if (!altchaPayload) return;
+    if (!forgotEmail.trim()) {
+      setError(t('auth.enterLoginEmail'));
+      return;
+    }
+    if (!altchaPayload) {
+      setError(t('auth.captchaRequired'));
+      return;
+    }
     setError('');
     setSuccessMsg('');
     setSubmitting(true);
@@ -463,7 +481,7 @@ const Login = ({ login }) => {
         <h2>{t('auth.forgotPasswordTitle')}</h2>
         <p style={{color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '20px'}}>{t('auth.forgotPasswordDesc')}</p>
         {error && <div className="error-message">{error}</div>}
-        <form onSubmit={handleForgotPassword}>
+        <form onSubmit={handleForgotPassword} noValidate>
           <div className="form-group">
             <label htmlFor="forgotEmail">{t('auth.email')}</label>
             <input type="email" id="forgotEmail" value={forgotEmail} onChange={(e) => setForgotEmail(e.target.value)} required placeholder={t('auth.enterRegisteredEmail')} />
@@ -503,7 +521,7 @@ const Login = ({ login }) => {
         </div>
       )}
       {successMsg && <div className="success-message" style={{padding: '10px', background: 'var(--success-bg-strong)', border: '1px solid var(--success-border)', borderRadius: '6px', color: 'var(--success-text)'}}>{successMsg}</div>}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <div className="form-group">
           <label htmlFor="identifier">{t('auth.identifier')}</label>
           <input

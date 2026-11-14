@@ -263,7 +263,7 @@ const FriendLinks = () => {
               }}><FontAwesomeIcon icon={faXmark} aria-hidden="true" /></button>
             </div>
 
-            <form onSubmit={handleApply} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            <form onSubmit={handleApply} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
                 <label style={{ display: 'block', fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '6px', fontWeight: 500 }}>
                   {t('friendLink.siteName')} <span style={{ color: 'var(--destructive-text)' }}>*</span>
