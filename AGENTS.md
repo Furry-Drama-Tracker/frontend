@@ -52,7 +52,7 @@ Vite proxies `/api` and `/uploads` to `http://localhost:5000` (the backend). If 
 - **i18n**：页面文案继续走 `t('key.path')`（`zh.js` 与 `en.js` 都要加）；仅组件内部文案（分页、空态）可传 Arco `ConfigProvider` 内置 locale。
 - **`src/admin-kit/` 已冻结（frozen legacy）**——其中「源力/Yuanli」CSS 提取自 Trae IDE 内置的火山引擎设计库（专有、无许可证）。禁止扩展、抄写或在新代码/迁移代码中使用它的 class（`.yuanli-admin`、`.yl-*`、`.type-*`、`.alert-*` 等）。新后台 UI 一律用 Arco 组件实现；当没有任何组件再引用它时，删除 `admin-kit/` 与 `scope-kit.cjs`。
 
-**当前状态（2026-11）**：`src/admin-kit/` 已删除；后台外壳、控制台与审核页已使用 Arco 组件，其余页面使用项目自有的 `src/styles/admin.css`（基于 Arco token）。Refine 数据层迁移仍可按上面顺序继续。
+**当前状态（2026-11）**：`src/admin-kit/` 已删除；后台外壳、控制台、审核页、友链、剧集回收站、用户与剧集页已使用 Arco 组件，其余页面使用项目自有的 `src/styles/admin.css`（基于 Arco token）。Refine 数据层已接入：`src/utils/refineDataProvider.js` 与 `src/utils/refineAuthProvider.js` 复用 `adminApi`/`axiosConfig.js`，`<Refine>` 在 `AdminLayout.jsx` 内挂载（`syncWithLocation: false`）。上述五页（AdminUsers → AdminEpisodes → AdminEpisodeTrash → AdminFriendLinks → AdminReview）已完成迁移；其余页面仍为手写 fetch，可按需继续。用户列表的角色筛选与创作者剧集搜索因后端暂无对应查询参数，由 dataProvider 在 Refine 内做客户端过滤。
 
 ## Third-Party Assets & Licenses（硬性规则）
 
