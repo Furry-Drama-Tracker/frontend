@@ -280,6 +280,37 @@ body.admin-light {
   --radius-xl: 16px;
 }
 
+/* --------------------------------------------------------------------------
+ * Arco 基础图标样式（Base icon styles）
+ * 按需引入组件 CSS 时不会带上 Arco 全局样式（es/style/index.css），
+ * 缺少 `.arco-icon` 的 width/height 后 SVG 会回退到 300×150，
+ * 导致 Empty 空状态等内置图标渲染成超大图形。以下规则与官方全局样式一致。
+ * ------------------------------------------------------------------------ */
+.arco-icon {
+  display: inline-block;
+  color: inherit;
+  font-style: normal;
+  width: 1em;
+  height: 1em;
+  vertical-align: -2px;
+  stroke: currentColor;
+}
+
+.arco-icon[fill='currentColor'] {
+  fill: currentColor;
+  stroke: none;
+}
+
+.arco-icon[stroke='currentColor'] {
+  stroke: currentColor;
+  fill: none;
+}
+
+.arco-icon[fill='currentColor'][stroke='currentColor'] {
+  fill: currentColor;
+  stroke: currentColor;
+}
+
 body.admin-light {
   background: #f7f8fa;
   color: var(--color-text-1);
