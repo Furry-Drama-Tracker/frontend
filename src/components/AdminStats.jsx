@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowTrendUp, faBell, faChartColumn, faClock, faFileCirclePlus, faFilm, faFire, faHeart, faStar, faUsers } from '@fortawesome/free-solid-svg-icons';
@@ -40,10 +40,10 @@ const AdminStats = () => {
 
   return (
     <div className="admin-panel">
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <FontAwesomeIcon icon={faChartColumn} style={{ color: '#1664ff', fontSize: 20 }} aria-hidden="true" />
-          <h1 className="yl-page-title">{t('adminStats.chartTitle')}</h1>
+          <h1 className="admin-page-title">{t('adminStats.chartTitle')}</h1>
         </div>
       </div>
 

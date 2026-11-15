@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import { assetUrl } from '../utils/apiBase';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilm, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { Tabs, Button, Input } from '@arco-design/web-react';
 import ReviewStatusBadge from './ReviewStatusBadge';
 import Modal from './Modal';
 
@@ -167,29 +168,21 @@ const AdminReview = () => {
 
   return (
     <div>
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div>
-          <h1 className="yl-page-title">{t('adminReview.reviewManagement')}</h1>
+          <h1 className="admin-page-title">{t('adminReview.reviewManagement')}</h1>
         </div>
       </div>
 
-      <div className="yl-tabs" role="tablist">
-        <button
-          type="button"
-          role="tab" aria-selected={activeTab === 'pending'} className={`yl-tab${activeTab === 'pending' ? ' is-active' : ''}`}
-          onClick={() => setActiveTab('pending')}
-        >{t('adminReview.pendingReview')} ({pendingEpisodes.length})</button>
-        <button
-          type="button"
-          role="tab" aria-selected={activeTab === 'all'} className={`yl-tab${activeTab === 'all' ? ' is-active' : ''}`}
-          onClick={() => setActiveTab('all')}
-        >{t('adminReview.allEpisodes')}</button>
-        <button
-          type="button"
-          role="tab" aria-selected={activeTab === 'assign'} className={`yl-tab${activeTab === 'assign' ? ' is-active' : ''}`}
-          onClick={() => setActiveTab('assign')}
-        >{t('adminReview.permissionAssignment')}</button>
-      </div>
+      <Tabs
+        activeTab={activeTab}
+        onChange={setActiveTab}
+        className="admin-tabs"
+      >
+        <Tabs.TabPane key="pending" title={`${t('adminReview.pendingReview')} (${pendingEpisodes.length})`} />
+        <Tabs.TabPane key="all" title={t('adminReview.allEpisodes')} />
+        <Tabs.TabPane key="assign" title={t('adminReview.permissionAssignment')} />
+      </Tabs>
 
       {error && <div className="error-message">{error}</div>}
 
@@ -232,16 +225,15 @@ const AdminReview = () => {
                     <td>{new Date(ep.updatedAt).toLocaleDateString()}</td>
                     <td>
                       <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
-                        <input
-                          type="text"
+                        <Input
+                          size="small"
                           placeholder={t('adminReview.reviewNotePlaceholder')}
                           value={reviewNote}
-                          onChange={(e) => setReviewNote(e.target.value)}
-                          style={{fontSize: '13px', padding: '6px 10px'}}
+                          onChange={setReviewNote}
                         />
                         <div style={{display: 'flex', gap: '8px'}}>
-                          <button className="btn" style={{fontSize: '13px', padding: '6px 14px'}} onClick={() => handleApprove(ep._id)}>{t('adminReview.approve')}</button>
-                          <button className="btn btn-secondary" style={{fontSize: '13px', padding: '6px 14px', background: 'var(--destructive-bg)', color: 'var(--destructive-text)', borderColor: 'var(--destructive-border)'}} onClick={() => handleReject(ep._id)}>{t('adminReview.reject')}</button>
+                          <Button size="small" type="primary" onClick={() => handleApprove(ep._id)}>{t('adminReview.approve')}</Button>
+                          <Button size="small" status="danger" onClick={() => handleReject(ep._id)}>{t('adminReview.reject')}</Button>
                         </div>
                       </div>
                     </td>
@@ -312,8 +304,8 @@ const AdminReview = () => {
                   <td>
                     {(ep.reviewStatus === 'pending' || ep.hasPendingChanges) && (
                       <div style={{display: 'flex', gap: '8px'}}>
-                        <button className="btn" style={{fontSize: '13px', padding: '6px 14px'}} onClick={() => handleApprove(ep._id)}>{t('adminReview.approve')}</button>
-                        <button className="btn btn-secondary" style={{fontSize: '13px', padding: '6px 14px'}} onClick={() => handleReject(ep._id)}>{t('adminReview.reject')}</button>
+                        <Button size="small" type="primary" onClick={() => handleApprove(ep._id)}>{t('adminReview.approve')}</Button>
+                        <Button size="small" status="danger" onClick={() => handleReject(ep._id)}>{t('adminReview.reject')}</Button>
                       </div>
                     )}
                   </td>
@@ -355,7 +347,7 @@ const AdminReview = () => {
               ))}
             </select>
           </div>
-          <button className="btn" onClick={handleAssignEditor}>{t('adminReview.assignPermission')}</button>
+          <Button type="primary" onClick={handleAssignEditor}>{t('adminReview.assignPermission')}</Button>
         </div>
       )}
 

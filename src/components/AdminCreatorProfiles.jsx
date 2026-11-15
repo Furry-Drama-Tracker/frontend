@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import { assetUrl } from '../utils/apiBase';
@@ -133,11 +133,11 @@ const AdminCreatorProfiles = () => {
 
   return (
     <div className="admin-panel">
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div>
-          <h1 className="yl-page-title">{t('adminCreatorProfiles.title')}</h1>
+          <h1 className="admin-page-title">{t('adminCreatorProfiles.title')}</h1>
         </div>
-        <div className="yl-page-actions">
+        <div className="admin-page-actions">
           <button onClick={() => setEditingId(null)} className="btn btn-md btn-outline">
             <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" /> {t('adminCreatorProfiles.backToList')}
           </button>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import ImageUploader from './ImageUploader';
@@ -79,9 +79,9 @@ const AdminCreatorProfile = () => {
 
   return (
     <div className="admin-panel">
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <h1 className="yl-page-title">{t('adminCreatorProfile.title')}</h1>
+          <h1 className="admin-page-title">{t('adminCreatorProfile.title')}</h1>
           {reviewStatus && <ReviewStatusBadge status={reviewStatus} />}
         </div>
       </div>

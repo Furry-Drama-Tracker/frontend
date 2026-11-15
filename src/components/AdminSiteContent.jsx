@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import { assetUrl } from '../utils/apiBase';
@@ -843,9 +843,9 @@ const AdminSiteContent = () => {
   // ===== 站点内容列表渲染 =====
   return (
     <div className="admin-panel">
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div>
-          <h1 className="yl-page-title">{t('adminContent.contentManagement')}</h1>
+          <h1 className="admin-page-title">{t('adminContent.contentManagement')}</h1>
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import API from '../utils/apiEndpoints';
@@ -113,12 +113,12 @@ const AdminThemeReview = () => {
 
   return (
     <div>
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div>
-          <h1 className="yl-page-title">{t('adminThemeReview.title')}</h1>
-          <p className="yl-page-desc">{t('adminThemeReview.desc')}</p>
+          <h1 className="admin-page-title">{t('adminThemeReview.title')}</h1>
+          <p className="admin-page-desc">{t('adminThemeReview.desc')}</p>
         </div>
-        <div className="yl-page-actions">
+        <div className="admin-page-actions">
           <Link to="/admin/themes" className="btn btn-md btn-outline" style={{ textDecoration: 'none' }}>
             {t('adminThemeReview.manageThemes')}
           </Link>

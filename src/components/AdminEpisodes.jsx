@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import adminApi from '../utils/adminApi';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import CustomSelect from './CustomSelect';
@@ -943,16 +943,16 @@ const handleSingleDrop = async (e, targetId) => {
   if (showAddForm) {
     return (
       <div className="admin-page">
-        <div className="yl-page-header">
+        <div className="admin-page-header">
           <div>
-            <h1 className="yl-page-title">{t('adminEpisodes.addNewEpisode')}</h1>
-            <p className="yl-page-desc">{t('adminEpisodes.addEpisodeHint')}</p>
+            <h1 className="admin-page-title">{t('adminEpisodes.addNewEpisode')}</h1>
+            <p className="admin-page-desc">{t('adminEpisodes.addEpisodeHint')}</p>
           </div>
-          <div className="yl-page-actions">
+          <div className="admin-page-actions">
             <button className="btn btn-md btn-outline" onClick={() => setShowAddForm(false)}>{t('common.back')}</button>
           </div>
         </div>
-        <div className="yl-panel">{renderEpisodeForm(false)}</div>
+        <div className="admin-panel">{renderEpisodeForm(false)}</div>
       </div>
     );
   }
@@ -960,12 +960,12 @@ const handleSingleDrop = async (e, targetId) => {
   if (editingEpisode && showEditForm) {
     return (
       <div className="admin-page">
-        <div className="yl-page-header">
+        <div className="admin-page-header">
           <div>
-            <h1 className="yl-page-title">{t('adminEpisodes.editEpisode')}</h1>
-            <p className="yl-page-desc">{editingEpisode.title}</p>
+            <h1 className="admin-page-title">{t('adminEpisodes.editEpisode')}</h1>
+            <p className="admin-page-desc">{editingEpisode.title}</p>
           </div>
-          <div className="yl-page-actions">
+          <div className="admin-page-actions">
             <button className="btn btn-md btn-outline" onClick={handleCloseEditForm}>{t('common.back')}</button>
           </div>
         </div>
@@ -974,8 +974,8 @@ const handleSingleDrop = async (e, targetId) => {
             {t('adminEpisodes.editingPendingChanges')}
           </div>
         )}
-        <div className="yl-panel" style={{ marginBottom: '16px' }}>{renderEpisodeForm(true)}</div>
-        <div className="yl-panel">
+        <div className="admin-panel" style={{ marginBottom: '16px' }}>{renderEpisodeForm(true)}</div>
+        <div className="admin-panel">
           <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
             <h4>{t('adminEpisodes.singleEpisodeManagement')}</h4>
             <button className="btn btn-md btn-outline" onClick={() => {
@@ -1111,19 +1111,19 @@ const handleSingleDrop = async (e, targetId) => {
   // ===== 剧集列表渲染 =====
   return (
     <div>
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div>
-          <h1 className="yl-page-title">{t('adminEpisodes.episodeManagement')}</h1>
-          <p className="yl-page-desc">{t('adminEpisodes.episodeList')}</p>
+          <h1 className="admin-page-title">{t('adminEpisodes.episodeManagement')}</h1>
+          <p className="admin-page-desc">{t('adminEpisodes.episodeList')}</p>
         </div>
-        <div className="yl-page-actions">
+        <div className="admin-page-actions">
           <button className="btn btn-md btn-primary" onClick={() => { resetEpisodeForm(); setError(''); setShowAddForm(true); }}>
             {t('adminEpisodes.addNewEpisode')}
           </button>
         </div>
       </div>
 
-      <div className="yl-panel" style={{ marginBottom: '12px', maxWidth: 520 }}>
+      <div className="admin-panel" style={{ marginBottom: '12px', maxWidth: 520 }}>
         <AdminSearchInput
           data={episodes}
           searchKey={['title']}

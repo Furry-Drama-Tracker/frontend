@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+﻿import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBullhorn, faChartLine, faClipboardList, faCommentDots, faDatabase, faEnvelope, faFile, faFilm, faGear, faImage, faLink, faListCheck, faMobileScreen, faPalette, faRotate, faTag, faTrash, faTriangleExclamation, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { Card, Button, Tag, Alert, Space } from '@arco-design/web-react';
 
 const ICONS = {
   episode: faFilm,
@@ -238,46 +239,59 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div>
-          <h1 className="yl-page-title">{t('adminDashboard.welcome', { name: admin.username })}</h1>
-          <p className="yl-page-desc">
+          <h1 className="admin-page-title">{t('adminDashboard.welcome', { name: admin.username })}</h1>
+          <p className="admin-page-desc">
             {t('adminDashboard.roleLabel')}
             {roleText}
           </p>
         </div>
       </div>
 
-      <div className="yl-card-grid">
+      <div className="admin-card-grid">
         {cards.map((card) => (
-          <Link key={card.to + card.title} to={card.to} className="yl-card">
-            <span className="yl-card-icon">
-              <AdminIcon name={card.icon} />
-            </span>
-            <span className="yl-card-body">
-              <span className="yl-card-title">{card.title}</span>
-              <span className="yl-card-desc">{card.desc}</span>
-            </span>
-            {card.badge > 0 && <span className="yl-badge">{card.badge}</span>}
+          <Link key={card.to + card.title} to={card.to} className="admin-card-link">
+            <Card className="admin-card" hoverable>
+              <div className="admin-card-inner">
+                <span className="admin-card-icon">
+                  <AdminIcon name={card.icon} />
+                </span>
+                <span className="admin-card-body">
+                  <span className="admin-card-title">{card.title}</span>
+                  <span className="admin-card-desc">{card.desc}</span>
+                </span>
+                {card.badge > 0 && (
+                  <Tag color="red" className="admin-card-badge">{card.badge}</Tag>
+                )}
+              </div>
+            </Card>
           </Link>
         ))}
       </div>
 
       {isSuper && (
-        <div className="yl-panel" style={{ marginTop: 16 }}>
-          <h2 className="yl-panel-title"><FontAwesomeIcon icon={faGear} aria-hidden="true" /> {t('adminDashboard.autoStatusFlow')}</h2>
-          <div className="yl-toolbar">
-            <button type="button" className="btn btn-md btn-outline" onClick={() => runAutoStatus('/api/auto-status/auto-complete')}>
+        <Card className="admin-panel" style={{ marginTop: 16 }}>
+          <h2 className="admin-panel-title">
+            <FontAwesomeIcon icon={faGear} aria-hidden="true" /> {t('adminDashboard.autoStatusFlow')}
+          </h2>
+          <Space wrap>
+            <Button type="outline" onClick={() => runAutoStatus('/api/auto-status/auto-complete')}>
               <FontAwesomeIcon icon={faRotate} aria-hidden="true" /> {t('adminDashboard.autoMarkCompleted')}
-            </button>
-            <button type="button" className="btn btn-md btn-outline" onClick={() => runAutoStatus('/api/auto-status/check-premieres')}>
+            </Button>
+            <Button type="outline" onClick={() => runAutoStatus('/api/auto-status/check-premieres')}>
               <FontAwesomeIcon icon={faFilm} aria-hidden="true" /> {t('adminDashboard.publishDuePremieres')}
-            </button>
-          </div>
+            </Button>
+          </Space>
           {statusMsg && (
-            <p className={`yl-hint${statusError ? ' yl-hint--error' : ''}`}>{statusMsg}</p>
+            <Alert
+              style={{ marginTop: 12 }}
+              type={statusError ? 'error' : 'success'}
+              content={statusMsg}
+              showIcon
+            />
           )}
-        </div>
+        </Card>
       )}
     </>
   );

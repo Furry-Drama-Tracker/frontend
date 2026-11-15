@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 /**
- * 后台专用搜索框（源力风格）。
+ * 后台专用搜索框（Arco 风格）。
  * 按 searchKey 在本地数据里过滤并给出候选，输入即触发 onSearch，
  * 选中候选时额外回调 onSelect。与公开站的 SearchInput 完全独立。
  */

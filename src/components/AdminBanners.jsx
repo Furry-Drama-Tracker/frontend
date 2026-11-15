@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import adminApi from '../utils/adminApi';
 import { assetUrl } from '../utils/apiBase';
 import { useOutletContext } from 'react-router-dom';
@@ -159,16 +159,16 @@ const AdminBanners = () => {
   if (showAddForm) {
     return (
       <div className="admin-page">
-        <div className="yl-page-header">
+        <div className="admin-page-header">
           <div>
-            <h1 className="yl-page-title">{t('adminBanners.addBanner')}</h1>
-            <p className="yl-page-desc">{t('adminBanners.title')}</p>
+            <h1 className="admin-page-title">{t('adminBanners.addBanner')}</h1>
+            <p className="admin-page-desc">{t('adminBanners.title')}</p>
           </div>
-          <div className="yl-page-actions">
+          <div className="admin-page-actions">
             <button className="btn btn-md btn-outline" onClick={() => setShowAddForm(false)}>{t('common.back')}</button>
           </div>
         </div>
-        <div className="yl-panel">{renderForm(handleAdd, t('adminBanners.add'))}</div>
+        <div className="admin-panel">{renderForm(handleAdd, t('adminBanners.add'))}</div>
       </div>
     );
   }
@@ -176,27 +176,27 @@ const AdminBanners = () => {
   if (editingBanner) {
     return (
       <div className="admin-page">
-        <div className="yl-page-header">
+        <div className="admin-page-header">
           <div>
-            <h1 className="yl-page-title">{t('adminBanners.editBanner')}</h1>
-            <p className="yl-page-desc">{editingBanner.title}</p>
+            <h1 className="admin-page-title">{t('adminBanners.editBanner')}</h1>
+            <p className="admin-page-desc">{editingBanner.title}</p>
           </div>
-          <div className="yl-page-actions">
+          <div className="admin-page-actions">
             <button className="btn btn-md btn-outline" onClick={() => setEditingBanner(null)}>{t('common.back')}</button>
           </div>
         </div>
-        <div className="yl-panel">{renderForm(handleEdit, t('adminBanners.save'))}</div>
+        <div className="admin-panel">{renderForm(handleEdit, t('adminBanners.save'))}</div>
       </div>
     );
   }
 
   return (
     <div className="admin-page">
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div>
-          <h1 className="yl-page-title">{t('adminBanners.title')}</h1>
+          <h1 className="admin-page-title">{t('adminBanners.title')}</h1>
         </div>
-        <div className="yl-page-actions">
+        <div className="admin-page-actions">
           <button className="btn btn-md btn-primary" onClick={openAdd}>{t('adminBanners.addBannerBtn')}</button>
         </div>
       </div>

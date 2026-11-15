@@ -1,0 +1,1348 @@
+/*
+ * Admin console theme.
+ *
+ * Built on the open-source Arco Design token system (MIT, ByteDance).
+ * Only the admin area is themed: the public site keeps its own styles.
+ * No third-party closed-source CSS is used here.
+ */
+
+/* --------------------------------------------------------------------------
+ * Arco Design default light-theme tokens (MIT, Copyright ByteDance).
+ * Values are the public Arco palette; they are declared on body.admin-light
+ * so popups rendered into <body> (modal/select) inherit the same theme.
+ * ------------------------------------------------------------------------ */
+body.admin-light {
+  --red-1: 255, 236, 232;
+  --red-2: 253, 205, 197;
+  --red-3: 251, 172, 163;
+  --red-4: 249, 137, 129;
+  --red-5: 247, 101, 96;
+  --red-6: 245, 63, 63;
+  --red-7: 203, 39, 45;
+  --red-8: 161, 21, 30;
+  --red-9: 119, 8, 19;
+  --red-10: 77, 0, 10;
+
+  --green-1: 232, 255, 234;
+  --green-2: 175, 240, 181;
+  --green-3: 123, 225, 136;
+  --green-4: 76, 210, 99;
+  --green-5: 35, 195, 67;
+  --green-6: 0, 180, 42;
+  --green-7: 0, 154, 41;
+  --green-8: 0, 128, 38;
+  --green-9: 0, 102, 34;
+  --green-10: 0, 77, 28;
+
+  --orange-1: 255, 247, 232;
+  --orange-2: 255, 228, 186;
+  --orange-3: 255, 207, 139;
+  --orange-4: 255, 182, 93;
+  --orange-5: 255, 154, 46;
+  --orange-6: 255, 125, 0;
+  --orange-7: 210, 95, 0;
+  --orange-8: 166, 69, 0;
+  --orange-9: 121, 46, 0;
+  --orange-10: 77, 27, 0;
+
+  --arcoblue-1: 232, 243, 255;
+  --arcoblue-2: 190, 218, 255;
+  --arcoblue-3: 148, 191, 255;
+  --arcoblue-4: 106, 161, 255;
+  --arcoblue-5: 64, 128, 255;
+  --arcoblue-6: 22, 93, 255;
+  --arcoblue-7: 14, 66, 210;
+  --arcoblue-8: 7, 44, 166;
+  --arcoblue-9: 3, 26, 121;
+  --arcoblue-10: 0, 13, 77;
+
+  --purple-1: 245, 232, 255;
+  --purple-2: 221, 190, 246;
+  --purple-3: 195, 150, 237;
+  --purple-4: 168, 113, 227;
+  --purple-5: 141, 78, 218;
+  --purple-6: 114, 46, 209;
+  --purple-7: 85, 29, 176;
+  --purple-8: 60, 16, 143;
+  --purple-9: 39, 6, 110;
+  --purple-10: 22, 0, 77;
+
+  --gray-1: 247, 248, 250;
+  --gray-2: 242, 243, 245;
+  --gray-3: 229, 230, 235;
+  --gray-4: 201, 205, 212;
+  --gray-5: 169, 174, 184;
+  --gray-6: 134, 144, 156;
+  --gray-7: 107, 119, 133;
+  --gray-8: 78, 89, 105;
+  --gray-9: 39, 46, 59;
+  --gray-10: 29, 33, 41;
+
+  --primary-1: var(--arcoblue-1);
+  --primary-2: var(--arcoblue-2);
+  --primary-3: var(--arcoblue-3);
+  --primary-4: var(--arcoblue-4);
+  --primary-5: var(--arcoblue-5);
+  --primary-6: var(--arcoblue-6);
+  --primary-7: var(--arcoblue-7);
+  --primary-8: var(--arcoblue-8);
+  --primary-9: var(--arcoblue-9);
+  --primary-10: var(--arcoblue-10);
+
+  --success-1: var(--green-1);
+  --success-2: var(--green-2);
+  --success-3: var(--green-3);
+  --success-4: var(--green-4);
+  --success-5: var(--green-5);
+  --success-6: var(--green-6);
+  --success-7: var(--green-7);
+  --success-8: var(--green-8);
+  --success-9: var(--green-9);
+  --success-10: var(--green-10);
+
+  --warning-1: var(--orange-1);
+  --warning-2: var(--orange-2);
+  --warning-3: var(--orange-3);
+  --warning-4: var(--orange-4);
+  --warning-5: var(--orange-5);
+  --warning-6: var(--orange-6);
+  --warning-7: var(--orange-7);
+  --warning-8: var(--orange-8);
+  --warning-9: var(--orange-9);
+  --warning-10: var(--orange-10);
+
+  --danger-1: var(--red-1);
+  --danger-2: var(--red-2);
+  --danger-3: var(--red-3);
+  --danger-4: var(--red-4);
+  --danger-5: var(--red-5);
+  --danger-6: var(--red-6);
+  --danger-7: var(--red-7);
+  --danger-8: var(--red-8);
+  --danger-9: var(--red-9);
+  --danger-10: var(--red-10);
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-border: rgb(var(--gray-3));
+  --color-bg-popup: var(--color-bg-5);
+  --color-bg-1: #ffffff;
+  --color-bg-2: #ffffff;
+  --color-bg-3: #ffffff;
+  --color-bg-4: #ffffff;
+  --color-bg-5: #ffffff;
+  --color-bg-white: #ffffff;
+  --color-neutral-1: rgb(var(--gray-1));
+  --color-neutral-2: rgb(var(--gray-2));
+  --color-neutral-3: rgb(var(--gray-3));
+  --color-neutral-4: rgb(var(--gray-4));
+  --color-neutral-5: rgb(var(--gray-5));
+  --color-neutral-6: rgb(var(--gray-6));
+  --color-neutral-7: rgb(var(--gray-7));
+  --color-neutral-8: rgb(var(--gray-8));
+  --color-neutral-9: rgb(var(--gray-9));
+  --color-neutral-10: rgb(var(--gray-10));
+  --color-text-1: var(--color-neutral-10);
+  --color-text-2: var(--color-neutral-8);
+  --color-text-3: var(--color-neutral-6);
+  --color-text-4: var(--color-neutral-4);
+  --color-border-1: var(--color-neutral-2);
+  --color-border-2: var(--color-neutral-3);
+  --color-border-3: var(--color-neutral-4);
+  --color-border-4: var(--color-neutral-6);
+  --color-fill-1: var(--color-neutral-1);
+  --color-fill-2: var(--color-neutral-2);
+  --color-fill-3: var(--color-neutral-3);
+  --color-fill-4: var(--color-neutral-4);
+  --color-primary-light-1: rgb(var(--primary-1));
+  --color-primary-light-2: rgb(var(--primary-2));
+  --color-primary-light-3: rgb(var(--primary-3));
+  --color-primary-light-4: rgb(var(--primary-4));
+  --color-secondary: var(--color-neutral-2);
+  --color-secondary-hover: var(--color-neutral-3);
+  --color-secondary-active: var(--color-neutral-4);
+  --color-secondary-disabled: var(--color-neutral-1);
+  --color-danger-light-1: rgb(var(--danger-1));
+  --color-danger-light-2: rgb(var(--danger-2));
+  --color-danger-light-3: rgb(var(--danger-3));
+  --color-danger-light-4: rgb(var(--danger-4));
+  --color-success-light-1: rgb(var(--success-1));
+  --color-success-light-2: rgb(var(--success-2));
+  --color-success-light-3: rgb(var(--success-3));
+  --color-success-light-4: rgb(var(--success-4));
+  --color-warning-light-1: rgb(var(--warning-1));
+  --color-warning-light-2: rgb(var(--warning-2));
+  --color-warning-light-3: rgb(var(--warning-3));
+  --color-warning-light-4: rgb(var(--warning-4));
+  --color-link-light-1: rgb(var(--primary-1));
+  --color-link-light-2: rgb(var(--primary-2));
+  --color-link-light-3: rgb(var(--primary-3));
+  --color-link-light-4: rgb(var(--primary-4));
+  --border-radius-none: 0;
+  --border-radius-small: 2px;
+  --border-radius-medium: 4px;
+  --border-radius-large: 8px;
+  --border-radius-circle: 50%;
+  --color-tooltip-bg: rgb(var(--gray-10));
+  --color-spin-layer-bg: rgba(255, 255, 255, 0.6);
+  --color-menu-dark-bg: #232324;
+  --color-menu-light-bg: #ffffff;
+  --color-menu-dark-hover: rgba(255, 255, 255, 0.04);
+  --color-mask-bg: rgba(29, 33, 41, 0.6);
+  --font-weight-100: 100;
+  --font-weight-200: 200;
+  --font-weight-300: 300;
+  --font-weight-400: 400;
+  --font-weight-500: 500;
+  --font-weight-600: 600;
+  --font-weight-700: 700;
+  --font-weight-800: 800;
+  --font-weight-900: 900;
+
+  /* Map the app's existing admin tokens onto Arco light-theme values. */
+  --background: #ffffff;
+  --background-rgb: 255, 255, 255;
+  --bg: #f7f8fa;
+  --bg-secondary: #f7f8fa;
+  --bg-tertiary: #f2f3f5;
+  --surface-elevated: #ffffff;
+  --foreground: var(--color-text-1);
+  --text-1: var(--color-text-1);
+  --text-2: var(--color-text-2);
+  --text-3: var(--color-text-3);
+  --text-secondary: var(--color-text-2);
+  --text-tertiary: var(--color-text-3);
+  --text-light: var(--color-text-1);
+  --text-lighter: var(--color-text-2);
+  --muted-foreground: var(--color-text-3);
+  --card: #ffffff;
+  --card-foreground: var(--color-text-1);
+  --popover: #ffffff;
+  --popover-foreground: var(--color-text-1);
+  --border: var(--color-border-2);
+  --input: #ffffff;
+  --ring: rgb(var(--primary-6));
+  --primary: rgb(var(--primary-6));
+  --primary-dark: rgb(var(--primary-7));
+  --primary-light: rgb(var(--primary-5));
+  --primary-hover: rgb(var(--primary-5));
+  --primary-rgb: var(--primary-6);
+  --primary-bg: rgba(var(--primary-6), 0.08);
+  --primary-bg-subtle: rgba(var(--primary-6), 0.04);
+  --primary-bg-strong: rgba(var(--primary-6), 0.12);
+  --primary-border: rgba(var(--primary-6), 0.3);
+  --primary-border-subtle: rgba(var(--primary-6), 0.16);
+  --secondary: rgb(var(--success-6));
+  --btn-gradient: rgb(var(--primary-6));
+  --btn-gradient-primary: rgb(var(--primary-6));
+  --btn-gradient-success: rgb(var(--success-6));
+  --btn-gradient-purple: rgb(var(--purple-6));
+  --btn-gradient-hover: rgb(var(--primary-5));
+  --btn-text: #ffffff;
+  --hover-bg: var(--color-fill-1);
+  --hover-bg-subtle: var(--color-fill-1);
+  --hover-bg-strong: var(--color-fill-2);
+  --hover-bg-stronger: var(--color-fill-3);
+  --glass-bg: #ffffff;
+  --glass-border: var(--color-border-2);
+  --glass-backdrop: none;
+  --shadow-modal: rgba(0, 0, 0, 0.16);
+  --shadow-color: rgba(0, 0, 0, 0.08);
+  --shadow-strong: rgba(0, 0, 0, 0.12);
+  --destructive: rgb(var(--danger-6));
+  --destructive-bg: rgba(var(--danger-6), 0.08);
+  --destructive-bg-subtle: rgba(var(--danger-6), 0.04);
+  --destructive-border: rgba(var(--danger-6), 0.3);
+  --destructive-text: rgb(var(--danger-6));
+  --success: rgb(var(--success-6));
+  --success-bg: rgba(var(--success-6), 0.08);
+  --success-bg-subtle: rgba(var(--success-6), 0.04);
+  --success-bg-strong: rgba(var(--success-6), 0.12);
+  --success-border: rgba(var(--success-6), 0.3);
+  --success-text: rgb(var(--success-6));
+  --warning: rgb(var(--warning-6));
+  --warning-bg: rgba(var(--warning-6), 0.08);
+  --warning-bg-subtle: rgba(var(--warning-6), 0.04);
+  --warning-bg-strong: rgba(var(--warning-6), 0.12);
+  --warning-border: rgba(var(--warning-6), 0.3);
+  --warning-text: rgb(var(--warning-6));
+  --info: rgb(var(--primary-6));
+  --info-bg: rgba(var(--primary-6), 0.08);
+  --info-border: rgba(var(--primary-6), 0.3);
+  --info-text: rgb(var(--primary-6));
+  --purple: rgb(var(--purple-6));
+  --purple-bg: rgba(var(--purple-6), 0.08);
+  --purple-border: rgba(var(--purple-6), 0.3);
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+}
+
+body.admin-light {
+  background: #f7f8fa;
+  color: var(--color-text-1);
+  font-family: 'HarmonyOS Sans', 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, sans-serif;
+  padding-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+ * Shell
+ * ------------------------------------------------------------------------ */
+.admin-shell {
+  min-height: 100vh;
+  background: #f7f8fa;
+}
+
+.admin-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 56px;
+  padding: 0 20px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--color-border-2);
+}
+
+.admin-topbar-left,
+.admin-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.admin-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  color: var(--color-text-1);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.admin-brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: rgb(var(--primary-6));
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.admin-brand-sub {
+  margin-left: 2px;
+  color: var(--color-text-3);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.admin-topbar-link {
+  color: var(--color-text-2);
+  font-size: 14px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.admin-topbar-link:hover {
+  color: rgb(var(--primary-6));
+}
+
+.admin-user {
+  max-width: 160px;
+  overflow: hidden;
+  color: var(--color-text-1);
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--color-text-2);
+  cursor: pointer;
+}
+
+.admin-icon-btn:hover {
+  background: var(--color-fill-1);
+  color: var(--color-text-1);
+}
+
+.admin-body {
+  min-height: calc(100vh - 56px);
+}
+
+.admin-sider {
+  position: sticky;
+  top: 56px;
+  height: calc(100vh - 56px);
+  background: #ffffff;
+  border-right: 1px solid var(--color-border-2);
+}
+
+.admin-sider .arco-layout-sider-children {
+  height: 100%;
+  padding: 10px 8px 24px;
+  overflow-y: auto;
+}
+
+.admin-sider .arco-menu {
+  background: transparent;
+}
+
+.admin-sider .arco-menu-item {
+  height: 36px;
+  margin: 2px 0;
+  border-radius: 6px;
+  color: var(--color-text-2);
+  font-size: 14px;
+  line-height: 36px;
+}
+
+.admin-sider .arco-menu-item:hover {
+  background: var(--color-fill-1);
+  color: var(--color-text-1);
+}
+
+.admin-sider .arco-menu-item.arco-menu-selected {
+  background: rgb(var(--primary-1));
+  color: rgb(var(--primary-6));
+  font-weight: 500;
+}
+
+.admin-sider .arco-menu-group-title {
+  padding: 12px 10px 6px;
+  color: var(--color-text-3);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.admin-content {
+  min-width: 0;
+  padding: 20px 24px 40px;
+  background: #f7f8fa;
+}
+
+.admin-page {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* --------------------------------------------------------------------------
+ * Page header / panels / cards
+ * ------------------------------------------------------------------------ */
+.admin-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.admin-page-title {
+  margin: 0;
+  color: var(--color-text-1);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.admin-page-desc {
+  margin: 4px 0 0;
+  color: var(--color-text-3);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.admin-page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-panel,
+.admin-panel.arco-card {
+  margin-top: 16px;
+  padding: 20px;
+  border: 1px solid var(--color-border-2);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.admin-panel.arco-card .arco-card-body {
+  padding: 0;
+}
+
+.admin-panel::before {
+  display: none;
+}
+
+.admin-panel h2 {
+  margin: 0 0 16px;
+  color: var(--color-text-1);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: normal;
+}
+
+.admin-panel h3 {
+  margin: 0 0 12px;
+  color: var(--color-text-1);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.admin-panel h4 {
+  margin: 0 0 10px;
+  color: var(--color-text-1);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.admin-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+  color: var(--color-text-1);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.admin-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.admin-card-link {
+  display: block;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.admin-card,
+.admin-card.arco-card {
+  height: 100%;
+  border: 1px solid var(--color-border-2);
+  border-radius: 8px;
+  background: #ffffff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.admin-card:hover,
+.admin-card.arco-card:hover {
+  border-color: rgb(var(--primary-3));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+
+.admin-card.arco-card .arco-card-body {
+  padding: 16px;
+}
+
+.admin-card-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.admin-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: rgb(var(--primary-1));
+  color: rgb(var(--primary-6));
+}
+
+.admin-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-card-title {
+  display: block;
+  color: var(--color-text-1);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.admin-card-desc {
+  display: block;
+  margin-top: 4px;
+  color: var(--color-text-3);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.admin-card-badge {
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: rgb(var(--danger-6));
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.admin-hint {
+  margin: 12px 0 0;
+  color: var(--color-text-2);
+  font-size: 13px;
+}
+
+.admin-hint--error {
+  color: rgb(var(--danger-6));
+}
+
+/* --------------------------------------------------------------------------
+ * Tables
+ * ------------------------------------------------------------------------ */
+.admin-app .table-wrapper,
+body.admin-light .table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--color-border-2);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.admin-app .table,
+.admin-app .admin-table,
+body.admin-light .table,
+body.admin-light .admin-table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  background: #ffffff;
+}
+
+.admin-app .table th,
+.admin-app .admin-table th,
+body.admin-light .table th,
+body.admin-light .admin-table th {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-border-2);
+  background: var(--color-fill-1);
+  color: var(--color-text-2);
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.admin-app .table td,
+.admin-app .admin-table td,
+body.admin-light .table td,
+body.admin-light .admin-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--color-border-1);
+  color: var(--color-text-1);
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.admin-app .table tbody tr:last-child td,
+.admin-app .admin-table tbody tr:last-child td,
+body.admin-light .table tbody tr:last-child td,
+body.admin-light .admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-app .table tbody tr:hover td,
+.admin-app .admin-table tbody tr:hover td,
+body.admin-light .table tbody tr:hover td,
+body.admin-light .admin-table tbody tr:hover td {
+  background: var(--color-fill-1);
+}
+
+.admin-app .table-actions,
+body.admin-light .table-actions {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+ * Forms
+ * ------------------------------------------------------------------------ */
+.admin-app .form-container,
+body.admin-light .form-container {
+  margin: 0;
+  padding: 20px;
+  border: 1px solid var(--color-border-2);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.admin-app .form-group,
+body.admin-light .form-group {
+  margin-bottom: 16px;
+}
+
+.admin-app .form-group label,
+body.admin-light .form-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--color-text-2);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.admin-app .form-group input,
+.admin-app .form-group select,
+.admin-app .form-group textarea,
+body.admin-light .form-group input,
+body.admin-light .form-group select,
+body.admin-light .form-group textarea {
+  width: 100%;
+  min-height: 32px;
+  padding: 5px 12px;
+  border: 1px solid var(--color-border-2);
+  border-radius: 4px;
+  background: #ffffff;
+  color: var(--color-text-1);
+  font-size: 14px;
+  line-height: 1.5;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-app .form-group textarea,
+body.admin-light .form-group textarea {
+  min-height: 88px;
+  padding: 8px 12px;
+  resize: vertical;
+}
+
+.admin-app .form-group input:focus,
+.admin-app .form-group select:focus,
+.admin-app .form-group textarea:focus,
+body.admin-light .form-group input:focus,
+body.admin-light .form-group select:focus,
+body.admin-light .form-group textarea:focus {
+  outline: none;
+  border-color: rgb(var(--primary-6));
+  box-shadow: 0 0 0 2px rgb(var(--primary-2));
+}
+
+.admin-app .form-group input:invalid,
+.admin-app .form-group textarea:invalid,
+body.admin-light .form-group input:invalid,
+body.admin-light .form-group textarea:invalid {
+  border-color: rgb(var(--danger-6));
+  box-shadow: none;
+}
+
+/* Required fields should not turn red before the user interacts with them. */
+.admin-app input:invalid:not(:user-invalid),
+.admin-app textarea:invalid:not(:user-invalid),
+.admin-app select:invalid:not(:user-invalid),
+body.admin-light input:invalid:not(:user-invalid),
+body.admin-light textarea:invalid:not(:user-invalid),
+body.admin-light select:invalid:not(:user-invalid) {
+  border-color: var(--color-border-2) !important;
+  box-shadow: none !important;
+}
+
+.admin-app .form-group input:user-invalid,
+.admin-app .form-group textarea:user-invalid,
+.admin-app .form-group select:user-invalid,
+body.admin-light .form-group input:user-invalid,
+body.admin-light .form-group textarea:user-invalid,
+body.admin-light .form-group select:user-invalid {
+  border-color: rgb(var(--danger-6)) !important;
+}
+
+.admin-app .form-group input[type='checkbox'],
+.admin-app .form-group input[type='radio'],
+body.admin-light .form-group input[type='checkbox'],
+body.admin-light .form-group input[type='radio'] {
+  width: auto;
+  min-height: 0;
+  height: 16px;
+  margin-right: 6px;
+  padding: 0;
+}
+
+.admin-app .validation-msg,
+body.admin-light .validation-msg {
+  margin-top: 4px;
+  color: rgb(var(--danger-6));
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* --------------------------------------------------------------------------
+ * Buttons
+ * ------------------------------------------------------------------------ */
+.admin-app .btn,
+.admin-app .form-group button,
+body.admin-light .btn,
+body.admin-light .form-group button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: auto;
+  height: 32px;
+  margin: 0;
+  padding: 0 15px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: rgb(var(--primary-6));
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.admin-app .btn:hover,
+.admin-app .form-group button:hover,
+body.admin-light .btn:hover,
+body.admin-light .form-group button:hover {
+  background: rgb(var(--primary-5));
+  transform: none;
+  box-shadow: none;
+}
+
+.admin-app .btn:active,
+.admin-app .form-group button:active,
+body.admin-light .btn:active,
+body.admin-light .form-group button:active {
+  background: rgb(var(--primary-7));
+  transform: none;
+}
+
+.admin-app .btn::before,
+.admin-app .btn::after,
+.admin-app .form-group button::before,
+body.admin-light .btn::before,
+body.admin-light .btn::after,
+body.admin-light .form-group button::before {
+  display: none;
+}
+
+.admin-app .btn-secondary,
+body.admin-light .btn-secondary {
+  border-color: transparent;
+  background: var(--color-fill-2);
+  color: var(--color-text-1);
+}
+
+.admin-app .btn-secondary:hover,
+body.admin-light .btn-secondary:hover {
+  background: var(--color-fill-3);
+}
+
+.admin-app .btn-outline,
+body.admin-light .btn-outline {
+  border-color: rgb(var(--primary-6));
+  background: #ffffff;
+  color: rgb(var(--primary-6));
+}
+
+.admin-app .btn-outline:hover,
+body.admin-light .btn-outline:hover {
+  border-color: rgb(var(--primary-5));
+  background: rgb(var(--primary-1));
+  color: rgb(var(--primary-5));
+}
+
+.admin-app .btn-danger,
+body.admin-light .btn-danger {
+  border-color: transparent;
+  background: rgb(var(--danger-6));
+  color: #ffffff;
+}
+
+.admin-app .btn-danger:hover,
+body.admin-light .btn-danger:hover {
+  background: rgb(var(--danger-5));
+}
+
+.admin-app .btn-text,
+body.admin-light .btn-text {
+  border-color: transparent;
+  background: transparent;
+  color: rgb(var(--primary-6));
+}
+
+.admin-app .btn-text:hover,
+body.admin-light .btn-text:hover {
+  background: var(--color-fill-1);
+}
+
+.admin-app .btn-small,
+body.admin-light .btn-small {
+  height: 28px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.admin-app .btn-md,
+body.admin-light .btn-md {
+  height: 32px;
+  padding: 0 15px;
+}
+
+.admin-app .action-buttons,
+body.admin-light .action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-app .action-link,
+body.admin-light .action-link {
+  margin-right: 12px;
+  color: rgb(var(--primary-6));
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.admin-app .action-link:hover,
+body.admin-light .action-link:hover {
+  text-decoration: underline;
+}
+
+.admin-app .action-link.action-danger,
+body.admin-light .action-link.action-danger {
+  color: rgb(var(--danger-6));
+}
+
+/* --------------------------------------------------------------------------
+ * Status / feedback
+ * ------------------------------------------------------------------------ */
+.admin-app .status,
+.admin-app .status-tag,
+body.admin-light .status,
+body.admin-light .status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 4px;
+  background: var(--color-fill-2);
+  color: var(--color-text-2);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.admin-app .status.ongoing,
+.admin-app .status-tag-processing,
+body.admin-light .status.ongoing,
+body.admin-light .status-tag-processing {
+  background: rgb(var(--primary-1));
+  color: rgb(var(--primary-6));
+}
+
+.admin-app .status.completed,
+.admin-app .status-tag-success,
+body.admin-light .status.completed,
+body.admin-light .status-tag-success {
+  background: rgb(var(--success-1));
+  color: rgb(var(--success-6));
+}
+
+.admin-app .status.upcoming,
+.admin-app .status-tag-warning,
+body.admin-light .status.upcoming,
+body.admin-light .status-tag-warning {
+  background: rgb(var(--warning-1));
+  color: rgb(var(--warning-6));
+}
+
+.admin-app .status-tag-error,
+body.admin-light .status-tag-error {
+  background: rgb(var(--danger-1));
+  color: rgb(var(--danger-6));
+}
+
+.admin-app .status-tag-fill,
+body.admin-light .status-tag-fill {
+  border-radius: 4px;
+}
+
+.admin-app .error-message,
+body.admin-light .error-message {
+  margin: 8px 0;
+  padding: 8px 12px;
+  border: 1px solid rgb(var(--danger-2));
+  border-radius: 4px;
+  background: rgb(var(--danger-1));
+  color: rgb(var(--danger-6));
+  font-size: 13px;
+}
+
+.admin-app .success-message,
+body.admin-light .success-message {
+  margin: 8px 0;
+  padding: 8px 12px;
+  border: 1px solid rgb(var(--success-2));
+  border-radius: 4px;
+  background: rgb(var(--success-1));
+  color: rgb(var(--success-6));
+  font-size: 13px;
+}
+
+.admin-app .empty-message,
+body.admin-light .empty-message {
+  margin: 16px 0;
+  padding: 32px 20px;
+  border: 1px dashed var(--color-border-2);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--color-text-3);
+  text-align: center;
+  font-size: 14px;
+}
+
+/* --------------------------------------------------------------------------
+ * Dashboard legacy cards (AdminStats / AdminAnalytics)
+ * ------------------------------------------------------------------------ */
+.admin-app .dashboard-cards,
+body.admin-light .dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.admin-app .dashboard-card,
+.admin-app .stat-card,
+body.admin-light .dashboard-card,
+body.admin-light .stat-card {
+  padding: 20px;
+  border: 1px solid var(--color-border-2);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: none;
+  color: var(--color-text-1);
+  text-align: left;
+  text-decoration: none;
+}
+
+.admin-app .dashboard-card:hover,
+.admin-app .stat-card:hover,
+body.admin-light .dashboard-card:hover,
+body.admin-light .stat-card:hover {
+  border-color: rgb(var(--primary-3));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transform: none;
+}
+
+.admin-app .dashboard-card h3,
+body.admin-light .dashboard-card h3 {
+  margin: 0 0 6px;
+  color: var(--color-text-2);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.admin-app .dashboard-card p,
+body.admin-light .dashboard-card p {
+  margin: 0;
+  color: var(--color-text-3);
+  font-size: 13px;
+}
+
+/* --------------------------------------------------------------------------
+ * Tabs (legacy class names retained for older admin pages)
+ * ------------------------------------------------------------------------ */
+.admin-app .admin-tabs,
+body.admin-light .admin-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--color-border-2);
+}
+
+.admin-app .admin-tab,
+body.admin-light .admin-tab {
+  position: relative;
+  height: 36px;
+  padding: 0 12px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-2);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.admin-app .admin-tab:hover,
+body.admin-light .admin-tab:hover {
+  color: rgb(var(--primary-6));
+}
+
+.admin-app .admin-tab.is-active,
+body.admin-light .admin-tab.is-active {
+  color: rgb(var(--primary-6));
+  font-weight: 500;
+}
+
+.admin-app .admin-tab.is-active::after,
+body.admin-light .admin-tab.is-active::after {
+  content: '';
+  position: absolute;
+  right: 8px;
+  bottom: -1px;
+  left: 8px;
+  height: 2px;
+  border-radius: 2px;
+  background: rgb(var(--primary-6));
+}
+
+/* Arco Tabs polish */
+.admin-app .admin-tabs .arco-tabs-content,
+body.admin-light .admin-tabs .arco-tabs-content {
+  display: none;
+}
+
+.admin-app .arco-tabs-header-nav-line .arco-tabs-header-title,
+body.admin-light .arco-tabs-header-nav-line .arco-tabs-header-title {
+  font-size: 14px;
+}
+
+.admin-app .arco-tabs-header-nav-line .arco-tabs-header-title-active,
+body.admin-light .arco-tabs-header-nav-line .arco-tabs-header-title-active {
+  color: rgb(var(--primary-6));
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+ * Admin search box
+ * ------------------------------------------------------------------------ */
+.admin-search {
+  position: relative;
+  width: 100%;
+}
+
+.admin-search-icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  color: var(--color-text-3);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.admin-search-input {
+  width: 100%;
+  height: 32px;
+  padding: 0 12px 0 32px;
+  border: 1px solid var(--color-border-2);
+  border-radius: 4px;
+  background: #ffffff;
+  color: var(--color-text-1);
+  font-size: 14px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-search-input:focus {
+  outline: none;
+  border-color: rgb(var(--primary-6));
+  box-shadow: 0 0 0 2px rgb(var(--primary-2));
+}
+
+.admin-search-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  left: 0;
+  z-index: 1100;
+  max-height: 280px;
+  margin: 0;
+  padding: 4px;
+  overflow-y: auto;
+  border: 1px solid var(--color-border-2);
+  border-radius: 6px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  list-style: none;
+}
+
+.admin-search-option {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--color-text-1);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.admin-search-option:hover,
+.admin-search-option.is-active {
+  background: var(--color-fill-1);
+}
+
+/* --------------------------------------------------------------------------
+ * CustomSelect / Modal (portaled to body, so use body.admin-light)
+ * ------------------------------------------------------------------------ */
+.admin-app .custom-select .select-header,
+body.admin-light .custom-select .select-header {
+  min-height: 32px;
+  padding: 5px 12px;
+  border: 1px solid var(--color-border-2);
+  border-radius: 4px;
+  background: #ffffff;
+  color: var(--color-text-1);
+  font-size: 14px;
+}
+
+.admin-app .custom-select .select-header:hover,
+body.admin-light .custom-select .select-header:hover {
+  border-color: rgb(var(--primary-6));
+  box-shadow: 0 0 0 2px rgb(var(--primary-2));
+}
+
+.admin-app .custom-select .select-arrow,
+body.admin-light .custom-select .select-arrow {
+  color: var(--color-text-3);
+}
+
+body.admin-light .select-dropdown {
+  border: 1px solid var(--color-border-2);
+  border-radius: 6px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+body.admin-light .select-option {
+  color: var(--color-text-1);
+  font-size: 14px;
+}
+
+body.admin-light .select-option:hover {
+  background: var(--color-fill-1);
+  color: rgb(var(--primary-6));
+}
+
+body.admin-light .select-option.selected {
+  background: rgb(var(--primary-1));
+  color: rgb(var(--primary-6));
+  font-weight: 500;
+}
+
+body.admin-light .modal-overlay {
+  background: rgba(29, 33, 41, 0.45);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+body.admin-light .modal-content {
+  border: 1px solid var(--color-border-2);
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+  color: var(--color-text-1);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+body.admin-light .modal-header {
+  border-bottom-color: var(--color-border-2);
+}
+
+body.admin-light .modal-header h3 {
+  color: var(--color-text-1);
+  font-size: 16px;
+}
+
+/* --------------------------------------------------------------------------
+ * Responsive
+ * ------------------------------------------------------------------------ */
+@media (max-width: 900px) {
+  .admin-content {
+    padding: 16px;
+  }
+
+  .admin-brand-sub,
+  .admin-topbar-link {
+    display: none;
+  }
+
+  .admin-user {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-topbar {
+    padding: 0 12px;
+  }
+
+  .admin-page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-page-actions {
+    justify-content: flex-start;
+  }
+
+  .admin-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-content {
+    padding: 12px;
+  }
+}

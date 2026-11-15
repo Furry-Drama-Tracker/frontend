@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import adminApi from '../utils/adminApi';
 import { assetUrl } from '../utils/apiBase';
 import { useOutletContext } from 'react-router-dom';
@@ -112,11 +112,11 @@ const AdminFriendLinks = () => {
 
   return (
     <div className="admin-page">
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div>
-          <h1 className="yl-page-title">{t('adminFriendLinks.title')}</h1>
+          <h1 className="admin-page-title">{t('adminFriendLinks.title')}</h1>
         </div>
-        <div className="yl-page-actions">
+        <div className="admin-page-actions">
           {!showForm && (
             <button className="btn btn-md btn-primary" onClick={() => { setShowForm(true); setEditingLink(null); setFormData({ name: '', nameEn: '', url: '', logo: '', description: '', descriptionEn: '', order: 0, isActive: true }); }}>{t('adminFriendLinks.addLink')}</button>
           )}

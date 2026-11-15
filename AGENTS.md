@@ -26,7 +26,7 @@ Vite proxies `/api` and `/uploads` to `http://localhost:5000` (the backend). If 
   - `I18nContext` — zh/en i18n (locale files in `src/locales/`)
   - `SiteSettingsContext` — runtime site config from API
 - **HTTP**: axios, globally configured in `src/utils/axiosConfig.js`. Handles CSRF token (`X-XSRF-TOKEN` header), 401 auto-redirect, and `withCredentials: true`.
-- **Styling**: Pure CSS variables defined in `src/index.css`. No CSS-in-JS or preprocessor. Theme switching changes CSS custom properties.
+- **Styling**: Public site uses pure CSS variables in `src/index.css`. Admin routes use the MIT-licensed Arco Design React components plus `src/styles/admin.css` (project-owned styles built on Arco tokens). Do not reintroduce the former Yuanli / ByteCloud CSS. Theme switching changes CSS custom properties; the admin area is fixed light (`body.admin-light`).
 - **PWA**: vite-plugin-pwa (configured in `vite.config.js`); service worker registered in `main.jsx` via `virtual:pwa-register` (`autoUpdate`). Manifest + SW are generated at build time.
 
 ## Key Conventions

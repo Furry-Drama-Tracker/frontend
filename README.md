@@ -236,3 +236,5 @@ Vite 使用 `.env` 文件管理环境变量。只有 `VITE_` 前缀的变量会�
 [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html)
 
 本程序是自由软件：你可以根据自由软件基金会发布的 GNU 通用公共许可证（版本 3 或更高版本）的条款重新发布或修改它。
+
+后台界面使用 MIT 许可的 [Arco Design](https://arco.design/) 组件与设计 Token；第三方许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。

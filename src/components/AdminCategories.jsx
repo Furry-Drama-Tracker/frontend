@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import adminApi from '../utils/adminApi';
 import { useOutletContext } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
@@ -140,16 +140,16 @@ const AdminCategories = () => {
   if (showAddForm) {
     return (
       <div className="admin-page">
-        <div className="yl-page-header">
+        <div className="admin-page-header">
           <div>
-            <h1 className="yl-page-title">{t('adminCategories.addCategory')}</h1>
-            <p className="yl-page-desc">{t('adminCategories.title')}</p>
+            <h1 className="admin-page-title">{t('adminCategories.addCategory')}</h1>
+            <p className="admin-page-desc">{t('adminCategories.title')}</p>
           </div>
-          <div className="yl-page-actions">
+          <div className="admin-page-actions">
             <button className="btn btn-md btn-outline" onClick={() => setShowAddForm(false)}>{t('common.back')}</button>
           </div>
         </div>
-        <div className="yl-panel">{renderForm(handleAdd, t('adminCategories.add'))}</div>
+        <div className="admin-panel">{renderForm(handleAdd, t('adminCategories.add'))}</div>
       </div>
     );
   }
@@ -157,27 +157,27 @@ const AdminCategories = () => {
   if (editingCategory) {
     return (
       <div className="admin-page">
-        <div className="yl-page-header">
+        <div className="admin-page-header">
           <div>
-            <h1 className="yl-page-title">{t('adminCategories.editCategory')}</h1>
-            <p className="yl-page-desc">{editingCategory.name}</p>
+            <h1 className="admin-page-title">{t('adminCategories.editCategory')}</h1>
+            <p className="admin-page-desc">{editingCategory.name}</p>
           </div>
-          <div className="yl-page-actions">
+          <div className="admin-page-actions">
             <button className="btn btn-md btn-outline" onClick={() => setEditingCategory(null)}>{t('common.back')}</button>
           </div>
         </div>
-        <div className="yl-panel">{renderForm(handleEdit, t('adminCategories.save'))}</div>
+        <div className="admin-panel">{renderForm(handleEdit, t('adminCategories.save'))}</div>
       </div>
     );
   }
 
   return (
     <div className="admin-page">
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div>
-          <h1 className="yl-page-title">{t('adminCategories.title')}</h1>
+          <h1 className="admin-page-title">{t('adminCategories.title')}</h1>
         </div>
-        <div className="yl-page-actions">
+        <div className="admin-page-actions">
           <button className="btn btn-md btn-primary" onClick={() => { setShowAddForm(true); setNewCategoryName(''); setNewCategoryNameEn(''); setNewCategoryOrder(0); setError(''); }}>
             {t('adminCategories.addCategoryBtn')}
           </button>

@@ -1,14 +1,34 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate, NavLink, Outlet, useLocation } from 'react-router-dom';
+﻿import React, { useState, useEffect, useLayoutEffect, useMemo } from 'react';
+import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { clearClientData } from '../utils/clearClientData';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { Layout, Menu, Button, ConfigProvider } from '@arco-design/web-react';
+import zhCN from '@arco-design/web-react/es/locale/zh-CN';
+import enUS from '@arco-design/web-react/es/locale/en-US';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
 import { assetUrl } from '../utils/apiBase';
 import useTranslation from '../hooks/useTranslation';
-import '../admin-kit/index.css';
+
+import '@arco-design/web-react/es/Layout/style/index.css';
+import '@arco-design/web-react/es/Menu/style/index.css';
+import '@arco-design/web-react/es/Button/style/index.css';
+import '@arco-design/web-react/es/Card/style/index.css';
+import '@arco-design/web-react/es/Tag/style/index.css';
+import '@arco-design/web-react/es/Typography/style/index.css';
+import '@arco-design/web-react/es/Alert/style/index.css';
+import '@arco-design/web-react/es/Space/style/index.css';
+import '@arco-design/web-react/es/Grid/style/index.css';
+import '@arco-design/web-react/es/Tabs/style/index.css';
+import '@arco-design/web-react/es/Input/style/index.css';
+import '@arco-design/web-react/es/Select/style/index.css';
+import '@arco-design/web-react/es/Table/style/index.css';
+import '@arco-design/web-react/es/Pagination/style/index.css';
+import '@arco-design/web-react/es/Empty/style/index.css';
+import '@arco-design/web-react/es/Spin/style/index.css';
+import '../styles/admin.css';
 
 const ROLE_CREATOR = 'creator';
 const ROLE_ADMIN = 'admin';
@@ -117,12 +137,14 @@ const AdminLayout = () => {
     return () => clearInterval(heartbeat);
   }, [navigate]);
 
-  // 后台为浅色独立画布：去掉全局 body 底部预留，避免出现深色空带
-  useEffect(() => {
-    const prev = document.body.style.paddingBottom;
+  // 后台为独立浅色画布：固定浅色主题，并让 portal（弹窗/下拉）继承同一套变量。
+  useLayoutEffect(() => {
+    const prevPadding = document.body.style.paddingBottom;
+    document.body.classList.add('admin-light');
     document.body.style.paddingBottom = '0';
     return () => {
-      document.body.style.paddingBottom = prev;
+      document.body.classList.remove('admin-light');
+      document.body.style.paddingBottom = prevPadding;
     };
   }, []);
 
@@ -156,77 +178,78 @@ const AdminLayout = () => {
 
   const adminName = admin.username || admin.accountId || t('adminLayout.adminBackend');
   const isCollapsed = collapsed;
+  const arcoLocale = lang === 'en' ? enUS : zhCN;
 
   return (
-    <div className="yuanli-admin">
-      <header className="yl-topnav">
-        <div className="yl-topnav-left">
-          <button
-            type="button"
-            className="yl-icon-btn"
-            onClick={() => setCollapsed((v) => !v)}
-            aria-label={t('nav.menu')}
-            aria-expanded={!isCollapsed}
+    <ConfigProvider locale={arcoLocale}>
+      <Layout className="admin-shell admin-app">
+        <Layout.Header className="admin-topbar">
+          <div className="admin-topbar-left">
+            <Button
+              type="text"
+              className="admin-icon-btn"
+              onClick={() => setCollapsed((v) => !v)}
+              aria-label={t('nav.menu')}
+              aria-expanded={!isCollapsed}
+              icon={<FontAwesomeIcon icon={faBars} style={{ fontSize: 16 }} aria-hidden="true" />}
+            />
+            <a className="admin-brand" href="/">
+              {siteSettings?.navLogo ? (
+                <img
+                  className="admin-brand-mark"
+                  src={assetUrl(siteSettings.navLogo)}
+                  alt=""
+                  style={{ objectFit: 'cover' }}
+                />
+              ) : (
+                <span className="admin-brand-mark" aria-hidden="true">兽</span>
+              )}
+              <span>{getLocalizedContent(siteSettings || {}, 'siteName') || t('site.defaultName')}</span>
+              <span className="admin-brand-sub">{t('adminLayout.adminBackend')}</span>
+            </a>
+          </div>
+
+          <div className="admin-topbar-right">
+            <a className="admin-topbar-link" href="/">{t('adminLayout.websiteHome')}</a>
+            <span className="admin-user" title={adminName}>{adminName}</span>
+            <Button type="primary" onClick={() => navigate('/admin/dashboard')}>
+              {t('adminLayout.consoleHome')}
+            </Button>
+            <Button status="danger" onClick={handleLogout}>
+              {t('adminLayout.logout')}
+            </Button>
+          </div>
+        </Layout.Header>
+
+        <Layout className="admin-body">
+          <Layout.Sider
+            className="admin-sider"
+            width={224}
+            collapsed={isCollapsed}
+            collapsedWidth={0}
+            trigger={null}
           >
-            <FontAwesomeIcon icon={faBars} style={{ fontSize: 16 }} aria-hidden="true" />
-          </button>
-          <a className="yl-brand" href="/">
-            {siteSettings?.navLogo ? (
-              <img
-                className="yl-brand-mark"
-                src={assetUrl(siteSettings.navLogo)}
-                alt=""
-                style={{ objectFit: 'cover' }}
-              />
-            ) : (
-              <span className="yl-brand-mark" aria-hidden="true">兽</span>
-            )}
-            <span>{getLocalizedContent(siteSettings || {}, 'siteName') || t('site.defaultName')}</span>
-            <span className="yl-brand-sub">{t('adminLayout.adminBackend')}</span>
-          </a>
-        </div>
-
-        <div className="yl-topnav-right">
-          <a className="yl-link" href="/">{t('adminLayout.websiteHome')}</a>
-          <span className="yl-user" title={adminName}>{adminName}</span>
-          <button type="button" className="yl-btn yl-btn--primary" onClick={() => navigate('/admin/dashboard')}>
-            {t('adminLayout.consoleHome')}
-          </button>
-          <button type="button" className="yl-btn yl-btn--danger" onClick={handleLogout}>
-            {t('adminLayout.logout')}
-          </button>
-        </div>
-      </header>
-
-      <div className="yl-body">
-        {!isCollapsed && (
-          <aside className="sidenav yl-sidenav" aria-label={t('adminLayout.adminBackend')}>
-            <div className="yl-sidenav-inner">
-              {groups.map((g) => (
-                <div className="menu-section" key={g.key}>
-                  <div className="group-title">{g.title}</div>
-                  <div className="menu-group-block">
-                    {g.items.map((item) => (
-                      <NavLink
-                        key={item.to}
-                        to={item.to}
-                        className={({ isActive }) => `menu-item no-icon${isActive ? ' active' : ''}`}
-                      >
-                        <span className="menu-text">{t(item.key)}</span>
-                      </NavLink>
-                    ))}
-                  </div>
-                </div>
+            <Menu
+              mode="vertical"
+              selectedKeys={[location.pathname]}
+              onClick={({ key }) => navigate(key)}
+            >
+              {groups.map((group) => (
+                <Menu.ItemGroup key={group.key} title={group.title}>
+                  {group.items.map((item) => (
+                    <Menu.Item key={item.to}>{t(item.key)}</Menu.Item>
+                  ))}
+                </Menu.ItemGroup>
               ))}
-            </div>
-          </aside>
-        )}
+            </Menu>
+          </Layout.Sider>
 
-        <main className="yl-content" key={location.pathname}>
-          <Outlet context={{ admin }} />
-        </main>
-      </div>
-    </div>
+          <Layout.Content className="admin-content" key={location.pathname}>
+            <Outlet context={{ admin }} />
+          </Layout.Content>
+        </Layout>
+      </Layout>
+    </ConfigProvider>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
@@ -59,9 +59,9 @@ const AdminBackup = () => {
 
   return (
     <div className="admin-panel">
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div>
-          <h1 className="yl-page-title">{t('adminBackup.title')}</h1>
+          <h1 className="admin-page-title">{t('adminBackup.title')}</h1>
         </div>
       </div>
 

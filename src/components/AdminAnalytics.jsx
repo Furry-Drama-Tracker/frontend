@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+﻿import React, { useState, useEffect, useRef, useCallback } from 'react';
 import adminApi from '../utils/adminApi';
 import { useOutletContext } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
@@ -343,11 +343,11 @@ const AdminAnalytics = () => {
 
   return (
     <div>
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div>
-          <h1 className="yl-page-title">{t('adminAnalytics.title')}</h1>
+          <h1 className="admin-page-title">{t('adminAnalytics.title')}</h1>
         </div>
-        <div className="yl-page-actions">
+        <div className="admin-page-actions">
           <button onClick={() => setPeriod('7d')} style={{
             padding: '6px 14px', borderRadius: '8px', fontSize: '13px',
             background: period === '7d' ? 'var(--primary)' : 'var(--hover-bg)',

@@ -15,6 +15,7 @@
     "generate-icons": "node generate-icons.mjs"
   },
   "dependencies": {
+    "@arco-design/web-react": "^2.66.18",
     "@fortawesome/fontawesome-svg-core": "^7.3.1",
     "@fortawesome/free-brands-svg-icons": "^7.3.1",
     "@fortawesome/free-regular-svg-icons": "^7.3.1",

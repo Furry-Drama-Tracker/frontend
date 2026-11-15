@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import adminApi from '../utils/adminApi';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import Modal from './Modal';
@@ -163,16 +163,16 @@ const AdminUsers = () => {
   if (showAddForm) {
     return (
       <div className="admin-page">
-        <div className="yl-page-header">
+        <div className="admin-page-header">
           <div>
-            <h1 className="yl-page-title">{t('adminUsers.addAdminAccount')}</h1>
-            <p className="yl-page-desc">{t('adminUsers.accountList')}</p>
+            <h1 className="admin-page-title">{t('adminUsers.addAdminAccount')}</h1>
+            <p className="admin-page-desc">{t('adminUsers.accountList')}</p>
           </div>
-          <div className="yl-page-actions">
+          <div className="admin-page-actions">
             <button className="btn btn-md btn-outline" onClick={() => setShowAddForm(false)}>{t('common.back')}</button>
           </div>
         </div>
-        <div className="yl-panel">
+        <div className="admin-panel">
           <form onSubmit={handleAddUser}>
             <div className="form-group">
               <label htmlFor="newUserUsername">{t('adminUsers.username')}</label>
@@ -229,15 +229,15 @@ const AdminUsers = () => {
 
   return (
     <div>
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div>
-          <h1 className="yl-page-title">{t('adminUsers.accountList')}</h1>
-          <p className="yl-page-desc">
+          <h1 className="admin-page-title">{t('adminUsers.accountList')}</h1>
+          <p className="admin-page-desc">
             {t('adminUsers.accountCount', { count: filteredUsers.length })} ·{' '}
             {t('adminUsers.adminCountLabel', { count: adminCount })} / {t('adminUsers.userCountLabel', { count: normalCount })}
           </p>
         </div>
-        <div className="yl-page-actions">
+        <div className="admin-page-actions">
           <button className="btn btn-md btn-primary" onClick={() => setShowAddForm(true)}>
             {t('adminUsers.addAdminAccount')}
           </button>
@@ -247,7 +247,7 @@ const AdminUsers = () => {
       {error && <div className="error-message" style={{marginBottom: '15px'}}>{error}</div>}
       {success && <div className="success-message" style={{marginBottom: '15px', padding: '10px', background: 'var(--success-bg-strong)', border: '1px solid var(--success-border)', borderRadius: '6px', color: 'var(--success-text)'}}>{success}</div>}
 
-      <div className="yl-toolbar" style={{ marginBottom: 12 }}>
+      <div className="admin-toolbar" style={{ marginBottom: 12 }}>
         <div style={{ flex: '1 1 260px', maxWidth: 420 }}>
           <AdminSearchInput
             data={users}

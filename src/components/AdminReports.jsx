@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import adminApi from '../utils/adminApi';
 import { useOutletContext } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
@@ -61,9 +61,9 @@ const AdminReports = () => {
 
   return (
     <div>
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div>
-          <h1 className="yl-page-title">{t('adminReports.title')}</h1>
+          <h1 className="admin-page-title">{t('adminReports.title')}</h1>
         </div>
       </div>
 

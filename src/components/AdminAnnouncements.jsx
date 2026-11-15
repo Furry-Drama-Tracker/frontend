@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -134,11 +134,11 @@ const AdminAnnouncements = () => {
   if (editing) {
     return (
       <div className="admin-panel">
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div>
-          <h1 className="yl-page-title">{editing._id ? t('adminAnnouncements.editTitle') : t('adminAnnouncements.createTitle')}</h1>
+          <h1 className="admin-page-title">{editing._id ? t('adminAnnouncements.editTitle') : t('adminAnnouncements.createTitle')}</h1>
         </div>
-        <div className="yl-page-actions">
+        <div className="admin-page-actions">
           <button onClick={cancelEdit} className="btn btn-md btn-outline">{t('adminAnnouncements.back')}</button>
         </div>
       </div>
@@ -254,11 +254,11 @@ const AdminAnnouncements = () => {
   // ===== 列表 =====
   return (
     <div className="admin-panel">
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div>
-          <h1 className="yl-page-title">{t('adminAnnouncements.title')}</h1>
+          <h1 className="admin-page-title">{t('adminAnnouncements.title')}</h1>
         </div>
-        <div className="yl-page-actions">
+        <div className="admin-page-actions">
           <button className="btn btn-md btn-primary" onClick={startCreate}>+ {t('adminAnnouncements.create')}</button>
         </div>
       </div>

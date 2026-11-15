@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import { assetUrl } from '../utils/apiBase';
@@ -98,12 +98,12 @@ const AdminEpisodeTrash = () => {
 
   return (
     <div className="admin-panel">
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div>
-          <h1 className="yl-page-title">{t('adminEpisodeTrash.title')}</h1>
-          <p className="yl-page-desc">{t('adminEpisodeTrash.desc')}</p>
+          <h1 className="admin-page-title">{t('adminEpisodeTrash.title')}</h1>
+          <p className="admin-page-desc">{t('adminEpisodeTrash.desc')}</p>
         </div>
-        <div className="yl-page-actions">
+        <div className="admin-page-actions">
           <span style={{ color: '#86909c', fontSize: '13px' }}>{t('adminEpisodeTrash.totalCount', { total })}</span>
         </div>
       </div>

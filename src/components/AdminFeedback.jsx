@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
@@ -42,11 +42,11 @@ const AdminFeedback = () => {
 
   return (
     <div className="admin-panel">
-      <div className="yl-page-header">
+      <div className="admin-page-header">
         <div>
-          <h1 className="yl-page-title">{t('adminFeedback.title')}</h1>
+          <h1 className="admin-page-title">{t('adminFeedback.title')}</h1>
         </div>
-        <div className="yl-page-actions">
+        <div className="admin-page-actions">
           <span style={{ color: '#86909c', fontSize: '13px' }}>{t('adminFeedback.totalCount', { total })}</span>
         </div>
       </div>
