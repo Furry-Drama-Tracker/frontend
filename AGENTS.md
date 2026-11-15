@@ -40,6 +40,28 @@ Vite proxies `/api` and `/uploads` to `http://localhost:5000` (the backend). If 
 - **i18n** — `t('key.path')` function from `useI18n()` hook. Fallback language is `zh`. New strings must be added to both `src/locales/zh.js` and `src/locales/en.js`.
 - **Components** are flat files in `src/components/`. No folder-per-component pattern. Admin components are prefixed `Admin*`.
 
+## Admin Panel Direction (2026-11)
+
+`/admin/*` 正在迁移到 **Refine（headless）+ Arco Design**。所有后台相关改动必须遵循这个方向：
+
+- **目标技术栈**：`@refinedev/core`（MIT，以 headless 方式使用）+ `@arco-design/web-react`（MIT，字节开源设计系统）。选择与 React 19 和 react-router v7 兼容的版本。选 Arco 的理由：它与被冻结的源力/ByteCloud 视觉语言同源（默认 arcoblue-6 `#165DFF` ≈ 旧 token `--primary: #1664ff`），迁移期视觉差异最小、token 可近似 1:1 映射。**后台不得引入任何其他组件库**（包括 Semi Design、Ant Design 等，无备选）。
+- **禁止引入** Ant Design Pro / UmiJS 或任何替换 Vite、现有 SPA/PWA 部署方式的构建栈。
+- **路由权保留在 `App.jsx`**：现有 `<Route>` 列表和 `AdminGuard` 角色包装不动。Refine 只用于数据层（DataProvider / mutations / 表格状态），不接管导航。
+- **dataProvider 与 authProvider 各写一份**，对接现有 cookie/CSRF 认证（httpOnly cookie；CSRF 走 `axiosConfig.js` 的 `X-XSRF-TOKEN`）。复用 axios 语义，不得绕过 `axiosConfig.js`。
+- **逐页迁移**，优先迁移高变动列表页：AdminUsers → AdminEpisodes → AdminEpisodeTrash → AdminFriendLinks → AdminReview。用手写表格/分页/fetch-all 全量拉取本地过滤的模式，替换为 Refine + Arco `Table`；表单迁移到 Arco `Form`。
+- **i18n**：页面文案继续走 `t('key.path')`（`zh.js` 与 `en.js` 都要加）；仅组件内部文案（分页、空态）可传 Arco `ConfigProvider` 内置 locale。
+- **`src/admin-kit/` 已冻结（frozen legacy）**——其中「源力/Yuanli」CSS 提取自 Trae IDE 内置的火山引擎设计库（专有、无许可证）。禁止扩展、抄写或在新代码/迁移代码中使用它的 class（`.yuanli-admin`、`.yl-*`、`.type-*`、`.alert-*` 等）。新后台 UI 一律用 Arco 组件实现；当没有任何组件再引用它时，删除 `admin-kit/` 与 `scope-kit.cjs`。
+
+**当前状态（2026-11）**：`src/admin-kit/` 已删除；后台外壳、控制台与审核页已使用 Arco 组件，其余页面使用项目自有的 `src/styles/admin.css`（基于 Arco token）。Refine 数据层迁移仍可按上面顺序继续。
+
+## Third-Party Assets & Licenses（硬性规则）
+
+- **禁止从 IDE 内置库或模板提取资产**（Trae `design_libraries`、OpenCode 内置资源、主题预览页、其他产品截图）。AI 工具可能把这些描述为「成熟设计系统」「借鉴」——提取就是复制，这些库是专有资产。
+- **新增 npm 依赖前必须检查 `license` 字段**。可接受：MIT、Apache-2.0、BSD-2/3-Clause、ISC、CC0-1.0。其他协议或缺失协议的包，须经仓库所有者明确同意并在 commit 信息中注明。
+- **抄写代码/片段**（博客、他人仓库、AI 参考输出）超过约 50 行的，必须在 commit 信息中注明来源与许可证。来源无许可证的，重写而不是复制。
+- **字体、图片、插画、CSS 框架**适用同样规则；只打包允许再分发的资产，并在 commit 中注明许可证。
+- **FontAwesome Free 图标**为 CC BY 4.0——撰写 README/NOTICE 时保留署名。
+
 ## Gotchas
 
 - The CSRF token is fetched on app init via `fetchCsrfToken()` and attached to all non-GET requests. If you add a new API call outside axios (e.g. `fetch`), you must handle CSRF yourself.
