@@ -114,7 +114,9 @@ const AdminLayout = () => {
   const { settings: siteSettings } = useSiteSettings();
   const [admin, setAdmin] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(() => (
+    typeof window !== 'undefined' && window.matchMedia('(max-width: 900px)').matches
+  ));
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -147,6 +149,20 @@ const AdminLayout = () => {
       document.body.style.paddingBottom = prevPadding;
     };
   }, []);
+
+  // 手机/窄屏：路由切换后自动收起侧栏，避免内容被压缩。
+  useEffect(() => {
+    if (window.matchMedia('(max-width: 900px)').matches) {
+      setCollapsed(true);
+    }
+  }, [location.pathname]);
+
+  const handleMenuClick = (key) => {
+    navigate(key);
+    if (window.matchMedia('(max-width: 900px)').matches) {
+      setCollapsed(true);
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -204,7 +220,7 @@ const AdminLayout = () => {
               ) : (
                 <span className="admin-brand-mark" aria-hidden="true">兽</span>
               )}
-              <span>{getLocalizedContent(siteSettings || {}, 'siteName') || t('site.defaultName')}</span>
+              <span className="admin-brand-name">{getLocalizedContent(siteSettings || {}, 'siteName') || t('site.defaultName')}</span>
               <span className="admin-brand-sub">{t('adminLayout.adminBackend')}</span>
             </a>
           </div>
@@ -212,10 +228,10 @@ const AdminLayout = () => {
           <div className="admin-topbar-right">
             <a className="admin-topbar-link" href="/">{t('adminLayout.websiteHome')}</a>
             <span className="admin-user" title={adminName}>{adminName}</span>
-            <Button type="primary" onClick={() => navigate('/admin/dashboard')}>
+            <Button type="primary" className="admin-console-btn" onClick={() => navigate('/admin/dashboard')}>
               {t('adminLayout.consoleHome')}
             </Button>
-            <Button status="danger" onClick={handleLogout}>
+            <Button status="danger" className="admin-logout-btn" onClick={handleLogout}>
               {t('adminLayout.logout')}
             </Button>
           </div>
@@ -232,7 +248,7 @@ const AdminLayout = () => {
             <Menu
               mode="vertical"
               selectedKeys={[location.pathname]}
-              onClick={({ key }) => navigate(key)}
+              onClickMenuItem={handleMenuClick}
             >
               {groups.map((group) => (
                 <Menu.ItemGroup key={group.key} title={group.title}>
@@ -243,6 +259,14 @@ const AdminLayout = () => {
               ))}
             </Menu>
           </Layout.Sider>
+
+          {!isCollapsed && (
+            <div
+              className="admin-sider-backdrop"
+              onClick={() => setCollapsed(true)}
+              aria-hidden="true"
+            />
+          )}
 
           <Layout.Content className="admin-content" key={location.pathname}>
             <Outlet context={{ admin }} />

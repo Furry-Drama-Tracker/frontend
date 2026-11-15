@@ -217,7 +217,7 @@ const FooterBeian = () => {
   if (!aboutData.icp && !aboutData.policeRecord && !copyright && !aiDisclaimer && !aboutData.version) return null;
 
   return (
-    <div style={{
+    <div className="site-footer-meta" style={{
       position: 'fixed', bottom: '12px', right: '16px', zIndex: 50,
       display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '2px',
       opacity: 0.5, transition: 'opacity 0.3s',

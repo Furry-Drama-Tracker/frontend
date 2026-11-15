@@ -1315,18 +1315,99 @@ body.admin-light .modal-header h3 {
   }
 
   .admin-brand-sub,
-  .admin-topbar-link {
+  .admin-topbar-link,
+  .admin-user,
+  .admin-console-btn {
     display: none;
   }
 
-  .admin-user {
+  .admin-brand-name {
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .admin-topbar {
+    gap: 8px;
+  }
+
+  .admin-topbar-right {
+    gap: 6px;
+  }
+
+  /* Sidebar becomes an overlay drawer on phones/tablets instead of squeezing content. */
+  .admin-sider {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    z-index: 120;
+    height: calc(100vh - 56px);
+    height: calc(100dvh - 56px);
+    width: 224px !important;
+    border-right: 1px solid var(--color-border-2);
+    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.12);
+  }
+
+  .admin-sider.arco-layout-sider-collapsed {
+    width: 0 !important;
+    border-right: none;
+    box-shadow: none;
+  }
+
+  .admin-sider .arco-layout-sider-children {
+    height: 100%;
+  }
+
+  .admin-sider-backdrop {
+    position: fixed;
+    top: 56px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 110;
+    background: rgba(15, 23, 42, 0.35);
+  }
+
+  .admin-body {
+    min-height: calc(100vh - 56px);
+  }
+}
+
+@media (min-width: 901px) {
+  .admin-sider-backdrop {
     display: none;
   }
 }
 
 @media (max-width: 640px) {
   .admin-topbar {
-    padding: 0 12px;
+    gap: 6px;
+    padding: 0 10px;
+  }
+
+  .admin-brand {
+    gap: 8px;
+    font-size: 14px;
+  }
+
+  .admin-brand-name {
+    max-width: 120px;
+  }
+
+  .admin-brand-mark {
+    width: 26px;
+    height: 26px;
+  }
+
+  .admin-icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .admin-logout-btn {
+    padding: 0 10px;
+    font-size: 13px;
   }
 
   .admin-page-header {
@@ -1338,11 +1419,81 @@ body.admin-light .modal-header h3 {
     justify-content: flex-start;
   }
 
+  .admin-page-title {
+    font-size: 18px;
+  }
+
   .admin-card-grid {
     grid-template-columns: 1fr;
   }
 
   .admin-content {
     padding: 12px;
+  }
+
+  .admin-panel,
+  .admin-panel.arco-card {
+    padding: 14px;
+  }
+
+  .admin-panel h2,
+  .admin-panel-title {
+    font-size: 15px;
+  }
+
+  /* Wide admin tables keep readable columns and scroll inside their wrapper. */
+  .admin-app .table,
+  .admin-app .admin-table,
+  body.admin-light .table,
+  body.admin-light .admin-table {
+    min-width: 640px;
+  }
+
+  .admin-app .table td,
+  .admin-app .admin-table td,
+  body.admin-light .table td,
+  body.admin-light .admin-table td {
+    white-space: nowrap;
+  }
+
+  .admin-app .table th:first-child,
+  .admin-app .table td:first-child,
+  .admin-app .admin-table th:first-child,
+  .admin-app .admin-table td:first-child,
+  body.admin-light .table th:first-child,
+  body.admin-light .table td:first-child,
+  body.admin-light .admin-table th:first-child,
+  body.admin-light .admin-table td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: #ffffff;
+  }
+
+  .admin-app .table th:first-child,
+  .admin-app .admin-table th:first-child,
+  body.admin-light .table th:first-child,
+  body.admin-light .admin-table th:first-child {
+    background: var(--color-fill-1);
+  }
+
+  .admin-app .action-buttons,
+  body.admin-light .action-buttons {
+    flex-wrap: wrap;
+  }
+
+  .admin-app .form-group button,
+  body.admin-light .form-group button {
+    max-width: 100%;
+  }
+
+  .admin-app .admin-toolbar,
+  body.admin-light .admin-toolbar {
+    align-items: stretch;
+  }
+
+  .admin-app .admin-toolbar > *,
+  body.admin-light .admin-toolbar > * {
+    min-width: 0;
   }
 }
