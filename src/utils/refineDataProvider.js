@@ -7,9 +7,11 @@ const RESOURCES = {
   'admin-users': {
     list: '/api/admin/users',
     create: '/api/admin/register',
+    update: (id) => `/api/admin/role/${id}`,
     deleteOne: (id) => `/api/admin/users/${id}`,
     listKey: 'list',
-    serverPagination: true,
+    clientSide: true,
+    fetchAll: true,
   },
   'friend-links': {
     list: '/api/friend-links/all',
@@ -134,15 +136,26 @@ const matchesFriendLinkFilter = (record, filter) => {
   return matchesFilter(record, filter);
 };
 
+const matchesAdminUserFilter = (record, filter) => {
+  if (filter?.field === 'search') {
+    const keyword = toComparable(filter.value).toLowerCase();
+    if (!keyword) return true;
+    return ['accountId', 'username', 'email'].some((field) =>
+      toComparable(record[field]).toLowerCase().includes(keyword),
+    );
+  }
+  return matchesFilter(record, filter);
+};
+
 const applyClientFilters = (records, filters, resource) => {
   const activeFilters = (filters || []).filter((filter) => filter && filter.field);
   if (activeFilters.length === 0) return records;
   return records.filter((record) =>
-    activeFilters.every((filter) =>
-      resource === 'friend-links'
-        ? matchesFriendLinkFilter(record, filter)
-        : matchesFilter(record, filter),
-    ),
+    activeFilters.every((filter) => {
+      if (resource === 'friend-links') return matchesFriendLinkFilter(record, filter);
+      if (resource === 'admin-users') return matchesAdminUserFilter(record, filter);
+      return matchesFilter(record, filter);
+    }),
   );
 };
 
@@ -200,11 +213,26 @@ const dataProvider = {
 
   getList: async ({ resource, pagination, filters, sorters }) => {
     const config = getConfig(resource);
-    const response = await adminApi.get(config.list, {
-      params: config.clientSide ? undefined : buildServerParams({ pagination, filters, sorters, resource }),
-    });
-    const payload = response.data;
-    let records = extractList(payload, config);
+    let payload;
+    let records;
+
+    if (config.fetchAll) {
+      records = [];
+      let page = 1;
+      let totalPages = 1;
+      do {
+        const response = await adminApi.get(config.list, { params: { page, limit: 200 } });
+        records.push(...extractList(response.data, config));
+        totalPages = Number(response.data?.totalPages) || 1;
+        page += 1;
+      } while (page <= totalPages && page <= 100);
+    } else {
+      const response = await adminApi.get(config.list, {
+        params: config.clientSide ? undefined : buildServerParams({ pagination, filters, sorters, resource }),
+      });
+      payload = response.data;
+      records = extractList(payload, config);
+    }
 
     if (config.clientSide) {
       records = applyClientFilters(records, filters, resource);

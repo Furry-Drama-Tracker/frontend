@@ -1,9 +1,19 @@
-﻿import React, { useState, useEffect } from 'react';
-import adminApi from '../utils/adminApi';
+﻿import React, { useEffect, useMemo, useState } from 'react';
+import { useCreate, useDelete, useList, useTable, useUpdate } from '@refinedev/core';
+import {
+  Alert,
+  Button,
+  Empty,
+  Form,
+  Input,
+  Modal,
+  Pagination,
+  Select,
+  Space,
+  Table,
+  Tag,
+} from '@arco-design/web-react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import Modal from './Modal';
-import CustomSelect from './CustomSelect';
-import PasswordToggle from './PasswordToggle';
 import AdminSearchInput from './AdminSearchInput';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,11 +28,7 @@ const DEVICE_TYPE_KEY_MAP = {
   '桌面端': 'adminUsers.desktop',
 };
 
-const getDeviceIcon = (type) => {
-  if (type === 'mobile' || type === '移动端') return <FontAwesomeIcon icon={faMobileScreen} aria-hidden="true" />;
-  if (type === 'tablet' || type === '平板') return <FontAwesomeIcon icon={faTabletScreenButton} aria-hidden="true" />;
-  return <FontAwesomeIcon icon={faDesktop} aria-hidden="true" />;
-};
+const ADMIN_ROLES = ['superadmin', 'creator', 'admin'];
 
 const ROLE_FILTER_OPTIONS = [
   { value: 'all', labelKey: 'adminUsers.allRoles' },
@@ -30,116 +36,76 @@ const ROLE_FILTER_OPTIONS = [
   { value: 'user', labelKey: 'adminUsers.userFilter' },
 ];
 
+const ROLE_TAG_COLORS = {
+  superadmin: 'purple',
+  creator: 'orange',
+  admin: 'arcoblue',
+  user: 'gray',
+};
+
+const getDeviceIcon = (type) => {
+  if (type === 'mobile' || type === '移动端') return <FontAwesomeIcon icon={faMobileScreen} aria-hidden="true" />;
+  if (type === 'tablet' || type === '平板') return <FontAwesomeIcon icon={faTabletScreenButton} aria-hidden="true" />;
+  return <FontAwesomeIcon icon={faDesktop} aria-hidden="true" />;
+};
+
 const AdminUsers = () => {
   const { t, locale } = useI18n();
   const { admin } = useOutletContext();
-  const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
+  const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
   const [showAddForm, setShowAddForm] = useState(false);
   const [detailUser, setDetailUser] = useState(null);
-  const [newUser, setNewUser] = useState({
-    username: '',
-    email: '',
-    password: '',
-    role: 'admin'
-  });
-  const [showNewUserPassword, setShowNewUserPassword] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const navigate = useNavigate();
+  const [form] = Form.useForm();
 
-  const getDeviceTypeLabel = (type) => {
-    if (!type) return t('adminUsers.unknown');
-    const key = DEVICE_TYPE_KEY_MAP[type];
-    return key ? t(key) : type;
-  };
+  const filters = useMemo(() => {
+    const next = [];
+    if (search.trim()) {
+      next.push({ field: 'search', operator: 'contains', value: search.trim() });
+    }
+    if (roleFilter === 'admin') {
+      next.push({ field: 'role', operator: 'in', value: ADMIN_ROLES });
+    } else if (roleFilter === 'user') {
+      next.push({ field: 'role', operator: 'nin', value: ADMIN_ROLES });
+    }
+    return next;
+  }, [search, roleFilter]);
+
+  const { tableQuery, result, currentPage, setCurrentPage, pageSize, setPageSize } = useTable({
+    resource: 'admin-users',
+    pagination: { currentPage: 1, pageSize: 20, mode: 'client' },
+    filters: { permanent: filters },
+    sorters: { permanent: [{ field: 'createdAt', order: 'desc' }] },
+  });
+
+  const { query: allUsersQuery, result: allUsersResult } = useList({
+    resource: 'admin-users',
+    pagination: { mode: 'off' },
+    sorters: [{ field: 'createdAt', order: 'desc' }],
+  });
+
+  const { mutateAsync: createAdmin, mutation: createMutation } = useCreate();
+  const { mutateAsync: updateUser, mutation: updateMutation } = useUpdate();
+  const { mutateAsync: deleteUser, mutation: deleteMutation } = useDelete();
+
+  const users = result.data || [];
+  const allUsers = allUsersResult.data || [];
+
+  const adminCount = allUsers.filter((user) => ADMIN_ROLES.includes(user.role)).length;
+  const normalCount = allUsers.length - adminCount;
 
   useEffect(() => {
     if (admin.role !== 'superadmin') {
       navigate('/admin/dashboard', { replace: true });
-      return;
     }
   }, [admin, navigate]);
 
-  const fetchUsers = async () => {
-    try {
-      const all = [];
-      let page = 1;
-      let totalPages = 1;
-      do {
-        const res = await adminApi.get('/api/admin/users', { params: { page, limit: 200 } });
-        all.push(...(res.data.list || []));
-        totalPages = Number(res.data.totalPages) || 1;
-        page += 1;
-      } while (page <= totalPages && page <= 100);
-      setUsers(all);
-    } catch (err) {
-      console.error('获取用户列表失败', err);
-    }
-  };
-
   useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  useEffect(() => {
-    let result = users;
-
-    // 角色筛选
-    if (roleFilter === 'admin') {
-      result = result.filter(u => ['superadmin', 'creator', 'admin'].includes(u.role));
-    } else if (roleFilter === 'user') {
-      result = result.filter(u => !['superadmin', 'creator', 'admin'].includes(u.role));
-    }
-
-    // 搜索筛选
-    if (search.trim()) {
-      const keyword = search.toLowerCase();
-      result = result.filter(u =>
-        (u.accountId && u.accountId.toLowerCase().includes(keyword)) ||
-        u.username.toLowerCase().includes(keyword) ||
-        u.email.toLowerCase().includes(keyword)
-      );
-    }
-
-    setFilteredUsers(result);
-  }, [search, users, roleFilter]);
-
-  const handleAddUser = async (e) => {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
-    try {
-      await adminApi.post('/api/admin/register', newUser);
-      setShowAddForm(false);
-      setNewUser({ username: '', email: '', password: '', role: 'admin' });
-      setSuccess(t('adminUsers.adminCreated'));
-      fetchUsers();
-    } catch (error) {
-      setError(error.response?.data?.message || t('adminUsers.createFailed'));
-    }
-  };
-
-  const handleDeleteUser = async (userId) => {
-    if (admin && admin._id === userId) {
-      setError(t('adminUsers.cannotDeleteSelf'));
-      return;
-    }
-    if (!window.confirm(t('adminUsers.deleteUserConfirm'))) return;
-    try {
-      await adminApi.delete(`/api/admin/users/${userId}`);
-      setSuccess(t('adminUsers.userDeleted'));
-      fetchUsers();
-    } catch (err) {
-      setError(err.response?.data?.message || t('adminUsers.deleteFailed'));
-    }
-  };
-
-  useEffect(() => {
-    if (showAddForm) window.scrollTo(0, 0);
-  }, [showAddForm]);
+    setCurrentPage(1);
+  }, [search, roleFilter, setCurrentPage]);
 
   if (!admin) return null;
 
@@ -150,15 +116,93 @@ const AdminUsers = () => {
     return t('adminUsers.normalUser');
   };
 
-  const getRoleBadgeStyle = (role) => {
-    if (role === 'superadmin') return { background: 'var(--purple-bg)', color: 'var(--purple)', border: '1px solid var(--purple-border)' };
-    if (role === 'creator') return { background: 'var(--warning-bg-strong)', color: 'var(--warning-text)', border: '1px solid var(--warning-border)' };
-    if (role === 'admin') return { background: 'var(--info-bg)', color: 'var(--info)', border: '1px solid var(--info-border)' };
-    return { background: 'var(--hover-bg)', color: 'var(--text-secondary)', border: '1px solid var(--border)' };
+  const getDeviceTypeLabel = (type) => {
+    if (!type) return t('adminUsers.unknown');
+    const key = DEVICE_TYPE_KEY_MAP[type];
+    return key ? t(key) : type;
   };
 
-  const adminCount = users.filter(u => ['superadmin', 'creator', 'admin'].includes(u.role)).length;
-  const normalCount = users.length - adminCount;
+  const refreshAll = () => {
+    tableQuery.refetch();
+    allUsersQuery.refetch();
+  };
+
+  const openAddForm = () => {
+    setError('');
+    setSuccess('');
+    form.resetFields();
+    form.setFieldsValue({ role: 'admin' });
+    setShowAddForm(true);
+  };
+
+  const handleAddUser = async (values) => {
+    setError('');
+    setSuccess('');
+    try {
+      await createAdmin({ resource: 'admin-users', values });
+      setShowAddForm(false);
+      setSuccess(t('adminUsers.adminCreated'));
+      refreshAll();
+    } catch (err) {
+      setError(err?.response?.data?.message || t('adminUsers.createFailed'));
+    }
+  };
+
+  const handleChangeRole = async (user, newRole) => {
+    if (newRole === user.role) return;
+    if (!window.confirm(t('adminUsers.roleChangeConfirm', { name: user.username, role: getRoleLabel(newRole) }))) {
+      return;
+    }
+    setError('');
+    setSuccess('');
+
+    const roleEndpointRequired =
+      newRole === 'superadmin' || user.role === 'superadmin' || user.role === 'creator' || newRole === 'creator';
+
+    let endpoint = `/api/admin/role/${user._id}`;
+    let values = { role: newRole };
+    let successMessage = t('adminUsers.roleUpdated');
+
+    if (!roleEndpointRequired && newRole === 'user') {
+      endpoint = `/api/admin/user-admin-access/${user._id}`;
+      values = { adminAccess: false };
+      successMessage = t('adminUsers.accessRevoked');
+    } else if (!roleEndpointRequired && user.role === 'user' && newRole === 'admin') {
+      endpoint = `/api/admin/user-admin-access/${user._id}`;
+      values = { adminAccess: true };
+      successMessage = t('adminUsers.accessGranted');
+    }
+
+    try {
+      await updateUser({ resource: 'admin-users', id: user._id, values, meta: { endpoint } });
+      setSuccess(successMessage);
+      refreshAll();
+    } catch (err) {
+      setError(err?.response?.data?.message || t('adminUsers.operationFailed'));
+    }
+  };
+
+  const handleDeleteUser = async (userId) => {
+    if (admin && admin._id === userId) {
+      setError(t('adminUsers.cannotDeleteSelf'));
+      return;
+    }
+    if (!window.confirm(t('adminUsers.deleteUserConfirm'))) return;
+    setError('');
+    setSuccess('');
+    try {
+      await deleteUser({ resource: 'admin-users', id: userId });
+      setSuccess(t('adminUsers.userDeleted'));
+      refreshAll();
+    } catch (err) {
+      setError(err?.response?.data?.message || t('adminUsers.deleteFailed'));
+    }
+  };
+
+  const hasFilters = !!search.trim() || roleFilter !== 'all';
+  const queryError = tableQuery.isError
+    ? tableQuery.error?.response?.data?.message || t('adminUsers.operationFailed')
+    : '';
 
   if (showAddForm) {
     return (
@@ -169,63 +213,129 @@ const AdminUsers = () => {
             <p className="admin-page-desc">{t('adminUsers.accountList')}</p>
           </div>
           <div className="admin-page-actions">
-            <button className="btn btn-md btn-outline" onClick={() => setShowAddForm(false)}>{t('common.back')}</button>
+            <Button onClick={() => setShowAddForm(false)}>{t('common.back')}</Button>
           </div>
         </div>
         <div className="admin-panel">
-          <form onSubmit={handleAddUser}>
-            <div className="form-group">
-              <label htmlFor="newUserUsername">{t('adminUsers.username')}</label>
-              <input
-                type="text"
-                id="newUserUsername"
-                value={newUser.username}
-                onChange={(e) => setNewUser({...newUser, username: e.target.value})}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="newUserEmail">{t('adminUsers.email')}</label>
-              <input
-                type="email"
-                id="newUserEmail"
-                value={newUser.email}
-                onChange={(e) => setNewUser({...newUser, email: e.target.value})}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="newUserPassword">{t('adminUsers.password')}</label>
-              <PasswordToggle
-                id="newUserPassword"
-                value={newUser.password}
-                onChange={(e) => setNewUser({...newUser, password: e.target.value})}
-                show={showNewUserPassword}
-                onToggle={() => setShowNewUserPassword(!showNewUserPassword)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>{t('adminUsers.role')}</label>
-              <CustomSelect
+          <Form form={form} layout="vertical" onSubmit={handleAddUser} initialValues={{ role: 'admin' }}>
+            <Form.Item label={t('adminUsers.username')} field="username" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item label={t('adminUsers.email')} field="email" rules={[{ required: true, type: 'email' }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item label={t('adminUsers.password')} field="password" rules={[{ required: true }]}>
+              <Input.Password />
+            </Form.Item>
+            <Form.Item label={t('adminUsers.role')} field="role">
+              <Select
+                placeholder={t('adminUsers.selectRole')}
                 options={[
                   { value: 'admin', label: t('adminUsers.admin') },
-                  { value: 'creator', label: t('adminUsers.creator') }
+                  { value: 'creator', label: t('adminUsers.creator') },
                 ]}
-                value={newUser.role}
-                onChange={(role) => setNewUser({...newUser, role})}
-                placeholder={t('adminUsers.selectRole')}
               />
-            </div>
-            {error && <div className="error-message">{error}</div>}
-            <div className="form-group">
-              <button type="submit">{t('adminUsers.add')}</button>
-            </div>
-          </form>
+            </Form.Item>
+            {error && <Alert type="error" content={error} style={{ marginBottom: 16 }} />}
+            <Button type="primary" htmlType="submit" loading={createMutation.isPending}>
+              {t('adminUsers.add')}
+            </Button>
+          </Form>
         </div>
       </div>
     );
   }
+
+  const columns = [
+    {
+      title: t('adminUsers.nickname'),
+      dataIndex: 'username',
+      render: (_, user) => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: '50%',
+              background: ADMIN_ROLES.includes(user.role) ? 'rgb(var(--primary-6))' : 'rgb(var(--green-6))',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#fff',
+              fontWeight: 600,
+              fontSize: 14,
+              flexShrink: 0,
+            }}
+          >
+            {(user.username || '?').charAt(0).toUpperCase()}
+          </span>
+          <span style={{ fontWeight: 500 }}>{user.username}</span>
+          {admin._id === user._id && <Tag color="green">{t('adminUsers.current')}</Tag>}
+        </div>
+      ),
+    },
+    {
+      title: t('adminUsers.accountId'),
+      dataIndex: 'accountId',
+      render: (value) => value || '-',
+    },
+    {
+      title: t('adminUsers.email'),
+      dataIndex: 'email',
+    },
+    {
+      title: t('adminUsers.role'),
+      dataIndex: 'role',
+      width: 150,
+      render: (role, user) => {
+        if (admin._id === user._id) {
+          return <Tag color={ROLE_TAG_COLORS[role] || 'gray'}>{getRoleLabel(role)}</Tag>;
+        }
+        return (
+          <Select
+            size="mini"
+            value={role}
+            style={{ width: 130 }}
+            onChange={(value) => handleChangeRole(user, value)}
+            options={[
+              { value: 'user', label: t('adminUsers.normalUser') },
+              { value: 'admin', label: t('adminUsers.admin') },
+              { value: 'creator', label: t('adminUsers.creator') },
+              { value: 'superadmin', label: t('adminUsers.superAdmin') },
+            ]}
+          />
+        );
+      },
+    },
+    {
+      title: t('adminUsers.registerTime'),
+      dataIndex: 'createdAt',
+      width: 160,
+      render: (value) => new Date(value).toLocaleDateString(locale),
+    },
+    {
+      title: t('adminUsers.actions'),
+      width: 170,
+      render: (_, user) => (
+        <Space size="mini">
+          <Button size="mini" type="text" onClick={() => setDetailUser(user)}>
+            {t('adminUsers.details')}
+          </Button>
+          {admin._id !== user._id && (
+            <Button
+              size="mini"
+              type="text"
+              status="danger"
+              loading={deleteMutation.isPending && deleteMutation.variables?.id === user._id}
+              onClick={() => handleDeleteUser(user._id)}
+            >
+              {t('adminUsers.delete')}
+            </Button>
+          )}
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <div>
@@ -233,197 +343,124 @@ const AdminUsers = () => {
         <div>
           <h1 className="admin-page-title">{t('adminUsers.accountList')}</h1>
           <p className="admin-page-desc">
-            {t('adminUsers.accountCount', { count: filteredUsers.length })} ·{' '}
+            {t('adminUsers.accountCount', { count: result.total || 0 })} ·{' '}
             {t('adminUsers.adminCountLabel', { count: adminCount })} / {t('adminUsers.userCountLabel', { count: normalCount })}
           </p>
         </div>
         <div className="admin-page-actions">
-          <button className="btn btn-md btn-primary" onClick={() => setShowAddForm(true)}>
+          <Button type="primary" onClick={openAddForm}>
             {t('adminUsers.addAdminAccount')}
-          </button>
+          </Button>
         </div>
       </div>
 
-      {error && <div className="error-message" style={{marginBottom: '15px'}}>{error}</div>}
-      {success && <div className="success-message" style={{marginBottom: '15px', padding: '10px', background: 'var(--success-bg-strong)', border: '1px solid var(--success-border)', borderRadius: '6px', color: 'var(--success-text)'}}>{success}</div>}
+      {(error || queryError) && (
+        <Alert
+          type="error"
+          content={error || queryError}
+          closable
+          onClose={() => setError('')}
+          style={{ marginBottom: 16 }}
+        />
+      )}
+      {success && (
+        <Alert type="success" content={success} closable onClose={() => setSuccess('')} style={{ marginBottom: 16 }} />
+      )}
 
       <div className="admin-toolbar" style={{ marginBottom: 12 }}>
         <div style={{ flex: '1 1 260px', maxWidth: 420 }}>
           <AdminSearchInput
-            data={users}
+            data={allUsers}
             searchKey={['accountId', 'username', 'email']}
             placeholder={t('adminUsers.searchPlaceholder')}
             onSearch={setSearch}
             onSelect={(item) => setSearch(item.username)}
             displayRender={(item) => (
               <div>
-                <span style={{fontWeight: '500'}}>{item.username}</span>
-                {item.accountId && <span style={{fontSize: '12px', color: 'var(--text-tertiary)', marginLeft: '6px'}}>@{item.accountId}</span>}
-                <span style={{fontSize: '12px', color: 'var(--text-secondary)', marginLeft: '10px'}}>{item.email}</span>
+                <span style={{ fontWeight: 500 }}>{item.username}</span>
+                {item.accountId && (
+                  <span style={{ fontSize: 12, color: 'var(--color-text-3)', marginLeft: 6 }}>@{item.accountId}</span>
+                )}
+                <span style={{ fontSize: 12, color: 'var(--color-text-2)', marginLeft: 10 }}>{item.email}</span>
               </div>
             )}
           />
         </div>
         <div style={{ width: 168, flexShrink: 0 }}>
-          <CustomSelect
-            options={ROLE_FILTER_OPTIONS.map(opt => ({ value: opt.value, label: t(opt.labelKey) }))}
+          <Select
             value={roleFilter}
             onChange={setRoleFilter}
             placeholder={t('adminUsers.filterByRole')}
+            options={ROLE_FILTER_OPTIONS.map((option) => ({ value: option.value, label: t(option.labelKey) }))}
           />
         </div>
       </div>
 
-      {filteredUsers.length === 0 ? (
-          <div style={{padding: '40px', textAlign: 'center', color: 'var(--text-secondary)'}}>
-            {search || roleFilter !== 'all' ? t('adminUsers.noMatch') : t('adminUsers.noAccounts')}
-          </div>
-        ) : (
-          <div className="table-wrapper">
-            <table className="table">
-              <thead>
-                <tr style={{borderBottom: '1px solid var(--border)'}}>
-                  <th>{t('adminUsers.nickname')}</th>
-                  <th>{t('adminUsers.accountId')}</th>
-                  <th>{t('adminUsers.email')}</th>
-                  <th>{t('adminUsers.role')}</th>
-                  <th>{t('adminUsers.registerTime')}</th>
-                  <th className="table-actions" style={{ textAlign: 'right' }}>{t('adminUsers.actions')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredUsers.map(u => (
-                  <tr key={u._id} style={{borderBottom: '1px solid var(--border)'}}>
-                    <td>
-                      <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-                        <div style={{
-                          width: '36px', height: '36px', borderRadius: '50%',
-                          background: ['superadmin', 'creator', 'admin'].includes(u.role) ? 'var(--btn-gradient-purple)' : 'var(--btn-gradient-success)',
-                          display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          color: 'var(--btn-text)', fontWeight: '600', fontSize: '14px'
-                        }}>
-                          {u.username.charAt(0).toUpperCase()}
-                        </div>
-                        <span style={{fontWeight: '500'}}>{u.username}</span>
-                        {admin._id === u._id && (
-                          <span style={{fontSize: '12px', color: 'var(--success-text)', background: 'var(--success-bg-subtle)', padding: '2px 8px', borderRadius: '4px'}}>{t('adminUsers.current')}</span>
-                        )}
-                      </div>
-                    </td>
-                    <td>
-                      {u.accountId || '-'}
-                    </td>
-                    <td>
-                      {u.email}
-                    </td>
-                    <td>
-                      {admin._id === u._id ? (
-                        <span style={{
-                          ...getRoleBadgeStyle(u.role),
-                          padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: '500'
-                        }}>{getRoleLabel(u.role)}</span>
-                      ) : (
-                        <select
-                          value={u.role}
-                          onChange={async (e) => {
-                            const newRole = e.target.value;
-                            if (newRole === u.role) return;
-                            if (!window.confirm(t('adminUsers.roleChangeConfirm', { name: u.username, role: getRoleLabel(newRole) }))) return;
-                            try {
-                              if (newRole === 'superadmin' || u.role === 'superadmin' || u.role === 'creator' || newRole === 'creator') {
-                                // 超级管理员和创作者的分配和降级都通过 role 接口
-                                await adminApi.put(`/api/admin/role/${u._id}`, { role: newRole });
-                                setSuccess(t('adminUsers.roleUpdated'));
-                              } else if (newRole === 'user') {
-                                await adminApi.put(`/api/admin/user-admin-access/${u._id}`, { adminAccess: false });
-                                setSuccess(t('adminUsers.accessRevoked'));
-                              } else if (u.role === 'user' && newRole === 'admin') {
-                                await adminApi.put(`/api/admin/user-admin-access/${u._id}`, { adminAccess: true });
-                                setSuccess(t('adminUsers.accessGranted'));
-                              } else {
-                                await adminApi.put(`/api/admin/role/${u._id}`, { role: newRole });
-                                setSuccess(t('adminUsers.roleUpdated'));
-                              }
-                              fetchUsers();
-                            } catch (err) {
-                              setError(err.response?.data?.message || t('adminUsers.operationFailed'));
-                            }
-                          }}
-                          style={{
-                            padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: '500',
-                            cursor: 'pointer', border: '1px solid',
-                            ...getRoleBadgeStyle(u.role),
-                          }}
-                        >
-                          <option value="user">{t('adminUsers.normalUser')}</option>
-                          <option value="admin">{t('adminUsers.admin')}</option>
-                          <option value="creator">{t('adminUsers.creator')}</option>
-                          <option value="superadmin">{t('adminUsers.superAdmin')}</option>
-                        </select>
-                      )}
-                    </td>
-                    <td>
-                      {new Date(u.createdAt).toLocaleDateString(locale)}
-                    </td>
-                    <td className="table-actions" style={{ textAlign: 'right' }}>
-                      <span
-                        className="action-link"
-                        role="button"
-                        tabIndex={0}
-                        onClick={() => setDetailUser(u)}
-                        onKeyDown={(e) => { if (e.key === 'Enter') setDetailUser(u); }}
-                      >
-                        {t('adminUsers.details')}
-                      </span>
-                      {admin._id !== u._id && (
-                        <span
-                          className="action-link action-danger"
-                          role="button"
-                          tabIndex={0}
-                          onClick={() => handleDeleteUser(u._id)}
-                          onKeyDown={(e) => { if (e.key === 'Enter') handleDeleteUser(u._id); }}
-                        >
-                          {t('adminUsers.delete')}
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+      <Table
+        rowKey="_id"
+        columns={columns}
+        data={users}
+        loading={tableQuery.isLoading || updateMutation.isPending}
+        pagination={false}
+        scroll={{ x: 800 }}
+        noDataElement={
+          <Empty description={hasFilters ? t('adminUsers.noMatch') : t('adminUsers.noAccounts')} />
+        }
+      />
 
-      <Modal isOpen={!!detailUser} onClose={() => setDetailUser(null)} maxWidth="520px">
+      {users.length > 0 && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
+          <Pagination
+            current={currentPage}
+            pageSize={pageSize}
+            total={result.total || 0}
+            showTotal
+            sizeCanChange
+            onChange={(page, size) => {
+              setCurrentPage(page);
+              setPageSize(size);
+            }}
+          />
+        </div>
+      )}
+
+      <Modal
+        visible={!!detailUser}
+        onCancel={() => setDetailUser(null)}
+        footer={null}
+        style={{ width: 560 }}
+        title={t('adminUsers.userDetails', { username: detailUser?.username || '' })}
+      >
         {detailUser && (
-          <>
-            <div className="modal-header">
-              <h3>{t('adminUsers.userDetails', { username: detailUser.username })}</h3>
-              <button className="btn btn-secondary" onClick={() => setDetailUser(null)}>{t('adminUsers.close')}</button>
-            </div>
-            <div style={{display: 'flex', flexDirection: 'column', gap: '0'}}>
-              <InfoRow label={t('adminUsers.accountId')} value={detailUser.accountId || '-'} />
-              <InfoRow label={t('adminUsers.nickname')} value={detailUser.username} />
-              <InfoRow label={t('adminUsers.email')} value={detailUser.email} />
-              <InfoRow label={t('adminUsers.role')} value={getRoleLabel(detailUser.role)} icon={['superadmin', 'creator', 'admin'].includes(detailUser.role) ? <FontAwesomeIcon icon={faShieldHalved} aria-hidden="true" /> : <FontAwesomeIcon icon={faUser} aria-hidden="true" />} />
-              <InfoRow label={t('adminUsers.registerTime')} value={new Date(detailUser.createdAt).toLocaleString(locale)} />
-              <InfoRow label={t('adminUsers.lastLogin')} value={detailUser.lastLoginAt ? new Date(detailUser.lastLoginAt).toLocaleString(locale) : t('adminUsers.neverLoggedIn')} />
-              <InfoRow label={t('adminUsers.lastLoginIP')} value={detailUser.lastLoginIp || t('adminUsers.unknown')} />
-              <InfoRow label={t('adminUsers.ipRegion')} value={detailUser.lastLoginRegion || t('adminUsers.unknown')} icon={<FontAwesomeIcon icon={faGlobe} aria-hidden="true" />} />
-              <InfoRow label={t('adminUsers.isp')} value={detailUser.deviceInfo?.carrier || t('adminUsers.unknown')} icon={<FontAwesomeIcon icon={faSatelliteDish} aria-hidden="true" />} />
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <InfoRow label={t('adminUsers.accountId')} value={detailUser.accountId || '-'} />
+            <InfoRow label={t('adminUsers.nickname')} value={detailUser.username} />
+            <InfoRow label={t('adminUsers.email')} value={detailUser.email} />
+            <InfoRow
+              label={t('adminUsers.role')}
+              value={getRoleLabel(detailUser.role)}
+              icon={ADMIN_ROLES.includes(detailUser.role) ? <FontAwesomeIcon icon={faShieldHalved} aria-hidden="true" /> : <FontAwesomeIcon icon={faUser} aria-hidden="true" />}
+            />
+            <InfoRow label={t('adminUsers.registerTime')} value={new Date(detailUser.createdAt).toLocaleString(locale)} />
+            <InfoRow
+              label={t('adminUsers.lastLogin')}
+              value={detailUser.lastLoginAt ? new Date(detailUser.lastLoginAt).toLocaleString(locale) : t('adminUsers.neverLoggedIn')}
+            />
+            <InfoRow label={t('adminUsers.lastLoginIP')} value={detailUser.lastLoginIp || t('adminUsers.unknown')} />
+            <InfoRow label={t('adminUsers.ipRegion')} value={detailUser.lastLoginRegion || t('adminUsers.unknown')} icon={<FontAwesomeIcon icon={faGlobe} aria-hidden="true" />} />
+            <InfoRow label={t('adminUsers.isp')} value={detailUser.deviceInfo?.carrier || t('adminUsers.unknown')} icon={<FontAwesomeIcon icon={faSatelliteDish} aria-hidden="true" />} />
 
-              <div style={{padding: '12px 0', borderTop: '1px solid var(--border)', marginTop: '8px'}}>
-                <h4 style={{color: 'var(--primary)', marginBottom: '8px'}}>{t('adminUsers.deviceInfo')}</h4>
-              </div>
-              <InfoRow label={t('adminUsers.deviceType')} value={getDeviceTypeLabel(detailUser.deviceInfo?.deviceType)} icon={getDeviceIcon(detailUser.deviceInfo?.deviceType)} />
-              <InfoRow label={t('adminUsers.deviceModel')} value={detailUser.deviceInfo?.deviceModel || t('adminUsers.unknown')} icon={<FontAwesomeIcon icon={faMobileScreenButton} aria-hidden="true" />} />
-              <InfoRow label={t('adminUsers.os')} value={detailUser.deviceInfo?.os ? `${detailUser.deviceInfo.os} ${detailUser.deviceInfo.osVersion || ''}`.trim() : t('adminUsers.unknown')} />
-              <InfoRow label={t('adminUsers.browser')} value={detailUser.deviceInfo?.browser ? `${detailUser.deviceInfo.browser} ${detailUser.deviceInfo.browserVersion || ''}`.trim() : t('adminUsers.unknown')} />
-              <InfoRow label={t('adminUsers.screenResolution')} value={detailUser.deviceInfo?.screenWidth ? `${detailUser.deviceInfo.screenWidth} × ${detailUser.deviceInfo.screenHeight}` : t('adminUsers.unknown')} />
-              <InfoRow label={t('adminUsers.language')} value={detailUser.deviceInfo?.language || t('adminUsers.unknown')} />
-              <InfoRow label={t('adminUsers.userAgent')} value={detailUser.deviceInfo?.userAgent || t('adminUsers.unknown')} isLong />
+            <div style={{ padding: '12px 0', borderTop: '1px solid var(--color-border-2)', marginTop: 8 }}>
+              <h4 style={{ color: 'rgb(var(--primary-6))', marginBottom: 8 }}>{t('adminUsers.deviceInfo')}</h4>
             </div>
-          </>
+            <InfoRow label={t('adminUsers.deviceType')} value={getDeviceTypeLabel(detailUser.deviceInfo?.deviceType)} icon={getDeviceIcon(detailUser.deviceInfo?.deviceType)} />
+            <InfoRow label={t('adminUsers.deviceModel')} value={detailUser.deviceInfo?.deviceModel || t('adminUsers.unknown')} icon={<FontAwesomeIcon icon={faMobileScreenButton} aria-hidden="true" />} />
+            <InfoRow label={t('adminUsers.os')} value={detailUser.deviceInfo?.os ? `${detailUser.deviceInfo.os} ${detailUser.deviceInfo.osVersion || ''}`.trim() : t('adminUsers.unknown')} />
+            <InfoRow label={t('adminUsers.browser')} value={detailUser.deviceInfo?.browser ? `${detailUser.deviceInfo.browser} ${detailUser.deviceInfo.browserVersion || ''}`.trim() : t('adminUsers.unknown')} />
+            <InfoRow label={t('adminUsers.screenResolution')} value={detailUser.deviceInfo?.screenWidth ? `${detailUser.deviceInfo.screenWidth} × ${detailUser.deviceInfo.screenHeight}` : t('adminUsers.unknown')} />
+            <InfoRow label={t('adminUsers.language')} value={detailUser.deviceInfo?.language || t('adminUsers.unknown')} />
+            <InfoRow label={t('adminUsers.userAgent')} value={detailUser.deviceInfo?.userAgent || t('adminUsers.unknown')} isLong />
+          </div>
         )}
       </Modal>
     </div>
@@ -431,15 +468,19 @@ const AdminUsers = () => {
 };
 
 const InfoRow = ({ label, value, icon, isLong }) => (
-  <div style={{
-    display: 'flex', padding: '10px 0',
-    borderBottom: '1px solid var(--border)',
-    alignItems: isLong ? 'flex-start' : 'center'
-  }}>
-    <span style={{color: 'var(--text-secondary)', fontSize: '14px', minWidth: '100px', flexShrink: 0}}>
-      {icon && <span style={{marginRight: '6px'}}>{icon}</span>}{label}
+  <div
+    style={{
+      display: 'flex',
+      padding: '10px 0',
+      borderBottom: '1px solid var(--color-border-2)',
+      alignItems: isLong ? 'flex-start' : 'center',
+    }}
+  >
+    <span style={{ color: 'var(--color-text-2)', fontSize: 14, minWidth: 100, flexShrink: 0 }}>
+      {icon && <span style={{ marginRight: 6 }}>{icon}</span>}
+      {label}
     </span>
-    <span style={{color: 'var(--foreground)', fontSize: '14px', wordBreak: 'break-all', lineHeight: '1.5'}}>
+    <span style={{ color: 'var(--color-text-1)', fontSize: 14, wordBreak: 'break-all', lineHeight: 1.5 }}>
       {value}
     </span>
   </div>
