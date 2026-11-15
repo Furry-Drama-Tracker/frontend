@@ -1,4 +1,5 @@
 ﻿import React, { useState } from 'react';
+import { formatApiError } from '../utils/errorMeta';
 import { useCustom, useCustomMutation, useDelete, useTable } from '@refinedev/core';
 import {
   Alert,
@@ -55,7 +56,7 @@ const AdminEpisodeTrash = () => {
       });
       refresh();
     } catch (err) {
-      setError(err?.response?.data?.message || t('adminEpisodeTrash.restoreFailed'));
+      setError(formatApiError(err, t('adminEpisodeTrash.restoreFailed')));
     }
   };
 
@@ -65,7 +66,7 @@ const AdminEpisodeTrash = () => {
       await purgeEpisode({ resource: 'episode-trash', id: item._id });
       refresh();
     } catch (err) {
-      setError(err?.response?.data?.message || t('adminEpisodeTrash.purgeFailed'));
+      setError(formatApiError(err, t('adminEpisodeTrash.purgeFailed')));
     }
   };
 
@@ -189,7 +190,7 @@ const AdminEpisodeTrash = () => {
   ];
 
   const queryError = tableQuery.isError
-    ? tableQuery.error?.response?.data?.message || t('adminEpisodeTrash.loadFailed')
+    ? tableQuery.formatApiError(error, t('adminEpisodeTrash.loadFailed'))
     : '';
 
   return (

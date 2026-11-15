@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
+import { formatApiError } from '../utils/errorMeta';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import { assetUrl } from '../utils/apiBase';
@@ -182,7 +183,7 @@ const AdminSiteContent = () => {
         refreshSettings();
       }
     } catch (err) {
-      setMessage(err.response?.data?.message || t('adminContent.saveFailed'));
+      setMessage(formatApiError(err, t('adminContent.saveFailed')));
     }
     setSaving(false);
   };

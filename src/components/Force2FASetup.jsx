@@ -8,6 +8,7 @@ import Modal from './Modal';
 import BackupCodesPanel from './BackupCodesPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 // Force2FASetup 是角色化 2FA 的强制设置阻断页：管理员/超管未开启 2FA 时
 // 拦截在全局模态里完成 TOTP 注册（后端 force2FASetup 门禁同步拦截其余写操作）。
@@ -44,7 +45,7 @@ const Force2FASetup = ({ onUpdate, onLogout }) => {
       setBackupCodes(res.data.backupCodes || []);
       setStep('setup');
     } catch (err) {
-      setError(err.response?.data?.message || t('twoFactor.invalidCode'));
+      setError(formatApiError(err, t('twoFactor.invalidCode')));
     }
     setLoading(false);
   };
@@ -61,7 +62,7 @@ const Force2FASetup = ({ onUpdate, onLogout }) => {
       await axios.post(API.TWOFACTOR.VERIFY_ENABLE, { token });
       onUpdate({ twoFactorEnabled: true, force2FASetup: false });
     } catch (err) {
-      setError(err.response?.data?.message || t('twoFactor.invalidCode'));
+      setError(formatApiError(err, t('twoFactor.invalidCode')));
     }
     setLoading(false);
   };

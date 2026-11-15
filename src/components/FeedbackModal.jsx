@@ -4,6 +4,7 @@ import { useI18n } from '../contexts/I18nContext';
 import Modal from './Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBug, faCircleQuestion, faComment, faLightbulb, faPenToSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 const FeedbackModal = ({ show, onClose, user }) => {
   const { t } = useI18n();
@@ -23,7 +24,7 @@ const FeedbackModal = ({ show, onClose, user }) => {
       setContent('');
       setTimeout(() => { setMsg(''); onClose(); }, 1500);
     } catch (e) {
-      setMsg(e.response?.data?.message || t('feedback.submitFailed'));
+      setMsg(formatApiError(e, t('feedback.submitFailed')));
       setMsgIsSuccess(false);
     }
     setSubmitting(false);

@@ -4,6 +4,7 @@ import { useI18n } from '../contexts/I18nContext';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 const VerifyEmailChange = () => {
   const { t } = useI18n();
@@ -29,7 +30,7 @@ const VerifyEmailChange = () => {
       })
       .catch(err => {
         setStatus('error');
-        setMessage(err.response?.data?.message || t('auth.verifyFailed'));
+        setMessage(formatApiError(err, t('auth.verifyFailed')));
       });
   }, [searchParams, t]);
 

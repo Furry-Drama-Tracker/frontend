@@ -138,6 +138,8 @@ axios.interceptors.response.use(
         status: error.response.status,
         message: error.response.data?.message,
         messageKey: 'common.serverUnavailable',
+        error: error.response.data?.error,
+        ref: error.response.data?.ref,
       } }));
     }
     return Promise.reject(error);

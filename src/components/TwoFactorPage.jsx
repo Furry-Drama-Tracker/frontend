@@ -13,6 +13,7 @@ import {
 import {
   browserSupportsWebAuthn, platformAuthenticatorIsAvailable, startRegistration,
 } from '@simplewebauthn/browser';
+import { formatApiError } from '../utils/errorMeta';
 
 // 2FA 角色策略（与后端一致）：user 禁开 / creator 可选 / admin+ 强制不可关。
 const isUser = (role) => role === 'user' || !role;
@@ -87,7 +88,7 @@ const TwoFactorPage = ({ user, setUser }) => {
       setBackupCodes(res.data.backupCodes);
       setStep('setup');
     } catch (err) {
-      setError(err.response?.data?.message || t('twoFactor.invalidCode'));
+      setError(formatApiError(err, t('twoFactor.invalidCode')));
     }
     setLoading(false);
   };
@@ -109,7 +110,7 @@ const TwoFactorPage = ({ user, setUser }) => {
       setStep('enabled');
       setToken('');
     } catch (err) {
-      setError(err.response?.data?.message || t('twoFactor.invalidCode'));
+      setError(formatApiError(err, t('twoFactor.invalidCode')));
     }
     setLoading(false);
   };
@@ -131,7 +132,7 @@ const TwoFactorPage = ({ user, setUser }) => {
       setStep('disabled');
       setToken('');
     } catch (err) {
-      setError(err.response?.data?.message || t('twoFactor.invalidCode'));
+      setError(formatApiError(err, t('twoFactor.invalidCode')));
     }
     setLoading(false);
   };
@@ -158,7 +159,7 @@ const TwoFactorPage = ({ user, setUser }) => {
       setPasskeyPassword('');
       loadPasskeys();
     } catch (err) {
-      setPasskeyError(err.response?.data?.message || t('twoFactor.passkeyAddFailed'));
+      setPasskeyError(formatApiError(err, t('twoFactor.passkeyAddFailed')));
     }
     setPasskeyLoading(false);
   };
@@ -177,7 +178,7 @@ const TwoFactorPage = ({ user, setUser }) => {
       });
       loadPasskeys();
     } catch (err) {
-      setPasskeyError(err.response?.data?.message || t('twoFactor.passkeyDeleteFailed'));
+      setPasskeyError(formatApiError(err, t('twoFactor.passkeyDeleteFailed')));
     }
     setPasskeyLoading(false);
   };

@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
+import { formatApiError } from '../utils/errorMeta';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import { assetUrl } from '../utils/apiBase';
@@ -91,7 +92,7 @@ const AdminCreatorProfiles = () => {
       setMessage(t('adminCreatorProfiles.saveSuccess'));
       fetchProfiles();
     } catch (err) {
-      setMessage(err.response?.data?.message || t('adminCreatorProfiles.saveFailed'));
+      setMessage(formatApiError(err, t('adminCreatorProfiles.saveFailed')));
     }
     setSaving(false);
   };
@@ -106,7 +107,7 @@ const AdminCreatorProfiles = () => {
       setReviewingId(null);
       await fetchProfiles();
     } catch (err) {
-      setMessage(err.response?.data?.message || t('adminCreatorProfiles.reviewFailed'));
+      setMessage(formatApiError(err, t('adminCreatorProfiles.reviewFailed')));
     }
     setReviewBusy(false);
   };
@@ -123,7 +124,7 @@ const AdminCreatorProfiles = () => {
       setRejectNoteMap(prev => ({ ...prev, [profileId]: '' }));
       await fetchProfiles();
     } catch (err) {
-      setMessage(err.response?.data?.message || t('adminCreatorProfiles.reviewFailed'));
+      setMessage(formatApiError(err, t('adminCreatorProfiles.reviewFailed')));
     }
     setReviewBusy(false);
   };

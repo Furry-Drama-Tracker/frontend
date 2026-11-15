@@ -6,6 +6,7 @@ import { useI18n } from '../contexts/I18nContext';
 import { useAuth } from '../contexts/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDesktop, faMobileScreenButton, faPenToSquare, faRightFromBracket, faTabletScreenButton, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 const UserDevices = ({ user }) => {
   const { t, locale } = useI18n();
@@ -56,7 +57,7 @@ const UserDevices = ({ user }) => {
           fetchSessions();
           setTimeout(() => setMsg(''), 3000);
         } catch (err) {
-          setMsg(err.response?.data?.message || t('common.operationFailed'));
+          setMsg(formatApiError(err, t('common.operationFailed')));
           setMsgIsError(true);
           setTimeout(() => setMsg(''), 3000);
         }
@@ -79,7 +80,7 @@ const UserDevices = ({ user }) => {
           setMsgIsError(false);
           setTimeout(() => setMsg(''), 3000);
         } catch (err) {
-          setMsg(err.response?.data?.message || t('common.operationFailed'));
+          setMsg(formatApiError(err, t('common.operationFailed')));
           setMsgIsError(true);
           setTimeout(() => setMsg(''), 3000);
         }
@@ -98,7 +99,7 @@ const UserDevices = ({ user }) => {
       setMsg(t('devices.aliasUpdated'));
       setTimeout(() => setMsg(''), 3000);
     } catch (err) {
-      setMsg(err.response?.data?.message || t('common.updateFailed'));
+      setMsg(formatApiError(err, t('common.updateFailed')));
       setMsgIsError(true);
       setTimeout(() => setMsg(''), 3000);
     }

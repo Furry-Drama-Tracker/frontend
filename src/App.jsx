@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component, Suspense, lazy } from 'react';
+import React, { useState, useEffect, useRef, Component, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -7,6 +7,7 @@ import { I18nContext, I18nProvider, useI18n } from './contexts/I18nContext';
 import { SiteSettingsProvider, useSiteSettings } from './contexts/SiteSettingsContext';
 import useTranslation from './hooks/useTranslation';
 import { assetUrl } from './utils/apiBase';
+import { stripEmbeddedSuffix, formatErrorId, copyText } from './utils/errorMeta';
 import NavBar from './components/NavBar';
 import Modal from './components/Modal';
 import AdminErrorBoundary from './components/AdminErrorBoundary';
@@ -384,19 +385,27 @@ function AppContent() {
   const { t, lang } = useI18n();
   const { settings: siteSettingsData } = useSiteSettings();
   const [showFeedback, setShowFeedback] = useState(false);
-  const [apiError, setApiError] = useState(null);
+  const [apiError, setApiError] = useState(null); // {message, id}：id=出错编号（码-参考号），可为 null
+  const [copiedId, setCopiedId] = useState(false);
+  const apiErrorTimer = useRef(null);
   const location = useLocation();
 
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   useEffect(() => {
     const handleApiError = (e) => {
-      const msg = e.detail.message || (e.detail.messageKey ? t(e.detail.messageKey) : '');
-      setApiError(msg);
-      setTimeout(() => setApiError(null), 3000);
+      const d = e.detail || {};
+      let msg = typeof d.message === 'string' ? stripEmbeddedSuffix(d.message) : '';
+      if (!msg) msg = d.messageKey ? t(d.messageKey) : '';
+      if (apiErrorTimer.current) clearTimeout(apiErrorTimer.current);
+      setApiError({ message: msg, id: formatErrorId(d.error, d.ref) });
+      apiErrorTimer.current = setTimeout(() => setApiError(null), 10000);
     };
     window.addEventListener('api-error', handleApiError);
-    return () => window.removeEventListener('api-error', handleApiError);
+    return () => {
+      window.removeEventListener('api-error', handleApiError);
+      if (apiErrorTimer.current) clearTimeout(apiErrorTimer.current);
+    };
   }, [t]);
 
   useEffect(() => {
@@ -603,10 +612,36 @@ function AppContent() {
       {apiError && (
         <div style={{
           position: 'fixed', top: '20px', right: '20px', background: '#e74c3c', color: '#fff',
-          padding: '12px 20px', borderRadius: '8px', zIndex: 10000, fontSize: '14px',
-          maxWidth: '300px', boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-          transition: 'opacity 0.3s'
-        }}>{apiError}</div>
+          padding: '12px 16px', borderRadius: '8px', zIndex: 10000, fontSize: '14px',
+          maxWidth: '360px', boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+            <span style={{ flex: 1, whiteSpace: 'pre-line' }}>{apiError.message}</span>
+            <button
+              onClick={() => setApiError(null)}
+              aria-label={t('common.close')}
+              style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '15px', padding: '0 2px', lineHeight: 1 }}
+            >
+              <FontAwesomeIcon icon={faXmark} aria-hidden="true" />
+            </button>
+          </div>
+          {apiError.id && (
+            <div style={{ marginTop: '6px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', opacity: 0.85 }}>
+              <span style={{ flex: 1, fontFamily: 'monospace' }}>{apiError.id}</span>
+              <button
+                onClick={async () => {
+                  if (await copyText(apiError.id)) {
+                    setCopiedId(true);
+                    setTimeout(() => setCopiedId(false), 2000);
+                  }
+                }}
+                style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '12px', padding: 0, textDecoration: 'underline' }}
+              >
+                {copiedId ? t('common.copied') : t('common.copy')}
+              </button>
+            </div>
+          )}
+        </div>
       )}
     </>
   );

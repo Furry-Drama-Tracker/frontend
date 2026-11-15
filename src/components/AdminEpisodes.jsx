@@ -1,4 +1,5 @@
 ﻿import React, { useEffect, useMemo, useState } from 'react';
+import { formatApiError } from '../utils/errorMeta';
 import { useCreate, useCustomMutation, useDelete, useList, useOne, useTable, useUpdate } from '@refinedev/core';
 import { useOutletContext } from 'react-router-dom';
 import {
@@ -250,7 +251,7 @@ const AdminEpisodes = () => {
         });
       }
     } catch (err) {
-      setError(err?.response?.data?.message || t('adminEpisodes.addEpisodeFailed'));
+      setError(formatApiError(err, t('adminEpisodes.addEpisodeFailed')));
     }
   };
 
@@ -322,7 +323,7 @@ const AdminEpisodes = () => {
       setEditingEpisode((prev) => (prev ? { ...prev, ...episodeData } : prev));
       setError('');
     } catch (err) {
-      setError(err?.response?.data?.message || t('adminEpisodes.editEpisodeFailed'));
+      setError(formatApiError(err, t('adminEpisodes.editEpisodeFailed')));
     }
   };
 
@@ -332,7 +333,7 @@ const AdminEpisodes = () => {
       await deleteEpisode({ resource: 'episodes', id });
       episodesTable.tableQuery.refetch();
     } catch (err) {
-      setError(err?.response?.data?.message || t('adminEpisodes.deleteFailed'));
+      setError(formatApiError(err, t('adminEpisodes.deleteFailed')));
     }
   };
 
@@ -345,7 +346,7 @@ const AdminEpisodes = () => {
       });
       episodesTable.tableQuery.refetch();
     } catch (err) {
-      setError(err?.response?.data?.message || t('adminEpisodes.resubmitFailed'));
+      setError(formatApiError(err, t('adminEpisodes.resubmitFailed')));
     }
   };
 
@@ -390,7 +391,7 @@ const AdminEpisodes = () => {
       singleEpisodeQuery.refetch();
       episodesTable.tableQuery.refetch();
     } catch (err) {
-      setError(err?.response?.data?.message || (editingSingleEpisode ? t('adminEpisodes.editSingleEpisodeFailed') : t('adminEpisodes.addSingleEpisodeFailed')));
+      setError(formatApiError(err, editingSingleEpisode ? t('adminEpisodes.editSingleEpisodeFailed') : t('adminEpisodes.addSingleEpisodeFailed')));
     }
   };
 
@@ -430,7 +431,7 @@ const AdminEpisodes = () => {
       singleEpisodeQuery.refetch();
       episodesTable.tableQuery.refetch();
     } catch (err) {
-      setError(err?.response?.data?.message || t('adminEpisodes.deleteSingleEpisodeFailed'));
+      setError(formatApiError(err, t('adminEpisodes.deleteSingleEpisodeFailed')));
     }
   };
 

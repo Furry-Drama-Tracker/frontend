@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
+import { formatApiError } from '../utils/errorMeta';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
@@ -79,7 +80,7 @@ const AdminEmailSettings = () => {
       });
       setTestMsg(res.data.message);
     } catch (err) {
-      setTestMsg(err.response?.data?.message || t('adminEmailSettings.testSendFailed'));
+      setTestMsg(formatApiError(err, t('adminEmailSettings.testSendFailed')));
     }
     setTesting(false);
   };

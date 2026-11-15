@@ -6,6 +6,7 @@ import PasswordToggle from './PasswordToggle';
 import API from '../utils/apiEndpoints';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 const ChangePassword = () => {
   const { t } = useI18n();
@@ -58,7 +59,7 @@ const ChangePassword = () => {
         navigate('/account-security');
       }, 1500);
     } catch (err) {
-      setError(err.response?.data?.message || t('auth.passwordChangeFailed'));
+      setError(formatApiError(err, t('auth.passwordChangeFailed')));
     }
   };
 

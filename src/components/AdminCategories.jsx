@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
+import { formatApiError } from '../utils/errorMeta';
 import adminApi from '../utils/adminApi';
 import { useOutletContext } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
@@ -48,7 +49,7 @@ const AdminCategories = () => {
       setSuccess(t('adminCategories.addSuccess'));
       fetchCategories();
     } catch (err) {
-      setError(err.response?.data?.message || t('adminCategories.addFailed'));
+      setError(formatApiError(err, t('adminCategories.addFailed')));
     }
   };
 
@@ -72,7 +73,7 @@ const AdminCategories = () => {
       setSuccess(t('adminCategories.editSuccess'));
       fetchCategories();
     } catch (err) {
-      setError(err.response?.data?.message || t('adminCategories.editFailed'));
+      setError(formatApiError(err, t('adminCategories.editFailed')));
     }
   };
 
@@ -83,7 +84,7 @@ const AdminCategories = () => {
       setSuccess(t('adminCategories.deleteSuccess'));
       fetchCategories();
     } catch (err) {
-      setError(err.response?.data?.message || t('adminCategories.deleteFailed'));
+      setError(formatApiError(err, t('adminCategories.deleteFailed')));
     }
   };
 

@@ -1,4 +1,5 @@
 ﻿import React, { useMemo, useState } from 'react';
+import { formatApiError } from '../utils/errorMeta';
 import { useCreate, useDelete, useList, useTable, useUpdate } from '@refinedev/core';
 import {
   Alert,
@@ -116,7 +117,7 @@ const AdminFriendLinks = () => {
       closeForm();
       refresh();
     } catch (err) {
-      setError(err?.response?.data?.message || t('adminFriendLinks.operationFailed'));
+      setError(formatApiError(err, t('adminFriendLinks.operationFailed')));
     }
   };
 
@@ -127,7 +128,7 @@ const AdminFriendLinks = () => {
       await deleteLink({ resource: 'friend-links', id });
       refresh();
     } catch (err) {
-      setError(err?.response?.data?.message || t('adminFriendLinks.deleteFailed'));
+      setError(formatApiError(err, t('adminFriendLinks.deleteFailed')));
     }
   };
 
@@ -138,7 +139,7 @@ const AdminFriendLinks = () => {
       await updateLink({ resource: 'friend-links', id, values: { status } });
       refresh();
     } catch (err) {
-      setError(err?.response?.data?.message || t('adminFriendLinks.reviewFailed'));
+      setError(formatApiError(err, t('adminFriendLinks.reviewFailed')));
     }
   };
 

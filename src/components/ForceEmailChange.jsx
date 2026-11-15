@@ -5,6 +5,7 @@ import API from '../utils/apiEndpoints';
 import Modal from './Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faEnvelope, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 const ForceEmailChange = ({ onUpdate, onLogout }) => {
   const { t } = useI18n();
@@ -36,7 +37,7 @@ const ForceEmailChange = ({ onUpdate, onLogout }) => {
         forceEmailChange: false,
       });
     } catch (err) {
-      setError(err.response?.data?.message || t('auth.changeEmailFailed'));
+      setError(formatApiError(err, t('auth.changeEmailFailed')));
     }
     setLoading(false);
   };

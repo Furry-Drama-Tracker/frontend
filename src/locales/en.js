@@ -14,6 +14,8 @@ export default {
     close: 'Close',
     success: 'Success',
     error: 'Error',
+    copy: 'Copy',
+    copied: 'Copied',
     noData: 'No data',
     all: 'All',
     more: 'More',

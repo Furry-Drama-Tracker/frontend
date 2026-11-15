@@ -11,6 +11,7 @@ import {
   faGlobe, faImage, faPalette, faSpinner, faTrashCan, faUpload,
   faUser, faWandMagicSparkles, faXmark,
 } from '@fortawesome/free-solid-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 /**
  * computeThemeType 由主题内容推导类型：full（壁纸+图标全套）/
@@ -120,7 +121,7 @@ const ThemeEditorModal = ({ isOpen, onClose, initial, onSave, saving = false, ti
       setPersonalWallpapers((prev) => prev.filter((p) => (p._id || p.url) !== (wp._id || wp.url)));
       if (wallpaperUrl === wp.url) { setWallpaperUrl(''); setWallpaperThumb(''); }
     } catch (err) {
-      setError(err.response?.data?.message || t('themeEditor.deleteFailed'));
+      setError(formatApiError(err, t('themeEditor.deleteFailed')));
     }
   };
 
@@ -145,7 +146,7 @@ const ThemeEditorModal = ({ isOpen, onClose, initial, onSave, saving = false, ti
         setError(t('themeEditor.uploadFailed'));
       }
     } catch (err) {
-      setError(err.response?.data?.message || t('themeEditor.uploadFailed'));
+      setError(formatApiError(err, t('themeEditor.uploadFailed')));
     } finally {
       setUploadingWallpaper(false);
     }

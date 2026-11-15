@@ -5,6 +5,7 @@ import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faCircleXmark, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 // 邮箱验证码输入页面（取代旧的链接验证页面）
 // 通过 /verify-email?email=xxx 访问，用户输入邮件中收到的 6 位验证码完成验证
@@ -54,7 +55,7 @@ const VerifyEmail = () => {
       setSuccess(true);
       setError('');
     } catch (err) {
-      setError(err.response?.data?.message || t('auth.emailVerifyCodeInvalid'));
+      setError(formatApiError(err, t('auth.emailVerifyCodeInvalid')));
     }
     setSubmitting(false);
   };
@@ -70,7 +71,7 @@ const VerifyEmail = () => {
       setResendSuccess(true);
       setAltchaPayload(null);
     } catch (err) {
-      setResendMsg(err.response?.data?.message || t('common.sendFailed'));
+      setResendMsg(formatApiError(err, t('common.sendFailed')));
       setResendSuccess(false);
     }
     setResendLoading(false);

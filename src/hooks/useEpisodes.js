@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
+import { formatApiError } from '../utils/errorMeta';
 
 export const useEpisodes = () => {
   const { t } = useI18n();
@@ -48,7 +49,7 @@ export const useEpisodes = () => {
       await fetchEpisodes();
       return response.data;
     } catch (err) {
-      setError(err.response?.data?.message || t('adminEpisodes.addEpisodeFailed'));
+      setError(formatApiError(err, t('adminEpisodes.addEpisodeFailed')));
       throw err;
     }
   };
@@ -59,7 +60,7 @@ export const useEpisodes = () => {
       await fetchEpisodes();
       setError('');
     } catch (err) {
-      setError(err.response?.data?.message || t('adminEpisodes.updateEpisodeFailed'));
+      setError(formatApiError(err, t('adminEpisodes.updateEpisodeFailed')));
       throw err;
     }
   };
@@ -70,7 +71,7 @@ export const useEpisodes = () => {
       await fetchEpisodes();
       setError('');
     } catch (err) {
-      setError(err.response?.data?.message || t('adminEpisodes.deleteEpisodeFailed'));
+      setError(formatApiError(err, t('adminEpisodes.deleteEpisodeFailed')));
       throw err;
     }
   };
@@ -90,7 +91,7 @@ export const useEpisodes = () => {
       await adminApi.post(`/api/episodes/${episodeId}/episodes`, singleEpisodeData);
       await fetchEpisodes();
     } catch (err) {
-      setError(err.response?.data?.message || t('singleEpisode.addFailed'));
+      setError(formatApiError(err, t('singleEpisode.addFailed')));
       throw err;
     }
   };
@@ -100,7 +101,7 @@ export const useEpisodes = () => {
       await adminApi.put(`/api/episodes/single/${id}`, singleEpisodeData);
       await fetchEpisodes();
     } catch (err) {
-      setError(err.response?.data?.message || t('singleEpisode.editFailed'));
+      setError(formatApiError(err, t('singleEpisode.editFailed')));
       throw err;
     }
   };
@@ -110,7 +111,7 @@ export const useEpisodes = () => {
       await adminApi.delete(`/api/episodes/single/${id}`);
       await fetchEpisodes();
     } catch (err) {
-      setError(err.response?.data?.message || t('singleEpisode.deleteFailed'));
+      setError(formatApiError(err, t('singleEpisode.deleteFailed')));
       throw err;
     }
   };

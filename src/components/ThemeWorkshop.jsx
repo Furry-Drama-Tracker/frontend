@@ -8,6 +8,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faGlobe, faImage, faStar, faWandMagicSparkles } from '@fortawesome/free-solid-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 /**
  * ThemeWorkshop 用户主题工坊（Settings 页内嵌）。
@@ -62,7 +63,7 @@ const ThemeWorkshop = () => {
       }
       setError('');
     } catch (err) {
-      setError(err.response?.data?.message || t('themeWorkshop.loadFailed'));
+      setError(formatApiError(err, t('themeWorkshop.loadFailed')));
     } finally {
       setLoading(false);
     }
@@ -105,7 +106,7 @@ const ThemeWorkshop = () => {
     try {
       await doApply(theme);
     } catch (err) {
-      setError(err.response?.data?.message || t('themeWorkshop.applyFailed'));
+      setError(formatApiError(err, t('themeWorkshop.applyFailed')));
     }
   };
 
@@ -121,7 +122,7 @@ const ThemeWorkshop = () => {
       }
       notify(t('themeWorkshop.resetSuccess'));
     } catch (err) {
-      setError(err.response?.data?.message || t('themeWorkshop.applyFailed'));
+      setError(formatApiError(err, t('themeWorkshop.applyFailed')));
     }
   };
 
@@ -133,7 +134,7 @@ const ThemeWorkshop = () => {
         updateUser(prev => ({ ...prev, backgroundPrefs: res.data.backgroundPrefs }));
       }
     } catch (err) {
-      setError(err.response?.data?.message || t('themeWorkshop.bgSaveFailed'));
+      setError(formatApiError(err, t('themeWorkshop.bgSaveFailed')));
     }
   };
 
@@ -163,7 +164,7 @@ const ThemeWorkshop = () => {
       setEditorOpen(false);
       fetchData();
     } catch (err) {
-      setError(err.response?.data?.message || t('themeWorkshop.saveFailed'));
+      setError(formatApiError(err, t('themeWorkshop.saveFailed')));
     } finally {
       setSaving(false);
     }
@@ -190,7 +191,7 @@ const ThemeWorkshop = () => {
       notify(t('themeWorkshop.deleteSuccess'));
       fetchData();
     } catch (err) {
-      setError(err.response?.data?.message || t('themeWorkshop.deleteFailed'));
+      setError(formatApiError(err, t('themeWorkshop.deleteFailed')));
     }
   };
 
@@ -201,7 +202,7 @@ const ThemeWorkshop = () => {
       notify(t('themeWorkshop.submitSuccess'));
       fetchData();
     } catch (err) {
-      setError(err.response?.data?.message || t('themeWorkshop.submitFailed'));
+      setError(formatApiError(err, t('themeWorkshop.submitFailed')));
     }
   };
 

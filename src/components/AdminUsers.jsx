@@ -1,4 +1,5 @@
 ﻿import React, { useEffect, useMemo, useState } from 'react';
+import { formatApiError } from '../utils/errorMeta';
 import { useCreate, useDelete, useList, useTable, useUpdate } from '@refinedev/core';
 import {
   Alert,
@@ -144,7 +145,7 @@ const AdminUsers = () => {
       setSuccess(t('adminUsers.adminCreated'));
       refreshAll();
     } catch (err) {
-      setError(err?.response?.data?.message || t('adminUsers.createFailed'));
+      setError(formatApiError(err, t('adminUsers.createFailed')));
     }
   };
 
@@ -178,7 +179,7 @@ const AdminUsers = () => {
       setSuccess(successMessage);
       refreshAll();
     } catch (err) {
-      setError(err?.response?.data?.message || t('adminUsers.operationFailed'));
+      setError(formatApiError(err, t('adminUsers.operationFailed')));
     }
   };
 
@@ -195,13 +196,13 @@ const AdminUsers = () => {
       setSuccess(t('adminUsers.userDeleted'));
       refreshAll();
     } catch (err) {
-      setError(err?.response?.data?.message || t('adminUsers.deleteFailed'));
+      setError(formatApiError(err, t('adminUsers.deleteFailed')));
     }
   };
 
   const hasFilters = !!search.trim() || roleFilter !== 'all';
   const queryError = tableQuery.isError
-    ? tableQuery.error?.response?.data?.message || t('adminUsers.operationFailed')
+    ? tableQuery.formatApiError(error, t('adminUsers.operationFailed'))
     : '';
 
   if (showAddForm) {

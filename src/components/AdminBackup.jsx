@@ -4,6 +4,7 @@ import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBoxArchive, faDownload, faFloppyDisk, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 const AdminBackup = () => {
   const { admin } = useOutletContext();
@@ -51,7 +52,7 @@ const AdminBackup = () => {
       const res = await adminApi.post('/api/backup/import', { data, overwrite });
       setMessage(t('adminBackup.importSuccess') + JSON.stringify(res.data.results));
     } catch (e) {
-      setMessage(t('adminBackup.importFailed') + (e.response?.data?.message || e.message));
+      setMessage(t('adminBackup.importFailed') + formatApiError(e, e.message));
     }
     setImporting(false);
     e.target.value = '';

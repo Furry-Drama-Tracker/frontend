@@ -7,6 +7,7 @@ import PasswordToggle from './PasswordToggle';
 import CaptchaWidget from './CaptchaWidget';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 const Register = () => {
   const { t } = useI18n();
@@ -151,7 +152,7 @@ const Register = () => {
       setRegisteredEmail(formData.email);
       setRegistered(true);
     } catch (error) {
-      setError(error.response?.data?.message || t('auth.registerFailed'));
+      setError(formatApiError(error, t('auth.registerFailed')));
       // 邮箱已被注册：后端附带 emailTaken 标志，展示"去登录"引导。
       setSuggestLogin(!!error.response?.data?.emailTaken);
     }
@@ -168,7 +169,7 @@ const Register = () => {
       await axios.post('/api/auth/verify-email', { code: verifyCode.trim(), email: registeredEmail });
       setEmailVerified(true);
     } catch (err) {
-      setVerifyCodeError(err.response?.data?.message || t('auth.emailVerifyCodeInvalid'));
+      setVerifyCodeError(formatApiError(err, t('auth.emailVerifyCodeInvalid')));
     }
     setVerifyCodeSubmitting(false);
   };

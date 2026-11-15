@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect, useCallback } from 'react';
+import { formatApiError } from '../utils/errorMeta';
 import { Link, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import API from '../utils/apiEndpoints';
@@ -44,7 +45,7 @@ const AdminThemes = () => {
       setThemes(res.data || []);
       setError('');
     } catch (err) {
-      setError(err.response?.data?.message || t('adminThemes.loadFailed'));
+      setError(formatApiError(err, t('adminThemes.loadFailed')));
     } finally {
       setLoading(false);
     }
@@ -75,7 +76,7 @@ const AdminThemes = () => {
       setEditorOpen(false);
       fetchThemes();
     } catch (err) {
-      setError(err.response?.data?.message || t('adminThemes.saveFailed'));
+      setError(formatApiError(err, t('adminThemes.saveFailed')));
     } finally {
       setSaving(false);
     }
@@ -88,7 +89,7 @@ const AdminThemes = () => {
       notify(t('adminThemes.deleteSuccess'));
       fetchThemes();
     } catch (err) {
-      setError(err.response?.data?.message || t('adminThemes.deleteFailed'));
+      setError(formatApiError(err, t('adminThemes.deleteFailed')));
     }
   };
 
@@ -100,7 +101,7 @@ const AdminThemes = () => {
       notify(wantDefault ? t('adminThemes.defaultSuccess') : t('adminThemes.defaultCleared'));
       fetchThemes();
     } catch (err) {
-      setError(err.response?.data?.message || t('adminThemes.defaultFailed'));
+      setError(formatApiError(err, t('adminThemes.defaultFailed')));
     }
   };
 
@@ -109,7 +110,7 @@ const AdminThemes = () => {
       await adminApi.put(API.THEMES.ADMIN_UPDATE(theme._id), { enabled: !theme.enabled });
       fetchThemes();
     } catch (err) {
-      setError(err.response?.data?.message || t('adminThemes.opFailed'));
+      setError(formatApiError(err, t('adminThemes.opFailed')));
     }
   };
 
@@ -123,7 +124,7 @@ const AdminThemes = () => {
       notify(t('adminThemes.classChangeSuccess'));
       fetchThemes();
     } catch (err) {
-      setError(err.response?.data?.message || t('adminThemes.opFailed'));
+      setError(formatApiError(err, t('adminThemes.opFailed')));
     }
   };
 

@@ -9,6 +9,7 @@ import { useAuth } from '../contexts/AuthContext';
 import Modal from './Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLink, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 const FriendLinks = () => {
   const { user, getAuthHeaders } = useAuth();
@@ -84,7 +85,7 @@ const FriendLinks = () => {
         setApplyMsg('');
       }, 2000);
     } catch (err) {
-      setApplyMsg(err.response?.data?.message || t('friendLink.submitFailed'));
+      setApplyMsg(formatApiError(err, t('friendLink.submitFailed')));
       setApplyMsgType('error');
     }
     setApplyLoading(false);

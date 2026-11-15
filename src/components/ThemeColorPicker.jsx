@@ -12,6 +12,7 @@ import {
   faDesktop, faImage, faMoon, faPalette, faSpinner, faStar, faSun,
   faTriangleExclamation, faUser, faXmark,
 } from '@fortawesome/free-solid-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 /**
  * 左下角外观悬浮面板（无需登录即可使用外观设置；主题应用需登录）。
@@ -103,7 +104,7 @@ const ThemeColorPicker = () => {
       setThemeMsg(t('colorPicker.applied', { name: theme.name }));
       setTimeout(() => setThemeMsg(''), 2500);
     } catch (err) {
-      setThemeMsg(err.response?.data?.message || t('themeWorkshop.applyFailed'));
+      setThemeMsg(formatApiError(err, t('themeWorkshop.applyFailed')));
     } finally {
       setApplyingId(null);
     }
@@ -132,7 +133,7 @@ const ThemeColorPicker = () => {
       setThemeMsg(t('themeWorkshop.resetSuccess'));
       setTimeout(() => setThemeMsg(''), 2500);
     } catch (err) {
-      setThemeMsg(err.response?.data?.message || t('themeWorkshop.applyFailed'));
+      setThemeMsg(formatApiError(err, t('themeWorkshop.applyFailed')));
     } finally {
       setApplyingId(null);
     }
@@ -148,7 +149,7 @@ const ThemeColorPicker = () => {
         updateUser((prev) => ({ ...prev, backgroundPrefs: res.data.backgroundPrefs }));
       }
     } catch (err) {
-      setThemeMsg(err.response?.data?.message || t('colorPicker.bgSaveFailed'));
+      setThemeMsg(formatApiError(err, t('colorPicker.bgSaveFailed')));
       setTimeout(() => setThemeMsg(''), 2500);
     } finally {
       setBgSaving(false);

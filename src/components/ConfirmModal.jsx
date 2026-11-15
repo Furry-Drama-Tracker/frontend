@@ -5,6 +5,7 @@ import PasswordToggle from './PasswordToggle';
 import Modal from './Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBolt, faCircleInfo, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 const typeStyles = {
   danger: {
@@ -49,7 +50,7 @@ const ConfirmModal = ({ show, onClose, onConfirm, title, message, confirmText, c
         setPassword('');
         onClose();
       } catch (e) {
-        setError(e.response?.data?.message || t('confirm.verifyFailed'));
+        setError(formatApiError(e, t('confirm.verifyFailed')));
       }
       setVerifying(false);
     } else {

@@ -69,6 +69,7 @@ Vite proxies `/api` and `/uploads` to `http://localhost:5000` (the backend). If 
 - `axiosConfig.js` is imported as a side effect in `main.jsx` (`import './utils/axiosConfig'`). Do not remove this import.
 - `AuthContext` sends a session heartbeat every 5 minutes when a user is logged in.
 - The `ErrorBoundary` class component at the bottom of `App.jsx` uses `I18nContext` via `static contextType` — a legacy pattern, do not convert to hooks.
+- **统一错误信封展示（2026-11 契约）**：后端 4xx/5xx 响应体为 `{message, error(错误码 XXXYYYY), ref(0-999999999 整数), status}`（见 backend/AGENTS.md「错误码与参考号」）。catch 里一律用 `formatApiError(err, fallback)`（`src/utils/errorMeta.js`，产出「message + 出错编号 CODE-000123456」）；全局 5xx toast 在 `App.jsx`（结构化编号行 + 复制）。新增错误展示不要手拼 `data.message`。后端 message 恒为纯文案；旧版 `[CODE·ref]` 后缀由 `stripEmbeddedSuffix` 兼容剥离。边缘 ESA 响应（451，`error=ESAXXXX`，`ref=0`，含 `esa_request_id`/`esa_rule`）同走此信封，见 `backend/docs/esa-error.schema.json`。
 
 <!-- OPENWIKI:START -->
 

@@ -8,6 +8,7 @@ import { assetUrl } from '../utils/apiBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFaceFrown, faFolderOpen, faStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 const SharedFolder = () => {
   const { shareToken } = useParams();
@@ -60,7 +61,7 @@ const SharedFolder = () => {
       setSaved(true);
     } catch (err) {
       if (err.response?.data?.message) {
-        alert(err.response.data.message);
+        alert(formatApiError(err, err.response.data.message));
       }
     } finally {
       setSaving(false);

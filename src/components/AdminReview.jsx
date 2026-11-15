@@ -1,4 +1,5 @@
 ﻿import React, { useState } from 'react';
+import { formatApiError } from '../utils/errorMeta';
 import { useCustomMutation, useList, useTable } from '@refinedev/core';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import {
@@ -76,7 +77,7 @@ const AdminReview = () => {
       setReviewNote('');
       refreshTables();
     } catch (err) {
-      setError(err?.response?.data?.message || t('adminReview.reviewFailed'));
+      setError(formatApiError(err, t('adminReview.reviewFailed')));
     }
   };
 
@@ -95,7 +96,7 @@ const AdminReview = () => {
       setReviewNote('');
       refreshTables();
     } catch (err) {
-      setError(err?.response?.data?.message || t('adminReview.reviewFailed'));
+      setError(formatApiError(err, t('adminReview.reviewFailed')));
     }
   };
 
@@ -115,7 +116,7 @@ const AdminReview = () => {
       setAssignEditorId('');
       refreshTables();
     } catch (err) {
-      setError(err?.response?.data?.message || t('adminReview.assignFailed'));
+      setError(formatApiError(err, t('adminReview.assignFailed')));
     }
   };
 
@@ -129,7 +130,7 @@ const AdminReview = () => {
       });
       refreshTables();
     } catch (err) {
-      setError(err?.response?.data?.message || t('adminReview.removeFailed'));
+      setError(formatApiError(err, t('adminReview.removeFailed')));
     }
   };
 
@@ -339,8 +340,8 @@ const AdminReview = () => {
     : [];
 
   const queryError = activeTab === 'pending'
-    ? (pendingTable.tableQuery.isError ? pendingTable.tableQuery.error?.response?.data?.message : '')
-    : (allTable.tableQuery.isError ? allTable.tableQuery.error?.response?.data?.message : '');
+    ? (pendingTable.tableQuery.isError ? formatApiError(pendingTable.tableQuery.error, '') : '')
+    : (allTable.tableQuery.isError ? formatApiError(allTable.tableQuery.error, '') : '');
 
   return (
     <div>

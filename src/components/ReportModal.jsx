@@ -4,6 +4,7 @@ import { useI18n } from '../contexts/I18nContext';
 import Modal from './Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 const ReportModal = ({ show, onClose, targetType, targetId, targetName }) => {
   const { t } = useI18n();
@@ -44,7 +45,7 @@ const ReportModal = ({ show, onClose, targetType, targetId, targetName }) => {
         }, 320);
       }, 1500);
     } catch (err) {
-      setError(err.response?.data?.message || t('report.submitFailed'));
+      setError(formatApiError(err, t('report.submitFailed')));
     } finally {
       setSubmitting(false);
     }

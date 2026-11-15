@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
+import { formatApiError } from '../utils/errorMeta';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -91,7 +92,7 @@ const AdminAnnouncements = () => {
       setEditing(null);
       fetchList();
     } catch (e) {
-      setMessage(e.response?.data?.message || t('adminAnnouncements.saveFailed'));
+      setMessage(formatApiError(e, t('adminAnnouncements.saveFailed')));
     }
     setSaving(false);
   };
@@ -113,7 +114,7 @@ const AdminAnnouncements = () => {
       setMessage(res.data.message || t('adminAnnouncements.sendSuccess'));
       fetchList();
     } catch (e) {
-      setMessage(e.response?.data?.message || t('adminAnnouncements.sendFailed'));
+      setMessage(formatApiError(e, t('adminAnnouncements.sendFailed')));
     }
   };
 
@@ -124,7 +125,7 @@ const AdminAnnouncements = () => {
       setMessage(res.data.message || t('adminAnnouncements.sendSuccess'));
       fetchList();
     } catch (e) {
-      setMessage(e.response?.data?.message || t('adminAnnouncements.sendFailed'));
+      setMessage(formatApiError(e, t('adminAnnouncements.sendFailed')));
     }
   };
 

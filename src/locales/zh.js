@@ -14,6 +14,8 @@ export default {
     close: '关闭',
     success: '操作成功',
     error: '操作失败',
+    copy: '复制',
+    copied: '已复制',
     noData: '暂无数据',
     all: '全部',
     more: '更多',

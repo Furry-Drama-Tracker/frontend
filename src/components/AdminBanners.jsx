@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
+import { formatApiError } from '../utils/errorMeta';
 import adminApi from '../utils/adminApi';
 import { assetUrl } from '../utils/apiBase';
 import { useOutletContext } from 'react-router-dom';
@@ -42,7 +43,7 @@ const AdminBanners = () => {
       setSuccess(t('adminBanners.addSuccess'));
       fetchBanners();
     } catch (err) {
-      setError(err.response?.data?.message || t('adminBanners.addFailed'));
+      setError(formatApiError(err, t('adminBanners.addFailed')));
     }
   };
 
@@ -58,7 +59,7 @@ const AdminBanners = () => {
       setSuccess(t('adminBanners.editSuccess'));
       fetchBanners();
     } catch (err) {
-      setError(err.response?.data?.message || t('adminBanners.editFailed'));
+      setError(formatApiError(err, t('adminBanners.editFailed')));
     }
   };
 
@@ -69,7 +70,7 @@ const AdminBanners = () => {
       setSuccess(t('adminBanners.deleteSuccess'));
       fetchBanners();
     } catch (err) {
-      setError(err.response?.data?.message || t('adminBanners.deleteFailed'));
+      setError(formatApiError(err, t('adminBanners.deleteFailed')));
     }
   };
 

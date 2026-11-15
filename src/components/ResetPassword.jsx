@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import PasswordToggle from './PasswordToggle';
+import { formatApiError } from '../utils/errorMeta';
 
 const ResetPassword = () => {
   const { t } = useI18n();
@@ -38,7 +39,7 @@ const ResetPassword = () => {
       setSuccess(true);
       setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
-      setError(err.response?.data?.message || t('auth.resetFailedLinkExpired'));
+      setError(formatApiError(err, t('auth.resetFailedLinkExpired')));
     } finally {
       setLoading(false);
     }

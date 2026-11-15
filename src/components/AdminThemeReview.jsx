@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect, useCallback } from 'react';
+import { formatApiError } from '../utils/errorMeta';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import API from '../utils/apiEndpoints';
@@ -48,7 +49,7 @@ const AdminThemeReview = () => {
       setThemes(res.data || []);
       setError('');
     } catch (err) {
-      setError(err.response?.data?.message || t('adminThemeReview.loadFailed'));
+      setError(formatApiError(err, t('adminThemeReview.loadFailed')));
     } finally {
       setLoading(false);
     }
@@ -99,7 +100,7 @@ const AdminThemeReview = () => {
       setReviewTarget(null);
       fetchThemes();
     } catch (err) {
-      setReviewError(err.response?.data?.message || t('adminThemeReview.reviewFailed'));
+      setReviewError(formatApiError(err, t('adminThemeReview.reviewFailed')));
     } finally {
       setReviewing(false);
     }

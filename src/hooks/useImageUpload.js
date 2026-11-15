@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
+import { formatApiError } from '../utils/errorMeta';
 
 export const useImageUpload = () => {
   const { t } = useI18n();
@@ -31,7 +32,7 @@ export const useImageUpload = () => {
       });
       return response.data.url;
     } catch (err) {
-      setError(err.response?.data?.message || t('adminEpisodes.imageUploadFailed'));
+      setError(formatApiError(err, t('adminEpisodes.imageUploadFailed')));
       return null;
     } finally {
       setUploading(false);

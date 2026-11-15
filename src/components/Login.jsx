@@ -9,6 +9,7 @@ import API from '../utils/apiEndpoints';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faEnvelope, faLock, faFingerprint } from '@fortawesome/free-solid-svg-icons';
 import { browserSupportsWebAuthn, platformAuthenticatorIsAvailable, startAuthentication } from '@simplewebauthn/browser';
+import { formatApiError } from '../utils/errorMeta';
 
 const Login = ({ login }) => {
   const { t } = useI18n();
@@ -195,7 +196,7 @@ const Login = ({ login }) => {
       login(verRes.data);
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.message || t('auth.passkeyFailed'));
+      setError(formatApiError(err, t('auth.passkeyFailed')));
     }
     setPasskeyLoading(false);
   };
@@ -214,7 +215,7 @@ const Login = ({ login }) => {
       setEmailVerifyCode('');
       setEmailVerifyCodeError('');
     } catch (err) {
-      setEmailVerifyCodeError(err.response?.data?.message || t('auth.emailVerifyCodeInvalid'));
+      setEmailVerifyCodeError(formatApiError(err, t('auth.emailVerifyCodeInvalid')));
     }
     setEmailVerifyCodeSubmitting(false);
   };
@@ -235,7 +236,7 @@ const Login = ({ login }) => {
       login(response.data);
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.message || t('twoFactor.invalidCode'));
+      setError(formatApiError(err, t('twoFactor.invalidCode')));
     }
     setTwoFALoading(false);
   };
@@ -248,7 +249,7 @@ const Login = ({ login }) => {
       await axios.post(API.TWOFACTOR.EMAIL_OTP_SEND, { twoFactorChallenge });
       setEmailOTPSent(true);
     } catch (err) {
-      setError(err.response?.data?.message || t('twoFactor.emailOtpSendFailed'));
+      setError(formatApiError(err, t('twoFactor.emailOtpSendFailed')));
     }
     setEmailOTPSending(false);
   };
@@ -272,7 +273,7 @@ const Login = ({ login }) => {
       setSuccessMsg(t('auth.resetLinkSent'));
       setShowForgot(false);
     } catch (err) {
-      setError(err.response?.data?.message || t('auth.forgotPasswordFailed'));
+      setError(formatApiError(err, t('auth.forgotPasswordFailed')));
     }
     setSubmitting(false);
   };
@@ -291,7 +292,7 @@ const Login = ({ login }) => {
       setConfirmPassword('');
       setResetToken('');
     } catch (err) {
-      setError(err.response?.data?.message || t('auth.passwordResetFailed'));
+      setError(formatApiError(err, t('auth.passwordResetFailed')));
     }
   };
 

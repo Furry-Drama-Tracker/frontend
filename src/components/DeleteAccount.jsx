@@ -7,6 +7,7 @@ import PasswordToggle from './PasswordToggle';
 import API from '../utils/apiEndpoints';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRotateLeft, faTrashCan, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 const DeleteAccount = ({ user }) => {
   const { t } = useI18n();
@@ -48,7 +49,7 @@ const DeleteAccount = ({ user }) => {
       setDeleteStep(0);
       setDeletePassword('');
     } catch (err) {
-      setDeleteError(err.response?.data?.message || t('profile.deletionRequestFailed'));
+      setDeleteError(formatApiError(err, t('profile.deletionRequestFailed')));
       setDeleteStep(1);
     }
     setDeleteLoading(false);

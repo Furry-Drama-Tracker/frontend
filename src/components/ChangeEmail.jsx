@@ -7,6 +7,7 @@ import PasswordToggle from './PasswordToggle';
 import API from '../utils/apiEndpoints';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 const ChangeEmail = ({ user }) => {
   const { t } = useI18n();
@@ -43,7 +44,7 @@ const ChangeEmail = ({ user }) => {
       }, { headers: getAuthHeaders() });
       setSuccess(res.data.message);
     } catch (err) {
-      setError(err.response?.data?.message || t('common.operationFailed'));
+      setError(formatApiError(err, t('common.operationFailed')));
     }
     setLoading(false);
   };

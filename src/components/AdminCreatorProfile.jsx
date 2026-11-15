@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
+import { formatApiError } from '../utils/errorMeta';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import adminApi from '../utils/adminApi';
 import ImageUploader from './ImageUploader';
@@ -67,7 +68,7 @@ const AdminCreatorProfile = () => {
       setProfile(res.data);
       setMessage(t('adminCreatorProfile.saveSuccess'));
     } catch (err) {
-      setMessage(err.response?.data?.message || t('adminCreatorProfile.saveFailed'));
+      setMessage(formatApiError(err, t('adminCreatorProfile.saveFailed')));
     }
     setSaving(false);
   };

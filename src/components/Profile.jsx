@@ -16,6 +16,7 @@ import {
   faTriangleExclamation, faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import Modal from './Modal';
+import { formatApiError } from '../utils/errorMeta';
 
 const maskEmail = (email) => {
   if (!email) return '';
@@ -501,7 +502,7 @@ const Profile = ({ user, setUser, logout }) => {
                       setUser(updatedUser);
                       setEditingNickname(false);
                     } catch (err) {
-                      setNicknameError(err.response?.data?.message || t('profile.updateFailed'));
+                      setNicknameError(formatApiError(err, t('profile.updateFailed')));
                     }
                     setNicknameLoading(false);
                   }}
@@ -582,7 +583,7 @@ const Profile = ({ user, setUser, logout }) => {
                       setResendMsg(res.data.message);
                       setResendSuccess(true);
                     } catch (err) {
-                      setResendMsg(err.response?.data?.message || t('common.sendFailed'));
+                      setResendMsg(formatApiError(err, t('common.sendFailed')));
                       setResendSuccess(false);
                     }
                     setResendLoading(false);
@@ -1175,7 +1176,7 @@ const Profile = ({ user, setUser, logout }) => {
                 setUser({ ...user, accountId: res.data.accountId });
                 setRenameOpen(false);
               } catch (err) {
-                setRenameError(err.response?.data?.message || t('profile.renameFailed'));
+                setRenameError(formatApiError(err, t('profile.renameFailed')));
               }
               setRenameLoading(false);
             }}
