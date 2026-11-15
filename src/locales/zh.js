@@ -233,7 +233,7 @@ export default {
     enterIdentifier: '请输入用户名或邮箱',
     enterLoginEmail: '请输入邮箱',
     enterLoginPassword: '请输入密码',
-    passwordHint: '密码长度至少8位，需包含字母和数字',
+    passwordHint: '密码长度8-72字节（汉字等占多个字节），需包含字母和数字',
     needVerify: '验证您的邮箱',
     verifySent: '验证码已发送至',
     mustVerify: '必须完成邮箱验证才能登录',

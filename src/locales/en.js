@@ -233,7 +233,7 @@ export default {
     enterIdentifier: 'Please enter your username or email',
     enterLoginEmail: 'Please enter your email',
     enterLoginPassword: 'Please enter your password',
-    passwordHint: 'At least 8 chars with letters and numbers',
+    passwordHint: '8-72 bytes (CJK chars count as multiple bytes) with letters and numbers',
     needVerify: 'Verify your email',
     verifySent: 'Verification code sent to',
     mustVerify: 'Email verification required before login',
