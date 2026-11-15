@@ -1,114 +1,246 @@
-﻿import React, { useState, useEffect } from 'react';
-import adminApi from '../utils/adminApi';
+﻿import React, { useMemo, useState } from 'react';
+import { useCreate, useDelete, useList, useTable, useUpdate } from '@refinedev/core';
+import {
+  Alert,
+  Button,
+  Checkbox,
+  Empty,
+  Form,
+  Input,
+  InputNumber,
+  Pagination,
+  Space,
+  Table,
+  Tabs,
+  Tag,
+} from '@arco-design/web-react';
 import { assetUrl } from '../utils/apiBase';
-import { useOutletContext } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 
+const TAB_KEYS = ['pending', 'approved', 'rejected'];
+
+const getStatus = (link) => {
+  if (link.status) return link.status;
+  return link.isActive ? 'approved' : 'pending';
+};
+
 const AdminFriendLinks = () => {
-  const { admin } = useOutletContext();
-  const [links, setLinks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
-  const [editingLink, setEditingLink] = useState(null);
-  const [activeTab, setActiveTab] = useState('approved');
-  const [formData, setFormData] = useState({
-    name: '', nameEn: '',
-    url: '', logo: '',
-    description: '', descriptionEn: '',
-    order: 0, isActive: true
-  });
-  const [error, setError] = useState('');
   const { t } = useI18n();
+  const [activeTab, setActiveTab] = useState('approved');
+  const [formVisible, setFormVisible] = useState(false);
+  const [editingLink, setEditingLink] = useState(null);
+  const [error, setError] = useState('');
+  const [form] = Form.useForm();
 
-  useEffect(() => {
-    fetchLinks();
-  }, []);
+  const { tableQuery, result, currentPage, setCurrentPage, pageSize, setPageSize } = useTable({
+    resource: 'friend-links',
+    pagination: { currentPage: 1, pageSize: 10, mode: 'client' },
+    filters: {
+      permanent: [{ field: 'status', operator: 'eq', value: activeTab }],
+    },
+    sorters: {
+      permanent: [{ field: 'order', order: 'asc' }],
+    },
+  });
 
-  const fetchLinks = async () => {
-    try {
-      const res = await adminApi.get('/api/friend-links/all');
-      setLinks(res.data);
-      setLoading(false);
-    } catch (e) {
-      setError(t('adminFriendLinks.fetchFailed'));
-      setLoading(false);
-    }
+  const { query: allLinksQuery, result: allLinksResult } = useList({
+    resource: 'friend-links',
+    pagination: { mode: 'off' },
+    sorters: [{ field: 'order', order: 'asc' }],
+  });
+
+  const { mutateAsync: createLink, mutation: createMutation } = useCreate();
+  const { mutateAsync: updateLink, mutation: updateMutation } = useUpdate();
+  const { mutateAsync: deleteLink, mutation: deleteMutation } = useDelete();
+
+  const links = result.data || [];
+  const allLinks = allLinksResult.data || [];
+
+  const tabCounts = useMemo(() => ({
+    pending: allLinks.filter((link) => getStatus(link) === 'pending').length,
+    approved: allLinks.filter((link) => getStatus(link) === 'approved').length,
+    rejected: allLinks.filter((link) => getStatus(link) === 'rejected').length,
+  }), [allLinks]);
+
+  const refresh = () => {
+    tableQuery.refetch();
+    allLinksQuery.refetch();
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const openCreateForm = () => {
+    setEditingLink(null);
     setError('');
+    form.resetFields();
+    form.setFieldsValue({ order: 0, isActive: true });
+    setFormVisible(true);
+  };
+
+  const openEditForm = (link) => {
+    setEditingLink(link);
+    setError('');
+    form.setFieldsValue({
+      name: link.name,
+      nameEn: link.nameEn || '',
+      url: link.url,
+      logo: link.logo || '',
+      description: link.description || '',
+      descriptionEn: link.descriptionEn || '',
+      order: link.order || 0,
+      isActive: link.isActive !== undefined ? link.isActive : true,
+    });
+    setFormVisible(true);
+  };
+
+  const closeForm = () => {
+    setFormVisible(false);
+    setEditingLink(null);
+    setError('');
+    form.resetFields();
+  };
+
+  const handleSubmit = async (values) => {
+    setError('');
+    const payload = {
+      ...values,
+      order: Number(values.order) || 0,
+      isActive: !!values.isActive,
+    };
     try {
       if (editingLink) {
-        await adminApi.put(`/api/friend-links/${editingLink._id}`, formData);
+        await updateLink({ resource: 'friend-links', id: editingLink._id, values: payload });
       } else {
-        await adminApi.post('/api/friend-links', formData);
+        await createLink({ resource: 'friend-links', values: payload });
       }
-      setShowForm(false);
-      setEditingLink(null);
-      setFormData({ name: '', nameEn: '', url: '', logo: '', description: '', descriptionEn: '', order: 0, isActive: true });
-      fetchLinks();
-    } catch (e) {
-      setError(e.response?.data?.message || t('adminFriendLinks.operationFailed'));
+      closeForm();
+      refresh();
+    } catch (err) {
+      setError(err?.response?.data?.message || t('adminFriendLinks.operationFailed'));
     }
-  };
-
-  const handleEdit = (link) => {
-    setEditingLink(link);
-    setFormData({
-      name: link.name, nameEn: link.nameEn || '',
-      url: link.url, logo: link.logo || '',
-      description: link.description || '', descriptionEn: link.descriptionEn || '',
-      order: link.order || 0,
-      isActive: link.isActive !== undefined ? link.isActive : true
-    });
-    setShowForm(true);
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm(t('adminFriendLinks.deleteConfirm'))) return;
-    try {
-      await adminApi.delete(`/api/friend-links/${id}`);
-      fetchLinks();
-    } catch (e) {
-      setError(t('adminFriendLinks.deleteFailed'));
-    }
-  };
-
-  const handleCancel = () => {
-    setShowForm(false);
-    setEditingLink(null);
-    setFormData({ name: '', nameEn: '', url: '', logo: '', description: '', descriptionEn: '', order: 0, isActive: true });
     setError('');
-  };
-
-  const handleApprove = async (id) => {
     try {
-      await adminApi.put(`/api/friend-links/${id}`, { status: 'approved' });
-      fetchLinks();
-    } catch (e) {
-      setError(t('adminFriendLinks.reviewFailed'));
+      await deleteLink({ resource: 'friend-links', id });
+      refresh();
+    } catch (err) {
+      setError(err?.response?.data?.message || t('adminFriendLinks.deleteFailed'));
     }
   };
 
-  const handleReject = async (id) => {
-    if (!window.confirm(t('adminFriendLinks.rejectConfirm'))) return;
+  const handleReview = async (id, status) => {
+    if (status === 'rejected' && !window.confirm(t('adminFriendLinks.rejectConfirm'))) return;
+    setError('');
     try {
-      await adminApi.put(`/api/friend-links/${id}`, { status: 'rejected' });
-      fetchLinks();
-    } catch (e) {
-      setError(t('adminFriendLinks.reviewFailed'));
+      await updateLink({ resource: 'friend-links', id, values: { status } });
+      refresh();
+    } catch (err) {
+      setError(err?.response?.data?.message || t('adminFriendLinks.reviewFailed'));
     }
   };
 
-  const pendingLinks = links.filter(l => l.status === 'pending' || (!l.status && !l.isActive));
-  const approvedLinks = links.filter(l => l.status === 'approved' || (!l.status && l.isActive));
-  const rejectedLinks = links.filter(l => l.status === 'rejected');
-  const displayLinks = activeTab === 'pending' ? pendingLinks : activeTab === 'approved' ? approvedLinks : rejectedLinks;
+  const handleTabChange = (key) => {
+    setActiveTab(key);
+    setCurrentPage(1);
+  };
 
-  if (loading) return <div className="container"><h2>{t('adminFriendLinks.loading')}</h2></div>;
+  const columns = [
+    {
+      title: t('adminFriendLinks.name'),
+      dataIndex: 'name',
+      render: (_, link) => {
+        const status = getStatus(link);
+        return (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            {link.logo ? (
+              <img
+                src={assetUrl(link.logo)}
+                alt=""
+                style={{ width: 36, height: 36, borderRadius: 8, objectFit: 'cover', flexShrink: 0 }}
+              />
+            ) : (
+              <span
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 8,
+                  background: 'var(--color-fill-2)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <FontAwesomeIcon icon={faLink} aria-hidden="true" />
+              </span>
+            )}
+            <div style={{ minWidth: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                <span style={{ fontWeight: 600 }}>{link.name}</span>
+                {status === 'pending' && <Tag color="orange">{t('adminFriendLinks.pending')}</Tag>}
+                {status === 'rejected' && <Tag color="red">{t('adminFriendLinks.rejected')}</Tag>}
+                {status === 'approved' && !link.isActive && <Tag color="gray">{t('adminFriendLinks.disabled')}</Tag>}
+              </div>
+              {link.description && (
+                <div style={{ fontSize: 12, color: 'var(--color-text-3)', marginTop: 2 }}>{link.description}</div>
+              )}
+            </div>
+          </div>
+        );
+      },
+    },
+    {
+      title: t('adminFriendLinks.url'),
+      dataIndex: 'url',
+      render: (url) => (
+        <a href={url} target="_blank" rel="noopener noreferrer" style={{ wordBreak: 'break-all' }}>
+          {url}
+        </a>
+      ),
+    },
+    {
+      title: t('adminFriendLinks.order'),
+      dataIndex: 'order',
+      width: 90,
+    },
+    {
+      title: t('adminFriendLinks.description'),
+      dataIndex: 'descriptionEn',
+      render: (value, link) => value || link.descriptionEn || '-',
+    },
+    {
+      title: t('adminFriendLinks.actions'),
+      width: 260,
+      render: (_, link) => (
+        <Space size="mini" wrap>
+          {getStatus(link) === 'pending' && (
+            <>
+              <Button size="mini" type="primary" onClick={() => handleReview(link._id, 'approved')}>
+                {t('adminFriendLinks.approve')}
+              </Button>
+              <Button size="mini" status="danger" onClick={() => handleReview(link._id, 'rejected')}>
+                {t('adminFriendLinks.reject')}
+              </Button>
+            </>
+          )}
+          <Button size="mini" onClick={() => openEditForm(link)}>
+            {t('adminFriendLinks.edit')}
+          </Button>
+          <Button
+            size="mini"
+            status="danger"
+            loading={deleteMutation.isPending}
+            onClick={() => handleDelete(link._id)}
+          >
+            {t('adminFriendLinks.delete')}
+          </Button>
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <div className="admin-page">
@@ -117,161 +249,101 @@ const AdminFriendLinks = () => {
           <h1 className="admin-page-title">{t('adminFriendLinks.title')}</h1>
         </div>
         <div className="admin-page-actions">
-          {!showForm && (
-            <button className="btn btn-md btn-primary" onClick={() => { setShowForm(true); setEditingLink(null); setFormData({ name: '', nameEn: '', url: '', logo: '', description: '', descriptionEn: '', order: 0, isActive: true }); }}>{t('adminFriendLinks.addLink')}</button>
-          )}
+          <Button type="primary" onClick={openCreateForm}>
+            {t('adminFriendLinks.addLink')}
+          </Button>
         </div>
       </div>
 
-      {error && <div className="error-message" style={{ marginBottom: '16px' }}>{error}</div>}
+      {error && <Alert type="error" content={error} closable onClose={() => setError('')} style={{ marginBottom: 16 }} />}
 
-      {showForm && (
-        <div style={{
-          background: 'var(--card)', border: '1px solid var(--border)',
-          borderRadius: '12px', padding: '20px', marginBottom: '20px'
-        }}>
-          <h3 style={{ marginTop: 0, marginBottom: '16px' }}>{editingLink ? t('adminFriendLinks.editLink') : t('adminFriendLinks.addLink')}</h3>
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>{t('adminFriendLinks.name')} <span style={{ color: 'var(--destructive-text)' }}>*</span></label>
-              <input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required placeholder={t('adminFriendLinks.namePlaceholder')} />
-            </div>
-            <div className="form-group">
-              <label>{t('adminFriendLinks.nameEn')} <span style={{ color: 'var(--text-tertiary)', fontWeight: 'normal', fontSize: '12px' }}>{t('adminFriendLinks.optionalAutoTranslate')}</span></label>
-              <input type="text" value={formData.nameEn} onChange={(e) => setFormData({ ...formData, nameEn: e.target.value })} placeholder="English name (optional)" />
-            </div>
-            <div className="form-group">
-              <label>{t('adminFriendLinks.url')} <span style={{ color: 'var(--destructive-text)' }}>*</span></label>
-              <input type="url" value={formData.url} onChange={(e) => setFormData({ ...formData, url: e.target.value })} required placeholder="https://example.com" />
-            </div>
-            <div className="form-group">
-              <label>{t('adminFriendLinks.logoUrl')}</label>
-              <input type="text" value={formData.logo} onChange={(e) => setFormData({ ...formData, logo: e.target.value })} placeholder={t('adminFriendLinks.logoPlaceholder')} />
-            </div>
-            <div className="form-group">
-              <label>{t('adminFriendLinks.description')}</label>
-              <input type="text" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} placeholder={t('adminFriendLinks.descriptionPlaceholder')} />
-            </div>
-            <div className="form-group">
-              <label>{t('adminFriendLinks.descriptionEn')} <span style={{ color: 'var(--text-tertiary)', fontWeight: 'normal', fontSize: '12px' }}>{t('adminFriendLinks.optional')}</span></label>
-              <input type="text" value={formData.descriptionEn} onChange={(e) => setFormData({ ...formData, descriptionEn: e.target.value })} placeholder="English description (optional)" />
-            </div>
-            <div className="form-group">
-              <label>{t('adminFriendLinks.order')}</label>
-              <input type="number" value={formData.order} onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })} placeholder={t('adminFriendLinks.orderPlaceholder')} />
-            </div>
-            <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <input type="checkbox" checked={formData.isActive} onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })} style={{ accentColor: 'var(--primary)', cursor: 'pointer' }} />
-              <label style={{ cursor: 'pointer' }}>{t('adminFriendLinks.active')}</label>
-            </div>
-            <div style={{ display: 'flex', gap: '10px', marginTop: '16px' }}>
-              <button type="submit" className="btn">{editingLink ? t('adminFriendLinks.saveChanges') : t('adminFriendLinks.add')}</button>
-              <button type="button" className="btn btn-secondary" onClick={handleCancel}>{t('adminFriendLinks.cancel')}</button>
-            </div>
-          </form>
+      {formVisible && (
+        <div
+          style={{
+            background: 'var(--color-bg-2)',
+            border: '1px solid var(--color-border-2)',
+            borderRadius: 12,
+            padding: 20,
+            marginBottom: 20,
+          }}
+        >
+          <h3 style={{ margin: '0 0 16px' }}>
+            {editingLink ? t('adminFriendLinks.editLink') : t('adminFriendLinks.addLink')}
+          </h3>
+          <Form form={form} layout="vertical" onSubmit={handleSubmit} initialValues={{ order: 0, isActive: true }}>
+            <Form.Item label={t('adminFriendLinks.name')} field="name" rules={[{ required: true }]}>
+              <Input placeholder={t('adminFriendLinks.namePlaceholder')} />
+            </Form.Item>
+            <Form.Item label={`${t('adminFriendLinks.nameEn')} ${t('adminFriendLinks.optionalAutoTranslate')}`} field="nameEn">
+              <Input placeholder="English name (optional)" />
+            </Form.Item>
+            <Form.Item label={t('adminFriendLinks.url')} field="url" rules={[{ required: true }]}>
+              <Input placeholder="https://example.com" />
+            </Form.Item>
+            <Form.Item label={t('adminFriendLinks.logoUrl')} field="logo">
+              <Input placeholder={t('adminFriendLinks.logoPlaceholder')} />
+            </Form.Item>
+            <Form.Item label={t('adminFriendLinks.description')} field="description">
+              <Input placeholder={t('adminFriendLinks.descriptionPlaceholder')} />
+            </Form.Item>
+            <Form.Item label={`${t('adminFriendLinks.descriptionEn')} ${t('adminFriendLinks.optional')}`} field="descriptionEn">
+              <Input placeholder="English description (optional)" />
+            </Form.Item>
+            <Form.Item label={t('adminFriendLinks.order')} field="order">
+              <InputNumber min={0} placeholder={t('adminFriendLinks.orderPlaceholder')} />
+            </Form.Item>
+            <Form.Item field="isActive" triggerPropName="checked">
+              <Checkbox>{t('adminFriendLinks.active')}</Checkbox>
+            </Form.Item>
+            <Space>
+              <Button type="primary" htmlType="submit" loading={createMutation.isPending || updateMutation.isPending}>
+                {editingLink ? t('adminFriendLinks.saveChanges') : t('adminFriendLinks.add')}
+              </Button>
+              <Button onClick={closeForm}>{t('adminFriendLinks.cancel')}</Button>
+            </Space>
+          </Form>
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
-        {[
-          { key: 'pending', label: t('adminFriendLinks.pending'), count: pendingLinks.length },
-          { key: 'approved', label: t('adminFriendLinks.approved'), count: approvedLinks.length },
-          { key: 'rejected', label: t('adminFriendLinks.rejected'), count: rejectedLinks.length },
-        ].map(tab => (
-          <button key={tab.key} onClick={() => setActiveTab(tab.key)} style={{
-            padding: '8px 16px', borderRadius: '8px', fontSize: '14px',
-            cursor: 'pointer', transition: 'all 0.2s', border: '1px solid',
-            background: activeTab === tab.key ? 'var(--primary-bg)' : 'var(--card)',
-            color: activeTab === tab.key ? 'var(--primary)' : 'var(--text-secondary)',
-            borderColor: activeTab === tab.key ? 'var(--primary-border)' : 'var(--border)',
-            fontWeight: activeTab === tab.key ? 600 : 400
-          }}>{tab.label} ({tab.count})</button>
+      <Tabs activeTab={activeTab} onChange={handleTabChange} className="admin-tabs">
+        {TAB_KEYS.map((key) => (
+          <Tabs.TabPane key={key} title={`${t(`adminFriendLinks.${key}`)} (${tabCounts[key]})`} />
         ))}
-      </div>
+      </Tabs>
 
-      {displayLinks.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-secondary)' }}>
-          {activeTab === 'pending' ? t('adminFriendLinks.noPendingLinks') : activeTab === 'approved' ? t('adminFriendLinks.noApprovedLinks') : t('adminFriendLinks.noRejectedLinks')}
-        </div>
-      ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {displayLinks.map(link => (
-            <div key={link._id} style={{
-              display: 'flex', alignItems: 'center', gap: '14px',
-              padding: '12px 14px', borderRadius: '10px',
-              background: 'var(--card)', border: '1px solid var(--border)',
-              opacity: link.isActive ? 1 : 0.6,
-              flexWrap: 'wrap'
-            }}>
-              {link.logo ? (
-                <img src={assetUrl(link.logo)} alt="" style={{ width: '36px', height: '36px', borderRadius: '8px', objectFit: 'cover', flexShrink: 0 }} />
-              ) : (
-                <div style={{
-                  width: '36px', height: '36px', borderRadius: '8px',
-                  background: 'var(--hover-bg-strong)', display: 'flex',
-                  alignItems: 'center', justifyContent: 'center',
-                  fontSize: '16px', flexShrink: 0
-                }}><FontAwesomeIcon icon={faLink} aria-hidden="true" /></div>
-              )}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ fontWeight: 600, fontSize: '15px' }}>{link.name}</span>
-                  {(link.status === 'pending' || (!link.status && !link.isActive)) && (
-                    <span style={{
-                      fontSize: '11px', color: 'var(--warning-text)',
-                      background: 'var(--warning-bg)', padding: '1px 8px',
-                      borderRadius: '4px', border: '1px solid var(--warning-border)'
-                    }}>{t('adminFriendLinks.pending')}</span>
-                  )}
-                  {link.status === 'rejected' && (
-                    <span style={{
-                      fontSize: '11px', color: 'var(--destructive-text)',
-                      background: 'var(--destructive-bg)', padding: '1px 8px',
-                      borderRadius: '4px', border: '1px solid var(--destructive-border)'
-                    }}>{t('adminFriendLinks.rejected')}</span>
-                  )}
-                  {!link.isActive && (link.status === 'approved' || !link.status) && (
-                    <span style={{
-                      fontSize: '11px', color: 'var(--text-tertiary)',
-                      background: 'var(--hover-bg)', padding: '1px 8px',
-                      borderRadius: '4px', border: '1px solid var(--border)'
-                    }}>{t('adminFriendLinks.disabled')}</span>
-                  )}
-                  <span style={{
-                    fontSize: '11px', color: 'var(--text-tertiary)',
-                    background: 'var(--hover-bg)', padding: '1px 8px',
-                    borderRadius: '4px'
-                  }}>{t('adminFriendLinks.orderLabel')}: {link.order}</span>
-                </div>
-                <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{link.url}</div>
-                {link.description && (
-                  <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '2px' }}>{link.description}</div>
-                )}
-              </div>
-              <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
-                {(link.status === 'pending' || (!link.status && !link.isActive)) && (
-                  <>
-                    <button style={{
-                      background: 'var(--success-bg-subtle)', border: '1px solid var(--success-border)',
-                      color: 'var(--success-text)', borderRadius: '6px', padding: '6px 14px',
-                      cursor: 'pointer', fontSize: '13px', transition: 'all 0.2s'
-                    }} onClick={() => handleApprove(link._id)}>{t('adminFriendLinks.approve')}</button>
-                    <button style={{
-                      background: 'var(--destructive-bg)', border: '1px solid var(--destructive-border)',
-                      color: 'var(--destructive-text)', borderRadius: '6px', padding: '6px 14px',
-                      cursor: 'pointer', fontSize: '13px'
-                    }} onClick={() => handleReject(link._id)}>{t('adminFriendLinks.reject')}</button>
-                  </>
-                )}
-                <button className="btn btn-secondary" style={{ fontSize: '13px', padding: '6px 14px' }} onClick={() => handleEdit(link)}>{t('adminFriendLinks.edit')}</button>
-                <button style={{
-                  background: 'var(--destructive-bg)', border: '1px solid var(--destructive-border)',
-                  color: 'var(--destructive-text)', borderRadius: '6px', padding: '6px 14px',
-                  cursor: 'pointer', fontSize: '13px'
-                }} onClick={() => handleDelete(link._id)}>{t('adminFriendLinks.delete')}</button>
-              </div>
-            </div>
-          ))}
+      <Table
+        rowKey="_id"
+        columns={columns}
+        data={links}
+        loading={tableQuery.isLoading}
+        pagination={false}
+        scroll={{ x: 900 }}
+        noDataElement={
+          <Empty
+            description={
+              activeTab === 'pending'
+                ? t('adminFriendLinks.noPendingLinks')
+                : activeTab === 'approved'
+                  ? t('adminFriendLinks.noApprovedLinks')
+                  : t('adminFriendLinks.noRejectedLinks')
+            }
+          />
+        }
+      />
+
+      {links.length > 0 && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
+          <Pagination
+            current={currentPage}
+            pageSize={pageSize}
+            total={result.total || 0}
+            showTotal
+            sizeCanChange
+            onChange={(page, size) => {
+              setCurrentPage(page);
+              setPageSize(size);
+            }}
+          />
         </div>
       )}
     </div>

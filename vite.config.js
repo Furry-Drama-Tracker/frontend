@@ -104,6 +104,8 @@ export default defineConfig(({ mode }) => {
         'qrcode',
         '@arco-design/web-react',
         '@arco-design/web-react/es/_util/react-19-adapter',
+        '@refinedev/core',
+        '@tanstack/react-query',
         'react-is',
         'dayjs',
         'dayjs/locale/zh-cn',

@@ -6,11 +6,14 @@ import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { Layout, Menu, Button, ConfigProvider } from '@arco-design/web-react';
+import { Refine } from '@refinedev/core';
 import zhCN from '@arco-design/web-react/es/locale/zh-CN';
 import enUS from '@arco-design/web-react/es/locale/en-US';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
 import { assetUrl } from '../utils/apiBase';
 import useTranslation from '../hooks/useTranslation';
+import dataProvider from '../utils/refineDataProvider';
+import authProvider from '../utils/refineAuthProvider';
 
 import '@arco-design/web-react/es/Layout/style/index.css';
 import '@arco-design/web-react/es/Menu/style/index.css';
@@ -28,6 +31,14 @@ import '@arco-design/web-react/es/Table/style/index.css';
 import '@arco-design/web-react/es/Pagination/style/index.css';
 import '@arco-design/web-react/es/Empty/style/index.css';
 import '@arco-design/web-react/es/Spin/style/index.css';
+import '@arco-design/web-react/es/Form/style/index.css';
+import '@arco-design/web-react/es/Checkbox/style/index.css';
+import '@arco-design/web-react/es/Switch/style/index.css';
+import '@arco-design/web-react/es/InputNumber/style/index.css';
+import '@arco-design/web-react/es/Radio/style/index.css';
+import '@arco-design/web-react/es/Tooltip/style/index.css';
+import '@arco-design/web-react/es/Popconfirm/style/index.css';
+import '@arco-design/web-react/es/Message/style/index.css';
 import '../styles/admin.css';
 
 const ROLE_CREATOR = 'creator';
@@ -198,7 +209,17 @@ const AdminLayout = () => {
 
   return (
     <ConfigProvider locale={arcoLocale}>
-      <Layout className="admin-shell admin-app">
+      <Refine
+        dataProvider={dataProvider}
+        authProvider={authProvider}
+        options={{
+          syncWithLocation: false,
+          disableTelemetry: true,
+          warnWhenUnsavedChanges: false,
+          mutationMode: 'pessimistic',
+        }}
+      >
+        <Layout className="admin-shell admin-app">
         <Layout.Header className="admin-topbar">
           <div className="admin-topbar-left">
             <Button
@@ -272,7 +293,8 @@ const AdminLayout = () => {
             <Outlet context={{ admin }} />
           </Layout.Content>
         </Layout>
-      </Layout>
+        </Layout>
+      </Refine>
     </ConfigProvider>
   );
 };

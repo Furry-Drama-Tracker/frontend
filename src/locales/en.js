@@ -1331,6 +1331,7 @@ export default {
     reject: 'Reject',
     edit: 'Edit',
     delete: 'Delete',
+    actions: 'Actions',
   },
   adminCategories: {
     nameRequired: 'Category name is required',

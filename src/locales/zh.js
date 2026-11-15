@@ -1331,6 +1331,7 @@ export default {
     reject: '拒绝',
     edit: '编辑',
     delete: '删除',
+    actions: '操作',
   },
   adminCategories: {
     nameRequired: '分类名称不能为空',
