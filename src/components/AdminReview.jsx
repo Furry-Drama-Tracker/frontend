@@ -1,19 +1,27 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React, { useState } from 'react';
+import { useCustomMutation, useList, useTable } from '@refinedev/core';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import adminApi from '../utils/adminApi';
+import {
+  Alert,
+  Button,
+  Empty,
+  Input,
+  Modal,
+  Pagination,
+  Select,
+  Space,
+  Table,
+  Tabs,
+  Tag,
+} from '@arco-design/web-react';
 import { assetUrl } from '../utils/apiBase';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilm, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { Tabs, Button, Input } from '@arco-design/web-react';
+import { faFilm } from '@fortawesome/free-solid-svg-icons';
 import ReviewStatusBadge from './ReviewStatusBadge';
-import Modal from './Modal';
 
 const AdminReview = () => {
   const { admin } = useOutletContext();
-  const [pendingEpisodes, setPendingEpisodes] = useState([]);
-  const [allEpisodes, setAllEpisodes] = useState([]);
-  const [creators, setCreators] = useState([]);
   const [activeTab, setActiveTab] = useState('pending');
   const [reviewNote, setReviewNote] = useState('');
   const [assignEpisodeId, setAssignEpisodeId] = useState('');
@@ -23,51 +31,52 @@ const AdminReview = () => {
   const navigate = useNavigate();
   const { t, locale } = useI18n();
 
-  useEffect(() => {
-    if (admin.role === 'admin' || admin.role === 'superadmin') {
-      fetchPendingEpisodes();
-      fetchAllEpisodes();
-      fetchCreators();
-    } else {
+  React.useEffect(() => {
+    if (admin.role !== 'admin' && admin.role !== 'superadmin') {
       navigate('/admin/dashboard', { replace: true });
     }
   }, [admin, navigate]);
 
-  const fetchPendingEpisodes = async () => {
-    try {
-      const res = await adminApi.get('/api/review/pending');
-      setPendingEpisodes(res.data.list || res.data);
-    } catch (err) {
-      console.error('获取待审核剧集失败', err);
-    }
-  };
+  const pendingTable = useTable({
+    resource: 'review-pending',
+    pagination: { currentPage: 1, pageSize: 20, mode: 'server' },
+    queryOptions: { enabled: activeTab === 'pending' },
+  });
 
-  const fetchAllEpisodes = async () => {
-    try {
-      const res = await adminApi.get('/api/review/all');
-      setAllEpisodes(res.data.list || res.data);
-    } catch (err) {
-      console.error('获取所有剧集失败', err);
-    }
-  };
+  const allTable = useTable({
+    resource: 'review-all',
+    pagination: { currentPage: 1, pageSize: 20, mode: 'server' },
+    queryOptions: { enabled: activeTab === 'all' || activeTab === 'assign' },
+  });
 
-  const fetchCreators = async () => {
-    try {
-      const res = await adminApi.get('/api/admin/creators');
-      setCreators(res.data);
-    } catch (err) {
-      console.error('获取创作者列表失败', err);
-    }
+  const { result: creatorsResult } = useList({
+    resource: 'creators',
+    pagination: { mode: 'off' },
+  });
+
+  const { mutateAsync: customMutation, mutation: customMutationState } = useCustomMutation();
+
+  const pendingEpisodes = pendingTable.result.data || [];
+  const allEpisodes = allTable.result.data || [];
+  const creators = Array.isArray(creatorsResult.data) ? creatorsResult.data : [];
+
+  const refreshTables = () => {
+    pendingTable.tableQuery.refetch();
+    allTable.tableQuery.refetch();
   };
 
   const handleApprove = async (id) => {
+    setError('');
     try {
-      await adminApi.put(`/api/review/approve/${id}`, { note: reviewNote });
+      await customMutation({
+        url: `/api/review/approve/${id}`,
+        method: 'put',
+        values: { note: reviewNote },
+      });
       setReviewNote('');
-      fetchPendingEpisodes();
-      fetchAllEpisodes();
+      refreshTables();
     } catch (err) {
-      setError(err.response?.data?.message || t('adminReview.reviewFailed'));
+      setError(err?.response?.data?.message || t('adminReview.reviewFailed'));
     }
   };
 
@@ -76,13 +85,17 @@ const AdminReview = () => {
       setError(t('adminReview.rejectReasonRequired'));
       return;
     }
+    setError('');
     try {
-      await adminApi.put(`/api/review/reject/${id}`, { note: reviewNote });
+      await customMutation({
+        url: `/api/review/reject/${id}`,
+        method: 'put',
+        values: { note: reviewNote },
+      });
       setReviewNote('');
-      fetchPendingEpisodes();
-      fetchAllEpisodes();
+      refreshTables();
     } catch (err) {
-      setError(err.response?.data?.message || t('adminReview.reviewFailed'));
+      setError(err?.response?.data?.message || t('adminReview.reviewFailed'));
     }
   };
 
@@ -91,28 +104,35 @@ const AdminReview = () => {
       setError(t('adminReview.selectEpisodeAndCreator'));
       return;
     }
+    setError('');
     try {
-      await adminApi.put(`/api/review/assign-editor/${assignEpisodeId}`, { editorId: assignEditorId });
+      await customMutation({
+        url: `/api/review/assign-editor/${assignEpisodeId}`,
+        method: 'put',
+        values: { editorId: assignEditorId },
+      });
       setAssignEpisodeId('');
       setAssignEditorId('');
-      fetchAllEpisodes();
-      setError('');
+      refreshTables();
     } catch (err) {
-      setError(err.response?.data?.message || t('adminReview.assignFailed'));
+      setError(err?.response?.data?.message || t('adminReview.assignFailed'));
     }
   };
 
   const handleRemoveEditor = async (episodeId, editorId) => {
+    setError('');
     try {
-      await adminApi.put(`/api/review/remove-editor/${episodeId}`, { editorId });
-      fetchAllEpisodes();
+      await customMutation({
+        url: `/api/review/remove-editor/${episodeId}`,
+        method: 'put',
+        values: { editorId },
+      });
+      refreshTables();
     } catch (err) {
-      setError(err.response?.data?.message || t('adminReview.removeFailed'));
+      setError(err?.response?.data?.message || t('adminReview.removeFailed'));
     }
   };
 
-  // ===== 待审核修改详情展示 =====
-  // 待审核修改字段对照表：审核人可直观看到「当前值 → 修改后值」
   const PENDING_DIFF_FIELDS = [
     { key: 'title', label: t('adminEpisodes.titleLabel') },
     { key: 'titleEn', label: t('adminEpisodes.englishName') },
@@ -136,7 +156,7 @@ const AdminReview = () => {
     if (value === undefined) return '-';
     if (field === 'coverImage') {
       if (!value) return '-';
-      return <img src={assetUrl(value)} alt="" style={{ width: '50px', height: '75px', objectFit: 'cover', borderRadius: '4px', display: 'block' }} />;
+      return <img src={assetUrl(value)} alt="" style={{ width: 50, height: 75, objectFit: 'cover', borderRadius: 4, display: 'block' }} />;
     }
     if (field === 'hideCreator') return value ? t('common.yes') : t('common.no');
     if (field === 'status') {
@@ -159,12 +179,168 @@ const AdminReview = () => {
   };
 
   const pendingChangesTagStyle = {
-    display: 'inline-block', marginLeft: '4px', padding: '2px 6px', borderRadius: '4px',
-    fontSize: '11px', fontWeight: 600,
-    background: 'var(--warning-bg)', color: 'var(--warning-text)', border: '1px solid var(--warning-border)'
+    display: 'inline-block',
+    marginLeft: 4,
+    padding: '2px 6px',
+    borderRadius: 4,
+    fontSize: 11,
+    fontWeight: 600,
+    background: 'rgb(var(--orange-1))',
+    color: 'rgb(var(--orange-7))',
+    border: '1px solid rgb(var(--orange-3))',
   };
 
-  if (!admin) return null;
+  const renderEpisodeTitle = (episode) => (
+    <Button type="text" size="mini" style={{ padding: 0, height: 'auto' }} onClick={() => setDetailEpisode(episode)}>
+      {episode.title}
+    </Button>
+  );
+
+  const pendingColumns = [
+    {
+      title: t('adminReview.title'),
+      dataIndex: 'title',
+      render: (_, episode) => renderEpisodeTitle(episode),
+    },
+    {
+      title: t('adminReview.creator'),
+      dataIndex: ['createdBy', 'username'],
+      width: 140,
+      render: (value) => value || '-',
+    },
+    {
+      title: t('adminReview.episodeCount'),
+      width: 120,
+      render: (_, episode) => (
+        episode.totalEpisodes === null
+          ? t('adminEpisodes.unknownTotalEpisodes')
+          : `${episode.currentEpisodes}/${episode.totalEpisodes}`
+      ),
+    },
+    {
+      title: t('adminReview.status'),
+      width: 200,
+      render: (_, episode) => (
+        <>
+          <ReviewStatusBadge status={episode.reviewStatus || 'pending'} />
+          {episode.hasPendingChanges && (
+            <span style={pendingChangesTagStyle}>{t('adminReview.pendingChangesTag')}</span>
+          )}
+        </>
+      ),
+    },
+    {
+      title: t('adminReview.submitTime'),
+      dataIndex: 'updatedAt',
+      width: 130,
+      render: (value) => new Date(value).toLocaleDateString(locale),
+    },
+    {
+      title: t('adminReview.actions'),
+      width: 260,
+      render: (_, episode) => (
+        <Space direction="vertical" size="mini" style={{ width: '100%' }}>
+          <Input
+            size="small"
+            placeholder={t('adminReview.reviewNotePlaceholder')}
+            value={reviewNote}
+            onChange={setReviewNote}
+          />
+          <Space size="mini">
+            <Button size="mini" type="primary" onClick={() => handleApprove(episode._id)}>
+              {t('adminReview.approve')}
+            </Button>
+            <Button size="mini" status="danger" onClick={() => handleReject(episode._id)}>
+              {t('adminReview.reject')}
+            </Button>
+          </Space>
+        </Space>
+      ),
+    },
+  ];
+
+  const allColumns = [
+    {
+      title: t('adminReview.title'),
+      dataIndex: 'title',
+      render: (_, episode) => renderEpisodeTitle(episode),
+    },
+    {
+      title: t('adminReview.creator'),
+      dataIndex: ['createdBy', 'username'],
+      width: 140,
+      render: (value) => value || t('adminReview.system'),
+    },
+    {
+      title: t('adminReview.reviewStatus'),
+      width: 240,
+      render: (_, episode) => (
+        <>
+          <ReviewStatusBadge status={episode.reviewStatus} />
+          {episode.hasPendingChanges && (
+            <span style={pendingChangesTagStyle}>{t('adminReview.pendingChangesTag')}</span>
+          )}
+          {episode.reviewNote && (
+            <span style={{ fontSize: 11, color: 'var(--color-text-3)', marginLeft: 4 }}>({episode.reviewNote})</span>
+          )}
+        </>
+      ),
+    },
+    {
+      title: t('adminReview.authorizedEdit'),
+      width: 260,
+      render: (_, episode) => (
+        episode.allowedEditors && episode.allowedEditors.length > 0 ? (
+          <Space size="mini" wrap>
+            {episode.allowedEditors.map((editor) => (
+              <Tag key={editor._id} color="arcoblue" closable onClose={() => handleRemoveEditor(episode._id, editor._id)}>
+                {editor.username}
+              </Tag>
+            ))}
+          </Space>
+        ) : (
+          <span style={{ color: 'var(--color-text-3)', fontSize: 13 }}>{t('adminReview.none')}</span>
+        )
+      ),
+    },
+    {
+      title: t('adminReview.actions'),
+      width: 200,
+      render: (_, episode) => (
+        (episode.reviewStatus === 'pending' || episode.hasPendingChanges) ? (
+          <Space size="mini">
+            <Button size="mini" type="primary" onClick={() => handleApprove(episode._id)}>
+              {t('adminReview.approve')}
+            </Button>
+            <Button size="mini" status="danger" onClick={() => handleReject(episode._id)}>
+              {t('adminReview.reject')}
+            </Button>
+          </Space>
+        ) : null
+      ),
+    },
+  ];
+
+  const diffColumns = [
+    { title: t('adminReview.title'), dataIndex: 'label', width: 160 },
+    { title: t('adminReview.currentLabel'), render: (_, row) => renderPendingValue(row.key, row.current) },
+    { title: t('adminReview.newLabel'), render: (_, row) => renderPendingValue(row.key, row.next) },
+  ];
+
+  const diffRows = detailEpisode?.hasPendingChanges && detailEpisode?.pendingChanges
+    ? PENDING_DIFF_FIELDS
+      .filter((field) => detailEpisode.pendingChanges[field.key] !== undefined)
+      .map((field) => ({
+        key: field.key,
+        label: field.label,
+        current: detailEpisode[field.key],
+        next: detailEpisode.pendingChanges[field.key],
+      }))
+    : [];
+
+  const queryError = activeTab === 'pending'
+    ? (pendingTable.tableQuery.isError ? pendingTable.tableQuery.error?.response?.data?.message : '')
+    : (allTable.tableQuery.isError ? allTable.tableQuery.error?.response?.data?.message : '');
 
   return (
     <div>
@@ -174,256 +350,184 @@ const AdminReview = () => {
         </div>
       </div>
 
-      <Tabs
-        activeTab={activeTab}
-        onChange={setActiveTab}
-        className="admin-tabs"
-      >
-        <Tabs.TabPane key="pending" title={`${t('adminReview.pendingReview')} (${pendingEpisodes.length})`} />
+      <Tabs activeTab={activeTab} onChange={setActiveTab} className="admin-tabs">
+        <Tabs.TabPane key="pending" title={`${t('adminReview.pendingReview')} (${pendingTable.result.total || 0})`} />
         <Tabs.TabPane key="all" title={t('adminReview.allEpisodes')} />
         <Tabs.TabPane key="assign" title={t('adminReview.permissionAssignment')} />
       </Tabs>
 
-      {error && <div className="error-message">{error}</div>}
+      {(error || queryError) && (
+        <Alert
+          type="error"
+          content={error || queryError}
+          closable
+          onClose={() => setError('')}
+          style={{ marginBottom: 16 }}
+        />
+      )}
 
       {activeTab === 'pending' && (
-        <div>
-          {pendingEpisodes.length === 0 ? (
-            <p style={{color: 'var(--text-secondary)', textAlign: 'center', padding: '40px'}}>{t('adminReview.noPendingEpisodes')}</p>
-          ) : (
-            <div className="table-wrapper">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>{t('adminReview.title')}</th>
-                  <th>{t('adminReview.creator')}</th>
-                  <th>{t('adminReview.episodeCount')}</th>
-                  <th>{t('adminReview.status')}</th>
-                  <th>{t('adminReview.submitTime')}</th>
-                  <th>{t('adminReview.actions')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pendingEpisodes.map(ep => (
-                  <tr key={ep._id}>
-                    <td>
-                      <span
-                        style={{color: 'var(--primary)', cursor: 'pointer', textDecoration: 'none'}}
-                        onClick={() => setDetailEpisode(ep)}
-                        onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
-                        onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
-                      >{ep.title}</span>
-                    </td>
-                    <td>{ep.createdBy ? ep.createdBy.username : '-'}</td>
-                    <td>{ep.totalEpisodes === null ? t('adminEpisodes.unknownTotalEpisodes') : `${ep.currentEpisodes}/${ep.totalEpisodes}`}</td>
-                    <td>
-                      <ReviewStatusBadge status={ep.reviewStatus || 'pending'} />
-                      {ep.hasPendingChanges && (
-                        <span style={pendingChangesTagStyle}>{t('adminReview.pendingChangesTag')}</span>
-                      )}
-                    </td>
-                    <td>{new Date(ep.updatedAt).toLocaleDateString()}</td>
-                    <td>
-                      <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
-                        <Input
-                          size="small"
-                          placeholder={t('adminReview.reviewNotePlaceholder')}
-                          value={reviewNote}
-                          onChange={setReviewNote}
-                        />
-                        <div style={{display: 'flex', gap: '8px'}}>
-                          <Button size="small" type="primary" onClick={() => handleApprove(ep._id)}>{t('adminReview.approve')}</Button>
-                          <Button size="small" status="danger" onClick={() => handleReject(ep._id)}>{t('adminReview.reject')}</Button>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <>
+          <Table
+            rowKey="_id"
+            columns={pendingColumns}
+            data={pendingEpisodes}
+            loading={pendingTable.tableQuery.isLoading}
+            pagination={false}
+            scroll={{ x: 1000 }}
+            noDataElement={<Empty description={t('adminReview.noPendingEpisodes')} />}
+          />
+          {pendingEpisodes.length > 0 && (
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
+              <Pagination
+                current={pendingTable.currentPage}
+                pageSize={pendingTable.pageSize}
+                total={pendingTable.result.total || 0}
+                showTotal
+                onChange={(page, size) => {
+                  pendingTable.setCurrentPage(page);
+                  pendingTable.setPageSize(size);
+                }}
+              />
             </div>
           )}
-        </div>
+        </>
       )}
 
       {activeTab === 'all' && (
-        <div>
-          <div className="table-wrapper">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>{t('adminReview.title')}</th>
-                <th>{t('adminReview.creator')}</th>
-                <th>{t('adminReview.reviewStatus')}</th>
-                <th>{t('adminReview.authorizedEdit')}</th>
-                <th>{t('adminReview.actions')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {allEpisodes.map(ep => (
-                <tr key={ep._id}>
-                  <td>
-                    <span
-                      style={{color: 'var(--primary)', cursor: 'pointer', textDecoration: 'none'}}
-                      onClick={() => setDetailEpisode(ep)}
-                      onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
-                      onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
-                    >{ep.title}</span>
-                  </td>
-                  <td>{ep.createdBy ? ep.createdBy.username : t('adminReview.system')}</td>
-                  <td>
-                    <ReviewStatusBadge status={ep.reviewStatus} />
-                    {ep.hasPendingChanges && (
-                      <span style={pendingChangesTagStyle}>{t('adminReview.pendingChangesTag')}</span>
-                    )}
-                    {ep.reviewNote && <span style={{fontSize: '11px', color: 'var(--text-secondary)', marginLeft: '4px'}}>({ep.reviewNote})</span>}
-                  </td>
-                  <td>
-                    {ep.allowedEditors && ep.allowedEditors.length > 0 ? (
-                      <div style={{display: 'flex', flexWrap: 'wrap', gap: '4px'}}>
-                        {ep.allowedEditors.map(editor => (
-                          <span key={editor._id} style={{
-                            fontSize: '12px', padding: '2px 8px', borderRadius: '4px',
-                            background: 'var(--primary-bg-subtle)', color: 'var(--primary)',
-                            border: '1px solid var(--primary-border)',
-                            display: 'flex', alignItems: 'center', gap: '4px'
-                          }}>
-                            {editor.username}
-                            <button
-                              onClick={() => handleRemoveEditor(ep._id, editor._id)}
-                              aria-label={t('common.delete')}
-                              style={{background: 'none', border: 'none', color: 'var(--destructive-text)', cursor: 'pointer', fontSize: '12px', padding: '0 2px'}}
-                            ><FontAwesomeIcon icon={faXmark} aria-hidden="true" /></button>
-                          </span>
-                        ))}
-                      </div>
-                    ) : (
-                      <span style={{color: 'var(--text-secondary)', fontSize: '13px'}}>{t('adminReview.none')}</span>
-                    )}
-                  </td>
-                  <td>
-                    {(ep.reviewStatus === 'pending' || ep.hasPendingChanges) && (
-                      <div style={{display: 'flex', gap: '8px'}}>
-                        <Button size="small" type="primary" onClick={() => handleApprove(ep._id)}>{t('adminReview.approve')}</Button>
-                        <Button size="small" status="danger" onClick={() => handleReject(ep._id)}>{t('adminReview.reject')}</Button>
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          </div>
-        </div>
+        <>
+          <Table
+            rowKey="_id"
+            columns={allColumns}
+            data={allEpisodes}
+            loading={allTable.tableQuery.isLoading}
+            pagination={false}
+            scroll={{ x: 900 }}
+            noDataElement={<Empty description={t('adminReview.noPendingEpisodes')} />}
+          />
+          {allEpisodes.length > 0 && (
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
+              <Pagination
+                current={allTable.currentPage}
+                pageSize={allTable.pageSize}
+                total={allTable.result.total || 0}
+                showTotal
+                onChange={(page, size) => {
+                  allTable.setCurrentPage(page);
+                  allTable.setPageSize(size);
+                }}
+              />
+            </div>
+          )}
+        </>
       )}
 
       {activeTab === 'assign' && (
-        <div className="form-container" style={{maxWidth: '600px', margin: '0 auto'}}>
-          <h3 style={{marginBottom: '15px'}}>{t('adminReview.assignEditPermission')}</h3>
-          <p style={{color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '15px'}}>{t('adminReview.assignEditPermissionDesc')}</p>
+        <div className="form-container" style={{ maxWidth: 600, margin: '0 auto' }}>
+          <h3 style={{ marginBottom: 15 }}>{t('adminReview.assignEditPermission')}</h3>
+          <p style={{ color: 'var(--color-text-2)', fontSize: 14, marginBottom: 15 }}>
+            {t('adminReview.assignEditPermissionDesc')}
+          </p>
           <div className="form-group">
             <label>{t('adminReview.selectEpisode')}</label>
-            <select
+            <Select
+              showSearch
               value={assignEpisodeId}
-              onChange={(e) => setAssignEpisodeId(e.target.value)}
-              style={{width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--card)', color: 'var(--foreground)', border: '1px solid var(--border)'}}
-            >
-              <option value="">{t('adminReview.selectEpisodePlaceholder')}</option>
-              {allEpisodes.map(ep => (
-                <option key={ep._id} value={ep._id}>{ep.title}</option>
-              ))}
-            </select>
+              onChange={setAssignEpisodeId}
+              placeholder={t('adminReview.selectEpisodePlaceholder')}
+              style={{ width: '100%' }}
+              options={allEpisodes.map((episode) => ({ value: episode._id, label: episode.title }))}
+            />
           </div>
           <div className="form-group">
             <label>{t('adminReview.selectCreator')}</label>
-            <select
+            <Select
+              showSearch
               value={assignEditorId}
-              onChange={(e) => setAssignEditorId(e.target.value)}
-              style={{width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--card)', color: 'var(--foreground)', border: '1px solid var(--border)'}}
-            >
-              <option value="">{t('adminReview.selectCreatorPlaceholder')}</option>
-              {creators.map(c => (
-                <option key={c._id} value={c._id}>{c.username}</option>
-              ))}
-            </select>
+              onChange={setAssignEditorId}
+              placeholder={t('adminReview.selectCreatorPlaceholder')}
+              style={{ width: '100%' }}
+              options={creators.map((creator) => ({ value: creator._id, label: creator.username }))}
+            />
           </div>
-          <Button type="primary" onClick={handleAssignEditor}>{t('adminReview.assignPermission')}</Button>
+          <Button type="primary" loading={customMutationState.isPending} onClick={handleAssignEditor}>
+            {t('adminReview.assignPermission')}
+          </Button>
         </div>
       )}
 
       <Modal
-        isOpen={!!detailEpisode}
-        onClose={() => setDetailEpisode(null)}
-        maxWidth="600px"
-        contentStyle={{ maxHeight: '80vh', overflow: 'auto', padding: 0 }}
+        visible={!!detailEpisode}
+        onCancel={() => setDetailEpisode(null)}
+        footer={null}
+        style={{ width: 680 }}
+        title={detailEpisode?.title}
       >
-            <div style={{
-              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-              padding: '20px 24px', borderBottom: '1px solid var(--border)'
-            }}>
-              <h3 style={{margin: 0, color: 'var(--foreground)'}}>{detailEpisode?.title}</h3>
-              <button onClick={() => setDetailEpisode(null)} aria-label={t('common.close')} title={t('common.close')} style={{
-                background: 'none', border: 'none', color: 'var(--foreground)',
-                fontSize: '24px', cursor: 'pointer', padding: '0 4px', lineHeight: 1
-              }}><FontAwesomeIcon icon={faXmark} aria-hidden="true" /></button>
+        {detailEpisode && (
+          <div>
+            {detailEpisode.coverImage && (
+              <img
+                src={assetUrl(detailEpisode.coverImage)}
+                alt={detailEpisode.title}
+                style={{ width: '100%', maxHeight: 200, objectFit: 'cover', borderRadius: 8, marginBottom: 16 }}
+              />
+            )}
+            <p style={{ color: 'var(--color-text-2)', lineHeight: 1.6, marginBottom: 16 }}>
+              {detailEpisode.description || t('adminReview.noDescription')}
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, fontSize: 14 }}>
+              <p><strong>{t('adminReview.episodes')}</strong>{detailEpisode.totalEpisodes === null ? t('adminEpisodes.unknownTotalEpisodes') : `${detailEpisode.currentEpisodes}/${detailEpisode.totalEpisodes}`}</p>
+              <p><strong>{t('adminReview.status')}</strong>{detailEpisode.status === 'ongoing' ? t('home.statusOngoing') : detailEpisode.status === 'completed' ? t('home.statusCompleted') : t('home.statusUpcoming')}</p>
+              <p><strong>{t('adminReview.categories')}</strong>{detailEpisode.category ? detailEpisode.category.join('、') : t('adminReview.none')}</p>
+              <p><strong>{t('adminReview.views')}</strong>{detailEpisode.views}</p>
+              <p><strong>{t('adminReview.creator')}</strong>{detailEpisode.createdBy ? detailEpisode.createdBy.username : t('adminReview.system')}</p>
+              <p><strong>{t('adminReview.reviewStatus')}</strong><ReviewStatusBadge status={detailEpisode.reviewStatus} /></p>
             </div>
-            <div style={{padding: '20px 24px'}}>
-              {detailEpisode?.coverImage && (
-                <img src={assetUrl(detailEpisode.coverImage)} alt={detailEpisode.title} style={{width: '100%', maxHeight: '200px', objectFit: 'cover', borderRadius: '8px', marginBottom: '16px'}} />
-              )}
-              <p style={{color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '16px'}}>{detailEpisode?.description || t('adminReview.noDescription')}</p>
-              <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '14px'}}>
-                <p><strong>{t('adminReview.episodes')}</strong>{detailEpisode?.totalEpisodes === null ? t('adminEpisodes.unknownTotalEpisodes') : `${detailEpisode?.currentEpisodes}/${detailEpisode?.totalEpisodes}`}</p>
-                <p><strong>{t('adminReview.status')}</strong>{detailEpisode?.status === 'ongoing' ? t('home.statusOngoing') : detailEpisode?.status === 'completed' ? t('home.statusCompleted') : t('home.statusUpcoming')}</p>
-                <p><strong>{t('adminReview.categories')}</strong>{detailEpisode?.category ? detailEpisode.category.join('、') : t('adminReview.none')}</p>
-                <p><strong>{t('adminReview.views')}</strong>{detailEpisode?.views}</p>
-                <p><strong>{t('adminReview.creator')}</strong>{detailEpisode?.createdBy ? detailEpisode.createdBy.username : t('adminReview.system')}</p>
-                <p><strong>{t('adminReview.reviewStatus')}</strong>
-                  <ReviewStatusBadge status={detailEpisode?.reviewStatus} />
-                </p>
-              </div>
-              {detailEpisode?.hasPendingChanges && detailEpisode?.pendingChanges && (
-                <div style={{ marginTop: '16px', padding: '14px', background: 'var(--warning-bg)', border: '1px solid var(--warning-border)', borderRadius: '8px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
-                    <span style={pendingChangesTagStyle}>{t('adminReview.pendingChangesTag')}</span>
-                    <strong style={{ color: 'var(--foreground)' }}>{t('adminReview.pendingChangesTitle')}</strong>
-                  </div>
-                  <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '10px', lineHeight: 1.5 }}>{t('adminReview.pendingChangesDesc')}</p>
-                  <p style={{ fontSize: '13px', marginBottom: '10px' }}>
-                    <strong>{t('adminReview.changeSummaryLabel')}：</strong>
-                    {detailEpisode.pendingChangeSummary || t('adminReview.noChangeSummary')}
-                  </p>
-                  <div className="table-wrapper">
-                    <table className="table">
-                      <thead>
-                        <tr>
-                          <th>{t('adminReview.title')}</th>
-                          <th>{t('adminReview.currentLabel')}</th>
-                          <th>{t('adminReview.newLabel')}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {PENDING_DIFF_FIELDS
-                          .filter(f => detailEpisode.pendingChanges[f.key] !== undefined)
-                          .map(f => (
-                            <tr key={f.key}>
-                              <td style={{ whiteSpace: 'nowrap' }}>{f.label}</td>
-                              <td>{renderPendingValue(f.key, detailEpisode[f.key])}</td>
-                              <td>{renderPendingValue(f.key, detailEpisode.pendingChanges[f.key])}</td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </table>
-                  </div>
+
+            {detailEpisode.hasPendingChanges && detailEpisode.pendingChanges && (
+              <div
+                style={{
+                  marginTop: 16,
+                  padding: 14,
+                  background: 'rgb(var(--orange-1))',
+                  border: '1px solid rgb(var(--orange-3))',
+                  borderRadius: 8,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6, flexWrap: 'wrap' }}>
+                  <span style={pendingChangesTagStyle}>{t('adminReview.pendingChangesTag')}</span>
+                  <strong style={{ color: 'var(--color-text-1)' }}>{t('adminReview.pendingChangesTitle')}</strong>
                 </div>
-              )}
-              {detailEpisode?.reviewNote && (
-                <p style={{fontSize: '13px', color: 'var(--text-secondary)', marginTop: '12px'}}><strong>{t('adminReview.reviewNoteLabel')}</strong>{detailEpisode.reviewNote}</p>
-              )}
-              {detailEpisode?.allowedEditors && detailEpisode.allowedEditors.length > 0 && (
-                <p style={{fontSize: '13px', color: 'var(--text-secondary)', marginTop: '8px'}}><strong>{t('adminReview.authorizedEditLabel')}</strong>{detailEpisode.allowedEditors.map(e => e.username).join('、')}</p>
-              )}
-            </div>
+                <p style={{ fontSize: 13, color: 'var(--color-text-2)', marginBottom: 10, lineHeight: 1.5 }}>
+                  {t('adminReview.pendingChangesDesc')}
+                </p>
+                <p style={{ fontSize: 13, marginBottom: 10 }}>
+                  <strong>{t('adminReview.changeSummaryLabel')}：</strong>
+                  {detailEpisode.pendingChangeSummary || t('adminReview.noChangeSummary')}
+                </p>
+                <Table
+                  rowKey="key"
+                  size="small"
+                  columns={diffColumns}
+                  data={diffRows}
+                  pagination={false}
+                />
+              </div>
+            )}
+
+            {detailEpisode.reviewNote && (
+              <p style={{ fontSize: 13, color: 'var(--color-text-2)', marginTop: 12 }}>
+                <strong>{t('adminReview.reviewNoteLabel')}</strong>{detailEpisode.reviewNote}
+              </p>
+            )}
+            {detailEpisode.allowedEditors && detailEpisode.allowedEditors.length > 0 && (
+              <p style={{ fontSize: 13, color: 'var(--color-text-2)', marginTop: 8 }}>
+                <strong>{t('adminReview.authorizedEditLabel')}</strong>
+                {detailEpisode.allowedEditors.map((editor) => editor.username).join('、')}
+              </p>
+            )}
+          </div>
+        )}
       </Modal>
     </div>
   );
