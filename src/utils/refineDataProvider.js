@@ -37,7 +37,8 @@ const RESOURCES = {
   'my-episodes': {
     list: '/api/creator/my-episodes',
     listKey: 'list',
-    serverPagination: true,
+    clientSide: true,
+    fetchAll: true,
   },
   'review-pending': {
     list: '/api/review/pending',
@@ -147,6 +148,19 @@ const matchesAdminUserFilter = (record, filter) => {
   return matchesFilter(record, filter);
 };
 
+const matchesEpisodeFilter = (record, filter) => {
+  if (filter?.field === 'search') {
+    const keyword = toComparable(filter.value).toLowerCase();
+    if (!keyword) return true;
+    const titleMatches = toComparable(record.title).toLowerCase().includes(keyword);
+    const descriptionMatches = toComparable(record.description).toLowerCase().includes(keyword);
+    const categoryMatches = Array.isArray(record.category)
+      && record.category.some((category) => toComparable(category).toLowerCase().includes(keyword));
+    return titleMatches || descriptionMatches || categoryMatches;
+  }
+  return matchesFilter(record, filter);
+};
+
 const applyClientFilters = (records, filters, resource) => {
   const activeFilters = (filters || []).filter((filter) => filter && filter.field);
   if (activeFilters.length === 0) return records;
@@ -154,6 +168,7 @@ const applyClientFilters = (records, filters, resource) => {
     activeFilters.every((filter) => {
       if (resource === 'friend-links') return matchesFriendLinkFilter(record, filter);
       if (resource === 'admin-users') return matchesAdminUserFilter(record, filter);
+      if (resource === 'my-episodes') return matchesEpisodeFilter(record, filter);
       return matchesFilter(record, filter);
     }),
   );
