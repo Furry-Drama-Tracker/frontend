@@ -7,6 +7,7 @@ const adminApi = {
   put: (url, data, config = {}) => axios.put(url, data, { ...config }),
   delete: (url, config = {}) => axios.delete(url, { ...config }),
   patch: (url, data, config = {}) => axios.patch(url, data, { ...config }),
+  request: (config) => axios.request(config),
 };
 
 export const getAdminToken = () => null;

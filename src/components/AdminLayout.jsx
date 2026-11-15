@@ -38,6 +38,7 @@ import '@arco-design/web-react/es/InputNumber/style/index.css';
 import '@arco-design/web-react/es/Radio/style/index.css';
 import '@arco-design/web-react/es/Tooltip/style/index.css';
 import '@arco-design/web-react/es/Popconfirm/style/index.css';
+import '@arco-design/web-react/es/Modal/style/index.css';
 import '@arco-design/web-react/es/Message/style/index.css';
 import '../styles/admin.css';
 

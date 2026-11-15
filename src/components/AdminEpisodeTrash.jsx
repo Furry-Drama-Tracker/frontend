@@ -1,100 +1,196 @@
-﻿import React, { useState, useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
-import adminApi from '../utils/adminApi';
+﻿import React, { useState } from 'react';
+import { useCustom, useCustomMutation, useDelete, useTable } from '@refinedev/core';
+import {
+  Alert,
+  Button,
+  Empty,
+  Modal,
+  Pagination,
+  Popconfirm,
+  Space,
+  Table,
+  Tag,
+} from '@arco-design/web-react';
 import { assetUrl } from '../utils/apiBase';
 import { useI18n } from '../contexts/I18nContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import ConfirmModal from './ConfirmModal';
-import Modal from './Modal';
 
 // 剧集回收站（admin/superadmin）：被删除 / 审核拒绝的剧集在此集中管理。
 // 支持查看进入原因与编辑内容日志（版本快照，可回退依据）、
 // 恢复回正式集合、彻底删除以释放服务器资源。
 const AdminEpisodeTrash = () => {
-  const { admin } = useOutletContext();
   const { t, locale } = useI18n();
-  const [list, setList] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
-  const [page, setPage] = useState(1);
   const [error, setError] = useState('');
   const [versionsFor, setVersionsFor] = useState(null);
-  const [versions, setVersions] = useState([]);
-  const [versionsLoading, setVersionsLoading] = useState(false);
-  const [purgeTarget, setPurgeTarget] = useState(null);
-  const [restoreTarget, setRestoreTarget] = useState(null);
-  const [busy, setBusy] = useState(false);
 
-  const LIMIT = 20;
+  const { tableQuery, result, currentPage, setCurrentPage, pageSize, setPageSize } = useTable({
+    resource: 'episode-trash',
+    pagination: { currentPage: 1, pageSize: 20, mode: 'server' },
+  });
 
-  useEffect(() => {
-    if (!admin) return;
-    fetchList(page);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [admin, page]);
+  const { mutateAsync: restoreEpisode, mutation: restoreMutation } = useCustomMutation();
+  const { mutateAsync: purgeEpisode, mutation: purgeMutation } = useDelete();
 
-  const fetchList = async (p = page) => {
+  const versionsUrl = versionsFor
+    ? `/api/episode-trash/${versionsFor._id}/versions`
+    : '/api/episode-trash/versions';
+
+  const { query: versionsQuery, result: versionsResult } = useCustom({
+    url: versionsUrl,
+    method: 'get',
+    queryOptions: { enabled: !!versionsFor },
+  });
+
+  const items = result.data || [];
+  const versions = Array.isArray(versionsResult.data) ? versionsResult.data : [];
+
+  const refresh = () => tableQuery.refetch();
+
+  const handleRestore = async (item) => {
+    setError('');
     try {
-      const res = await adminApi.get(`/api/episode-trash?page=${p}&limit=${LIMIT}`);
-      setList(res.data.list || []);
-      setTotal(res.data.total || 0);
-      setTotalPages(res.data.totalPages || 0);
-      setError('');
+      await restoreEpisode({
+        url: `/api/episode-trash/${item._id}/restore`,
+        method: 'put',
+        values: {},
+      });
+      refresh();
     } catch (err) {
-      setError(err.response?.data?.message || t('adminEpisodeTrash.loadFailed'));
+      setError(err?.response?.data?.message || t('adminEpisodeTrash.restoreFailed'));
     }
   };
 
-  const openVersions = async (item) => {
-    setVersionsFor(item);
-    setVersions([]);
-    setVersionsLoading(true);
+  const handlePurge = async (item) => {
+    setError('');
     try {
-      const res = await adminApi.get(`/api/episode-trash/${item._id}/versions`);
-      setVersions(res.data || []);
+      await purgeEpisode({ resource: 'episode-trash', id: item._id });
+      refresh();
     } catch (err) {
-      setError(err.response?.data?.message || t('adminEpisodeTrash.loadFailed'));
+      setError(err?.response?.data?.message || t('adminEpisodeTrash.purgeFailed'));
     }
-    setVersionsLoading(false);
   };
-
-  const handleRestore = async () => {
-    if (!restoreTarget) return;
-    setBusy(true);
-    try {
-      await adminApi.put(`/api/episode-trash/${restoreTarget._id}/restore`);
-      setRestoreTarget(null);
-      fetchList();
-    } catch (err) {
-      setError(err.response?.data?.message || t('adminEpisodeTrash.restoreFailed'));
-    }
-    setBusy(false);
-  };
-
-  const handlePurge = async () => {
-    if (!purgeTarget) return;
-    setBusy(true);
-    try {
-      await adminApi.delete(`/api/episode-trash/${purgeTarget._id}`);
-      setPurgeTarget(null);
-      fetchList();
-    } catch (err) {
-      setError(err.response?.data?.message || t('adminEpisodeTrash.purgeFailed'));
-    }
-    setBusy(false);
-  };
-
-  if (!admin) return null;
 
   const reasonLabels = {
     rejected: t('adminEpisodeTrash.reasonRejected'),
     deleted: t('adminEpisodeTrash.reasonDeleted'),
   };
-  const reasonStyles = {
-    rejected: { background: 'var(--warning-bg)', color: 'var(--warning-text)', border: '1px solid var(--warning-border)' },
-    deleted: { background: 'var(--info-bg)', color: 'var(--info-text)', border: '1px solid var(--info-border)' },
-  };
+
+  const columns = [
+    {
+      title: t('adminEpisodeTrash.colTitle'),
+      dataIndex: 'title',
+      render: (_, item) => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          {item.coverImage && (
+            <img
+              src={assetUrl(item.coverImage)}
+              alt=""
+              style={{ width: 36, height: 52, objectFit: 'cover', borderRadius: 4, flexShrink: 0 }}
+            />
+          )}
+          <div>
+            <div style={{ fontWeight: 600 }}>{item.title}</div>
+            {item.titleEn && (
+              <div style={{ fontSize: 12, color: 'var(--color-text-3)' }}>{item.titleEn}</div>
+            )}
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: t('adminEpisodeTrash.colReason'),
+      dataIndex: 'trashReason',
+      width: 120,
+      render: (value) => (
+        <Tag color={value === 'rejected' ? 'orange' : 'arcoblue'}>
+          {reasonLabels[value] || value}
+        </Tag>
+      ),
+    },
+    {
+      title: t('adminEpisodeTrash.colNote'),
+      dataIndex: 'trashNote',
+      render: (value) => value || '-',
+    },
+    {
+      title: t('adminEpisodeTrash.colOperator'),
+      dataIndex: ['trashBy', 'username'],
+      width: 140,
+      render: (value) => value || '-',
+    },
+    {
+      title: t('adminEpisodeTrash.colTime'),
+      dataIndex: 'trashAt',
+      width: 180,
+      render: (value) => (value ? new Date(value).toLocaleString(locale) : '-'),
+    },
+    {
+      title: t('adminEpisodeTrash.colActions'),
+      width: 280,
+      render: (_, item) => (
+        <Space size="mini" wrap>
+          <Button size="mini" onClick={() => setVersionsFor(item)}>
+            {t('adminEpisodeTrash.viewVersions')}
+          </Button>
+          <Popconfirm
+            title={t('adminEpisodeTrash.restoreConfirmTitle')}
+            content={t('adminEpisodeTrash.restoreConfirmMsg', { title: item.title })}
+            onOk={() => handleRestore(item)}
+            okText={t('adminEpisodeTrash.restore')}
+            cancelText={t('common.cancel')}
+          >
+            <Button size="mini" loading={restoreMutation.isPending && restoreMutation.variables?.url?.includes(item._id)}>
+              {t('adminEpisodeTrash.restore')}
+            </Button>
+          </Popconfirm>
+          <Popconfirm
+            title={t('adminEpisodeTrash.purgeConfirmTitle')}
+            content={t('adminEpisodeTrash.purgeConfirmMsg', { title: item.title })}
+            onOk={() => handlePurge(item)}
+            okText={t('adminEpisodeTrash.purge')}
+            cancelText={t('common.cancel')}
+          >
+            <Button
+              size="mini"
+              status="danger"
+              loading={purgeMutation.isPending && purgeMutation.variables?.id === item._id}
+            >
+              {t('adminEpisodeTrash.purge')}
+            </Button>
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
+
+  const versionsColumns = [
+    {
+      title: t('adminEpisodeTrash.colVersion'),
+      dataIndex: 'version',
+      width: 80,
+      render: (value) => `v${value}`,
+    },
+    {
+      title: t('adminEpisodeTrash.colSummary'),
+      dataIndex: 'changeSummary',
+      render: (value) => value || '-',
+    },
+    {
+      title: t('adminEpisodeTrash.colOperator'),
+      dataIndex: ['changedBy', 'username'],
+      width: 140,
+      render: (value) => value || '-',
+    },
+    {
+      title: t('adminEpisodeTrash.colTime'),
+      dataIndex: 'createdAt',
+      width: 180,
+      render: (value) => (value ? new Date(value).toLocaleString(locale) : '-'),
+    },
+  ];
+
+  const queryError = tableQuery.isError
+    ? tableQuery.error?.response?.data?.message || t('adminEpisodeTrash.loadFailed')
+    : '';
 
   return (
     <div className="admin-panel">
@@ -104,163 +200,67 @@ const AdminEpisodeTrash = () => {
           <p className="admin-page-desc">{t('adminEpisodeTrash.desc')}</p>
         </div>
         <div className="admin-page-actions">
-          <span style={{ color: '#86909c', fontSize: '13px' }}>{t('adminEpisodeTrash.totalCount', { total })}</span>
+          <span style={{ color: 'var(--color-text-3)', fontSize: 13 }}>
+            {t('adminEpisodeTrash.totalCount', { total: result.total || 0 })}
+          </span>
         </div>
       </div>
 
-      {error && <div className="error-message">{error}</div>}
+      {(error || queryError) && (
+        <Alert
+          type="error"
+          content={error || queryError}
+          closable
+          onClose={() => setError('')}
+          style={{ marginBottom: 16 }}
+        />
+      )}
 
-      {list.length === 0 ? (
-        <p style={{ color: 'var(--text-secondary)', textAlign: 'center', padding: '40px' }}>{t('adminEpisodeTrash.noItems')}</p>
-      ) : (
-        <div style={{ overflowX: 'auto' }}>
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>{t('adminEpisodeTrash.colTitle')}</th>
-                <th>{t('adminEpisodeTrash.colReason')}</th>
-                <th>{t('adminEpisodeTrash.colNote')}</th>
-                <th>{t('adminEpisodeTrash.colOperator')}</th>
-                <th>{t('adminEpisodeTrash.colTime')}</th>
-                <th>{t('adminEpisodeTrash.colActions')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {list.map(item => (
-                <tr key={item._id}>
-                  <td>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      {item.coverImage && (
-                        <img src={assetUrl(item.coverImage)} alt="" style={{ width: '36px', height: '52px', objectFit: 'cover', borderRadius: '4px', flexShrink: 0 }} />
-                      )}
-                      <div>
-                        <div style={{ fontWeight: 600 }}>{item.title}</div>
-                        {item.titleEn && <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{item.titleEn}</div>}
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <span style={{
-                      display: 'inline-block', padding: '3px 10px', borderRadius: '12px', fontSize: '12px', fontWeight: 600,
-                      ...(reasonStyles[item.trashReason] || {})
-                    }}>
-                      {reasonLabels[item.trashReason] || item.trashReason}
-                    </span>
-                  </td>
-                  <td style={{ maxWidth: '220px', fontSize: '13px', color: 'var(--text-secondary)' }}>
-                    {item.trashNote || '-'}
-                  </td>
-                  <td style={{ fontSize: '13px' }}>
-                    {item.trashBy?.username || '-'}
-                  </td>
-                  <td style={{ fontSize: '13px', whiteSpace: 'nowrap' }}>
-                    {item.trashAt ? new Date(item.trashAt).toLocaleString(locale) : '-'}
-                  </td>
-                  <td>
-                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                      <button className="btn btn-secondary" style={{ fontSize: '12px', padding: '5px 12px' }} onClick={() => openVersions(item)}>
-                        {t('adminEpisodeTrash.viewVersions')}
-                      </button>
-                      <button className="btn" style={{ fontSize: '12px', padding: '5px 12px' }} onClick={() => setRestoreTarget(item)}>
-                        {t('adminEpisodeTrash.restore')}
-                      </button>
-                      <button className="btn btn-secondary" style={{ fontSize: '12px', padding: '5px 12px', background: 'var(--destructive-bg)', color: 'var(--destructive-text)', borderColor: 'var(--destructive-border)' }} onClick={() => setPurgeTarget(item)}>
-                        {t('adminEpisodeTrash.purge')}
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      <Table
+        rowKey="_id"
+        columns={columns}
+        data={items}
+        loading={tableQuery.isLoading}
+        pagination={false}
+        scroll={{ x: 950 }}
+        noDataElement={<Empty description={t('adminEpisodeTrash.noItems')} />}
+      />
+
+      {items.length > 0 && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
+          <Pagination
+            current={currentPage}
+            pageSize={pageSize}
+            total={result.total || 0}
+            showTotal
+            onChange={(page, size) => {
+              setCurrentPage(page);
+              setPageSize(size);
+            }}
+          />
         </div>
       )}
 
-      {totalPages > 1 && (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '14px', marginTop: '20px' }}>
-          <button className="btn btn-secondary" style={{ fontSize: '13px', padding: '6px 14px' }} disabled={page <= 1} onClick={() => setPage(page - 1)}>
-            {t('common.prevPage')}
-          </button>
-          <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{t('adminEpisodeTrash.pageInfo', { page, totalPages })}</span>
-          <button className="btn btn-secondary" style={{ fontSize: '13px', padding: '6px 14px' }} disabled={page >= totalPages} onClick={() => setPage(page + 1)}>
-            {t('common.nextPage')}
-          </button>
-        </div>
-      )}
-
-      {/* 编辑内容日志（版本快照）：恢复后可依据版本记录回退内容 */}
       <Modal
-        isOpen={!!versionsFor}
-        onClose={() => setVersionsFor(null)}
-        maxWidth="640px"
-        contentStyle={{ maxHeight: '80vh', overflow: 'auto', padding: 0 }}
+        visible={!!versionsFor}
+        onCancel={() => setVersionsFor(null)}
+        footer={null}
+        style={{ width: 720 }}
+        title={t('adminEpisodeTrash.versionsTitle', { title: versionsFor?.title || '' })}
       >
-        <div style={{
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          padding: '20px 24px', borderBottom: '1px solid var(--border)'
-        }}>
-          <h3 style={{ margin: 0, color: 'var(--foreground)' }}>{t('adminEpisodeTrash.versionsTitle', { title: versionsFor?.title || '' })}</h3>
-          <button onClick={() => setVersionsFor(null)} aria-label={t('common.close')} title={t('common.close')} style={{
-            background: 'none', border: 'none', color: 'var(--foreground)',
-            fontSize: '24px', cursor: 'pointer', padding: '0 4px', lineHeight: 1
-          }}><FontAwesomeIcon icon={faXmark} aria-hidden="true" /></button>
-        </div>
-        <div style={{ padding: '20px 24px' }}>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '0 0 14px 0', lineHeight: 1.6 }}>
-            {t('adminEpisodeTrash.versionsDesc')}
-          </p>
-          {versionsLoading ? (
-            <p style={{ color: 'var(--text-secondary)', textAlign: 'center', padding: '20px' }}>{t('common.loading')}</p>
-          ) : versions.length === 0 ? (
-            <p style={{ color: 'var(--text-secondary)', textAlign: 'center', padding: '20px' }}>{t('adminEpisodeTrash.noVersions')}</p>
-          ) : (
-            <div style={{ overflowX: 'auto' }}>
-              <table className="admin-table" style={{ fontSize: '13px' }}>
-                <thead>
-                  <tr>
-                    <th>{t('adminEpisodeTrash.colVersion')}</th>
-                    <th>{t('adminEpisodeTrash.colSummary')}</th>
-                    <th>{t('adminEpisodeTrash.colOperator')}</th>
-                    <th>{t('adminEpisodeTrash.colTime')}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {versions.map(v => (
-                    <tr key={v._id}>
-                      <td style={{ whiteSpace: 'nowrap', fontWeight: 600 }}>v{v.version}</td>
-                      <td style={{ color: 'var(--text-secondary)' }}>{v.changeSummary || '-'}</td>
-                      <td style={{ whiteSpace: 'nowrap' }}>{v.changedBy?.username || '-'}</td>
-                      <td style={{ whiteSpace: 'nowrap' }}>{v.createdAt ? new Date(v.createdAt).toLocaleString(locale) : '-'}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
+        <p style={{ fontSize: 13, color: 'var(--color-text-3)', marginTop: 0, lineHeight: 1.6 }}>
+          {t('adminEpisodeTrash.versionsDesc')}
+        </p>
+        <Table
+          rowKey="_id"
+          size="small"
+          columns={versionsColumns}
+          data={versions}
+          loading={versionsQuery.isLoading}
+          pagination={false}
+          noDataElement={<Empty description={t('adminEpisodeTrash.noVersions')} />}
+        />
       </Modal>
-
-      <ConfirmModal
-        show={!!restoreTarget}
-        onClose={() => setRestoreTarget(null)}
-        onConfirm={handleRestore}
-        type="primary"
-        title={t('adminEpisodeTrash.restoreConfirmTitle')}
-        message={t('adminEpisodeTrash.restoreConfirmMsg', { title: restoreTarget?.title || '' })}
-        confirmText={t('adminEpisodeTrash.restore')}
-        cancelText={t('common.cancel')}
-      />
-
-      <ConfirmModal
-        show={!!purgeTarget}
-        onClose={() => setPurgeTarget(null)}
-        onConfirm={handlePurge}
-        type="danger"
-        title={t('adminEpisodeTrash.purgeConfirmTitle')}
-        message={t('adminEpisodeTrash.purgeConfirmMsg', { title: purgeTarget?.title || '' })}
-        confirmText={t('adminEpisodeTrash.purge')}
-        cancelText={t('common.cancel')}
-      />
     </div>
   );
 };

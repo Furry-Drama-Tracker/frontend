@@ -230,30 +230,32 @@ const dataProvider = {
     return { data: records, total };
   },
 
-  getOne: async ({ resource, id }) => {
+  getOne: async ({ resource, id, meta }) => {
     const config = getConfig(resource);
-    const endpoint = typeof config.getOne === 'function' ? config.getOne(id) : `${config.list}/${id}`;
+    const endpoint = meta?.endpoint || (typeof config.getOne === 'function' ? config.getOne(id) : `${config.list}/${id}`);
     const response = await adminApi.get(endpoint);
     return { data: response.data?.data ?? response.data };
   },
 
-  create: async ({ resource, variables }) => {
+  create: async ({ resource, variables, meta }) => {
     const config = getConfig(resource);
-    const endpoint = config.create || config.list;
+    const endpoint = meta?.endpoint || config.create || config.list;
     const response = await adminApi.post(endpoint, variables);
     return { data: response.data?.data ?? response.data };
   },
 
-  update: async ({ resource, id, variables }) => {
+  update: async ({ resource, id, variables, meta }) => {
     const config = getConfig(resource);
-    const endpoint = typeof config.update === 'function' ? config.update(id) : `${config.list}/${id}`;
+    const endpoint = meta?.endpoint
+      || (typeof config.update === 'function' ? config.update(id) : `${config.list}/${id}`);
     const response = await adminApi.put(endpoint, variables);
     return { data: response.data?.data ?? response.data };
   },
 
-  deleteOne: async ({ resource, id }) => {
+  deleteOne: async ({ resource, id, meta }) => {
     const config = getConfig(resource);
-    const endpoint = typeof config.deleteOne === 'function' ? config.deleteOne(id) : `${config.list}/${id}`;
+    const endpoint = meta?.endpoint
+      || (typeof config.deleteOne === 'function' ? config.deleteOne(id) : `${config.list}/${id}`);
     const response = await adminApi.delete(endpoint);
     return { data: response.data?.data ?? response.data };
   },
