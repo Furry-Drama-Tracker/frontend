@@ -440,6 +440,18 @@ body.admin-light {
   overflow-y: auto;
 }
 
+/* Fully remove the collapsed sider: no 1px border, shadow or clipped menu sliver. */
+.admin-sider.arco-layout-sider-collapsed {
+  overflow: hidden;
+  border-right: none;
+  box-shadow: none;
+}
+
+.admin-sider.arco-layout-sider-collapsed .arco-layout-sider-children {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .admin-sider .arco-menu {
   background: transparent;
 }
