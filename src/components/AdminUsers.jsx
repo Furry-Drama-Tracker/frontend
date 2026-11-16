@@ -232,8 +232,8 @@ const AdminUsers = () => {
               <Select
                 placeholder={t('adminUsers.selectRole')}
                 options={[
-                  { value: 'admin', label: t('adminUsers.admin') },
                   { value: 'creator', label: t('adminUsers.creator') },
+                  { value: 'admin', label: t('adminUsers.admin') },
                 ]}
               />
             </Form.Item>
@@ -300,8 +300,8 @@ const AdminUsers = () => {
             onChange={(value) => handleChangeRole(user, value)}
             options={[
               { value: 'user', label: t('adminUsers.normalUser') },
-              { value: 'admin', label: t('adminUsers.admin') },
               { value: 'creator', label: t('adminUsers.creator') },
+              { value: 'admin', label: t('adminUsers.admin') },
               { value: 'superadmin', label: t('adminUsers.superAdmin') },
             ]}
           />
