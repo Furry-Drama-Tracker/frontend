@@ -569,6 +569,7 @@ export default {
     title: '双因素认证 (2FA)',
     enableDesc: '启用双因素认证后，登录时除了密码还需要输入验证码，大大提高账号安全性。',
     enable: '启用 2FA',
+    enablePasswordHint: '注册会生成新的第二因素凭据（密钥与备份码），需要输入当前密码确认。',
     setupStep1: '1. 使用认证器应用（如 Google Authenticator、Microsoft Authenticator）扫描下方二维码或手动输入密钥：',
     manualKey: '手动输入密钥：',
     setupStep2: '2. 请妥善保存以下备用码（每个仅可使用一次），在无法访问认证器时可用来登录：',

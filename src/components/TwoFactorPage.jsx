@@ -30,6 +30,7 @@ const TwoFactorPage = ({ user, setUser }) => {
   const [backupCodes, setBackupCodes] = useState([]);
   const [qrDataUrl, setQrDataUrl] = useState('');
   const [token, setToken] = useState('');
+  const [enablePassword, setEnablePassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showBackupCodes, setShowBackupCodes] = useState(false);
@@ -75,10 +76,16 @@ const TwoFactorPage = ({ user, setUser }) => {
   }, [loadPasskeys]);
 
   const handleEnable = async () => {
-    setLoading(true);
     setError('');
+    if (!enablePassword) {
+      setError(t('profile.currentPasswordRequired'));
+      return;
+    }
+    setLoading(true);
     try {
-      const res = await axios.post(API.TWOFACTOR.ENABLE, {}, {
+      // 2FA 注册是凭据植入：后端会把新的 TOTP secret 与 10 个明文备份码下发，
+      // 故要求密码再认证（缺失 PAS0016 / 不正确 PAS0017），与 passkey 注册/删除一致。
+      const res = await axios.post(API.TWOFACTOR.ENABLE, { currentPassword: enablePassword }, {
         headers: getAuthHeaders()
       });
       setSecret(res.data.secret);
@@ -86,6 +93,7 @@ const TwoFactorPage = ({ user, setUser }) => {
       setSecretBase32(res.data.secretBase32 || '');
       setOtpauthUrl(res.data.otpauthUrl);
       setBackupCodes(res.data.backupCodes);
+      setEnablePassword('');
       setStep('setup');
     } catch (err) {
       setError(formatApiError(err, t('twoFactor.invalidCode')));
@@ -231,9 +239,26 @@ const TwoFactorPage = ({ user, setUser }) => {
           <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '16px', lineHeight: 1.7 }}>
             {t('twoFactor.enableDesc')}
           </p>
-          <button onClick={handleEnable} disabled={loading} style={{
+          <div className="form-group">
+            <input
+              type="password"
+              value={enablePassword}
+              onChange={(e) => setEnablePassword(e.target.value)}
+              placeholder={t('auth.currentPassword')}
+              aria-label={t('auth.currentPassword')}
+              autoComplete="current-password"
+              style={{ width: '100%', padding: '10px 14px', borderRadius: '6px',
+                background: 'var(--input)', border: '1px solid var(--border)',
+                color: 'var(--foreground)', fontSize: '14px' }}
+            />
+          </div>
+          <p style={{ color: 'var(--text-tertiary)', fontSize: '12px', margin: '0 0 12px 0', lineHeight: 1.6 }}>
+            {t('twoFactor.enablePasswordHint')}
+          </p>
+          <button onClick={handleEnable} disabled={loading || !enablePassword} style={{
             ...btnStyle,
-            background: 'var(--btn-gradient)', color: 'var(--btn-text)', border: 'none'
+            background: 'var(--btn-gradient)', color: 'var(--btn-text)', border: 'none',
+            opacity: loading || !enablePassword ? 0.6 : 1
           }}>
             {loading ? t('common.processing') : t('twoFactor.enable')}
           </button>

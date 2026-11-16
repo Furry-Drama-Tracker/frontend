@@ -22,6 +22,7 @@ const Force2FASetup = ({ onUpdate, onLogout }) => {
   const [backupCodes, setBackupCodes] = useState([]);
   const [qrDataUrl, setQrDataUrl] = useState('');
   const [token, setToken] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showBackupCodes, setShowBackupCodes] = useState(false);
@@ -35,14 +36,21 @@ const Force2FASetup = ({ onUpdate, onLogout }) => {
   }, [otpauthUrl]);
 
   const handleEnable = async () => {
-    setLoading(true);
     setError('');
+    if (!password) {
+      setError(t('profile.currentPasswordRequired'));
+      return;
+    }
+    setLoading(true);
     try {
-      const res = await axios.post(API.TWOFACTOR.ENABLE);
+      // 密码再认证：后端把新的 TOTP secret 与 10 个明文备份码下发给请求者，
+      // 仅持会话不得植入凭据（缺失 PAS0016 / 不正确 PAS0017）。
+      const res = await axios.post(API.TWOFACTOR.ENABLE, { currentPassword: password });
       setSecret(res.data.secret);
       setSecretBase32(res.data.secretBase32 || '');
       setOtpauthUrl(res.data.otpauthUrl);
       setBackupCodes(res.data.backupCodes || []);
+      setPassword('');
       setStep('setup');
     } catch (err) {
       setError(formatApiError(err, t('twoFactor.invalidCode')));
@@ -85,13 +93,29 @@ const Force2FASetup = ({ onUpdate, onLogout }) => {
       {error && <div className="error-message">{error}</div>}
 
       {step === 'idle' && (
-        <button
-          onClick={handleEnable}
-          disabled={loading}
-          style={{ width: '100%', padding: '10px', borderRadius: '8px', fontWeight: 600 }}
-        >
-          {loading ? t('common.pleaseWait') : t('twoFactor.startSetup')}
-        </button>
+        <>
+          <div className="form-group" style={{ marginBottom: '8px' }}>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder={t('auth.currentPassword')}
+              aria-label={t('auth.currentPassword')}
+              autoComplete="current-password"
+              autoFocus
+            />
+          </div>
+          <p style={{ color: 'var(--text-tertiary)', fontSize: '12px', margin: '0 0 12px 0', lineHeight: 1.6, textAlign: 'center' }}>
+            {t('twoFactor.enablePasswordHint')}
+          </p>
+          <button
+            onClick={handleEnable}
+            disabled={loading || !password}
+            style={{ width: '100%', padding: '10px', borderRadius: '8px', fontWeight: 600, opacity: loading || !password ? 0.6 : 1 }}
+          >
+            {loading ? t('common.pleaseWait') : t('twoFactor.startSetup')}
+          </button>
+        </>
       )}
 
       {step === 'setup' && (

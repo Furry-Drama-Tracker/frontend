@@ -569,6 +569,7 @@ export default {
     title: 'Two-Factor Authentication (2FA)',
     enableDesc: 'Enable 2FA to require a verification code in addition to your password when logging in, greatly improving account security.',
     enable: 'Enable 2FA',
+    enablePasswordHint: 'Enrollment creates a new second-factor credential (secret and backup codes); confirm it with your current password.',
     setupStep1: '1. Scan the QR code below with an authenticator app (e.g., Google Authenticator, Microsoft Authenticator) or enter the key manually:',
     manualKey: 'Manual entry key:',
     setupStep2: '2. Save these backup codes carefully (each can only be used once). Use them to login when you cannot access your authenticator:',
