@@ -14,6 +14,8 @@ sources:
     resource: repo://src/components/AccountSecurity.jsx
   - id: openwiki-source-11c92b2033df029713925335
     resource: repo://src/components/AdminLayout.jsx
+  - id: openwiki-source-c3990f6bf8f6470b161d22e1
+    resource: repo://src/components/CaptchaWidget.jsx
   - id: openwiki-source-0563314e4e01b2956353b034
     resource: repo://src/components/Login.jsx
   - id: openwiki-source-363227886f5861d63e167a11
@@ -37,7 +39,7 @@ sources:
 generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-13T19:07:27.754Z
+    at: 2026-11-16T17:37:19.788Z
 ---
 
 # HTTP 层、CSRF 与双 Token 刷新

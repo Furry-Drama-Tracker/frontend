@@ -28,10 +28,10 @@ sources:
     resource: repo://src/utils/axiosConfig.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
+generated: { by: "zcode", at: "2026-11-16T17:37:19.788Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-13T19:07:27.754Z
+    at: 2026-11-16T17:37:19.788Z
 ---
 
 # 快速上手与任务路由
@@ -55,7 +55,7 @@ server: {
 }
 ```
 
-**关键前提：没有独立运行的后端时，所有 API 调用都会失败或挂起。** 这不是"少部分功能不可用"，而是应用根本起不来：入口副作用一加载就 `GET /api/csrf-token` 预热 CSRF，`SiteSettingsProvider` 拉 `/api/site-content/settings`，`AuthProvider` 拉 `/api/auth/me`（`skipRedirect`），`AppContent` 再拉 `/api/themes/active`，页脚 `FooterBeian` 又拉 `/api/site-content/about`。后端缺席时这些请求超时或静默失败（`console.error` 级别的 `Failed to fetch`），界面表现为长期 loading 空壳或功能静默缺省，而不是一个显式报错页。**做全栈调试必须先把后端起在 5000 端口**，遇到"页面空白/一直在转/点了没反应"先确认后端进程还活着，再去读前端代码。（生产形态不同：构建后前端以 `API_BASE_URL` 直连后端源站，不再有代理；同域反代部署需以 `VITE_API_BASE_URL=''` 构建。）
+**关键前提：没有独立运行的后端时，所有 API 调用都会失败或挂起。** 这不是"少部分功能不可用"，而是应用根本起不来：入口副作用一加载就 `GET /api/csrf-token` 预热 CSRF，`SiteSettingsProvider` 拉 `/api/site-content/settings`，`AuthProvider` 拉 `/api/auth/me`（`skipRedirect`），`AppContent` 再拉 `/api/themes/active`，页脚 `FooterBeian` 又拉 `/api/site-content/about`。后端缺席时这些请求超时或静默失败（`console.error` 级别的 `Failed to fetch`），界面表现为长期 loading 空壳或功能静默缺省，而不是一个显式报错页。**做全栈调试必须先把后端起在 5000 端口**（接真实后端，或用仓库根的 `mock/server.mjs`——它与真实后端同契约，内置错误信封/CSRF/三角色演示账号，`node mock/server.mjs` 即可无 MongoDB 走查全部页面），遇到"页面空白/一直在转/点了没反应"先确认后端进程还活着，再去读前端代码。（生产形态不同：构建后前端以 `API_BASE_URL` 直连后端源站，不再有代理；同域反代部署需以 `VITE_API_BASE_URL=''` 构建。）
 
 ## 关键命令
 
@@ -135,7 +135,7 @@ src/App.jsx
 | 改 PWA 缓存、离线队列、安装提示、浏览器兼容遮罩 | [PWA、离线缓存与浏览器兼容](systems/pwa-offline-and-compat.md) | workbox 运行时缓存白名单、`offlineQueue` 重放、双层兼容检测 |
 | 改站点名称/Logo/favicon/公告/隐私条款等静态页 | [运行时站点配置、公告与静态页](systems/site-settings-and-announcements.md) | 站点配置 30 分钟 TTL 缓存；manifest 已固定为构建期同源版本（运行时只更新 meta） |
 | 改暗/亮主题、强调色、壁纸、主题工坊与主题审核 | [主题与外观（壁纸与主题色）](systems/theming-and-icons.md) | CSS 变量派生、壁纸注入优先级、单壁纸槽主题包 |
-| 改后台外壳、角色可见性、待办徽章、任一管理页 | [管理后台：布局、角色可见性与待办](systems/admin-console.md) | `AdminLayout` 二次 verify、creator/admin/superadmin 三档入口；审核 `/admin/review` 与单集回收站 `/admin/episode-trash` 已收紧为 admin/superadmin（`ADMIN_ROLES_UP`） |
+| 改后台外壳、角色可见性、待办徽章、任一管理页 | [管理后台：布局、角色可见性与待办](systems/admin-console.md) | `AdminLayout` 二次 verify、creator/admin/superadmin 三档入口（显示名：站点管理员=superadmin、内容管理员=admin）；审核 `/admin/review` 与单集回收站 `/admin/episode-trash` 已收紧为 admin/superadmin（`ADMIN_ROLES_UP`）；14 个列表/CRUD 页走 Refine（`src/utils/refineDataProvider.js` 资源映射），新增列表页先登记资源再写页面 |
 
 ### 按流程、契约与运维改
 
@@ -148,7 +148,7 @@ src/App.jsx
 
 ## 最短起跑路径
 
-1. 后端起在 `http://localhost:5000`（本仓库不含后端；代理目标在 `vite.config.js` 可改）。
+1. 后端起在 `http://localhost:5000`（本仓库不含后端；代理目标在 `vite.config.js` 可改；无后端时可用仓库根 `mock/server.mjs` 替代）。
 2. `npm run dev` → 打开 `http://localhost:3000`。首屏即会打 CSRF、站点设置、`auth/me`、主题四组请求（图标映射请求已随图标引擎移除），Open devtools 的 Network 面板确认它们都是 200 而不是 pending。
 3. 改完跑 `npm run lint`（`--max-warnings 0`，warning 也算失败）。
 4. 需要验证生产形态：`npm run build` 之后再 `npm run preview`。注意生产产物已 drop `console`/`debugger`，调试输出会消失。

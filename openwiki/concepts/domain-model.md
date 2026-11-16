@@ -60,10 +60,12 @@ sources:
     resource: repo://src/locales/zh.js
   - id: openwiki-source-397248f5d0f5e1b6d6a02a0d
     resource: repo://src/utils/apiBase.js
-generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
+  - id: openwiki-source-56ece19ff58ff888bdcfad24
+    resource: repo://src/utils/refineDataProvider.js
+generated: { by: "zcode", at: "2026-11-16T17:37:19.788Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-13T19:07:27.754Z
+    at: 2026-11-16T17:37:19.788Z
 ---
 
 # 领域模型与术语表
@@ -182,7 +184,7 @@ stateDiagram-v2
 - **「待审修改」是独立于 `reviewStatus` 的第二层状态**：已通过的剧集被再次编辑时，后端把改动放进 `pendingChanges` 并置 `hasPendingChanges`，原审核通过的字段继续对外展示；`changeSummary`（`pendingChangeSummary`）记录这轮改动说明，同时写入剧集版本历史。创作者再次编辑时，表单优先加载 `pendingChanges` 而不是正文，避免覆盖已上线内容。
 - **驳回重提**走 `POST /api/episodes/:id/resubmit`，把 `rejected` 拉回 `pending`。
 - **兜底不一致**：详情页的 noindex 判定写作 `episode.reviewStatus && episode.reviewStatus !== 'approved'`，即**缺失 `reviewStatus` 视为可收录**；而审核列表用 `ep.reviewStatus || 'pending'`、创作者档案列表用 `reviewStatus || 'approved'`。历史数据里没有 `reviewStatus` 的剧集因此在三处得到不同默认值。
-- 创作者（`role === 'creator'`）在后台只看到自己的剧集：列表走 `GET /api/creator/my-episodes`，而不是公开的 `/api/episodes`。
+- 创作者（`role === 'creator'`）在后台只看到自己的剧集：列表走 `GET /api/creator/my-episodes`（fetchAll，`limit=200` 循环拉全量），而不是公开的 `/api/episodes`；其他后台角色走 `/api/episodes` 的 server 分页（`page/limit=20`，`sort=latest`），两者由 `refineDataProvider.js` 的 `my-episodes`/`episodes` 资源映射承载。
 
 审核操作面与字段级差异见[剧集发布与审核流程](../workflows/episode-publishing-and-review.md)。
 
@@ -372,7 +374,7 @@ stateDiagram-v2
 | 壁纸槽 | Wallpaper slot | `wallpaperThemeId` | `themeWorkshop.applied` |
 | 站点默认主题 | Site default theme | `GET /api/themes/active` | — |
 | 站点内容键 | Site content key | `settings`、`about`、`privacy`… | — |
-| 角色 | Role | `user`、`creator`、`admin`、`superadmin` | `adminUsers.superAdmin` |
+| 角色 | Role | `user`、`creator`、`admin`、`superadmin`（显示名：站点管理员=superadmin、内容管理员=admin） | `adminUsers.superAdmin` |
 
 ## 改动这几处时要连带检查什么
 

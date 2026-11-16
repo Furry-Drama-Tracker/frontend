@@ -26,8 +26,6 @@ sources:
     resource: repo://src/components/EpisodeCard.jsx
   - id: openwiki-source-8e2cf47532f4659008db992a
     resource: repo://src/components/EpisodeDetail.jsx
-  - id: openwiki-source-62a1591a06ae3586d5a47bb1
-    resource: repo://src/components/EpisodeFormModal.jsx
   - id: openwiki-source-4fe1d4794a529775b2f37ec1
     resource: repo://src/components/Home.jsx
   - id: openwiki-source-072870d359516d10baf0c128
@@ -61,7 +59,7 @@ sources:
 generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-13T19:07:27.754Z
+    at: 2026-11-16T17:37:19.788Z
 ---
 
 # 图片上传与裁剪管线

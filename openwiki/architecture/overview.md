@@ -18,6 +18,8 @@ sources:
     resource: repo://README.md
   - id: openwiki-source-1fe4306a261748bda5b78973
     resource: repo://src/App.jsx
+  - id: openwiki-source-d0c941a46f54372af2fc3ea2
+    resource: repo://src/components/AdminFeedback.jsx
   - id: openwiki-source-11c92b2033df029713925335
     resource: repo://src/components/AdminLayout.jsx
   - id: openwiki-source-9793b3dd98a0e62ec68a07c3
@@ -40,6 +42,8 @@ sources:
     resource: repo://src/index.css
   - id: openwiki-source-6f6201efb098b41d8f54920f
     resource: repo://src/main.jsx
+  - id: openwiki-source-1f1e9939b4dd090e1a4276f8
+    resource: repo://src/styles/admin.css
   - id: openwiki-source-254119f695d9c1c6bc387805
     resource: repo://src/utils/adminApi.js
   - id: openwiki-source-397248f5d0f5e1b6d6a02a0d
@@ -52,14 +56,16 @@ sources:
     resource: repo://src/utils/clearClientData.js
   - id: openwiki-source-091078cd4f585582a9efba7a
     resource: repo://src/utils/offlineQueue.js
+  - id: openwiki-source-56ece19ff58ff888bdcfad24
+    resource: repo://src/utils/refineDataProvider.js
   - id: openwiki-source-a40ec8eba1327ab0c96f271f
     resource: repo://src/utils/translationCache.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
+generated: { by: "zcode", at: "2026-11-16T17:37:19.788Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-13T19:07:27.754Z
+    at: 2026-11-16T17:37:19.788Z
 ---
 
 # 架构总览：浏览器侧分层与后端边界
@@ -144,7 +150,7 @@ flowchart TD
 
 ## L2：全局状态只有四个 Context 加一组 window 事件
 
-前端没有任何全局状态库：`package.json` 的运行时依赖是 `react`、`react-dom`、`react-router-dom`、`axios`、`altcha`、`qrcode`，以及图标库 `@fortawesome/fontawesome-svg-core` + `free-solid/free-regular/free-brands-svg-icons` + `@fortawesome/react-fontawesome` 与 `@icons-pack/react-simple-icons` + `simple-icons`（`lucide-react` 已随自研图标引擎的移除而删除）。全局状态由 `App.jsx` 里嵌套的四个 Provider 承担：
+前台没有任何全局状态库：`package.json` 的运行时依赖除 `react`、`react-dom`、`react-router-dom`、`axios`、`altcha`、`qrcode` 与图标库（`@fortawesome/*`、`@icons-pack/react-simple-icons`、`simple-icons`）外，新增了 `@refinedev/core`（MIT，headless 用法）与其依赖 `@tanstack/react-query`——**它们只服务于后台数据层**：`<Refine>` 在 `AdminLayout` 内挂载，dataProvider/authProvider 复用全局 axios（`src/utils/refineDataProvider.js`、`src/utils/refineAuthProvider.js`），前台公共页面完全不接触 Refine。全局状态仍由 `App.jsx` 里嵌套的四个 Provider 承担：
 
 | Context | 提供 | 数据来源与持久化 |
 | --- | --- | --- |
@@ -164,7 +170,7 @@ UI 图标不再是运行时资源：原 `IconContext`/`IconProvider` 图标引�
 `AppContent` 在渲染路由之前先算 `isAdminRoute = location.pathname.startsWith('/admin')`，随后走两条互不相交的返回分支：
 
 - **公共分区**：`skip-link`、`AnnouncementBanner`、`NavBar`（包在 `NavBarErrorBoundary` 里）、`div.container#main-content` 内的路由树，以及 `FooterBeian`、`FeedbackModal`、`ThemeColorPicker`、`OfflineIndicator`、`InstallPrompt`、`AnnouncementPopup`、强制改邮箱浮层与 `api-error` 提示条。
-- **后台分区**：只有 `<Routes>`（`/admin` 入口组件 + `AdminLayout` 下的 `Outlet` 子路由）；不渲染 `NavBar`，也不渲染 `FooterBeian` 与前台浮层，外壳由 `AdminLayout` 自己提供（顶栏、角色化侧栏、登出、心跳），并由它导入 `src/admin-kit/index.css` 把后台包进 `.yuanli-admin` 样式作用域。后台登出与前台 `AuthContext.logout` 都统一调用新工具 `src/utils/clearClientData.js`：清除 `localStorage` 的 `user`/`offline_queue` 并删除全部 Cache Storage 条目，防止上一用户的追番、历史、通知与站点配置残留在共享设备上。
+- **后台分区**：只有 `<Routes>`（`/admin` 入口组件 + `AdminLayout` 下的 `Outlet` 子路由）；不渲染 `NavBar`，也不渲染 `FooterBeian` 与前台浮层，外壳由 `AdminLayout` 自己提供（Arco `Layout` 顶栏、角色化侧栏、登出、心跳），样式来自它按需导入的 Arco 组件 CSS 与项目自有 `src/styles/admin.css`（基于 Arco token），并在挂载时给 `body` 加 `admin-light` 类锁定后台为固定浅色画布。后台登出与前台 `AuthContext.logout` 都统一调用新工具 `src/utils/clearClientData.js`：清除 `localStorage` 的 `user`/`offline_queue` 并删除全部 Cache Storage 条目，防止上一用户的追番、历史、通知与站点配置残留在共享设备上。
 
 这带来三个直接后果，改路由时必须一并考虑：后台页面拿不到 `NavBar` 提供的任何上下文 UI；所有后台子路由都被 `AdminGuard` 逐条包裹（再叠加 `AdminLayout` 自身的 `/api/admin/verify`），即同一个校验会触发两次；两套树共享同一个全局 `ErrorBoundary`，没有后台专属边界。
 
@@ -174,9 +180,9 @@ UI 图标不再是运行时资源：原 `IconContext`/`IconProvider` 图标引�
 
 ## L4：领域组件平铺，取数逻辑在 hooks 里
 
-`src/components` 是平铺的单文件组件目录（无 folder-per-component），命名前缀是唯一的分组手段：`Admin*` 一律是后台页面或后台外壳，其余按领域命名（`Home`、`EpisodeDetail`、`Profile`、`UpdateCalendar`、`CreatorPage`、`ThemeWorkshop`…），少数是跨领域原语（`Modal`、`ConfirmModal`、`CustomSelect`、`Skeleton`、`SearchInput`、`ImageUploader`、`PasswordToggle`，以及后来的 `EmptyState`、`AdminSearchInput`、`ScrollProgress`）。`src/admin-kit/` 是唯一一个非 `components/` 的样式目录，存放后台「源力」设计 token 与组件 CSS，只在 `AdminLayout` 内生效。
+`src/components` 是平铺的单文件组件目录（无 folder-per-component），命名前缀是唯一的分组手段：`Admin*` 一律是后台页面或后台外壳，其余按领域命名（`Home`、`EpisodeDetail`、`Profile`、`UpdateCalendar`、`CreatorPage`、`ThemeWorkshop`…），少数是跨领域原语（`Modal`、`ConfirmModal`、`CustomSelect`、`Skeleton`、`SearchInput`、`ImageUploader`、`PasswordToggle`，以及后来的 `EmptyState`、`AdminSearchInput`、`ScrollProgress`）。后台专属样式在 `src/styles/admin.css`（基于 Arco token 的项目自有样式）；旧的 `src/admin-kit/`（「源力」专有 token）已整体删除，新后台 UI 一律用 Arco 组件实现。
 
-**没有数据层，只有取数 hooks。** `src/hooks` 里的 `useEpisodes`、`useCategories`、`useEpisodeForm`、`useImageUpload`、`useNotifications`、`useTranslation`、`usePushNotifications` 都是「用 `useState` 装数据 + 用 `axios`/`adminApi` 拉取」。由于没有查询缓存，写操作后的刷新是手写的：`useEpisodes` 的 `addEpisode` / `updateEpisode` / `deleteEpisode` 每次成功后都再调 `fetchEpisodes()`。相应地，组件之间不会自动共享同一份数据，同一个接口被多个组件各拉一次是常态。
+**数据层分两套。** 前台仍是「取数 hooks」：`src/hooks` 里的 `useEpisodes`、`useCategories`、`useEpisodeForm`、`useImageUpload`、`useNotifications`、`useTranslation`、`usePushNotifications` 都是「用 `useState` 装数据 + 用 `axios`/`adminApi` 拉取」，写操作后的刷新是手写的（`useEpisodes` 成功后再调 `fetchEpisodes()`），组件之间不会自动共享数据。后台 14 个列表/CRUD 页已迁移到 Refine：`useTable`/`useList`/`useCreate`/`useUpdate`/`useDelete`/`useCustomMutation` 经 `@tanstack/react-query` 持有列表缓存，mutation 后靠 `refetch()`/失效同步；分页/筛选参数由 `refineDataProvider.js` 统一映射到后端各异的信封（详见[后台控制台](../systems/admin-console.md)）。其余 8 个后台页（Dashboard/统计/分析/API 用量/邮件设置/备份/我的主页/站点内容）保持手写。
 
 **惯例与代价**：新页面通常「组件 + 路由 + `getRoutePageTitleKey` + 导航入口 + zh/en 文案」五处同改；纯展示组件允许内联 `style` 对象（仓库里大量存在），所以视觉一致性靠 CSS 变量与设计 token 而不是样式封装。
 
@@ -231,7 +237,7 @@ flowchart LR
 
 ## 架构取舍
 
-**没有外部状态库，也没有服务端状态缓存。** 取舍是「零额外抽象 + 显式刷新」：四个 Context 覆盖真正全局的东西，其余数据留在组件与 hooks 里；跨层同步靠 `window` 自定义事件。收益是依赖树极小、任何人打开文件就能看到数据从哪来；代价是同一接口可能被并发重复拉取、写操作后要手写重取、跨组件的乐观更新没有统一地方安放。**新增全局状态前先确认四个 Context 与事件是否已覆盖**（多数需求其实是在给已有 Context 加字段），引入 Redux/Zustand/TanStack Query 属于跨层决策，不是局部优化。
+**没有外部状态库，也没有服务端状态缓存——后台例外。** 前台的取舍仍是「零额外抽象 + 显式刷新」：四个 Context 覆盖真正全局的东西，其余数据留在组件与 hooks 里；跨层同步靠 `window` 自定义事件。后台自 2026-11 起通过 Refine（headless）引入 `@tanstack/react-query` 作为列表数据层，这是既定的跨层决策（`AGENTS.md` 的后台迁移方向）：新增后台列表页应使用 refine hooks，而不是再手写 fetch；前台公共页面保持「无缓存 + 显式刷新」，引入 Redux/Zustand 或把 TanStack Query 泛化到前台仍属跨层决策。
 
 **样式是纯 CSS 变量，没有 CSS-in-JS 也没有预处理器。** `src/index.css` 的 `:root` 声明间距、圆角、字号、阴影、动效曲线与 z-index 的设计 token；颜色 token 由 `ThemeContext` 的 effect 逐条 `setProperty` 到 `document.documentElement` 并附 `data-theme`，accent 色再由 `applyAccentColor` 派生十余个色调变量；壁纸额外写入 `--bg-image` / `--bg-opacity` / `--bg-blur` 与 `data-custom-bg`。因此切主题是「改自定义属性」，不重挂组件树、也没有主题加载态。代价是全局命名空间无隔离（token 名必须守规范）、`index.css` 是单文件大样式表，而组件内联 `style` 对象与 CSS 变量混用需要靠约定维持一致。
 

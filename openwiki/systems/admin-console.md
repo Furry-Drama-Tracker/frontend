@@ -6,10 +6,6 @@ tags: [admin-console, role-visibility, pending-counts, admin-layout, react-route
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
-  - id: openwiki-source-f17a4f083b3937123213d031
-    resource: repo://src/admin-kit/admin-scope.css
-  - id: openwiki-source-5f428c1e5bece3d98072e87f
-    resource: repo://src/admin-kit/index.css
   - id: openwiki-source-1fe4306a261748bda5b78973
     resource: repo://src/App.jsx
   - id: openwiki-source-67eb6f205e60105b7305086e
@@ -28,8 +24,6 @@ sources:
     resource: repo://src/components/AdminBanners.jsx
   - id: openwiki-source-634e6e1c63f46460ed4dbee0
     resource: repo://src/components/AdminCategories.jsx
-  - id: openwiki-source-c9bcaf0b8dfc8047d704ab43
-    resource: repo://src/components/AdminCreatorProfile.jsx
   - id: openwiki-source-024d2b5c7de8c2dbb25fe843
     resource: repo://src/components/AdminCreatorProfiles.jsx
   - id: openwiki-source-a0e8087e81fad28f90591a7b
@@ -64,27 +58,27 @@ sources:
     resource: repo://src/components/AdminThemes.jsx
   - id: openwiki-source-90df6398a9bdee1975095452
     resource: repo://src/components/AdminUsers.jsx
-  - id: openwiki-source-c2c0ea0f423d599c75fe6a63
-    resource: repo://src/hooks/useTranslation.js
   - id: openwiki-source-ff495d7f24153076143f0ee8
     resource: repo://src/locales/zh.js
+  - id: openwiki-source-1f1e9939b4dd090e1a4276f8
+    resource: repo://src/styles/admin.css
   - id: openwiki-source-254119f695d9c1c6bc387805
     resource: repo://src/utils/adminApi.js
-  - id: openwiki-source-da4b9cb7c816d661a449ffcf
-    resource: repo://src/utils/apiEndpoints.js
   - id: openwiki-source-37ca2d167bb7e856d4f1a11c
     resource: repo://src/utils/axiosConfig.js
   - id: openwiki-source-0772ae522304487a6af3bee6
     resource: repo://src/utils/clearClientData.js
-generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
+  - id: openwiki-source-56ece19ff58ff888bdcfad24
+    resource: repo://src/utils/refineDataProvider.js
+generated: { by: "zcode", at: "2026-11-16T17:37:19.788Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-13T19:07:27.754Z
+    at: 2026-11-16T17:37:19.788Z
 ---
 
 # 管理后台：布局、角色可见性与待办
 
-管理后台是同一份前端 SPA 内的第二棵路由树：只要 `location.pathname` 以 `/admin` 开头，`AppContent` 就切到后台的 `<Routes>`，不渲染 `NavBar`、`AnnouncementBanner`、`FooterBeian` 等前台组件。它没有独立的构建产物、没有第二套登录体系，视觉上则是一套与前台隔离的「源力」设计系统：`AdminLayout` 根节点加 `.yuanli-admin`、导入 `src/admin-kit/index.css`，页面入口由**按角色过滤的侧边栏**与仪表盘卡片共同提供。
+管理后台是同一份前端 SPA 内的第二棵路由树：只要 `location.pathname` 以 `/admin` 开头，`AppContent` 就切到后台的 `<Routes>`，不渲染 `NavBar`、`AnnouncementBanner`、`FooterBeian` 等前台组件。它没有独立的构建产物、没有第二套登录体系，视觉上是一套与前台隔离的后台画布：`AdminLayout` 用 Arco Design React（MIT）的 `Layout`/`Menu` 外壳、按需导入 Arco 组件 CSS，加上项目自有 `src/styles/admin.css`（基于 Arco token），挂载时给 `body` 加 `admin-light` 类锁定浅色（旧的 `src/admin-kit/`「源力」样式已整体删除）。数据层自 2026-11 起由 Refine（headless）承担：14 个列表/CRUD 页经 `src/utils/refineDataProvider.js` 的资源映射读写，其余 8 个非列表页保持手写 fetch。页面入口由**按角色过滤的侧边栏**与仪表盘卡片共同提供。
 
 整体结构、`verify` 校验链与标题映射已在 [路由与守卫](../architecture/routing-and-guards.md) 中详述，本文只补齐后台自身的分工：外壳负责"谁是 admin"与"你能去哪"，仪表盘负责"今天有什么待办"，各管理页负责"这件事怎么做"，`adminApi` + 全局 axios 拦截器负责"请求怎么发出去"。
 
@@ -132,7 +126,7 @@ sequenceDiagram
 | 控制台首页 | `navigate('/admin/dashboard')` | 后台的"总入口" |
 | 退出登录 | `POST /api/admin/logout` → `clearClientData()` → `navigate('/login', { replace: true })` | 即使接口失败也会清空本地 `admin` 状态；`clearClientData` 清掉 `localStorage` 快照（`user`/`offline_queue`）与全部 Cache Storage 后再跳转 |
 
-侧栏由 `NAV_GROUPS` 驱动，按「概览 / 内容管理 / 审核与治理 / 用户管理 / 主题外观 / 数据与系统」六组渲染，每个条目自带 `roles` 数组；渲染前用 `admin.role` 过滤掉无权条目与空组。**审核与单集回收站已收紧为 admin/superadmin（`ADMIN_UP`）**，所以创作者现在只会看到概览、剧集、创作者主页三个入口。侧栏用 `NavLink` 的 `isActive` 加 `.active`，内容区 `<main className="yl-content" key={location.pathname}>` 在换页时重挂载。`admin-scope.css` 对 `.sidenav.yl-sidenav` 以更高优先级覆盖 components.css 写死的 `height: 852px; overflow: hidden`（矮屏会直接裁掉菜单）：改为 `height: auto`、`sticky` 定位加 `max-height: calc(100dvh - 48px)` 与纵向滚动，矮屏/移动端下侧栏自身可滚。
+侧栏由 `NAV_GROUPS` 驱动，按「概览 / 内容管理 / 审核与治理 / 用户管理 / 主题外观 / 数据与系统」六组渲染，每个条目自带 `roles` 数组；渲染前用 `admin.role` 过滤掉无权条目与空组。**审核与单集回收站已收紧为 admin/superadmin（`ADMIN_UP`）**，所以创作者现在只会看到概览、剧集、创作者主页三个入口。侧栏用 Arco `Menu`（`selectedKeys` 绑定当前路径），内容区 `<Layout.Content key={location.pathname}>` 在换页时重挂载。窄屏（≤900px）下侧栏自动收起，展开时叠加全屏遮罩，点击遮罩或路由跳转后收回。
 
 除校验外，外壳还持有一个 **5 分钟间隔的心跳**：`POST /api/user-sessions/heartbeat`，失败静默吞掉（`.catch(() => {})`）。它刻意不依赖 `AuthContext` 的 `user` 状态——后台只持有 admin 会话 cookie 时也要维持设备会话记录，`AdminSessions`（设备管理）里的在线设备列表才能反映后台操作者。若同一浏览器同时存在登录用户，`AuthContext` 的心跳会并行打同一个端点，二者并不互斥。挂载时还会把 `document.body` 的底部内边距临时置 0，卸载时恢复，避免前台为页脚预留的空白在浅色后台画布底部留下一道空带。
 
@@ -144,11 +138,11 @@ sequenceDiagram
 
 卡片集合由 `cards` 数组 + `isCreator`/`isAdmin`/`isSuper` 三个布尔统一驱动，不再是散落的 `admin.role === ... &&` 分支：
 
-- **creator**：剧集管理（文案切换为"创建和管理我的剧集"）+ 创作者主页 + 审核管理 + 剧集回收站。（注意：后两张卡片的入口尚未随路由角色收紧同步移除，创作者点击"审核管理/剧集回收站"卡片会被路由层 `AdminGuard` 送回仪表盘。）
+- **creator**：剧集管理（文案切换为"创建和管理我的剧集"）+ 创作者主页。审核管理与剧集回收站卡片已收紧为 `show: isAdmin`，与路由层口径一致——创作者不再看到点击即被弹回的无效入口。
 - **admin**：剧集管理、分类、轮播图、审核管理、回收站、举报、反馈、数据分析，以及自动状态流转面板。
 - **superadmin**：以上全部，外加用户管理、创作者主页管理、公告通知、网站内容、邮件服务、操作日志、数据备份、友链、设备、API 用量、主题、主题审批。
 
-注意 `/admin/stats` 仍然没有卡片入口，`/admin/feedback` 与 `/admin/theme-review` 则各自补上了卡片与徽章。卡片视觉使用 `.yl-panel`/`.yl-badge` 等源力类名。
+注意 `/admin/stats` 仍然没有卡片入口，`/admin/feedback` 与 `/admin/theme-review` 则各自补上了卡片与徽章。卡片视觉是 Arco `Card` 配项目自有 `admin.css` 类名（`admin-dashboard-*`），不再使用源力类名。
 
 自动状态流转面板是仪表盘上唯一的写操作入口，两个按钮分别 `POST /api/auto-status/auto-complete`（自动标记已完结）与 `POST /api/auto-status/check-premieres`（发布到期预告），返回的 `message` 显示在面板下方，并由 `clearStatusMsg` 在 3 秒后清空；失败的文案统一为 `adminDashboard.operationFailed`。
 
@@ -240,7 +234,7 @@ flowchart TD
 
 这一组的分工对应剧集从创作、送审、上架到删除的生命周期；审核状态语义（`pending`/`approved`/`rejected`）通过共享的 `ReviewStatusBadge` 组件统一呈现。剧集审核与版本变更的完整流程见 [剧集发布与审核](../workflows/episode-publishing-and-review.md)。
 
-`AdminEpisodes` 是唯一按角色分裂数据源与列的页面：creator 走 `GET /api/creator/my-episodes`、其他角色走 `GET /api/episodes`，两者都按 `page`/`limit=100` 循环翻页拉全量（依赖响应 `totalPages`，上限 100 页）后再做本地搜索过滤；creator 视图把"审核状态"列换入、隐藏"创建者"与"授权编辑"列、没有删除按钮，且仅在 `reviewStatus === 'rejected'` 时出现"重新提交"按钮（`POST /api/episodes/:id/resubmit`）。单集管理表单的「显示序号」字段（`episodeLabel`）改为**必填并自动预填「第N集」**（`formatEpisodeLabel(n)`，空提交被 `episodeLabelRequired` 拦截），编辑读取回退链 `episodeLabelCustom ?? episodeLabel ?? formatEpisodeLabel(episodeNumber)`；单集列表新增**排序序号列**（按当前数组顺序渲染 `index + 1`，与 `episodeLabel` 的显示序号解耦），拖拽排序重排 `episodeNumber` 后按并发 5 批量保存（只提交有变化的行，携带未改动的 `episodeLabel`，因此自定义显示序号不随排序漂移）。剧集标签输入支持中英文逗号混排（`split(/[,，]/)` 后逐项 trim 去空）。删除操作本身是软删除——记录进入回收站，由 `AdminEpisodeTrash` 承接恢复或彻底清除。
+`AdminEpisodes` 是唯一按角色分裂数据源与列的页面：creator 走 refine 资源 `my-episodes`（`GET /api/creator/my-episodes`，fetchAll `limit=200` 循环拉全量）、其他角色走资源 `episodes`（`GET /api/episodes`，server 分页 `page/limit=20`、`sort=latest`，仅返回 approved），搜索为客户端过滤（creator 视图）或服务端 `search` 参数（admin 视图）；creator 视图把"审核状态"列换入、隐藏"创建者"与"授权编辑"列、没有删除按钮，且仅在 `reviewStatus === 'rejected'` 时出现"重新提交"按钮（`POST /api/episodes/:id/resubmit`）。单集管理表单的「显示序号」字段（`episodeLabel`）改为**必填并自动预填「第N集」**（`formatEpisodeLabel(n)`，空提交被 `episodeLabelRequired` 拦截），编辑读取回退链 `episodeLabelCustom ?? episodeLabel ?? formatEpisodeLabel(episodeNumber)`；单集列表新增**排序序号列**（按当前数组顺序渲染 `index + 1`，与 `episodeLabel` 的显示序号解耦），拖拽排序重排 `episodeNumber` 后按并发 5 批量保存（只提交有变化的行，携带未改动的 `episodeLabel`，因此自定义显示序号不随排序漂移）。剧集标签输入支持中英文逗号混排（`split(/[,，]/)` 后逐项 trim 去空）。删除操作本身是软删除——记录进入回收站，由 `AdminEpisodeTrash` 承接恢复或彻底清除。
 
 ### 站点外观与内容
 
@@ -287,11 +281,11 @@ flowchart TD
 后台页面在实现上高度同构，改动时按这些共同点定位能少走很多弯路：
 
 - **传输层：`adminApi`**。`src/utils/adminApi.js` 只是 `axios` 的五个方法别名，刻意不加任何 `Authorization` 头——认证完全依赖 httpOnly cookie。因此所有后台请求都会经过 `src/utils/axiosConfig.js` 的全局拦截器：请求侧为写操作挂 `X-XSRF-TOKEN`；响应侧遇到 `401` 先尝试 `/api/auth/refresh` 再重试，最终失败时因为路径以 `/admin` 开头会**整页跳转** `/login`；遇到 `419` 走同一套刷新逻辑；遇到 `403` 且带 `forceEmailChange` 则触发强制改邮箱流程。对后台的直接后果是：任何一次权限失效都会导致整页卸载重载，页面上未提交的编辑内容随之丢失。
-- **列表**：主流形态是 `<table className="table">` 套在 `.table-wrapper` 里（`AdminEpisodes`、`AdminEpisodeTrash`、`AdminUsers`、`AdminAuditLogs` 等），行内操作从按钮改为 `.action-link` span（`role="button"` + `tabIndex=0` + `Enter` 键处理），状态用 `.status-tag` 系列类名；反馈与举报则是卡片列表。分页形态：`AdminUsers`（`limit=200`）与 `AdminEpisodes`（`limit=100`）先循环翻页拉全量（≤100 页，依赖 `totalPages`）再做前端过滤；`AdminEpisodeTrash`、`AdminAuditLogs`、`AdminReports` 用后端 `page`/`limit` 分页（20/30/10）。
-- **页面头部：源力 PageHeader**。规范是 `.yl-page-header`（左 `.yl-page-title`/`.yl-page-desc`、右 `.yl-page-actions`）骨架，现已覆盖全部后台页面（统计、创作者主页、公告、内容管理、邮件、日志、备份、反馈、API 用量、设备、主题、回收站等）：标题不再带 emoji、硬编码配色替换为 CSS 变量（`--destructive`/`--btn-text`/`--warning-*` 等），操作按钮收进 `.yl-page-actions`。新后台页应直接沿用该骨架，不要再手写 flex + `<h2>` 头部。
-- **内容编辑是整页表单，不是弹窗**。剧集新增/编辑、轮播图新增/编辑、分类新增/编辑、管理员新增账号已从 `Modal` 改为整页表单：进入表单态时页面返回值切换为 `.admin-page` + `.yl-page-header`（标题 + 提示文案 + `.yl-page-actions` 里的返回按钮）+ `.yl-panel` 包裹的表单；`.yl-panel > form` 限宽 720px，表单按钮不再被强制 100% 宽，进入表单页会自动 `window.scrollTo(0, 0)`。校验交互上，后台必填字段默认不标红，仅在用户交互后经 `:user-invalid` 才变红；复选框/单选框通过 `admin-scope.css` 的专门规则豁免输入框高度与内边距。这两条样式约定写在 `src/admin-kit/admin-scope.css`，属于 `.yuanli-admin` 作用域的一部分。
+- **列表与数据层**：14 个列表/CRUD 页走 Refine（`useTable`/`useList`/`useCreate`/`useUpdate`/`useDelete`/`useCustomMutation`），表格用 Arco `Table`（**必须用 `columns` props 传列，`<Table.Column>` children API 在当前版本渲染为空**），分页条用 Arco `Pagination` 且渲染条件按 `result.total > 0`（按当前页数据判空会让空页的分页条消失、把用户卡死）。分页模式：client（`AdminUsers`、`AdminFriendLinks`、`AdminEpisodes` creator 视图——provider 返回全量、refine 内部切片，**dataProvider 不得再切片，否则双重分页第 2 页起为空**）与 server（`episodes`/`episode-trash`/`review-*`/`reports`/`feedback`/`audit-logs`）并存；fetchAll 类资源（`admin-users`/`my-episodes`/`review-all-full`）按 `limit=200` 循环依赖 `totalPages`。其余 8 个手写页保持 `adminApi` + 原生按钮组。
+- **页面头部**。规范是项目自有 `admin.css` 的 `.admin-page-header`（左 `.admin-page-title`/`.admin-page-desc`、右 `.admin-page-actions`）骨架，覆盖全部后台页面：标题不带 emoji、配色走 CSS 变量。新后台页直接沿用该骨架，不要再手写 flex + `<h2>` 头部。
+- **内容编辑表单**。剧集新增/编辑与管理员新增账号是整页表单；迁移后的分类、轮播图、友链、创作者主页等用 Arco `Modal` + Arco `Form`（layout vertical，提交走 refine mutations）。两种形态并存：重表单（多字段+上传+裁剪）用整页，轻表单用 Modal。
 - **搜索**：列表页用后台专用的 `AdminSearchInput`（`AdminEpisodes`、`AdminUsers`），它在本地 `data` 上按 `searchKey` 过滤并给出最多 8 条候选，支持上下键与回车选中；公开站的 `SearchInput` 与它完全独立，两者不要混用。空列表用 `EmptyState`（可带插画变体与行动按钮）。
-- **弹窗与确认**：内容编辑表单已迁移为整页表单（见上），仍在用 `Modal` 的是版本历史（`EpisodeVersionHistory`）与少数只读详情；破坏性操作多数再叠一层 `window.confirm(t(...))`（`AdminUsers`、`AdminSessions`、`AdminThemes`），较新的页面改用 `ConfirmModal`（`AdminEpisodeTrash`）。
+- **弹窗与确认**：仍在用项目自有 `Modal` 的是版本历史（`EpisodeVersionHistory`）与少数只读详情；破坏性/敏感操作统一走 Arco `Popconfirm`（删除、恢复、强制下线、审批）或项目自有 `ConfirmModal`（版本回滚需要更醒目的确认）。**`window.confirm`/`alert` 已全部清除**——原生对话框样式与后台不一致且会阻塞页面（曾弹到操作者脸上）。
 - **提示**：没有全局 toast。每个页面自管 `error` / `success`（或 `message`）state，渲染成 `.error-message` / `.success-message` 区块，成功文案多用 3 秒定时器自动清除。
 - **i18n**：所有可见文案走 `useI18n()` 的 `t()`，日期用 `new Date(...).toLocaleDateString(locale)` 适配中英格式。核心命名空间为 `adminDashboard`（卡片标签与描述）、`pageTitle`（浏览器标题）与各页自己的命名空间（`adminEpisodes`、`adminUsers`、`adminThemeReview`…）。
 - **错误边界**：`src/components/AdminErrorBoundary.jsx` 实现了后台专用的错误面板（⚠️ + 错误信息 + 刷新按钮，通过 `static contextType = I18nContext` 取文案），但 `App.jsx` 只 `import` 了它、**从未挂载**；后台实际由 `App.jsx` 底部的通用 `ErrorBoundary` 包裹。也就是说当前后台任何一个页面抛错都会让整棵 App 树落到通用错误页，而不是后台局部面板。若需要"后台单页崩溃不影响外壳"，必须显式把 `AdminErrorBoundary` 包到 `AdminLayout` 的 `Outlet` 外层。
@@ -308,6 +302,7 @@ flowchart TD
 5. **页面自身的角色门（可选）**：若页面还要做二次限制，在 `useEffect` 里 `if (admin.role !== 'superadmin') navigate('/admin/dashboard', { replace: true })`，与现有 9 个页面保持一致。
 6. **`src/locales/zh.js` 与 `src/locales/en.js` 同步**：`adminDashboard.*`（卡片标题与描述）、`pageTitle.adminXxx`、以及页面自己的文案命名空间。项目约定新字符串必须同时加到两个语言文件，缺英文键会回退到中文文案。
 7. **（可选）`/api/admin/pending-counts` 消费**：若新页承接一种待办，需要后端在该响应里加字段，并在 `pendingCounts` 初值对象里补上默认 `0`，否则首帧渲染会取到 `undefined`（徽章条件是 `card.badge > 0`，会静默隐藏）。
+8. **列表/CRUD 页（Refine）**：在 `src/utils/refineDataProvider.js` 的 `RESOURCES` 里登记资源（list/create/update/deleteOne/listKey/clientSide/serverPagination/fetchAll），页面用 refine hooks；**server 模式**页记得让后端返回 `total`；**下拉选择器需要全量时**用 `fetchAll` 资源 + `useList({ pagination: { mode: 'off' } })`（分页 useTable 只给当前页）。`useCustomMutation` 成功后要手动 `refetch()`（不带 resource 不会自动失效列表缓存）。
 
 ## 已知陷阱
 
@@ -319,9 +314,13 @@ flowchart TD
 | 直连 URL 被送回仪表盘 | 路由层 `AdminGuard roles` 已覆盖全部后台页；角色不足即 `replace` 到仪表盘 | 这是体验层拦截，安全边界仍在后端 |
 | 待办徽章不消失 | 徽章只在仪表盘挂载时拉一次，无轮询 | 处理完待办后需离开并回到仪表盘才更新 |
 | 后台单页报错导致整块界面消失 | `AdminErrorBoundary` 已实现但未挂载，实际由通用 `ErrorBoundary` 兜底 | 后台丢失外壳与返回入口 |
+| 列表页接口报错直接崩进 ErrorBoundary | 曾把独立函数写成 `tableQuery.formatApiError(...)`（非方法） | 已修正为 `formatApiError(tableQuery.error, ...)`；同类误用会抛 TypeError |
+| Arco Table 整块不渲染 | `<Table.Column>` children API 在当前版本输出为空 | 一律用 `columns` props 传列 |
+| 主题审批/举报处理成功但列表不更新 | `useCustomMutation` 不带 `resource` 不会自动失效列表缓存 | mutation 成功后手动 `tableQuery.refetch()`/`listQuery.refetch()` |
+| 角色筛选/统计只覆盖前 20 条 | `useList({ pagination: { mode: 'off' } })` 打到默认 `limit=20` 的分页端点 | 全量需求用 `fetchAll` 资源（如 `review-all-full`）或自带全量语义的端点 |
 
 ## 验证与运维
 
-仓库没有配置测试运行器（`AGENTS.md` 明确"No test runner is configured"），后台改动的验证依赖 `npm run lint`（`--max-warnings 0`）、`npm run build` 与手工走查。手工走查最小路径：用三种角色分别登录后台，确认仪表盘卡片集合与上表一致；对每个组件内角色门页面直接输入 URL，确认重定向到 `/admin/dashboard`；确认 `pending-counts` 各字段为 0 时无徽章、非 0 时红色徽章出现在正确卡片上。本地联调需要先启动后端（Vite 将 `/api` 与 `/uploads` 代理到 `localhost:5000`），否则所有 `adminApi` 请求都会失败并触发跳登录，无从判断界面行为。
+仓库没有配置测试运行器（`AGENTS.md` 明确"No test runner is configured"），后台改动的验证依赖 `npm run lint`（`--max-warnings 0`）、`npm run build` 与手工走查。手工走查最小路径：用三种角色分别登录后台，确认仪表盘卡片集合与上表一致；对每个组件内角色门页面直接输入 URL，确认重定向到 `/admin/dashboard`；确认 `pending-counts` 各字段为 0 时无徽章、非 0 时红色徽章出现在正确卡片上。本地联调可接真实后端（Vite 将 `/api` 与 `/uploads` 代理到 `localhost:5000`），或用仓库根 `mock/server.mjs`（忠实复刻后端契约：错误信封、CSRF 三态、各端点信封差异、三角色演示账号），`node mock/server.mjs` 后即可无 MongoDB 走查全部页面。
 
 相关阅读：[路由与守卫](../architecture/routing-and-guards.md)、[后端接口地图](../integrations/backend-api-map.md)、[剧集发布与审核](../workflows/episode-publishing-and-review.md)、[站点设置与公告](./site-settings-and-announcements.md)、[主题与图标](./theming-and-icons.md)。

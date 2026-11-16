@@ -16,6 +16,8 @@ sources:
     resource: repo://src/components/AccountSecurity.jsx
   - id: openwiki-source-b6b927ec6f935695cd90fed6
     resource: repo://src/components/BackupCodesPanel.jsx
+  - id: openwiki-source-c3990f6bf8f6470b161d22e1
+    resource: repo://src/components/CaptchaWidget.jsx
   - id: openwiki-source-dfbd4ce3ae4f649cb0bca207
     resource: repo://src/components/ChangeEmail.jsx
   - id: openwiki-source-285a5179c11e9744d8e7e9e1
@@ -51,7 +53,7 @@ sources:
 generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-13T19:07:27.754Z
+    at: 2026-11-16T17:37:19.788Z
 ---
 
 # 认证与账号体系

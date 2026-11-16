@@ -14,6 +14,8 @@ sources:
     resource: repo://src/components/AdminDashboard.jsx
   - id: openwiki-source-11c92b2033df029713925335
     resource: repo://src/components/AdminLayout.jsx
+  - id: openwiki-source-a6b508e1bdcfdef16cfc9f21
+    resource: repo://src/components/AdminSessions.jsx
   - id: openwiki-source-09bbd185c4ccfb145398eb16
     resource: repo://src/components/AdminThemeReview.jsx
   - id: openwiki-source-90df6398a9bdee1975095452
@@ -34,10 +36,10 @@ sources:
     resource: repo://src/utils/axiosConfig.js
   - id: openwiki-source-0772ae522304487a6af3bee6
     resource: repo://src/utils/clearClientData.js
-generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
+generated: { by: "zcode", at: "2026-11-16T17:37:19.788Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-13T19:07:27.754Z
+    at: 2026-11-16T17:37:19.788Z
 ---
 
 # 路由分区与访问守卫
@@ -152,9 +154,9 @@ sequenceDiagram
 2. 每 5 分钟 `POST /api/user-sessions/heartbeat`，让后台常驻标签页不会因会话闲置被判失效。
 3. 登出：`POST /api/admin/logout` 后清空 `admin`，经 `clearClientData()` 清掉 `localStorage` 快照与全部 Cache Storage（与前台 `AuthContext.logout` 共用同一工具），再 `replace` 到 `/login`。
 4. 角色化侧栏：`NAV_GROUPS` 把入口分成概览、内容管理、审核与治理、用户管理、主题外观、数据与系统六组，每项标注允许角色，渲染前按当前 `admin.role` 过滤掉无权项与空组。
-5. 后台画布：根节点加 `.yuanli-admin` 并导入 `src/admin-kit/index.css`，同时把 `document.body` 的底部内边距临时置 0，避免前台为固定页脚预留的空白在后台露出。
+5. 后台画布：挂载时给 `document.body` 加 `admin-light` 类（后台固定浅色主题，让 Arco 组件与 portal 继承同一套变量），同时把 `document.body` 的底部内边距临时置 0，避免前台为固定页脚预留的空白在后台露出；样式来自按需导入的 Arco 组件 CSS 与项目自有 `src/styles/admin.css`（旧的 `src/admin-kit/` 已整体删除）。
 
-角色差异同时体现在导航层：`NavBar` 的「更多」菜单只在 `user.role` ∈ `{admin, superadmin, creator}` 时给出 `/admin/dashboard` 入口，`AdminDashboard` 再按 `admin.role` 决定展示哪些卡片，`AdminLayout` 侧栏按同一套角色集合过滤。这些是可见性过滤，不是安全边界。
+角色差异同时体现在导航层：`NavBar` 的「更多」菜单只在 `user.role` ∈ `{admin, superadmin, creator}` 时给出 `/admin/dashboard` 入口，`AdminDashboard` 再按 `admin.role` 决定展示哪些卡片（审核管理/剧集回收站等 ADMIN_UP 卡片对创作者隐藏，与侧栏口径一致），`AdminLayout` 侧栏按同一套角色集合过滤。角色显示名约定：superadmin=站点管理员（Site Admin）、admin=内容管理员（Content Admin）。这些是可见性过滤，不是安全边界。
 
 ## 守卫与后端授权的关系
 

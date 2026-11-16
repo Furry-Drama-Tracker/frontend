@@ -22,12 +22,12 @@ sources:
     resource: repo://src/components/AdminEpisodes.jsx
   - id: openwiki-source-05007d2cfef63d4d4aef807e
     resource: repo://src/components/AdminEpisodeTrash.jsx
+  - id: openwiki-source-d0c941a46f54372af2fc3ea2
+    resource: repo://src/components/AdminFeedback.jsx
   - id: openwiki-source-11c92b2033df029713925335
     resource: repo://src/components/AdminLayout.jsx
   - id: openwiki-source-c4a2ade1820d6e35c826fcde
     resource: repo://src/components/AdminSiteContent.jsx
-  - id: openwiki-source-95f0291f29cd95f8dfdca78e
-    resource: repo://src/components/AdminThemes.jsx
   - id: openwiki-source-90df6398a9bdee1975095452
     resource: repo://src/components/AdminUsers.jsx
   - id: openwiki-source-4e37b1e20cb72fa7128c5bba
@@ -88,12 +88,14 @@ sources:
     resource: repo://src/utils/deviceInfo.js
   - id: openwiki-source-091078cd4f585582a9efba7a
     resource: repo://src/utils/offlineQueue.js
+  - id: openwiki-source-56ece19ff58ff888bdcfad24
+    resource: repo://src/utils/refineDataProvider.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
+generated: { by: "zcode", at: "2026-11-16T17:37:19.788Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-13T19:07:27.754Z
+    at: 2026-11-16T17:37:19.788Z
 ---
 
 # 后端契约地图（API 分组与错误语义）
@@ -329,15 +331,34 @@ flowchart LR
 
 ### 后台管理与审核
 
-后台所有调用都走 `adminApi` + 内联字面量（`API.ADMIN` 整组无人引用）。分组如下：
+后台调用自 2026-11 起分两条通道：**14 个迁移页**经 `refineDataProvider.js` 的 RESOURCES 资源映射（仍通过 `adminApi`/全局 axios 发出），**8 个手写页**（Dashboard/统计/分析/API 用量/邮件设置/备份/我的主页/站点内容）继续走 `adminApi` + 内联字面量（`API.ADMIN` 整组无人引用）。dataProvider 资源映射一览：
+
+| Refine 资源 | 端点 | 信封/分页 |
+| --- | --- | --- |
+| `admin-users` | `/api/admin/users` + `POST /api/admin/register`、`PUT /api/admin/role/:id`、`DELETE /api/admin/users/:id` | `{list,total,totalPages}`，fetchAll `limit=200`（后端上限 200），客户端过滤/分页 |
+| `episodes` | `/api/episodes` CRUD | `{episodes,...}`，server 分页 `page/limit`（默认 20，`sort=latest/views/premiere/rating`），仅 approved |
+| `my-episodes` | `/api/creator/my-episodes` | `{list,...}`，fetchAll `limit=200` |
+| `episode-trash` | `/api/episode-trash` + `DELETE :id` | `{list,...}`，server 分页 |
+| `review-pending` / `review-all` | `/api/review/pending|all` | `{list,...}`，server 分页 |
+| `review-all-full` | `/api/review/all` | 同上但 fetchAll，供权限分配下拉拉全量 |
+| `friend-links` | `/api/friend-links(/all)` | 数组，client 过滤/分页 |
+| `creators` | `/api/admin/creators` | 数组 |
+| `categories` | `/api/categories` CRUD | 数组 |
+| `banners` / `announcements` / `themes` | 各自 CRUD 端点 | 数组 |
+| `reports` | `/api/reports/list` | **`{reports,...}`**（信封键特殊） |
+| `feedback` | `/api/feedback` + `PUT :id` | `{list,...}`，server 分页 |
+| `audit-logs` | `/api/audit-logs` | **`{logs,...}`**（信封键特殊） |
+| `sessions` / `creator-profiles-admin` / `site-content` | 各自列表端点 | 数组，client |
+
+其余手写调用分组如下：
 
 | 领域 | 端点（方法） |
 | --- | --- |
 | 后台身份 | `GET /api/admin/verify`（响应 `{ admin }` 或 admin 对象本身，调用方两种都兼容）、`POST /api/admin/logout`、`POST /api/admin/verify-password`（敏感操作二次确认，`ConfirmModal`） |
 | 待办 | `GET /api/admin/pending-counts` → `{ episodes, friendLinks, themes, feedbacks, reports }` 等徽标计数 |
-| 用户 | `GET /api/admin/users`（`page`/`limit=200` 循环翻页拉全量，依赖 `totalPages`，上限 100 页）、`POST /api/admin/register`、`DELETE /api/admin/users/:id`、`PUT /api/admin/role/:id`、`PUT /api/admin/user-admin-access/:id` |
-| 剧集与创作者 | `GET /api/creator/my-episodes`（creator 专用；与 `/api/episodes` 一样由 `AdminEpisodes` 按 `page`/`limit=100` 循环翻页拉全量，依赖 `totalPages`）、`GET /api/admin/creators`、`POST /api/episodes/upload`、`GET /api/admin/creator-profiles`、`PUT /api/admin/creator-profiles/:id/approve`、`PUT /api/admin/creator-profiles/:id/reject`、`GET·PUT /api/creator-profile/my-profile`、`GET /api/creator-profile/by-creator/:id` |
-| 审核 | `GET /api/review/pending`、`GET /api/review/all`、`PUT /api/review/approve/:id`、`PUT /api/review/reject/:id`、`PUT /api/review/assign-editor/:id`、`PUT /api/review/remove-editor/:id`（均带 `{ note }` 或 `{ editorId }`） |
+| 用户 | `POST /api/admin/register`、`DELETE /api/admin/users/:id`、`PUT /api/admin/role/:id`、`PUT /api/admin/user-admin-access/:id`（迁移页的写操作经 `meta.endpoint` 直达） |
+| 剧集与创作者 | `GET /api/admin/creators`、`POST /api/episodes/upload`、`PUT /api/admin/creator-profiles/:id/approve`、`PUT /api/admin/creator-profiles/:id/reject`、`GET·PUT /api/creator-profile/my-profile`、`GET /api/creator-profile/by-creator/:id` |
+| 审核 | `PUT /api/review/approve/:id`、`PUT /api/review/reject/:id`、`PUT /api/review/assign-editor/:id`、`PUT /api/review/remove-editor/:id`（均带 `{ note }` 或 `{ editorId }`） |
 | 分类/轮播 | 与"内容读取"一节同一组端点，后台以管理身份调用增删改接口 |
 | 站点内容与邮件 | 见上一节；后台超管专属（非超管被 `navigate('/admin/dashboard')` 挡回） |
 | 公告 | `GET·POST /api/announcements`、`PUT·DELETE /api/announcements/:id`、`POST /api/announcements/:id/send-email`、`POST /api/announcements/:id/send-notification`；用户侧读 `GET /api/announcements/active?channel=banner` 或 `?channel=popup` |

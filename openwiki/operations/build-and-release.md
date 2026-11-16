@@ -24,10 +24,6 @@ sources:
     resource: repo://package.json
   - id: openwiki-source-23775c3de52f3ab95a13cb8b
     resource: repo://README.md
-  - id: openwiki-source-5f428c1e5bece3d98072e87f
-    resource: repo://src/admin-kit/index.css
-  - id: openwiki-source-e6116024b1d530b4f250cc53
-    resource: repo://src/admin-kit/scope-kit.cjs
   - id: openwiki-source-1fe4306a261748bda5b78973
     resource: repo://src/App.jsx
   - id: openwiki-source-11c92b2033df029713925335
@@ -42,16 +38,18 @@ sources:
     resource: repo://src/hooks/useTranslation.js
   - id: openwiki-source-6f6201efb098b41d8f54920f
     resource: repo://src/main.jsx
+  - id: openwiki-source-1f1e9939b4dd090e1a4276f8
+    resource: repo://src/styles/admin.css
   - id: openwiki-source-397248f5d0f5e1b6d6a02a0d
     resource: repo://src/utils/apiBase.js
   - id: openwiki-source-d4b3b9732ac6eae1003ca59f
     resource: repo://src/utils/polyfills.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
+generated: { by: "zcode", at: "2026-11-16T17:37:19.788Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-13T19:07:27.754Z
+    at: 2026-11-16T17:37:19.788Z
 ---
 
 # 构建、配置与部署
@@ -144,16 +142,16 @@ server: {
 
 `build.target: 'es2019'` 是唯一的语法目标来源。`package.json` 里的 `browserslist`（`> 0.5%`、`last 2 versions`、`Firefox ESR`、`not dead`、`not ie 11`）**没有被任何工具消费**——仓库没有 babel、没有 PostCSS/autoprefixer 配置、Vite 也不读 browserslist，所以它目前只是文档性字段，改它不会有任何构建差异。运行时 API 的缺口由 `src/utils/polyfills.js`（ES2019/ES2020：`Object.fromEntries`、`Promise.allSettled`、`Array.prototype.flat/flatMap`、`String.prototype.matchAll`，目标 Safari 13+ / Chrome 80+ / Firefox 80+）在入口副作用里补齐；降低 `build.target` 而不补 polyfill 不会有帮助。
 
-### 后台源力样式（`src/admin-kit/`）
+### 后台样式：Arco 组件 CSS + `src/styles/admin.css`（`src/admin-kit/` 已删除）
 
-后台的整套视觉来自 `src/admin-kit/`，它不经过任何构建插件，只是普通 CSS 与一个手写 Node 脚本：
+后台视觉自 2026-11 起不再来自任何独立样式目录：旧的 `src/admin-kit/`（「源力」专有 token、scope-kit.cjs 生成器、`.yuanli-admin` 作用域）已**整体删除**，取而代之的是 MIT 许可的 Arco Design React 组件体系：
 
-- `AdminLayout.jsx` 顶部 `import '../admin-kit/index.css'`，`index.css` 再 `@import` `colors_and_type.css`、`components.css`、`admin-scope.css`。因为 `AdminLayout` 是 `React.lazy` 的 chunk，这段样式只会进入后台产物的 CSS，不增加前台首屏体积。
-- `colors_and_type.css` 与 `components.css` 是**生成物**：`node src/admin-kit/scope-kit.cjs` 读取同目录的 `*.raw.css`，去掉注释并把每一条选择器前缀成 `.yuanli-admin`（`:root`/`html`/`body` 直接改写为该作用域，`@keyframes`/`@font-face` 等保持原样）。仓库没有为它注册 npm 脚本，改 `*.raw.css` 后必须手动重跑，否则线上文件仍是旧的。
-- `admin-scope.css` 是手写的桥接层：把后台固定为浅色、把源力 token 映射到项目既有的 `--primary`/`--text-*` 等变量，并定义 `.yl-*` 外壳布局。
-- `index.css` 里的 `@import` 顺序是契约（token → 组件 → 桥接），调换会让后台组件拿到未映射的变量。
+- `AdminLayout.jsx` 顶部按需导入所用 Arco 组件的样式（`@arco-design/web-react/es/Layout/style/index.css`、`Menu`、`Table`、`Pagination`、`Modal`、`Form` 等）；因为 `AdminLayout` 是 `React.lazy` 的 chunk，这些样式只进入后台产物，不增加前台首屏体积。
+- 项目自有的后台覆盖样式在 `src/styles/admin.css`（基于 Arco token），同样由 `AdminLayout` 导入。
+- 后台画布通过挂载时给 `document.body` 加 `admin-light` 类锁定浅色，Arco 组件与 portal 弹层继承同一套变量。
+- `vite.config.js` 的 `optimizeDeps.include` 已同步加入 `@arco-design/web-react`、其 react-19 适配器、`@refinedev/core`、`@tanstack/react-query` 及传递依赖（`react-is`、`dayjs` 及两个 locale、`b-validate`）。
 
-新增后台页面时不需要额外引入样式，只要挂在 `AdminLayout` 的 `Outlet` 下就自动继承 `.yuanli-admin` 作用域；反过来，前台组件若想复用源力样式，必须自己包一层 `.yuanli-admin`，否则所有选择器都不匹配。
+新增后台页面时不需要额外引入样式，挂在 `AdminLayout` 的 `Outlet` 下即自动继承；后台 UI 一律用 Arco 组件实现（`AGENTS.md` 明令禁止引入其他组件库）。
 
 ## 从源码到可安装应用：三条拓扑
 

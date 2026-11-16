@@ -18,6 +18,8 @@ sources:
     resource: repo://src/components/EpisodeDetail.jsx
   - id: openwiki-source-515cac064a539c5de93abe92
     resource: repo://src/components/EpisodeVersionHistory.jsx
+  - id: openwiki-source-072870d359516d10baf0c128
+    resource: repo://src/components/ImageUploader.jsx
   - id: openwiki-source-6f51c679e7360abf0fd5f74e
     resource: repo://src/components/NavBar.jsx
   - id: openwiki-source-e2827079feb7329032447dd9
@@ -26,12 +28,12 @@ sources:
     resource: repo://src/components/SingleEpisodeManager.jsx
   - id: openwiki-source-db9545db1db6a07d2bbbc612
     resource: repo://src/hooks/useEpisodes.js
-  - id: openwiki-source-ff495d7f24153076143f0ee8
-    resource: repo://src/locales/zh.js
+  - id: openwiki-source-56ece19ff58ff888bdcfad24
+    resource: repo://src/utils/refineDataProvider.js
 generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-13T19:07:27.754Z
+    at: 2026-11-16T17:37:19.788Z
 ---
 
 # 剧集创作、审核与版本流转

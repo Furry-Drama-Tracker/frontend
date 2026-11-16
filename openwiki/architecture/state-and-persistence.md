@@ -12,6 +12,8 @@ sources:
     resource: repo://package.json
   - id: openwiki-source-1fe4306a261748bda5b78973
     resource: repo://src/App.jsx
+  - id: openwiki-source-11c92b2033df029713925335
+    resource: repo://src/components/AdminLayout.jsx
   - id: openwiki-source-c4a2ade1820d6e35c826fcde
     resource: repo://src/components/AdminSiteContent.jsx
   - id: openwiki-source-d27eefb45eb714b85112e9ac
@@ -52,12 +54,14 @@ sources:
     resource: repo://src/utils/clearClientData.js
   - id: openwiki-source-091078cd4f585582a9efba7a
     resource: repo://src/utils/offlineQueue.js
+  - id: openwiki-source-56ece19ff58ff888bdcfad24
+    resource: repo://src/utils/refineDataProvider.js
   - id: openwiki-source-a40ec8eba1327ab0c96f271f
     resource: repo://src/utils/translationCache.js
 generated: { by: "zcode", at: "2026-11-13T19:07:27.754Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-13T19:07:27.754Z
+    at: 2026-11-16T17:37:19.788Z
 ---
 
 # 状态管理与浏览器持久化契约

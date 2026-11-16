@@ -1,18 +1,26 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:0b447da83cbfe8c4217c48421dac0a35368791f7a679bbfe0064fc1e0bce9de3",
+  "pageVersion": "sha256:5d065975954265b7bbc8e2311e9104c98bc3eab71d4505d334fae8bdbf897a53",
   "claims": [
     {
       "id": "claim_16dd3a0d22174b259245ef778ec0b67d",
-      "statement": "前端不依赖任何全局状态库（依赖中只有 React 生态、axios、altcha、qrcode、@simplewebauthn/browser 与图标库），全局客户端状态由 App.jsx 中 Theme/I18n/SiteSettings/Auth 四个 Context 持有（原第五个 IconContext 已随自研图标引擎删除），跨组件同步依赖 localStorage 键与 window 自定义事件两条通道。",
+      "statement": "前台公共页不依赖任何全局状态库（React 生态、axios、altcha、qrcode、@simplewebauthn/browser 与图标库），全局客户端状态由 App.jsx 中 Theme/I18n/SiteSettings/Auth 四个 Context 持有，跨组件同步依赖 localStorage 键与 window 自定义事件；后台自 2026-11 起经 <Refine>（@refinedev/core headless）引入 @tanstack/react-query 作为列表数据层，但仅限 AdminLayout 内部，不改变前台模型。",
       "evidence": [
         {
-          "resource": "repo://package.json#L17-L31",
-          "version": "repo-lines-v1:sha256:71419da76a8cbdd1e314c7975d8b1e62b7330aede4bf483c66b32276663741a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhM2I0NjlkOWUwOTc1NzIyNDY2NjczNGM5ZWY3YjI1NGQ4ODUzNGY1ZDViYjcwOTg5NjA4MDVjNTUzZGMzMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxMGM4MGE5MzA0MTkwMGYxNjUzNGRiOGUzY2FkMzdhNTljMzBlMjg3NjM0NTBjMzEzMmJhY2JmMmEyMTIwOGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyODhhZTE5NjcxMWE0M2U1ZTJjMGI0ZDBlOTUzZTgyZjg5Yzg3ZjI1ZWZiN2U5NTQxNmYyMzIwNjU1MDIwZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwZmExMWVjMDc4MGJkMmEwMzBlY2MxYjY5NGM1MzVjYjZlMTgxNjBjNjFmOGMyNDdhNjAwMjIwMDczZGE5N2UifQ"
+          "resource": "repo://package.json#L17-L35",
+          "version": "repo-lines-v1:sha256:c5af1ffd192b9e1d95cd98eb961e20e2d239307e27c5365df090909c73cc6b0f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhM2I0NjlkOWUwOTc1NzIyNDY2NjczNGM5ZWY3YjI1NGQ4ODUzNGY1ZDViYjcwOTg5NjA4MDVjNTUzZGMzMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyODhhZTE5NjcxMWE0M2U1ZTJjMGI0ZDBlOTUzZTgyZjg5Yzg3ZjI1ZWZiN2U5NTQxNmYyMzIwNjU1MDIwZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM2Y2IwN2NiMmM3MzMxZWE1OGI0Mzc0NzAwNDNiNzg4NjY5ZDZlMTExNDVmYmQ3N2ZkOWJlMWIxOWUxZTIxOWIifQ"
         },
         {
           "resource": "repo://src/App.jsx#L614-L632",
-          "version": "repo-lines-v1:sha256:8d9e46040a6aa7dda467352287dc7681dba4228e63f1af6e17c1a8dcf7fba017:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZWYwMWJjMDhkYmMzYjYzZTRlNzVlYTNkMjZhNWI5NDE4OTE4NzdlMjdhZDg5MTMyOWM4NDExZDdkOGRjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzMzI5Njc4NjBhYjgyMjdkZWQzNjk4Yjk2ODMxZDJiNTIzZjgwODMzMmExOTIxYTExYzdiNjcyZDBmODgyNmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyMDcyMjYxZDY4YTI5Y2QzM2JlYjZkODc5N2E0MzI0Yjk1ZWRmOTZkNjFlODYxNzhkYzYxZjFlZjk5Y2M3NWEifQ"
+          "version": "repo-lines-v1:sha256:117e2ff65e522fb138ec66f7038a13e5d74c91b7b87d678afd2a1514288b0a1a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5ODU1ZTU2Zjc1ODAwNGI3NmIwZTYxMjFjOTU5OTM1YjAwYmI4ZTM2MTIwMzMxZjIzNWE5YTBmNWFjNDdjMmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3NTc0NGZjZDIwZWI5NTAwMmYzYjkzYjc4MDVmNGVmZmU5ZWNlOTBhZGFlYmM3MTU4MmI2NDAyNDZkZjcyOGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjZmVhOTBiMjZmNGYyYTc5MTU2MDU5ZjJmODM4MTZhZGU1OGU5YzUxMmQ4ZjhhYjkwZGZmNDVkNDMwYWNjNmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2NWYwNTk3NjBiYzM4MzFlZTVmNzQxZDlmZjEwNWUzZTJkN2NmODRmM2JiNzNlMWEwMTNhMzcyN2FhYWY1NzMifQ"
+        },
+        {
+          "resource": "repo://src/components/AdminLayout.jsx#L206-L215",
+          "version": "repo-lines-v1:sha256:de500e62249d0649854b3d3d7f18c3a7567ba6fa69080c003202972275468b99:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0Y2NiNDRiNWU5OGFmNDE5MjU4OWRlN2FhYjQzZjBkZmQ4ZDBkNWMwNDI4NGNlMGNlNWYxNjA3MDdhMWMwMzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUzYTNiZjRjN2RkMjQwMWQ3MjZiMWU4MTQzNGUxZWY3M2FlN2FhNzE1MjlkM2Y1YzQ4YTJjMDg0MWNiMWIxNmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUxMTE4ZGJiMTBhZDVlMTdhM2Y2YjFmMTNjYWMyNmI4YzBiNTliNzQ5MWE5OWY2Nzg2M2E2ZTRiM2VhOWRjNGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1MDUzNTg3NzRlNzQ4ODNlODZmODk4MjZmZWQyNmM4ZmRhNmZiOWZlZjkwMWE4ZTM2MWE4ZGEzNzdhYWZjYTEifQ"
+        },
+        {
+          "resource": "repo://src/utils/refineDataProvider.js#L1-L5",
+          "version": "repo-lines-v1:sha256:fcac2c0720ff435bc04c7b5c8eb46066e51b635c7022d431d5faa51b37092d06:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTdlMTIwODUyMWFjZTRlMjA3NGNmZDJlOWIyNzMxMTM1YjA0NDliMDZhMDg4MmNhYTZjYjFjMDEzMDVhYTE1YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODA5MTY0ZWM0MjEyM2E1NzJjMjlmMzIxOTdkYWQ0OTFlOWZjMmM4ZTRiZjdiZDQxYjIwZTc3MjY5NDE5Mzc1OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTJlYTE4MzUxYjJlMTk4ZmM3NWU0ZDA4OWIxNmMzY2QxODEzZDEzYzAzYjgyMTNiNGM3NmY5ZWIwZDVlY2NiNCJ9"
         }
       ]
     },
@@ -43,7 +51,7 @@
       "statement": "AuthProvider 冷启动从不用 localStorage.user 预填 user state：initAuth 忽略传入的 storedUser，而是 fetchCsrfToken 后请求 GET /api/auth/me 覆盖 user 并重写快照，再串行 POST /api/user-sessions/create（失败 1 秒后重试一次）；initializing 结束前 AppContent 只渲染加载文案。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L492-L499",
+          "resource": "repo://src/App.jsx#L501-L508",
           "version": "repo-lines-v1:sha256:a6f48747e022d81eced9516268acd6d3d0f7d8d5f33de9c1da870111d4c62203:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDZkYTZkNDMxYWMzOGZiYWRhYzE2MWZkMjMxZDkzNmQ1NDJlMzY2MGYzMGUzMmU1MWZiODIxNTVmNDVjZDNlYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ5ZTEyNTQ2NDI1NTc2ZDNkZWFlOGM5YjlkYmYxMjhkNWQ2ZGRhZjVkN2ZlODU3OTM0OTI3ZGVmZmEzYjlkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWQ3ODY5YjlhYzM5MjRiMDk2YzQ4MWU3ODlmMzRiOGM4OGFkMDZiZmZhYmFjNmFhZjhjOTZjNWViNDg3NjkyZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDlmMTZhNjUwZjdhMmUxZmRmZWM5ZTk5YWJhNTQ3YWRjMTk2NjA5MDBhM2QwYjQ3ZGUxZmIwY2NjZjllNmM3NyJ9"
         },
         {
@@ -65,7 +73,7 @@
           "version": "repo-lines-v1:sha256:abebbcc79fbe8bfa76fb54429baa54baa6082399dbbb493f0982e63ff092f5f7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzOGE5ZWYyZjUyMWMxMWZjZjU0YmY5Yjc1YzYxZTE2MzNmNTVkZDAxYjBjYWEzNWM4NTA0NmJhZjg2YTU0MWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiMWU4MTlkYmU5ODczM2UyZjc2ZGEzMWE0NmVkYjY0ZTY3NTQ0MjYyMDk3MzM4MTg3MmYzNjc1NDkxMWQyYzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0ZWI3MDE2NjUzNDY1OTEyZjkzYTM3Y2Y1NjQ4NmI5ZTJmOGIwMjhlMDAzZGIzMDE5Yjg5MGFhNmQwYmYyNWUifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L238-L247",
+          "resource": "repo://src/utils/axiosConfig.js#L240-L249",
           "version": "repo-lines-v1:sha256:914949633a524dec5e08d7e6ee302085d9955c5c14be5283936cfc18bce67551:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiYTFhMjUwZTI3Mjg2NDI2MDkwOTg3NjNmZTU4Yjk2MmQ1NWJlYjBhMGZkNmZkNjc5MDM2MzI4N2U5MThmYTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyMjNhNmEyMGQ0ZDQwMTIzYTQxY2Y4ZTY4ZDJlOTRlYTdlMTIyNDY2NmVmMGZmMjAwMzc0ZjA5OWU1NTIyMDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkzNWJhNjFiMTg1MmIwOTA3Y2VhZGNiMGJmYzE4MjcwYjMyZmY5NzI4NjViMmE5OTVlZTg4Y2IwNDM2ODUyMTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAxZWY4ZThkNWNkN2RjMzYxZjVlMDY3OThkOGZlYWUyY2U5MWNmZTY4OGQ1ZTMzYTIzYjAwODIwYmJiZjk1ZmYifQ"
         },
         {
@@ -91,7 +99,7 @@
           "version": "repo-lines-v1:sha256:1882b3e9fe01fbfc4d6291ece5f622e8b69ef63f2a561a3620e181685ad2c461:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjYjFhMTM1NWM2YzViNDNhY2Y2NTVkMDRmODU1NTc3M2ZhZjQyODZhZjUwYTI2MjFlZWM1ZjlkOGYxY2FlOWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxODFiNjcwMThlYTRmMGM3Yjc1OWIzMGE2OTVlOWYxMzhmOGE1ODkzZDllNjY1MTI3NThlMmRjNmQ1OTI5MzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjOTY2OTczMmEzMDIxYjQ2MzExYmRiMzk3OTI1OWIwZTQ2N2Y2NTIwY2FmMDNlYWJhNmIwYzZkMmY5MGU2YmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiNjljYzA1NjVmZDVhMzliMzIzOWY0OGMyZDYxNmUxNDhmZWVjN2U5ODdlNDYzYTc5MzA3ZTI1NWIxZGFlN2EifQ"
         },
         {
-          "resource": "repo://src/utils/axiosConfig.js#L256-L269",
+          "resource": "repo://src/utils/axiosConfig.js#L258-L271",
           "version": "repo-lines-v1:sha256:b6e9944267b6a470926dd2289a8fb8756181715e45fd46ac9eb3e5e6d5549066:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmMDliMjYxNDlhNzI0Y2E5ZGQ0ODJkOGZhMTc4YThiOGZhMDA0NzAzMjBhOGVlY2Y0YzRlZDU4Njk5ZTExNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliNjJmNjBkODU5MGE1NzljZjQ2ZjhkNjczNzhjNGM1NzJiOTYyY2VjY2RiOTBjN2E1ZjdiNDJiOTYwNzgyYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ1OTk3MzIwYTUzOTgxNzcyNTU5NjY5N2ExNGZjZWQzZGEzMGE0YmQxYjkyNjNhMGJmOGJlNjkxZDZlODdhNmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1NTQ1ZmIwYmYwNmFhYzU2OWFmNjYwNzQ2NTY1ZGQ4ZDFmZjQ0MjAwY2FkYTY3ZmYxYWM5YzMyYWU1NDEzZTAifQ"
         },
         {
@@ -227,8 +235,8 @@
       "statement": "site_settings_cache 的唯一主动失效入口是 refreshSettings（复位 ref、置 loading 后重拉），目前只有 AdminSiteContent 在保存站点内容后调用，因此其它标签页或管理员看到的是最多滞后 30 分钟的缓存。",
       "evidence": [
         {
-          "resource": "repo://src/components/AdminSiteContent.jsx#L178-L186",
-          "version": "repo-lines-v1:sha256:f78c0716eba9b9bf18cb4968d7263706801d9095aa3f8ae2bc36154b385c3e5a:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWI1Nzc2MDQzNDc1NDYyYjYyNDMyMTJhYjk4YmY0MGE3ODE3NWE2NDc3ZWEyYmZlZTljYTI2OGViYjQyY2JiNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTI4ZTFiYzM4ZjZlMTU0YjJlMmIwMzBmMzcyZTRiZmRhODA5ZmViMzVmNDJjMTc5MjQzMWYyNDYzM2Y5ODdjNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmUzNjY0NzQyOWU4ZmZjY2EzMGVlNDkwOTcxODY4ZTg4MGE3M2RlNTJhNTkxMTQxNDJkYzc3OGM4NWI0NTM1ZiJ9"
+          "resource": "repo://src/components/AdminSiteContent.jsx#L33-L33",
+          "version": "repo-lines-v1:sha256:54c9d8d6a43ec4e7ce53218e880e9b55034da801f8c76cb5e8b9fb94189e78ce:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTRjOWQ4ZDZhNDNlYzRlN2NlNTMyMThlODgwZTliNTUwMzRkYTgwMWY4Yzc2Y2I1ZThiOWZiOTQxODllNzhjZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTRjOWQ4ZDZhNDNlYzRlN2NlNTMyMThlODgwZTliNTUwMzRkYTgwMWY4Yzc2Y2I1ZThiOWZiOTQxODllNzhjZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDE0ZWIwMGY0NjE5NTk4MzAyMzk5OThmMDkwNTkyM2VmOGJjNjU4YTExNDE3ZTQ4M2U0MGJhNjBhYTNlZDZhMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjdhODRhMzIyZTdmNjIzMzM0NDcyYmRhMjhlM2UyNDQ1MTkxMTNiNTNlN2IxOTZmMjNhZjI1MTk1MzkyMmQ4YiJ9"
         },
         {
           "resource": "repo://src/contexts/SiteSettingsContext.jsx#L56-L61",
@@ -241,11 +249,11 @@
       "statement": "应用或取消主题的写入顺序是契约：PUT /api/themes/selection → 用响应的 backgroundPrefs 调 updateUser 使壁纸立即生效 → 响应带合法 accentColor 时 setAccentColor（写 accent_color）。图标引擎删除后不再派发 theme-selection-changed 事件。",
       "evidence": [
         {
-          "resource": "repo://src/components/ThemeColorPicker.jsx#L84-L96",
+          "resource": "repo://src/components/ThemeColorPicker.jsx#L85-L97",
           "version": "repo-lines-v1:sha256:73fba61f8205eb4b4605ffd40ed4569095113b5a14e171bc916e4798bf2a2a1c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwNTFiYWI2ODNmODlkN2ZmNzEwNDZmNmViMDUxNDFkOTdiNDZiZTk1NmQ3Y2I0ZmVhMzFlNTZiZjk5YTZkNzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlOTI0OWZlODIzNTg3NWJlYjYyZmFiM2U0YTMwODkwZWNiODAwNjdhZDFiMzQwOGJkZWJlZGU2YWVlNGExYzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjOTQ5NmMyY2I2Y2E2OGU3ZjVkYjQzMWMxMDZmZTBmODgxNTExZGRjNTZkM2I4OTdhNDc1MGZkNjViNDcwOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2MjJjZWZlZDYwMzNjNTBkZmE5NThlMGJjZTA3ZjAxYjI0ZjlmNDJjYzZjYzA0NjM4MjBlNmQxMTEyMGNmOTQifQ"
         },
         {
-          "resource": "repo://src/components/ThemeWorkshop.jsx#L87-L97",
+          "resource": "repo://src/components/ThemeWorkshop.jsx#L88-L98",
           "version": "repo-lines-v1:sha256:9f3cc09e8fc01edf494386addbf4876e2875ede5bacf3230d88b9268c9355c15:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNDgwY2I4ZWZhODg5YzQ2NTA0MWNkZDI5MjEzNjcwMzEyZmNlZTM4MTM4MDY1OWUyODQzYjk4OGY2OGI3MWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA3ZmZkZDkwN2M0ZDY5YWVkMjE5ZWY0NjBhZmFjYWUyZjczZWM5MmI4M2E3NzU4NzliMDcwZmI4YjAyOTVhNTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU2NjgxMjJiMDgxZmE3YThkNDE5YmI5NTRiNGE4MTlhYjZmYzgxMGFiYTI1NjE3ZWZiMTM1ODI5ZWRkNTFlM2UifQ"
         }
       ]
@@ -328,14 +336,14 @@
     },
     {
       "id": "claim_1e8447d309a44b6fba8343c5ca4a9743",
-      "statement": "存储层不含任何认证 token：凭据只存在于 httpOnly cookie，localStorage.user 只是启动提示缓存（权威来源是 GET /api/auth/me）；代码中的 token 仅作为 URL query 参数出现在 Login、ResetPassword、VerifyEmailChange 等页面（AGENTS.md 已修正为 httpOnly cookie 语义，原「token in localStorage」描述已不存在）。",
+      "statement": "存储层不含任何认证 token：凭据只存在于 httpOnly cookie，localStorage.user 只是启动提示缓存（权威来源是 GET /api/auth/me）；代码中的 token 仅作为 URL query 参数出现在 Login、ResetPassword、VerifyEmailChange 等页面（AGENTS.md 已修正为 httpOnly cookie 语义）。",
       "evidence": [
         {
           "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:cfedc36c77469afc8a0c12ba1e924e286cdd16a7cadd5cf527cef8144842dc66"
+          "version": "repo-file-v1:sha256:1ed6eed15c40a1a509f3f22774049bca37f0392299b224830a42757c5403d66b"
         },
         {
-          "resource": "repo://src/components/ResetPassword.jsx#L10-L11",
+          "resource": "repo://src/components/ResetPassword.jsx#L11-L12",
           "version": "repo-lines-v1:sha256:bea8a93892058be32084e8ae751314bc44d2c774ea347fa476524d235000e014:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWI1NjNmNzE5OTA3MzUyZmU0ZmM5ZjgyZGNlZjBkMzJmNjNmMDZhM2E1Mjk2ZGEyNDI0ODAyMTA2ZmNhMjE2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDYwMzUwZTljZjcwMGE0ZTgyZjM3YjQ4Mjg0MWQ1OWZkNDgzZTRmMGE0YTBmZDg1YmEwYzEyMDZmMTY0NWMxOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjJmMjIxYWEzNjJkYWQ3ZmNhNjdlZmM0NTBiYzBiNzUyOGIzZmFmMzU0M2E0OWIzNzEzMTY2OWZkMmY2NWY5OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzNiZDI5ZWI5OTUwNGU4MGU2ZGEzOWRiZDM0NzRjNzU3N2NjZjI1NGViNmI0OTQwNGQ4MWQyNzM2YmNlODhkNiJ9"
         },
         {
@@ -395,6 +403,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-13T19:07:27.754Z"
+    "at": "2026-11-16T17:37:19.788Z"
   }
 }

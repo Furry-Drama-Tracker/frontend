@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:3dd00d1a274c40101a239d06bd50d5d51c5f57526b5eea1d99e6717d7f7b89fc",
+  "pageVersion": "sha256:8a29d8dc6ab03dcd1706829a3eb4bd5b82103421d6787d9d9898f0d6aa2f03a5",
   "claims": [
     {
       "id": "claim_c8bb812813924866bea3a8ae71256c83",
@@ -57,7 +57,7 @@
           "version": "repo-lines-v1:sha256:a3fc02af9377757b2cb1b9f93c1f897e7d26a380fb969d6c386eb435fde60436:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQ4MWFjYmM3Y2U5YjViMWQ1YThhNzI3NzU5OTMwMWRjODc4NTY2YTg3ZTQ1Y2ZmOTczMjlhNDU4Y2ZkOWQxYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTZiNzZiODI4OGNhMTY3YTllN2U3YmFhYWU3ZDhlZWY0MTJkNWQ1MzQxYjVhYmVkYzcyMzU5MDRlYzRjNjY2ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjI2ZDMwMWFhYWQ0MGVhOTI2ZTVjZTYxMGZmM2EyY2RiMzQ5ZmE3NDNmMDhhZmQ2NGJkNmE3NTJhYzQyNGRlMyJ9"
         },
         {
-          "resource": "repo://package.json#L33-L47",
+          "resource": "repo://package.json#L36-L50",
           "version": "repo-lines-v1:sha256:7654d10da977f976ab829cb4f019503ee08a0650c378e52bb3713154d03f34d2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkYzRkZTdlZDM1YTIzMzY0NTM5ODY0ZGFkYjkzOGI4NzIzMzM3OTE3OWQ2MjkyYjlmZjVmNjE5YTZjMTMxNjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZGE0NDRlY2UwZjBjZjdjNTA4OTM1ZmViZTc5YzJjYTNiNTIzNTgxZjIzOWMwNDUxMzYxNzZhYjdmYTU1NzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0MjY1NGI0YWQwZDhlZmI3YmJmOTIyZTRmZmVjY2FhOGEwN2MzZWU3NDgxZjg4ZWM4MWNmM2MyZGY3MzlhNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0M2Y4M2I1MzEzODYzYWIzZDM1Y2EyZjE2OTlmMDg2OTFjN2E0M2Q4ZGE2MWRlMDk0ZTIzZDlmN2Y3Y2RlYjgifQ"
         },
         {
@@ -85,7 +85,7 @@
           "version": "repo-lines-v1:sha256:f18815c04db157188314de8ac642463f5424ddd0460f9713903e141f4ab620f2:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGJkZGI5NzNlOGMyYzMyYjY5NWZjNTZmMGQ3OWI5ZDhhZjY0ODdlNDFiNGQ1NGUxNmU3ODgwZjkxM2YwODQ1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWY1YjRmYmM1YzZlZWNjYjE3YWZhMjMyYmFiZjdmNWI4NzU3NDRiMmEzMTViZjE4YWFhYmFlZmE5OWI3ODhjZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGQ3YWJkZDEwOTllODQxZWNjMjE2M2I0Y2EyMmVmYTU4Y2E3YmE5ODUzMWI1ZTVjMGZkMmY0MWI3ODAyNjQ0MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWExOTQ1MGFmNDkyNmRiY2E4OWU4ZGE2NzdmZDYyY2RiNjJmYzQ3MzJhYmZhZTVjNjhlMDliMmE5YTExNDgxZCJ9"
         },
         {
-          "resource": "repo://src/App.jsx#L367-L376",
+          "resource": "repo://src/App.jsx#L368-L377",
           "version": "repo-lines-v1:sha256:69d9bf406b47cd532a3437d07ab2b45d26d891a801659b41210b11c3788fe25c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTAwNTlmNDhjYTU2ZjZiNTBmZGM2OWExNWM3YjdlNjMzY2MxZTEzNjA4ZGFhNTBlZDkyM2JlYjBmNjM2ZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1YjdhZjg0N2MzZTI3YzQ1OTk2NTdhNzkzOGYyMjc1M2UxMmM4YjAxNzQyMzVkOWQyZmQxMmVlODg1ZDU5NWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY5MmYyYmIyMjlkZjJmNGZjZGI3YmY2OTIwMDc1MDc0MWEwNmMwMTU4NzUzOGRjZDFiMDMwODJhMDMxYWUwZDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwYzZkMmM1NWIxZmU5ODZiYjMwOGMwMGY5ODNhMjM0NjUyNDg1NGQ0NzYxNTk2Njk4YzljNTNjMWFlNjUyYjYifQ"
         }
       ]
@@ -95,7 +95,7 @@
       "statement": "生产构建剥离日志由 `oxc.drop` 完成，取值条件是 `process.env.NODE_ENV === 'production'`：`vite build` 默认即 production 因而剥离，`NODE_ENV=development vite build` 会保留全部 `console`，`--mode` 的切换不改变该行为。",
       "evidence": [
         {
-          "resource": "repo://vite.config.js#L124-L130",
+          "resource": "repo://vite.config.js#L133-L139",
           "version": "repo-lines-v1:sha256:929997856337c94eac65d86ffb93cb9c042d9ac7ffb2c03e7672eb84dc84d4e6:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWI2MmY2MGQ4NTkwYTU3OWNmNDZmOGQ2NzM3OGM0YzU3MmI5NjJjZWNjZGI5MGM3YTVmN2I0MmI5NjA3ODJhNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzdkY2M4ZmVkNjUzODQ2YjNhNzkzZWU4OTE0M2IxZTczNmViNTQ2OTRjNjRkMDJiNTQ1ZWI1ZDZjNjllMWNhYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzkxM2VkYTgzMTQ2YWI4MWVmMDc4MjBmNGJlOTUxMmZmYTk4Y2EwOWQ4YjI5YzI0ZTQ0YWYzZDVkZTkzOTM3MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWY2ZWQ0MWE3NTY4ZWE4MmY5NGIxYTkxM2I1NzFkYjNhZDc5MzI1OWFjOTFjOTc4YjA2OGYzYWQzODM2OGNkNiJ9"
         }
       ]
@@ -105,26 +105,26 @@
       "statement": "`App.jsx` 的错误边界用 `import.meta.env.PROD` 分叉：生产构建只显示通用 i18n 文案，开发构建显示原始 `error.message`，因此线上错误细节不会出现在用户界面上。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L658-L669",
+          "resource": "repo://src/App.jsx#L693-L704",
           "version": "repo-lines-v1:sha256:ebbfa33e9bf165cc9ef6c8f9cda7ffe2f245eea598e2892d493c4d8aafd8a7d1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3NjcyMjYwNWQwNTQxMmExMTVmM2EyZDQwMTllODEzYmQ3ODRhNDBlYzJiYzFmYWI3ZWQ4Yzk4OGU2Mzg3MTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiNzcwZTM2ODA0OWNmNzJiMTQ3YjdkZDY1ZDFmNmI5NTRlMGFjYjk4MDk3NjI4M2Y1ODQ0OTc3MDc1OWQyY2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIzZWYzOGFjYmU1YTU2ZGRkNGMyMzk2ZWMyNjc1NjkzMzExNzZhODQ0YWI3MDk3NTJkNjlhMjRlZDBmMGZjMDUifQ"
         }
       ]
     },
     {
       "id": "claim_5e6d41035af642f98cf7038d26e4a4d1",
-      "statement": "`optimizeDeps` 是一份显式 allowlist 且 `noDiscovery: true` 关闭了依赖自动扫描，新增运行时依赖必须手动加入 `include`，否则开发期首次请求会走按需优化路径；该白名单已经漂移：`src/main.jsx` 直接 `import 'altcha'`，图标迁移引入的 @fortawesome/*、@icons-pack/react-simple-icons、simple-icons 也都不在名单里（原 lucide-react 已移除）。",
+      "statement": "`optimizeDeps` 是一份显式 allowlist 且 `noDiscovery: true` 关闭了依赖自动扫描，新增运行时依赖必须手动加入 `include`；后台迁移后白名单已同步加入 @arco-design/web-react（含 react-19 适配器）、@refinedev/core、@tanstack/react-query 及传递依赖 react-is/dayjs（含 zh-cn/en locale）/b-validate，但 altcha 与 @fortawesome/*、@icons-pack/react-simple-icons、simple-icons 仍不在名单（漂移项待同步）。",
       "evidence": [
         {
-          "resource": "repo://package.json#L17-L31",
-          "version": "repo-lines-v1:sha256:71419da76a8cbdd1e314c7975d8b1e62b7330aede4bf483c66b32276663741a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhM2I0NjlkOWUwOTc1NzIyNDY2NjczNGM5ZWY3YjI1NGQ4ODUzNGY1ZDViYjcwOTg5NjA4MDVjNTUzZGMzMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxMGM4MGE5MzA0MTkwMGYxNjUzNGRiOGUzY2FkMzdhNTljMzBlMjg3NjM0NTBjMzEzMmJhY2JmMmEyMTIwOGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyODhhZTE5NjcxMWE0M2U1ZTJjMGI0ZDBlOTUzZTgyZjg5Yzg3ZjI1ZWZiN2U5NTQxNmYyMzIwNjU1MDIwZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwZmExMWVjMDc4MGJkMmEwMzBlY2MxYjY5NGM1MzVjYjZlMTgxNjBjNjFmOGMyNDdhNjAwMjIwMDczZGE5N2UifQ"
+          "resource": "repo://package.json#L17-L35",
+          "version": "repo-lines-v1:sha256:c5af1ffd192b9e1d95cd98eb961e20e2d239307e27c5365df090909c73cc6b0f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhM2I0NjlkOWUwOTc1NzIyNDY2NjczNGM5ZWY3YjI1NGQ4ODUzNGY1ZDViYjcwOTg5NjA4MDVjNTUzZGMzMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyODhhZTE5NjcxMWE0M2U1ZTJjMGI0ZDBlOTUzZTgyZjg5Yzg3ZjI1ZWZiN2U5NTQxNmYyMzIwNjU1MDIwZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM2Y2IwN2NiMmM3MzMxZWE1OGI0Mzc0NzAwNDNiNzg4NjY5ZDZlMTExNDVmYmQ3N2ZkOWJlMWIxOWUxZTIxOWIifQ"
         },
         {
-          "resource": "repo://src/main.jsx#L4-L8",
-          "version": "repo-lines-v1:sha256:9e1dd848c6c194efc17f70798da2a84858d51da9de4694e0673c9a2ff5b53dc7:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjcwMzdjMTg0MmY3N2EyZDNlYWZhYTY3NGQxZTI2M2NiYmVkMjllNjUxZjYwY2NiY2NjYjkxOTBkODAzNDJjMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTIzNGNhZjMwZmM5NjY3OGM1NzZlNTA5ZGZkYjU0YzI2YTYxMjNkMjhlOTI2M2YxYzlmZDVhOThmMGZiM2MxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTA3YmEzNGRiNzY0MDM1ZjZiNGFiZTAzOTk2Y2QyZTViMGI4ZTNjYTVhYjFkNzMxZGUzMzlhOTdhZTAyOGI3NyJ9"
+          "resource": "repo://src/main.jsx#L1-L10",
+          "version": "repo-lines-v1:sha256:2dba09797f6a4fca83a4adf702b87bfb91eaa9a73a2661301adb320bb81ef25f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlZmRhMmFiMDFmMTExNTFjMTE4OTBiNTUyMzkxYjdmYWE3NDlkZWQ0MTRkYTY4M2YzZjU2YjlhZGI5NTRhM2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0OGZmNThkZmY0ODM3MWY3N2Y2YzQyMzllODA0OGNhZGQ5YjIwMmYxYTJmNTI4NzhhZmJlOTlkNDU0N2ZhMDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRiMGNlZDQ4MGVmMDI2ZDU1YzIzZGNkZDZmZjRlMmIwOTU4MjRiOTdiMzdlZDJhNTI4NWIyYTllMDVjMzFiYWIifQ"
         },
         {
-          "resource": "repo://vite.config.js#L86-L107",
-          "version": "repo-lines-v1:sha256:53470410e0a2f42f43b4ad43cd8b4be0edc56fd5d978a12e1817abd70ad00af8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyNTkwZWU3OTFhNmI3OTdhYjJjNDllMGU1MDUwMjc1MjhkZWUxYTRmM2JkM2EyYWZmZTcwZDVjNDBhMTcwYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcyYTc4MzgyMTY4ZWNkZTQ1MWFjODg4YjJkMThhZDhjZGY5YzRmMGIwNjBlNWQ1MzQwYzU4YmMxNWRkNjg4ZjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFiMGU3NTkwNTRjOGMzMjZiYjQ5NTEyN2ViNDY3YmExMGQ4N2E0NDY3MmQ1MWZlMGRmZTFjZTMwODBmZTQ5NDQifQ"
+          "resource": "repo://vite.config.js#L104-L115",
+          "version": "repo-lines-v1:sha256:a4ba11eea8aedd42ffbf36821dd7f9f237f4948546ef7481f7f39e923abd5237:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4NDdjNThmM2JlZDE1Y2Q5MDZkMmQwZTVhZDE1OWYwOTRkMmUwOTllNmMxOTY3NGVkOTBkODc4NTJmNDcwYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZjQ5MDQ0ZWIzZDdkMGFkYWRhMzA1YjJhYmEwZmMwYTg2N2Q4ZWNjNDJjYTQ5ZjI1YWMyMjgzOTRjMDdjZGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmNGZmMDAzMTMxNzFlMWNhMmRhZGM2YzliNWU3ZjA1M2E0MjU1OTUzZGUyZjYxNTM2OGIxOWViZjc2YmM4NzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmNmM1Zjc1OWQ4YTRlZjM5MzhjMGE4MTkyN2Y4ZjEyMjRjOGFjNDNhMDczMDhiNTczYjc4NjUxMjNhMjA5MTAifQ"
         }
       ]
     },
@@ -134,10 +134,10 @@
       "evidence": [
         {
           "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:cfedc36c77469afc8a0c12ba1e924e286cdd16a7cadd5cf527cef8144842dc66"
+          "version": "repo-file-v1:sha256:1ed6eed15c40a1a509f3f22774049bca37f0392299b224830a42757c5403d66b"
         },
         {
-          "resource": "repo://vite.config.js#L108-L122",
+          "resource": "repo://vite.config.js#L117-L131",
           "version": "repo-lines-v1:sha256:2527f713472dd348e1b49ad07deb5efe9b6d82f07f3676d9dc18dfbc6432df4e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmYjI5ZTlhMzljMmFhODViZmUxOTgxZWNhNzg3YzMwNjA3MTVjN2YyMmE4ZjFhYmI0ZjFlNTI2ZTFhZDBhOTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiNmI3YTc2MzZlMzgxYTlkMzIwMGQ1MjY2NDAzNjZlZjI5MWY4MDJlODQ4MDg3YmNhODllMjg0ZjYwYmRkYTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVhNThlMzI0OThmNWE4Yzk4Y2I2MmJjMjkyMGQ1NGNiMjc5M2I2YTNjYzVkOGMxY2M0OGI1ZGIzMzZkZjQxNGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0NmVkNmFjZjVmNjkxZGFlZGJmMTc2ZDMyZTAyZjhiNTIyNjgxZmYxN2M5ZDY3MDk4MzY1YTMxNzUyNmY1NjYifQ"
         }
       ]
@@ -147,7 +147,7 @@
       "statement": "产物语法目标只由 `build.target: 'es2019'` 决定：`package.json` 的 `browserslist` 字段没有被任何工具消费（无 babel、无 PostCSS/autoprefixer 配置），运行时 API 缺口由入口副作用导入的 `src/utils/polyfills.js`（`Object.fromEntries`、`Promise.allSettled`、`Array.prototype.flat/flatMap`、`String.prototype.matchAll`，目标 Safari 13+ / Chrome 80+ / Firefox 80+）补齐。",
       "evidence": [
         {
-          "resource": "repo://package.json#L46-L53",
+          "resource": "repo://package.json#L49-L56",
           "version": "repo-lines-v1:sha256:b58434e38b225d8603ba0091bcc8269d0c419424384817220ee0f6ea1e17f511:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ1Y2QyZmI0ZjNkZjg4NDUxNTI1NWIzOTUyM2YyZjhiNTQ3MmJlZWE5ZjU2NmZmY2EyMDRkYjgwMjU2MTA0MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzA2NDhmNzdmZDVhOWM2M2IzY2RkMGFmNDlkYWExMjk5MjIwYjc1NDFlODhjYTE3ZWZlMWE2YTExNGI5ZmYyYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2MxZTk5N2RkMDRjYWRlNGM5YWMzYjM2NjQwYjc2OWZhZmI2NGU0NmJkYjVmZTQxMDliMWFlYjlmMzc2NDViZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
         },
         {
@@ -155,7 +155,7 @@
           "version": "repo-lines-v1:sha256:c8e6e0900b47e31930ec9af61fb0c57b661b79d4782da0104c0266e60b11ef9f:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTUyNWFmYTEzMTNiODAyYzc0M2M5MDg1MTk5NjRmMjJmY2I1MzNlZDIxYzAxOTI2YmEyNDIyMWE5Nzg4NWJkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjk3MDI5ZGQzMTU4ZGQyMTdhNGIyZTdjOTUwOTQzOWM2NGNmN2FlNDJjMGQzYTc1OTBkYzI0ODY1Mzk4NTc4ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWM4YjJlZmJlYjczNjY4YjRmM2EyMWRmZmNhNDY1NmIxYTY5ZjAyMDBhN2QxMGUzNTFiNGY1ZTQ3Njk2YjRiYyJ9"
         },
         {
-          "resource": "repo://vite.config.js#L120-L130",
+          "resource": "repo://vite.config.js#L129-L139",
           "version": "repo-lines-v1:sha256:5d874698492eaa2318d8a83efe19b3bb3ab4653294e868c5123b5ab43f8cd461:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwMDJmZjY2MzdjNTRiNTQzZjA1YTQyYTBjODRlOTc0MjZjYzY0ZTYwYzE1ZmJkYjMyMjU0Njg2OGVmZTJhMzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3ZGNjOGZlZDY1Mzg0NmIzYTc5M2VlODkxNDNiMWU3MzZlYjU0Njk0YzY0ZDAyYjU0NWViNWQ2YzY5ZTFjYWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5MGVkYWQ5OWI2MDFiYTI0NmJhYWMyZTE5MmQ3M2MzOWRkMzg0YWJlMjRjZjg1NmVkYzY2MGMxOGQ4YjBjYzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVmNmVkNDFhNzU2OGVhODJmOTRiMWE5MTNiNTcxZGIzYWQ3OTMyNTlhYzkxYzk3OGIwNjhmM2FkMzgzNjhjZDYifQ"
         }
       ]
@@ -175,7 +175,7 @@
       "statement": "Service Worker 采用 `registerType: 'autoUpdate'` 并在 `main.jsx` 中用 `virtual:pwa-register` 的 `registerSW` 注册；预缓存 `**/*.{js,css,html,ico,png,svg,woff2}`；运行时缓存已被刻意清空（`runtimeCaching: []`，原 /api NetworkFirst 与 /uploads CacheFirst 移除），并以 `navigateFallbackDenylist` 排除 /^\\/api\\//与 /^\\/uploads\\//，离线读取由应用层缓存承担，恢复运行时缓存须连同登出清理（clearClientData）一起评估。",
       "evidence": [
         {
-          "resource": "repo://src/main.jsx#L9-L18",
+          "resource": "repo://src/main.jsx#L12-L21",
           "version": "repo-lines-v1:sha256:bbc14f02291d72df6fb7ee36693dbff7bca2c12a162d6ee470a4e6496ec03356:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5N2MzYzY5MWM4ZTgzODY5MjFiZjVlY2U5ZmMwYWE1MWE2MzUzZTBjYTY1MWY5MWViZmQyMGJlZWFjZGZjZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNkNjRiZDY3MzExZGI4MjQzYjMxZWY1NDkwNTMzNDQ4NTAyNzUzMjIyMTRlZDhiODkzZjJiNmM4YzIxMjA0N2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRiMTNmYTNiN2Q3MmQ0NDk3ZmRmNTAzMmYxOGFlNTQzNGNlOGMyMDlkNzY1YTJjMzIwNGUwYTEzNDE2MWI2MDEifQ"
         },
         {
@@ -207,11 +207,11 @@
           "version": "repo-lines-v1:sha256:ae3a16599c41232343adb85beed76187cc0f015b96804cd0c68600605085d69d:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDY3MTA3NzFkZTYwMmY1MWVmNjM0YzkzMTBhNTE5Njk2ZmZhNTQ4NzY5YmM4MTU4OTA2YTI0YjA3ZjdhMTVhNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjc5NTg2MjAxODAwOWU5MmYyYWU1ZmFjYzM4MjUxYTZmNDQxM2U5N2MyN2MzZDExMjFkYzJjNGJlZThmYTk0NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTVjYTM0ZGYxYWM4MjBlZTI2ZDE0M2E0YWY0NGJjMDM5NjUxZDFhYTkwZWRkOTc1OGQ5NDUxOTU0ZTU3Y2U2ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzhiNTIyYTUxODliZGRiOThkNTI3ZjQ2OGFiMTc1ZjAxNTQyNjMyNDhlOWJlZTgxOTYxN2U2NWI4YjdlNGVlNSJ9"
         },
         {
-          "resource": "repo://src/App.jsx#L452-L500",
+          "resource": "repo://src/App.jsx#L461-L509",
           "version": "repo-lines-v1:sha256:493196aef98d3e897685454ef3ba6967560d75f15efa698dd283bd8a31b1a5c6:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlNzlmZjEwN2E0ZGI1ZmNhMTgxNWNhYmFiODA0MjIyNDAzNDliZDdiNTJiMzZmNGQzZGY3ZDkwZmI1ZjJhMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmOTMwZjlmMjc4ZWZlNmFhNGViNGJiOGIwZWE5ZWExOWY4MTU4M2RjODg5Zjk0Yjg1MTIzN2E0YmRjMTA2M2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0ZGEyN2IxOGIwNzJlZTFhNmZkNmQxN2NjNmNkN2RjMjM4MzAyYmQ1ZTk0YWUzNjg5YzU5NzBjOWZiYjA4YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkNWI2MjJkN2EyMjU3MTY4MGNmMzlkNWQ3NmU4ZjAwZmUwNjU0YWQwMDg0MGFhZWQyNDBiOWI0YmJmNjI0NjkifQ"
         },
         {
-          "resource": "repo://src/App.jsx#L469-L472",
+          "resource": "repo://src/App.jsx#L478-L481",
           "version": "repo-lines-v1:sha256:9f40a02390938a4cc934b369a7dc6a239c6c57794bd7e105c537782a0ac9e714:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWVhMjA5YmI1NWUwODI2YmFlZGE5MzU1NDk0OTBkODQ4ZDE1NDNhOWJlZmVhOTA4OTBiYjYwOTI4OWNmNzFjNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk2NmZiZmE4ODk5OGRhNzQ2NTZjNTAxOTQ5NTZjMjVmMDg0OTQ1NzY2MGMwMDlmZTYzZDFlOWZhOWRjOTMxYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjJmN2U0ZGE0NTY4NmQwZWU5NmMxMDRjYjMxMzhmNWViOWY2Zjk5Y2NhMGNjMzZjMzVlYjQwMWZmZDJiMWU0NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTE0ZWY5OTBkMDRjMWZjN2JkMDI1Mjk1Y2I0NWZhODA1YzMyNTY1ZjM0Mjg4ZmNkYzA1ZmMyMTZmNjY4NTFiMSJ9"
         },
         {
@@ -225,15 +225,15 @@
       "statement": "管理后台可配置 `pwaMaskableIcon` 与 `pwaBackgroundColor`，但 `App.jsx` 的运行时逻辑不消费这两项（且动态 manifest 已不被前端消费），它们当前无处生效；构建期 manifest 则把同一份 `/icon-512x512.png` 直接声明为 `purpose: \"maskable\"`。",
       "evidence": [
         {
-          "resource": "repo://src/App.jsx#L466-L500",
+          "resource": "repo://src/App.jsx#L475-L509",
           "version": "repo-lines-v1:sha256:d6fb0afa18ab5d541829ff9b64b99a11c76b4ca66d6e2f93df252b8f6e46fd4c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmYjg5NWM4MThlZWE1N2VjOGI2MjI0ZTg3NGVkMjhjYzY3ZmY3NTcwYWE2ZDg4NTAzMDMyYjE4OTE2ZWE3ZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmOTMwZjlmMjc4ZWZlNmFhNGViNGJiOGIwZWE5ZWExOWY4MTU4M2RjODg5Zjk0Yjg1MTIzN2E0YmRjMTA2M2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjNmQwOTgwMDgwMjJkNmY4ZmY5MDBkZDMzNWEyYjNiYjJlYmJlYmY3NzQ3MmZjMTcyZTNhMjc4MmU5NjQ3Y2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkNWI2MjJkN2EyMjU3MTY4MGNmMzlkNWQ3NmU4ZjAwZmUwNjU0YWQwMDg0MGFhZWQyNDBiOWI0YmJmNjI0NjkifQ"
         },
         {
-          "resource": "repo://src/App.jsx#L469-L472",
+          "resource": "repo://src/App.jsx#L478-L481",
           "version": "repo-lines-v1:sha256:9f40a02390938a4cc934b369a7dc6a239c6c57794bd7e105c537782a0ac9e714:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWVhMjA5YmI1NWUwODI2YmFlZGE5MzU1NDk0OTBkODQ4ZDE1NDNhOWJlZmVhOTA4OTBiYjYwOTI4OWNmNzFjNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk2NmZiZmE4ODk5OGRhNzQ2NTZjNTAxOTQ5NTZjMjVmMDg0OTQ1NzY2MGMwMDlmZTYzZDFlOWZhOWRjOTMxYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjJmN2U0ZGE0NTY4NmQwZWU5NmMxMDRjYjMxMzhmNWViOWY2Zjk5Y2NhMGNjMzZjMzVlYjQwMWZmZDJiMWU0NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTE0ZWY5OTBkMDRjMWZjN2JkMDI1Mjk1Y2I0NWZhODA1YzMyNTY1ZjM0Mjg4ZmNkYzA1ZmMyMTZmNjY4NTFiMSJ9"
         },
         {
-          "resource": "repo://src/components/AdminSiteContent.jsx#L50-L60",
+          "resource": "repo://src/components/AdminSiteContent.jsx#L51-L61",
           "version": "repo-lines-v1:sha256:8341437fe0f1ac8d8b76aa3f222cbbbc00345095c9ef1dedf89c879253a9f9fc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxNGI3N2QyZmEyOGY0NGI2MGVmMWE1OTU0OGM3MjhhMDNjZTJmZDFhMWI0NTQwODljZjllZjQ1ZDBhZWU5MTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZTk4OTRhNjQ2ODg0MzM3ZTEyN2NjMDk5YjNhMDE4NWE5OTNmYjBhZmY3ZWYyZDVjODg5NzEyNTJlNzc1NGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYwZmIyOTRiMTE4ODc3OWVhMGFjNDRjZDhhMDc4NzdlMDhkMjMyYjAwYWY4YmUwNTllNjU2MWYzMjI1OTcxMmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkyN2IyYjc1ZDdkZjZhMmQyOWQ2ZmQ1MWQ5MzRhMTI5OWZhMDM2Yjk2MTcyZWQ4OWNiZDczNGQyOTNmZmY0MzMifQ"
         },
         {
@@ -252,7 +252,7 @@
         },
         {
           "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:cfedc36c77469afc8a0c12ba1e924e286cdd16a7cadd5cf527cef8144842dc66"
+          "version": "repo-file-v1:sha256:1ed6eed15c40a1a509f3f22774049bca37f0392299b224830a42757c5403d66b"
         },
         {
           "resource": "repo://README.md#L199-L207",
@@ -281,7 +281,7 @@
           "version": "repo-lines-v1:sha256:0f41a07ecfac781bc56d03cc51d7927eb057ec143b05d383b173a332372d4337:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZiMTYxNTg1ODAzYWVhZDdiZDZkNzllNzZkMmYzMmI5NzZlZjYyOGMzOWE1OTE5MTcwYzQ2Zjg5ZTg0N2JmNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjIzYTY3ZjA5MmFiMDgxM2Y5Zjc1NTk1ODFjNzZkZDU2MTVjM2Q0M2E5YTFmMDViNWE3ODJmYzZhODQ0ZmI5ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTQ0NjY3YjgzMDVlZDBjMjA3ZTgxOGZmNzE3ZThkZTk2OWVjYjgwODhmOWZmYzU0OTAyN2NkMTgzMGE0YTI2MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDQzNTQwM2I0MDMyNjE4Y2NkNzllNmRmOWRhMDFmNWNlMTVjYmEwODdlMzM5ODdhOGFhYjdkNWQ1NWNiM2QzZCJ9"
         },
         {
-          "resource": "repo://vite.config.js#L108-L122",
+          "resource": "repo://vite.config.js#L117-L131",
           "version": "repo-lines-v1:sha256:2527f713472dd348e1b49ad07deb5efe9b6d82f07f3676d9dc18dfbc6432df4e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmYjI5ZTlhMzljMmFhODViZmUxOTgxZWNhNzg3YzMwNjA3MTVjN2YyMmE4ZjFhYmI0ZjFlNTI2ZTFhZDBhOTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiNmI3YTc2MzZlMzgxYTlkMzIwMGQ1MjY2NDAzNjZlZjI5MWY4MDJlODQ4MDg3YmNhODllMjg0ZjYwYmRkYTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVhNThlMzI0OThmNWE4Yzk4Y2I2MmJjMjkyMGQ1NGNiMjc5M2I2YTNjYzVkOGMxY2M0OGI1ZGIzMzZkZjQxNGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0NmVkNmFjZjVmNjkxZGFlZGJmMTc2ZDMyZTAyZjhiNTIyNjgxZmYxN2M5ZDY3MDk4MzY1YTMxNzUyNmY1NjYifQ"
         }
       ]
@@ -423,26 +423,8 @@
       "statement": "`AGENTS.md` 中 `OPENWIKI:START` 与 `OPENWIKI:END` 之间的区块由 OpenWiki 维护，并明确约定不要手改生成出来的 wiki 页面——应以更新源码/文档后让工作流重新生成的方式修正文档。",
       "evidence": [
         {
-          "resource": "repo://AGENTS.md#L51-L66",
+          "resource": "repo://AGENTS.md#L74-L89",
           "version": "repo-lines-v1:sha256:8926524de63a1266e7592d9f1256ec367b67e9fa0583f343808e3e51f19d4990:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmMTgwZjljMTI2OTAzYmNjMzMxYWE5NTQ1NmU0OTQ0NGE3ZDRkMDExZThhMmE4M2Y1ZGM4NzAyMzkxODEyZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5Zjc4NzE0ODkzYWE3Nzk0MmNlYTFjNGEyZTAyMzFkYmI3ZmEyYTQxYTcwYzgxNDYwYTNjNjc1NjJkYTNhYWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMyZjFjMzJjM2M5OGI3NjQyZDI5MDQ3NDBkNzI4ODY1N2JiOGEyNzkzMzExYzZlMjk0MjYzYTE5M2IyNjE1YzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
-        }
-      ]
-    },
-    {
-      "id": "claim_ae47b301885a423ba98dea22dfc79210",
-      "statement": "后台样式由 src/admin-kit 提供且不经过构建插件：AdminLayout.jsx 直接 import '../admin-kit/index.css'，index.css 再依次 @import colors_and_type.css、components.css、admin-scope.css，因此样式随懒加载的后台 chunk 进入产物；colors_and_type.css 与 components.css 是由 node src/admin-kit/scope-kit.cjs 从同名 *.raw.css 生成的作用域化产物（每条选择器前缀 .yuanli-admin），仓库没有为它注册 npm 脚本，改 raw 文件后必须手动重跑。",
-      "evidence": [
-        {
-          "resource": "repo://src/admin-kit/index.css",
-          "version": "repo-file-v1:sha256:882c964adba388b23a31b4e381d157fb81c272ee67b489b7d4d5fd2d8d85ff34"
-        },
-        {
-          "resource": "repo://src/admin-kit/scope-kit.cjs",
-          "version": "repo-file-v1:sha256:bd3701729d6960de797fb4b8f2015f880cfdc7ee07fa831f7af2688cf04455b3"
-        },
-        {
-          "resource": "repo://src/components/AdminLayout.jsx#L1-L12",
-          "version": "repo-lines-v1:sha256:b9f45a90a0b90b48d2162d1c34f28cbb6ea1b31621c29118ccb90bf6553609f6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczMmY5YjgzZjg1YjM5NjhhZjNhZDM5ZmJjYTVmOTkyN2NkYzgyODc1Y2NmNjhkYTU4MWJlZjE5YWI3NmU2MDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjliNTU0Y2RkNTZiMjVhMDg3OGM5ZjJjYzdhY2RjNTA3ZGJlOTEyOWQwNTA5MTE4MDU4MDFhODJmZGZjYzE3YTAifQ"
         }
       ]
     },
@@ -459,10 +441,28 @@
           "version": "repo-lines-v1:sha256:e8abb89a113a82260c572f901a9cecea453ce8bfc217d218b46ba2aa89cc057f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZmIwOGZkYTFhY2I5NTdiNjExNmJkMzc4MTFhMWZlNDFhMDE2MTFjMDYzMWVkYmY3ODZkNjg4OWEyN2E1NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
+    },
+    {
+      "id": "claim_91ecdfe9e7534ae69c3f15704f3d2fd0",
+      "statement": "后台样式自 admin-kit 删除后由两处提供：AdminLayout 按需导入的 Arco 组件 CSS（Layout/Menu/Table/Pagination/Modal/Form 等，随懒加载 chunk 只进后台产物）与项目自有 src/styles/admin.css（基于 Arco token）；挂载时给 body 加 admin-light 类锁定浅色画布；vite optimizeDeps.include 已同步 Arco/Refine 依赖链。",
+      "evidence": [
+        {
+          "resource": "repo://src/components/AdminLayout.jsx#L147-L156",
+          "version": "repo-lines-v1:sha256:4444b6348e6a72695807f9ba22c84643cef62aa0f9adf11fe8898e32493ceef5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyNjhhYzk1Y2JhYjc2YzBlNmVlODk3NzMwNGZjMzZmZjg4Y2ZjZWYyN2QxOWQ0OWU5ZDc5ZjQ1ZjAzZjEzMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkYzUyZjA4YjM5YjA4YjAxYzhkMzA4YmY4ODBiMGJlZjAyZmQxZGZjYzlkOWFhOTNhNGQxYjVmNGQ1OGI2Y2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJhYTdlMzk1OWE4ZmY5M2U2MGUyYzlhODU3YzFhNTA3ZjA2MDE3MzMxOTk2MzhiODliOGM1NThlY2Y5MWIwMDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUyMDIxOGM2ZjM1ZmFhM2VjMzBmZGU4OTlhZjczOWY1MmFjZDMxNmJkMmU3YjI3OTQzNzIwZjkyMzA0MjZjNDIifQ"
+        },
+        {
+          "resource": "repo://src/components/AdminLayout.jsx#L18-L36",
+          "version": "repo-lines-v1:sha256:377fe4f09ded41fae8c59072e6c4a8a82fede5fd874d8b38905715768673a269:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4ODk0MWVlYWRkYTE5ZWMzZDVhN2YzZjU0YTE3MmZjMGViOTk0MmY1MWJhMTcwMThiMmNjNzU0ZjhjMjc2NTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyNmE4M2UzMzdmYmNlN2I2YjVkNmExZjliOTk2NzQ3OWVhZDhiNGRkMDhmMWI3OGY1OGQ3Y2JiNThlMTc0MTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzZGQ5OWNiODU3MDk1NzZkMjFiNDRhMGRjMDNiNDU1MDE0MzdiZTdmOGE5MTM4OTRiZTc4NDgzOGQyNDE1NWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZlYjhlMjg4MGJlZjQ0M2IxOGM2NjM2MDI2Y2E2NTYzODVhN2E3NWQ1YTFhMDdhMTFkNmE1YjlhNTQwOTExMWIifQ"
+        },
+        {
+          "resource": "repo://src/styles/admin.css#L1-L12",
+          "version": "repo-lines-v1:sha256:e04ac5081ac92536287fd7c144942d898552faf7c3bce2bf4c1ffc98a861baad:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3MzI3NzVlZWU3NzAwMThkYjdkNzlkMDM1YTAxNjMwMTVhMDE2ZGUxN2ViYmY4ODg0OTAyZWM2ZDFkOWZjZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0N2E2YzY1YTExNTliMWZmZTdhODkzMmJmNjg2NTA4YWQwMjA2MTNjNWVkMmY1YzljOWJkYTg3N2ZkODEzZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJiNzQyYWUzYTY1MmY3M2VlYjExNDZlOWEzOWM0NGJiZDJiYjY3MGIxNDE3ZGU2MmYyM2FmYTBkZDBhNjU4NjEifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-13T19:07:27.754Z"
+    "at": "2026-11-16T17:37:19.788Z"
   }
 }

@@ -5,7 +5,7 @@ description: 前端从 index.html 内联脚本、main.jsx 模块副作用到 App
 tags: [boot-sequence, entry-point, react-context, provider-tree, error-boundary, csp, security-headers]
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-13T19:07:27.754Z
+    at: 2026-11-16T17:37:19.788Z
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
