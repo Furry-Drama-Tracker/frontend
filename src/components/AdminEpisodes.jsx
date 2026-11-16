@@ -127,6 +127,12 @@ const AdminEpisodes = () => {
     if (showAddForm || showEditForm) window.scrollTo(0, 0);
   }, [showAddForm, showEditForm]);
 
+  useEffect(() => {
+    if (!editingSingleEpisode) return;
+    const el = document.getElementById('single-episode-editor');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [editingSingleEpisode]);
+
   if (!admin) return null;
 
   const updateEpisodeField = (field, value) => {
@@ -172,8 +178,7 @@ const AdminEpisodes = () => {
     });
   };
 
-  const handleAddEpisode = async (e) => {
-    e.preventDefault();
+  const handleAddEpisode = async () => {
     setError('');
     if (!newEpisode.coverImage.trim()) {
       setError(t('adminEpisodes.coverRequired'));
@@ -285,8 +290,7 @@ const AdminEpisodes = () => {
     setShowEditForm(true);
   };
 
-  const handleUpdateEpisode = async (e) => {
-    e.preventDefault();
+  const handleUpdateEpisode = async () => {
     setError('');
     if (!newEpisode.coverImage.trim()) {
       setError(t('adminEpisodes.coverRequired'));
@@ -350,8 +354,7 @@ const AdminEpisodes = () => {
     }
   };
 
-  const handleAddSingleEpisode = async (e) => {
-    e.preventDefault();
+  const handleAddSingleEpisode = async () => {
     setError('');
     if (!newSingleEpisode.episodeLabel.trim()) {
       setError(t('adminEpisodes.episodeLabelRequired'));
@@ -396,6 +399,7 @@ const AdminEpisodes = () => {
   };
 
   const handleEditSingleEpisode = (singleEpisode) => {
+    setShowSingleEpisodeForm(false);
     setEditingSingleEpisode(singleEpisode);
     const customLabel = typeof singleEpisode.episodeLabelCustom === 'string' ? singleEpisode.episodeLabelCustom.trim() : '';
     setNewSingleEpisode({
@@ -865,6 +869,19 @@ const AdminEpisodes = () => {
             </Button>
           </div>
 
+          {editingSingleEpisode && (
+            <div
+              id="single-episode-editor"
+              className="form-container"
+              style={{ marginBottom: 15, background: 'var(--color-fill-1)', padding: 15, borderRadius: 8, border: '1px solid var(--color-border-2)' }}
+            >
+              <h4 style={{ marginTop: 0, marginBottom: 12 }}>
+                {t('adminEpisodes.editEpisodeNum', { num: editingSingleEpisode.episodeNumber || '' })}
+              </h4>
+              {renderSingleEpisodeForm(true)}
+            </div>
+          )}
+
           {showSingleEpisodeForm && !editingSingleEpisode && (
             <div
               className="form-container"
@@ -882,21 +899,6 @@ const AdminEpisodes = () => {
             loading={singleEpisodeQuery.isLoading}
             scroll={{ x: 900 }}
             noDataElement={<Empty description={t('adminEpisodes.noSingleEpisodes')} />}
-            expandable={{
-              expandedRowRender: () => (
-                <div style={{ padding: '14px 16px' }}>
-                  <h4 style={{ marginTop: 0, marginBottom: 12 }}>
-                    {t('adminEpisodes.editEpisodeNum', { num: editingSingleEpisode?.episodeNumber || '' })}
-                  </h4>
-                  {renderSingleEpisodeForm(true)}
-                </div>
-              ),
-              rowExpandable: (record) => editingSingleEpisode?._id === record._id,
-              expandedRowKeys: editingSingleEpisode ? [editingSingleEpisode._id] : [],
-              onExpandedRowsChange: (keys) => {
-                if (keys.length === 0) setEditingSingleEpisode(null);
-              },
-            }}
             onRow={(record) => ({
               draggable: !editingSingleEpisode,
               onDragStart: (event) => handleSingleDragStart(event, record._id),
