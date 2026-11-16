@@ -869,19 +869,6 @@ const AdminEpisodes = () => {
             </Button>
           </div>
 
-          {editingSingleEpisode && (
-            <div
-              id="single-episode-editor"
-              className="form-container"
-              style={{ marginBottom: 15, background: 'var(--color-fill-1)', padding: 15, borderRadius: 8, border: '1px solid var(--color-border-2)' }}
-            >
-              <h4 style={{ marginTop: 0, marginBottom: 12 }}>
-                {t('adminEpisodes.editEpisodeNum', { num: editingSingleEpisode.episodeNumber || '' })}
-              </h4>
-              {renderSingleEpisodeForm(true)}
-            </div>
-          )}
-
           {showSingleEpisodeForm && !editingSingleEpisode && (
             <div
               className="form-container"
@@ -899,6 +886,30 @@ const AdminEpisodes = () => {
             loading={singleEpisodeQuery.isLoading}
             scroll={{ x: 900 }}
             noDataElement={<Empty description={t('adminEpisodes.noSingleEpisodes')} />}
+            expandedRowRender={() => (
+              <div
+                id="single-episode-editor"
+                style={{
+                  padding: '14px 16px',
+                  background: 'var(--color-fill-1)',
+                  borderRadius: 8,
+                  border: '1px solid var(--color-border-2)',
+                  margin: '4px 0',
+                }}
+              >
+                <h4 style={{ marginTop: 0, marginBottom: 12 }}>
+                  {t('adminEpisodes.editEpisodeNum', { num: editingSingleEpisode?.episodeNumber || '' })}
+                </h4>
+                {renderSingleEpisodeForm(true)}
+              </div>
+            )}
+            expandProps={{
+              rowExpandable: (record) => editingSingleEpisode?._id === record._id,
+            }}
+            expandedRowKeys={editingSingleEpisode ? [editingSingleEpisode._id] : []}
+            onExpandedRowsChange={(keys) => {
+              if (keys.length === 0) setEditingSingleEpisode(null);
+            }}
             onRow={(record) => ({
               draggable: !editingSingleEpisode,
               onDragStart: (event) => handleSingleDragStart(event, record._id),
