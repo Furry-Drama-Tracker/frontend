@@ -1,32 +1,40 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { formatApiError } from '../utils/errorMeta';
+import { useTable } from '@refinedev/core';
+import { Alert, Input, Pagination, Space, Table, Tag } from '@arco-design/web-react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
+
+const PAGE_SIZE = 30;
 
 const AdminAuditLogs = () => {
   const { locale, t } = useI18n();
   const { admin } = useOutletContext();
-  const [logs, setLogs] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState({ action: '', admin: '' });
+  const [filterAction, setFilterAction] = useState('');
+  const [filterAdmin, setFilterAdmin] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (admin.role !== 'superadmin') navigate('/admin/dashboard', { replace: true });
-  }, [admin, navigate]);
+  const filters = [];
+  if (filterAction.trim()) filters.push({ field: 'action', value: filterAction.trim() });
+  if (filterAdmin.trim()) filters.push({ field: 'admin', value: filterAdmin.trim() });
 
-  useEffect(() => {
-    if (!admin) return;
-    const params = new URLSearchParams({ page, limit: 30 });
-    if (filter.action) params.set('action', filter.action);
-    if (filter.admin) params.set('admin', filter.admin);
-    adminApi.get(`/api/audit-logs?${params}`)
-      .then(res => { setLogs(res.data.logs); setTotal(res.data.total); })
-      .catch(() => {});
-  }, [page, filter]);
+  const { tableQuery, result, currentPage, setCurrentPage } = useTable({
+    resource: 'audit-logs',
+    pagination: { currentPage: 1, pageSize: PAGE_SIZE, mode: 'server' },
+    filters: { permanent: filters },
+  });
 
+  if (admin && admin.role !== 'superadmin') {
+    navigate('/admin/dashboard', { replace: true });
+    return null;
+  }
   if (!admin) return null;
+
+  const logs = result.data || [];
+  const total = result.total || 0;
+  const queryError = tableQuery.isError
+    ? formatApiError(tableQuery.error, t('adminAuditLogs.title'))
+    : '';
 
   const formatTime = (d) => new Date(d).toLocaleString(locale);
 
@@ -37,48 +45,82 @@ const AdminAuditLogs = () => {
           <h1 className="admin-page-title">{t('adminAuditLogs.title')}</h1>
         </div>
         <div className="admin-page-actions">
-          <span style={{ color: '#86909c', fontSize: '13px' }}>{t('adminAuditLogs.totalCount', { total })}</span>
+          <span style={{ color: 'var(--color-text-3)', fontSize: '13px' }}>{t('adminAuditLogs.totalCount', { total })}</span>
         </div>
       </div>
 
+      {queryError && (
+        <Alert type="error" content={queryError} closable style={{ marginBottom: 16 }} />
+      )}
+
       <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap' }}>
-        <input placeholder={t('adminAuditLogs.filterActionPlaceholder')} value={filter.action} onChange={e => { setFilter(p => ({ ...p, action: e.target.value })); setPage(1); }} style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--input)', color: 'var(--foreground)', fontSize: '13px' }} />
-        <input placeholder={t('adminAuditLogs.filterAdminPlaceholder')} value={filter.admin} onChange={e => { setFilter(p => ({ ...p, admin: e.target.value })); setPage(1); }} style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--input)', color: 'var(--foreground)', fontSize: '13px' }} />
+        <Space size="small">
+          <Input
+            allowClear
+            placeholder={t('adminAuditLogs.filterActionPlaceholder')}
+            value={filterAction}
+            onChange={(v) => { setFilterAction(v); setCurrentPage(1); }}
+            style={{ width: 220 }}
+          />
+          <Input
+            allowClear
+            placeholder={t('adminAuditLogs.filterAdminPlaceholder')}
+            value={filterAdmin}
+            onChange={(v) => { setFilterAdmin(v); setCurrentPage(1); }}
+            style={{ width: 220 }}
+          />
+        </Space>
       </div>
 
-      <div style={{ borderRadius: '12px', border: '1px solid var(--border)', overflowX: 'auto', overflowY: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
-          <thead>
-            <tr style={{ background: 'var(--glass-bg)' }}>
-              <th style={{ padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid var(--border)', color: 'var(--text-secondary)' }}>{t('adminAuditLogs.time')}</th>
-              <th style={{ padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid var(--border)', color: 'var(--text-secondary)' }}>{t('adminAuditLogs.admin')}</th>
-              <th style={{ padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid var(--border)', color: 'var(--text-secondary)' }}>{t('adminAuditLogs.action')}</th>
-              <th style={{ padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid var(--border)', color: 'var(--text-secondary)' }}>{t('adminAuditLogs.target')}</th>
-              <th style={{ padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid var(--border)', color: 'var(--text-secondary)' }}>{t('adminAuditLogs.details')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {logs.map(log => (
-              <tr key={log._id} style={{ borderBottom: '1px solid var(--border)' }}>
-                <td style={{ padding: '8px 14px', color: 'var(--text-tertiary)', whiteSpace: 'nowrap' }}>{formatTime(log.createdAt)}</td>
-                <td style={{ padding: '8px 14px', color: 'var(--foreground)' }}>{log.adminName}</td>
-                <td style={{ padding: '8px 14px' }}><span style={{ background: 'var(--primary-bg)', color: 'var(--primary-light)', padding: '2px 8px', borderRadius: '4px', fontSize: '12px' }}>{log.action}</span></td>
-                <td style={{ padding: '8px 14px', color: 'var(--text-secondary)' }}>{log.target}</td>
-                <td style={{ padding: '8px 14px', color: 'var(--text-tertiary)', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{log.details}</td>
-              </tr>
-            ))}
-            {logs.length === 0 && (
-              <tr><td colSpan={5} style={{ padding: '30px', textAlign: 'center', color: 'var(--text-secondary)' }}>{t('adminAuditLogs.noLogs')}</td></tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+      <Table
+        rowKey="_id"
+        size="small"
+        columns={[
+          {
+            title: t('adminAuditLogs.time'),
+            width: 170,
+            render: (_, log) => (
+              <span style={{ color: 'var(--color-text-3)', whiteSpace: 'nowrap' }}>{formatTime(log.createdAt)}</span>
+            ),
+          },
+          { title: t('adminAuditLogs.admin'), dataIndex: 'adminName', width: 130 },
+          {
+            title: t('adminAuditLogs.action'),
+            dataIndex: 'action',
+            width: 180,
+            render: (value) => <Tag size="small" color="arcoblue">{value}</Tag>,
+          },
+          {
+            title: t('adminAuditLogs.target'),
+            dataIndex: 'target',
+            render: (value) => <span style={{ color: 'var(--color-text-2)' }}>{value}</span>,
+          },
+          {
+            title: t('adminAuditLogs.details'),
+            dataIndex: 'details',
+            ellipsis: true,
+            render: (value) => <span style={{ color: 'var(--color-text-3)' }}>{value}</span>,
+          },
+        ]}
+        data={logs}
+        loading={tableQuery.isLoading}
+        pagination={false}
+        scroll={{ x: 800 }}
+        noDataElement={t('adminAuditLogs.noLogs')}
+      />
 
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '20px' }}>
-        <button className="btn btn-secondary" disabled={page <= 1} onClick={() => setPage(p => p - 1)}>{t('adminAuditLogs.prevPage')}</button>
-        <span style={{ padding: '8px 16px', color: 'var(--text-secondary)', fontSize: '13px' }}>{t('adminAuditLogs.pageOf', { page })}</span>
-        <button className="btn btn-secondary" disabled={page * 30 >= total} onClick={() => setPage(p => p + 1)}>{t('adminAuditLogs.nextPage')}</button>
-      </div>
+      {total > PAGE_SIZE && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
+          <Pagination
+            current={currentPage}
+            pageSize={PAGE_SIZE}
+            total={total}
+            showTotal
+            sizeCanChange={false}
+            onChange={(page) => setCurrentPage(page)}
+          />
+        </div>
+      )}
     </div>
   );
 };

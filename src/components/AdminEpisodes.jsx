@@ -1179,7 +1179,7 @@ const AdminEpisodes = () => {
         }
       />
 
-      {episodes.length > 0 && (
+      {(episodesTable.result.total || 0) > 0 && (
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
           <Pagination
             current={episodesTable.currentPage}

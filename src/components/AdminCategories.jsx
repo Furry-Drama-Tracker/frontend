@@ -1,176 +1,143 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { formatApiError } from '../utils/errorMeta';
-import adminApi from '../utils/adminApi';
+import { useCreate, useDelete, useList, useUpdate } from '@refinedev/core';
+import {
+  Alert,
+  Button,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Popconfirm,
+  Space,
+  Table,
+  Tag,
+} from '@arco-design/web-react';
 import { useOutletContext } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
 
 const AdminCategories = () => {
   const { admin } = useOutletContext();
-  const [categories, setCategories] = useState([]);
-  const [showAddForm, setShowAddForm] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
-  const [newCategoryName, setNewCategoryName] = useState('');
-  const [newCategoryNameEn, setNewCategoryNameEn] = useState('');
-  const [newCategoryOrder, setNewCategoryOrder] = useState(0);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [form] = Form.useForm();
   const { t } = useI18n();
 
+  const { query: listQuery, result: listResult } = useList({
+    resource: 'categories',
+    pagination: { mode: 'off' },
+  });
+
+  const { mutateAsync: createCategory, mutation: createMutation } = useCreate();
+  const { mutateAsync: updateCategory, mutation: updateMutation } = useUpdate();
+  const { mutateAsync: deleteCategory, mutation: deleteMutation } = useDelete();
+
+  const categories = listResult.data || [];
+
   useEffect(() => {
-    fetchCategories();
-  }, []);
+    if (!admin) return;
+  }, [admin]);
 
-  const fetchCategories = async () => {
-    try {
-      const res = await adminApi.get('/api/categories');
-      setCategories(res.data);
-    } catch (err) {
-      console.error('获取分类失败', err);
-    }
+  const openAddForm = () => {
+    setError('');
+    form.resetFields();
+    form.setFieldsValue({ order: 0 });
+    setEditingCategory(null);
+    setShowForm(true);
   };
 
-  const handleAdd = async (e) => {
-    e.preventDefault();
+  const openEditForm = (cat) => {
     setError('');
-    if (!newCategoryName.trim()) {
-      setError(t('adminCategories.nameRequired'));
-      return;
-    }
-    try {
-      await adminApi.post('/api/categories', {
-        name: newCategoryName.trim(),
-        nameEn: newCategoryNameEn.trim(),
-        order: newCategoryOrder
-      });
-      setNewCategoryName('');
-      setNewCategoryNameEn('');
-      setNewCategoryOrder(0);
-      setShowAddForm(false);
-      setSuccess(t('adminCategories.addSuccess'));
-      fetchCategories();
-    } catch (err) {
-      setError(formatApiError(err, t('adminCategories.addFailed')));
-    }
+    form.resetFields();
+    form.setFieldsValue({ name: cat.name, nameEn: cat.nameEn || '', order: cat.order || 0 });
+    setEditingCategory(cat);
+    setShowForm(true);
   };
 
-  const handleEdit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (values) => {
     setError('');
-    if (!newCategoryName.trim()) {
-      setError(t('adminCategories.nameRequired'));
-      return;
-    }
+    const payload = {
+      name: values.name.trim(),
+      nameEn: (values.nameEn || '').trim(),
+      order: values.order ?? 0,
+    };
     try {
-      await adminApi.put(`/api/categories/${editingCategory._id}`, {
-        name: newCategoryName.trim(),
-        nameEn: newCategoryNameEn.trim(),
-        order: newCategoryOrder
-      });
+      if (editingCategory) {
+        await updateCategory({ resource: 'categories', id: editingCategory._id, values: payload });
+        setSuccess(t('adminCategories.editSuccess'));
+      } else {
+        await createCategory({ resource: 'categories', values: payload });
+        setSuccess(t('adminCategories.addSuccess'));
+      }
+      setShowForm(false);
       setEditingCategory(null);
-      setNewCategoryName('');
-      setNewCategoryNameEn('');
-      setNewCategoryOrder(0);
-      setSuccess(t('adminCategories.editSuccess'));
-      fetchCategories();
     } catch (err) {
-      setError(formatApiError(err, t('adminCategories.editFailed')));
+      setError(formatApiError(err, editingCategory ? t('adminCategories.editFailed') : t('adminCategories.addFailed')));
     }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm(t('adminCategories.deleteConfirm'))) return;
+    setError('');
     try {
-      await adminApi.delete(`/api/categories/${id}`);
+      await deleteCategory({ resource: 'categories', id });
       setSuccess(t('adminCategories.deleteSuccess'));
-      fetchCategories();
     } catch (err) {
       setError(formatApiError(err, t('adminCategories.deleteFailed')));
     }
   };
 
-  const openEdit = (cat) => {
-    setEditingCategory(cat);
-    setNewCategoryName(cat.name);
-    setNewCategoryNameEn(cat.nameEn || '');
-    setNewCategoryOrder(cat.order || 0);
-  };
-
-  useEffect(() => {
-    if (showAddForm || editingCategory) window.scrollTo(0, 0);
-  }, [showAddForm, editingCategory]);
-
   if (!admin) return null;
 
-  const renderForm = (onSubmit, submitLabel) => (
-    <form onSubmit={onSubmit}>
-      <div className="form-group">
-        <label>{t('adminCategories.categoryName')}</label>
-        <input
-          type="text"
-          value={newCategoryName}
-          onChange={(e) => setNewCategoryName(e.target.value)}
-          placeholder={t('adminCategories.categoryNamePlaceholder')}
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label>{t('adminCategories.nameEn')} <span style={{color: 'var(--text-tertiary)', fontWeight: 'normal', fontSize: '12px'}}>{t('adminCategories.optionalAutoTranslate')}</span></label>
-        <input
-          type="text"
-          value={newCategoryNameEn}
-          onChange={(e) => setNewCategoryNameEn(e.target.value)}
-          placeholder="English name (optional)"
-        />
-      </div>
-      <div className="form-group">
-        <label>{t('adminCategories.orderLabel')}</label>
-        <input
-          type="number"
-          value={newCategoryOrder}
-          onChange={(e) => setNewCategoryOrder(Number(e.target.value))}
-          min={0}
-        />
-      </div>
-      {error && <div className="error-message">{error}</div>}
-      <div className="form-group">
-        <button type="submit">{submitLabel}</button>
-      </div>
-    </form>
-  );
-
-  if (showAddForm) {
-    return (
-      <div className="admin-page">
-        <div className="admin-page-header">
-          <div>
-            <h1 className="admin-page-title">{t('adminCategories.addCategory')}</h1>
-            <p className="admin-page-desc">{t('adminCategories.title')}</p>
-          </div>
-          <div className="admin-page-actions">
-            <button className="btn btn-md btn-outline" onClick={() => setShowAddForm(false)}>{t('common.back')}</button>
-          </div>
-        </div>
-        <div className="admin-panel">{renderForm(handleAdd, t('adminCategories.add'))}</div>
-      </div>
-    );
-  }
-
-  if (editingCategory) {
-    return (
-      <div className="admin-page">
-        <div className="admin-page-header">
-          <div>
-            <h1 className="admin-page-title">{t('adminCategories.editCategory')}</h1>
-            <p className="admin-page-desc">{editingCategory.name}</p>
-          </div>
-          <div className="admin-page-actions">
-            <button className="btn btn-md btn-outline" onClick={() => setEditingCategory(null)}>{t('common.back')}</button>
-          </div>
-        </div>
-        <div className="admin-panel">{renderForm(handleEdit, t('adminCategories.save'))}</div>
-      </div>
-    );
-  }
+  const columns = [
+    {
+      title: t('adminCategories.categoryNameCol'),
+      dataIndex: 'name',
+      width: 220,
+      render: (value) => (
+        <Tag color="arcoblue" bordered>{value}</Tag>
+      ),
+    },
+    {
+      title: t('adminCategories.nameEnCol'),
+      dataIndex: 'nameEn',
+      render: (value) => (
+        <span style={{ color: value ? 'var(--foreground)' : 'var(--color-text-3)' }}>{value || '—'}</span>
+      ),
+    },
+    {
+      title: t('adminCategories.orderCol'),
+      dataIndex: 'order',
+      width: 120,
+      align: 'center',
+      render: (value) => value || 0,
+    },
+    {
+      title: t('adminCategories.actionsCol'),
+      width: 180,
+      render: (_, cat) => (
+        <Space size="mini" style={{ justifyContent: 'flex-end', width: '100%' }}>
+          <Button size="mini" type="text" onClick={() => openEditForm(cat)}>
+            {t('adminCategories.edit')}
+          </Button>
+          <Popconfirm
+            title={t('adminCategories.deleteConfirm')}
+            onOk={() => handleDelete(cat._id)}
+          >
+            <Button
+              size="mini"
+              type="text"
+              status="danger"
+              loading={deleteMutation.isPending && deleteMutation.variables?.id === cat._id}
+            >
+              {t('adminCategories.delete')}
+            </Button>
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <div className="admin-page">
@@ -179,80 +146,77 @@ const AdminCategories = () => {
           <h1 className="admin-page-title">{t('adminCategories.title')}</h1>
         </div>
         <div className="admin-page-actions">
-          <button className="btn btn-md btn-primary" onClick={() => { setShowAddForm(true); setNewCategoryName(''); setNewCategoryNameEn(''); setNewCategoryOrder(0); setError(''); }}>
+          <Button type="primary" onClick={openAddForm}>
             {t('adminCategories.addCategoryBtn')}
-          </button>
+          </Button>
         </div>
       </div>
 
-      {error && <div className="error-message" style={{marginBottom: '15px'}}>{error}</div>}
-      {success && <div className="success-message" style={{marginBottom: '15px', padding: '10px', background: 'var(--success-bg-strong)', border: '1px solid var(--success-border)', borderRadius: '6px', color: 'var(--success-text)'}}>{success}</div>}
+      {(error || listQuery.isError) && (
+        <Alert
+          type="error"
+          content={error || formatApiError(listQuery.error, t('adminCategories.title'))}
+          closable
+          onClose={() => setError('')}
+          style={{ marginBottom: 16 }}
+        />
+      )}
+      {success && (
+        <Alert type="success" content={success} closable onClose={() => setSuccess('')} style={{ marginBottom: 16 }} />
+      )}
 
-      <div style={{background: 'var(--card)', borderRadius: '12px', border: '1px solid var(--border)', overflow: 'hidden'}}>
-        <div style={{padding: '15px 20px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-          <h3 style={{margin: 0}}>{t('adminCategories.categoryList')}</h3>
-          <span style={{color: 'var(--text-secondary)', fontSize: '14px'}}>{t('adminCategories.categoryCount', { count: categories.length })}</span>
-        </div>
-        {categories.length === 0 ? (
-          <div style={{padding: '40px', textAlign: 'center', color: 'var(--text-secondary)'}}>
-            {t('adminCategories.noCategories')}
-          </div>
-        ) : (
-          <div style={{overflowX: 'auto'}}>
-            <table style={{width: '100%', borderCollapse: 'collapse'}}>
-              <thead>
-                <tr style={{borderBottom: '1px solid var(--border)'}}>
-                  <th style={{padding: '12px 20px', textAlign: 'left', color: 'var(--text-secondary)', fontWeight: '500', fontSize: '14px'}}>{t('adminCategories.categoryNameCol')}</th>
-                  <th style={{padding: '12px 20px', textAlign: 'left', color: 'var(--text-secondary)', fontWeight: '500', fontSize: '14px'}}>{t('adminCategories.nameEnCol')}</th>
-                  <th style={{padding: '12px 20px', textAlign: 'center', color: 'var(--text-secondary)', fontWeight: '500', fontSize: '14px'}}>{t('adminCategories.orderCol')}</th>
-                  <th style={{padding: '12px 20px', textAlign: 'right', color: 'var(--text-secondary)', fontWeight: '500', fontSize: '14px'}}>{t('adminCategories.actionsCol')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {categories.map(cat => (
-                  <tr key={cat._id} style={{borderBottom: '1px solid var(--border)'}}>
-                    <td style={{padding: '12px 20px'}}>
-                      <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-                        <div style={{
-                          padding: '4px 12px', borderRadius: '20px', fontSize: '13px', fontWeight: '500',
-                          background: 'var(--primary-bg)', color: 'var(--primary)',
-                          border: '1px solid var(--primary-border)'
-                        }}>
-                          {cat.name}
-                        </div>
-                      </div>
-                    </td>
-                    <td style={{padding: '12px 20px', color: cat.nameEn ? 'var(--foreground)' : 'var(--text-tertiary)', fontSize: '14px'}}>
-                      {cat.nameEn || '—'}
-                    </td>
-                    <td style={{padding: '12px 20px', textAlign: 'center', color: 'var(--text-secondary)', fontSize: '14px'}}>
-                      {cat.order || 0}
-                    </td>
-                    <td style={{padding: '12px 20px', textAlign: 'right'}}>
-                      <div style={{display: 'flex', gap: '8px', justifyContent: 'flex-end'}}>
-                        <button
-                          className="btn"
-                          style={{padding: '6px 14px', fontSize: '13px'}}
-                          onClick={() => { setError(''); openEdit(cat); }}
-                        >
-                          {t('adminCategories.edit')}
-                        </button>
-                        <button
-                          className="btn btn-secondary"
-                          style={{padding: '6px 14px', fontSize: '13px', color: 'var(--destructive-text)', borderColor: 'var(--destructive-border)'}}
-                          onClick={() => handleDelete(cat._id)}
-                        >
-                          {t('adminCategories.delete')}
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+      <Table
+        rowKey="_id"
+        columns={columns}
+        data={categories}
+        loading={listQuery.isLoading || deleteMutation.isPending}
+        pagination={false}
+        noDataElement={t('adminCategories.noCategories')}
+      />
+
+      <Modal
+        visible={showForm}
+        onCancel={() => { setShowForm(false); setEditingCategory(null); }}
+        footer={null}
+        style={{ width: 480 }}
+        title={editingCategory ? t('adminCategories.editCategory') : t('adminCategories.addCategory')}
+      >
+        <Form form={form} layout="vertical" onSubmit={handleSubmit}>
+          <Form.Item
+            label={t('adminCategories.categoryName')}
+            field="name"
+            rules={[{ required: true, message: t('adminCategories.nameRequired') }]}
+          >
+            <Input placeholder={t('adminCategories.categoryNamePlaceholder')} />
+          </Form.Item>
+          <Form.Item
+            label={(
+              <span>
+                {t('adminCategories.nameEn')}{' '}
+                <span style={{ color: 'var(--color-text-3)', fontWeight: 'normal', fontSize: '12px' }}>
+                  {t('adminCategories.optionalAutoTranslate')}
+                </span>
+              </span>
+            )}
+            field="nameEn"
+          >
+            <Input placeholder="English name (optional)" />
+          </Form.Item>
+          <Form.Item label={t('adminCategories.orderLabel')} field="order">
+            <InputNumber min={0} placeholder="0" style={{ width: '100%' }} />
+          </Form.Item>
+          <Space size="small" style={{ justifyContent: 'flex-end', width: '100%' }}>
+            <Button onClick={() => { setShowForm(false); setEditingCategory(null); }}>{t('common.cancel')}</Button>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={createMutation.isPending || updateMutation.isPending}
+            >
+              {editingCategory ? t('adminCategories.save') : t('adminCategories.add')}
+            </Button>
+          </Space>
+        </Form>
+      </Modal>
     </div>
   );
 };

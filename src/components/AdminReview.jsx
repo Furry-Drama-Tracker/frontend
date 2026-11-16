@@ -55,10 +55,19 @@ const AdminReview = () => {
     pagination: { mode: 'off' },
   });
 
+  // 权限分配下拉需要全部剧集：allTable 是 server 分页（每页 20 条），
+  // 直接复用会导致下拉只能选到当前页，这里用 fetchAll 资源拉全量
+  const { result: assignableResult } = useList({
+    resource: 'review-all-full',
+    pagination: { mode: 'off' },
+    queryOptions: { enabled: activeTab === 'assign' },
+  });
+
   const { mutateAsync: customMutation, mutation: customMutationState } = useCustomMutation();
 
   const pendingEpisodes = pendingTable.result.data || [];
   const allEpisodes = allTable.result.data || [];
+  const assignableEpisodes = Array.isArray(assignableResult.data) ? assignableResult.data : [];
   const creators = Array.isArray(creatorsResult.data) ? creatorsResult.data : [];
 
   const refreshTables = () => {
@@ -378,7 +387,7 @@ const AdminReview = () => {
             scroll={{ x: 1000 }}
             noDataElement={<Empty description={t('adminReview.noPendingEpisodes')} />}
           />
-          {pendingEpisodes.length > 0 && (
+          {(pendingTable.result.total || 0) > 0 && (
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
               <Pagination
                 current={pendingTable.currentPage}
@@ -406,7 +415,7 @@ const AdminReview = () => {
             scroll={{ x: 900 }}
             noDataElement={<Empty description={t('adminReview.noPendingEpisodes')} />}
           />
-          {allEpisodes.length > 0 && (
+          {(allTable.result.total || 0) > 0 && (
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
               <Pagination
                 current={allTable.currentPage}
@@ -437,7 +446,7 @@ const AdminReview = () => {
               onChange={setAssignEpisodeId}
               placeholder={t('adminReview.selectEpisodePlaceholder')}
               style={{ width: '100%' }}
-              options={allEpisodes.map((episode) => ({ value: episode._id, label: episode.title }))}
+              options={assignableEpisodes.map((episode) => ({ value: episode._id, label: episode.title }))}
             />
           </div>
           <div className="form-group">

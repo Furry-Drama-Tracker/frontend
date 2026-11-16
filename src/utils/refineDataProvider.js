@@ -50,12 +50,73 @@ const RESOURCES = {
     listKey: 'list',
     serverPagination: true,
   },
+  // 供下拉选择器等需要全量数据的场景（后端 review/all 默认 limit 20、上限 100，
+  // fetchAll 循环按 totalPages 拉满）
+  'review-all-full': {
+    list: '/api/review/all',
+    listKey: 'list',
+    fetchAll: true,
+  },
   creators: {
     list: '/api/admin/creators',
     clientSide: true,
   },
   categories: {
     list: '/api/categories',
+    create: '/api/categories',
+    update: (id) => `/api/categories/${id}`,
+    deleteOne: (id) => `/api/categories/${id}`,
+    clientSide: true,
+  },
+  banners: {
+    list: '/api/banners/all',
+    create: '/api/banners',
+    update: (id) => `/api/banners/${id}`,
+    deleteOne: (id) => `/api/banners/${id}`,
+    clientSide: true,
+  },
+  announcements: {
+    list: '/api/announcements',
+    create: '/api/announcements',
+    update: (id) => `/api/announcements/${id}`,
+    deleteOne: (id) => `/api/announcements/${id}`,
+    clientSide: true,
+  },
+  reports: {
+    list: '/api/reports/list',
+    listKey: 'reports',
+    serverPagination: true,
+  },
+  'audit-logs': {
+    list: '/api/audit-logs',
+    listKey: 'logs',
+    serverPagination: true,
+  },
+  feedback: {
+    list: '/api/feedback',
+    listKey: 'list',
+    update: (id) => `/api/feedback/${id}`,
+    serverPagination: true,
+  },
+  sessions: {
+    list: '/api/user-sessions/all',
+    clientSide: true,
+  },
+  'creator-profiles-admin': {
+    list: '/api/admin/creator-profiles',
+    update: (id) => `/api/admin/creator-profiles/${id}`,
+    clientSide: true,
+  },
+  themes: {
+    list: '/api/themes/all',
+    create: '/api/themes',
+    update: (id) => `/api/themes/${id}`,
+    deleteOne: (id) => `/api/themes/${id}`,
+    clientSide: true,
+  },
+  'site-content': {
+    list: '/api/site-content',
+    update: (id) => `/api/site-content/${id}`,
     clientSide: true,
   },
 };
@@ -264,11 +325,10 @@ const dataProvider = {
       }
     }
 
-    if (config.clientSide && pagination && pagination.mode !== 'off') {
-      const page = pagination.currentPage || 1;
-      const pageSize = pagination.pageSize || 10;
-      records = records.slice((page - 1) * pageSize, page * pageSize);
-    }
+    // 注意：client 模式（pagination.mode === 'client'）下不要在这里切片。
+    // refine v5 的 useTable/useList 会对 provider 返回的数据自己做 client 分页
+    // （见 @refinedev/core useList 的 memoizedSelect），这里再 slice 一次会导致
+    // 「双重分页」：第 1 页恰好正常，第 2 页起永远为空。
 
     return { data: records, total };
   },

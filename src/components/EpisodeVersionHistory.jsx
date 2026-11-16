@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import adminApi from '../utils/adminApi';
 import Modal from './Modal';
+import ConfirmModal from './ConfirmModal';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowsLeftRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsLeftRight, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
 const EpisodeVersionHistory = ({ episodeId, onClose }) => {
   const { t, locale } = useI18n();
@@ -16,6 +17,11 @@ const EpisodeVersionHistory = ({ episodeId, onClose }) => {
   const [diff, setDiff] = useState(null);
   const [diffLoading, setDiffLoading] = useState(false);
   const [show, setShow] = useState(true);
+  // 回滚确认改用项目自有 ConfirmModal（原先的 window.confirm/alert 是原生对话框，
+  // 与后台其余页面的确认交互不一致，且会阻塞页面）
+  const [rollbackVersion, setRollbackVersion] = useState(null);
+  const [rollbackNotice, setRollbackNotice] = useState('');
+  const rollbackNoticeTimer = React.useRef(null);
 
   // 先触发 Modal 退出动画，动画播完后再通知父组件卸载本组件，
   // 否则父组件直接卸载会导致退出动画无法播放。
@@ -71,12 +77,19 @@ const EpisodeVersionHistory = ({ episodeId, onClose }) => {
     }
   };
 
-  const handleRollback = async (version) => {
-    const confirmed = window.confirm(t('version.rollbackConfirm', { v: version.version }));
-    if (!confirmed) return;
+  const handleRollback = (version) => {
+    setRollbackVersion(version);
+  };
+
+  const doRollback = async () => {
+    const version = rollbackVersion;
+    setRollbackVersion(null);
+    if (!version) return;
     try {
       await adminApi.post(`/api/versions/${episodeId}/rollback/${version.version}`);
-      alert(t('version.rollbackSuccess'));
+      setRollbackNotice(t('version.rollbackSuccess', { v: version.version }));
+      if (rollbackNoticeTimer.current) clearTimeout(rollbackNoticeTimer.current);
+      rollbackNoticeTimer.current = setTimeout(() => setRollbackNotice(''), 3000);
       fetchVersions();
     } catch (error) {
       console.error('Rollback error:', error);
@@ -150,6 +163,19 @@ const EpisodeVersionHistory = ({ episodeId, onClose }) => {
                     {diffLoading ? t('common.loading') : t('version.compare')}
                   </button>
                 )}
+              </div>
+            )}
+
+            {rollbackNotice && (
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: '8px',
+                padding: '10px 14px', marginBottom: '12px',
+                background: 'var(--success-bg, rgba(39,195,65,0.1))',
+                border: '1px solid var(--success-text, #27ae60)',
+                borderRadius: '8px', fontSize: '13px', color: 'var(--success-text, #27ae60)',
+              }}>
+                <FontAwesomeIcon icon={faCircleCheck} aria-hidden="true" />
+                {rollbackNotice}
               </div>
             )}
 
@@ -250,7 +276,18 @@ const EpisodeVersionHistory = ({ episodeId, onClose }) => {
             </div>
           </>
         )}
-    </Modal>
+
+        <ConfirmModal
+          show={!!rollbackVersion}
+          onClose={() => setRollbackVersion(null)}
+          onConfirm={doRollback}
+          title={t('version.rollback')}
+          message={t('version.rollbackConfirm', { v: rollbackVersion?.version ?? '' })}
+          confirmText={t('version.rollback')}
+          cancelText={t('common.cancel')}
+          type="warning"
+        />
+      </Modal>
   );
 };
 

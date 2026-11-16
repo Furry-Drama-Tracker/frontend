@@ -1,10 +1,11 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React, { useState } from 'react';
 import { formatApiError } from '../utils/errorMeta';
+import { useCustomMutation, useList, useUpdate } from '@refinedev/core';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
-import adminApi from '../utils/adminApi';
 import { assetUrl } from '../utils/apiBase';
 import ImageUploader from './ImageUploader';
 import ReviewStatusBadge from './ReviewStatusBadge';
+import { Button, Popconfirm } from '@arco-design/web-react';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faUser } from '@fortawesome/free-solid-svg-icons';
@@ -26,35 +27,38 @@ const hasPending = (profile) => {
 
 const AdminCreatorProfiles = () => {
   const { admin } = useOutletContext();
-  const [profiles, setProfiles] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({ displayName: '', avatar: '', bio: '', socialLinks: [], qqGroupLink: '' });
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
+  const [messageIsError, setMessageIsError] = useState(false);
   // 审核相关状态
   const [reviewingId, setReviewingId] = useState(null);     // 展开待审核修改的 profileId
-  const [reviewBusy, setReviewBusy] = useState(false);      // 审核 API 调用中
   const [rejectNoteMap, setRejectNoteMap] = useState({});   // { [profileId]: note }
   const navigate = useNavigate();
   const { t } = useI18n();
 
-  useEffect(() => {
-    if (admin.role === 'superadmin') {
-      fetchProfiles();
-    } else {
+  const { query: listQuery, result: listResult } = useList({
+    resource: 'creator-profiles-admin',
+    pagination: { mode: 'off' },
+  });
+
+  const { mutateAsync: updateProfile, mutation: updateMutation } = useUpdate();
+  const { mutateAsync: customMutation, mutation: reviewMutation } = useCustomMutation();
+
+  const profiles = listResult.data || [];
+  const loading = listQuery.isLoading;
+  const saving = updateMutation.isPending;
+  const reviewBusy = reviewMutation.isPending;
+
+  React.useEffect(() => {
+    if (admin && admin.role !== 'superadmin') {
       navigate('/admin/dashboard', { replace: true });
     }
   }, [admin, navigate]);
 
-  const fetchProfiles = async () => {
-    try {
-      const res = await adminApi.get('/api/admin/creator-profiles');
-      setProfiles(res.data);
-    } catch (err) {
-      console.error('获取创作者主页列表失败', err);
-    }
-    setLoading(false);
+  const showMessage = (text, isError = false) => {
+    setMessage(text);
+    setMessageIsError(isError);
   };
 
   const startEdit = (profile) => {
@@ -75,58 +79,60 @@ const AdminCreatorProfiles = () => {
   };
 
   const handleSave = async () => {
-    setSaving(true);
-    setMessage('');
     try {
       const linksObj = {};
       editForm.socialLinks.forEach(item => {
         if (item.name.trim()) linksObj[item.name.trim()] = item.url.trim();
       });
-      await adminApi.put(`/api/admin/creator-profiles/${editingId}`, {
-        displayName: editForm.displayName,
-        avatar: editForm.avatar,
-        bio: editForm.bio,
-        socialLinks: linksObj,
-        qqGroupLink: editForm.qqGroupLink
+      await updateProfile({
+        resource: 'creator-profiles-admin',
+        id: editingId,
+        values: {
+          displayName: editForm.displayName,
+          avatar: editForm.avatar,
+          bio: editForm.bio,
+          socialLinks: linksObj,
+          qqGroupLink: editForm.qqGroupLink
+        },
       });
-      setMessage(t('adminCreatorProfiles.saveSuccess'));
-      fetchProfiles();
+      showMessage(t('adminCreatorProfiles.saveSuccess'));
     } catch (err) {
-      setMessage(formatApiError(err, t('adminCreatorProfiles.saveFailed')));
+      showMessage(formatApiError(err, t('adminCreatorProfiles.saveFailed')), true);
     }
-    setSaving(false);
   };
 
   // 通过审核：将 pendingChanges 应用到正式字段
   const handleApprove = async (profileId) => {
-    if (!window.confirm(t('adminCreatorProfiles.approveConfirm'))) return;
-    setReviewBusy(true);
     try {
-      await adminApi.put(`/api/admin/creator-profiles/${profileId}/approve`);
-      setMessage(t('adminCreatorProfiles.approveSuccess'));
+      await customMutation({
+        url: `/api/admin/creator-profiles/${profileId}/approve`,
+        method: 'put',
+        values: {},
+      });
+      showMessage(t('adminCreatorProfiles.approveSuccess'));
       setReviewingId(null);
-      await fetchProfiles();
+      listQuery.refetch();
     } catch (err) {
-      setMessage(formatApiError(err, t('adminCreatorProfiles.reviewFailed')));
+      showMessage(formatApiError(err, t('adminCreatorProfiles.reviewFailed')), true);
     }
-    setReviewBusy(false);
   };
 
   // 拒绝审核：保留 pendingChanges 供创作者修改重提，正式字段不变
   const handleReject = async (profileId) => {
-    if (!window.confirm(t('adminCreatorProfiles.rejectConfirm'))) return;
-    setReviewBusy(true);
     try {
       const note = (rejectNoteMap[profileId] || '').slice(0, 500);
-      await adminApi.put(`/api/admin/creator-profiles/${profileId}/reject`, { note });
-      setMessage(t('adminCreatorProfiles.rejectSuccess'));
+      await customMutation({
+        url: `/api/admin/creator-profiles/${profileId}/reject`,
+        method: 'put',
+        values: { note },
+      });
+      showMessage(t('adminCreatorProfiles.rejectSuccess'));
       setReviewingId(null);
       setRejectNoteMap(prev => ({ ...prev, [profileId]: '' }));
-      await fetchProfiles();
+      listQuery.refetch();
     } catch (err) {
-      setMessage(formatApiError(err, t('adminCreatorProfiles.reviewFailed')));
+      showMessage(formatApiError(err, t('adminCreatorProfiles.reviewFailed')), true);
     }
-    setReviewBusy(false);
   };
 
   if (!admin || admin.role !== 'superadmin') return null;
@@ -252,15 +258,15 @@ const AdminCreatorProfiles = () => {
           {message && (
             <div style={{
               padding: '10px 16px', borderRadius: '8px', marginBottom: '16px',
-              background: message === t('adminCreatorProfiles.saveSuccess') ? 'var(--success-bg)' : 'var(--destructive-bg)',
-              color: message === t('adminCreatorProfiles.saveSuccess') ? 'var(--success-text)' : 'var(--destructive-text)',
-              border: `1px solid ${message === t('adminCreatorProfiles.saveSuccess') ? 'var(--success-border)' : 'var(--destructive-border)'}`
+              background: messageIsError ? 'var(--destructive-bg)' : 'var(--success-bg)',
+              color: messageIsError ? 'var(--destructive-text)' : 'var(--success-text)',
+              border: `1px solid ${messageIsError ? 'var(--destructive-border)' : 'var(--success-border)'}`
             }}>{message}</div>
           )}
 
-          <button className="btn" onClick={handleSave} disabled={saving}>
-            {saving ? t('common.saving') : t('adminCreatorProfiles.saveProfile')}
-          </button>
+          <Button type="primary" onClick={handleSave} loading={saving}>
+            {t('adminCreatorProfiles.saveProfile')}
+          </Button>
         </div>
       ) : (
         <div>
@@ -412,26 +418,26 @@ const AdminCreatorProfiles = () => {
 
                       {/* 审核操作按钮 */}
                       <div style={{ display: 'flex', gap: '8px' }}>
-                        <button
-                          onClick={() => handleApprove(profile._id)}
-                          disabled={reviewBusy}
-                          style={{
-                            flex: 1, padding: '8px 12px', borderRadius: '8px', cursor: reviewBusy ? 'not-allowed' : 'pointer',
-                            background: 'var(--success-bg)', color: 'var(--success-text)',
-                            border: '1px solid var(--success-border)', fontSize: '13px', fontWeight: 500,
-                            opacity: reviewBusy ? 0.6 : 1
-                          }}
-                        >{reviewBusy ? t('adminCreatorProfiles.reviewing') : t('adminCreatorProfiles.approve')}</button>
-                        <button
-                          onClick={() => handleReject(profile._id)}
-                          disabled={reviewBusy}
-                          style={{
-                            flex: 1, padding: '8px 12px', borderRadius: '8px', cursor: reviewBusy ? 'not-allowed' : 'pointer',
-                            background: 'var(--destructive-bg)', color: 'var(--destructive-text)',
-                            border: '1px solid var(--destructive-border)', fontSize: '13px', fontWeight: 500,
-                            opacity: reviewBusy ? 0.6 : 1
-                          }}
-                        >{reviewBusy ? t('adminCreatorProfiles.reviewing') : t('adminCreatorProfiles.reject')}</button>
+                        <Popconfirm title={t('adminCreatorProfiles.approveConfirm')} onOk={() => handleApprove(profile._id)}>
+                          <Button
+                            long
+                            status="success"
+                            disabled={reviewBusy}
+                            loading={reviewBusy && reviewMutation.variables?.url?.includes(profile._id) && reviewMutation.variables?.url?.includes('approve')}
+                          >
+                            {reviewBusy ? t('adminCreatorProfiles.reviewing') : t('adminCreatorProfiles.approve')}
+                          </Button>
+                        </Popconfirm>
+                        <Popconfirm title={t('adminCreatorProfiles.rejectConfirm')} onOk={() => handleReject(profile._id)}>
+                          <Button
+                            long
+                            status="danger"
+                            disabled={reviewBusy}
+                            loading={reviewBusy && reviewMutation.variables?.url?.includes(profile._id) && reviewMutation.variables?.url?.includes('reject')}
+                          >
+                            {reviewBusy ? t('adminCreatorProfiles.reviewing') : t('adminCreatorProfiles.reject')}
+                          </Button>
+                        </Popconfirm>
                       </div>
                     </div>
                   )}

@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { formatApiError } from '../utils/errorMeta';
 
-// Force2FASetup 是角色化 2FA 的强制设置阻断页：管理员/超管未开启 2FA 时
+// Force2FASetup 是角色化 2FA 的强制设置阻断页：内容管理员/站点管理员未开启 2FA 时
 // 拦截在全局模态里完成 TOTP 注册（后端 force2FASetup 门禁同步拦截其余写操作）。
 const Force2FASetup = ({ onUpdate, onLogout }) => {
   const { t } = useI18n();

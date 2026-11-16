@@ -251,9 +251,10 @@ const AdminAnalytics = () => {
                 </g>
               );
             })}
-            {Array.from({ length: Math.min(maxWeeks, 10) }, (_, i) => {
-              const weekNum = Math.round((i / 9) * maxWeeks);
-              const x = padL + (i / 9) * plotW;
+            {Array.from({ length: maxWeeks }, (_, i) => {
+              // 刻度直接对应整数周（数据点从第 1 周开始），避免四舍五入产生重复刻度
+              const weekNum = i + 1;
+              const x = padL + ((weekNum - 1) / Math.max(maxWeeks - 1, 1)) * plotW;
               return (
                 <text key={`xtick-${i}`} x={x} y={chartH - padB + 18} textAnchor="middle" fontSize="10" fill="var(--text-secondary)">{weekNum}</text>
               );
@@ -337,7 +338,7 @@ const AdminAnalytics = () => {
 
   const topByViews = (data.topEpisodesByViews || []).map(e => ({ label: e.title, value: e.views }));
   const topByFollows = (data.topEpisodesByFollows || []).map(e => ({ label: e.title, value: e.followCount }));
-  const topByRating = (data.topEpisodesByRating || []).map(e => ({ label: e.title, value: Math.round(e.avgRating * 10) / 10 }));
+  const topByRating = (data.topEpisodesByRating || []).map(e => ({ label: e.title, value: e.averageRating != null ? Math.round(e.averageRating * 10) / 10 : 0 }));
   const activityTrend = (data.activityTrend || []).map(d => ({ label: d.date?.slice(5) || d.day || '', value: d.count || d.activeUsers || 0 }));
   const retention = data.retention || [];
 

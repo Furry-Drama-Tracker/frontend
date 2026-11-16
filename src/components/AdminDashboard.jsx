@@ -206,14 +206,16 @@ const AdminDashboard = () => {
       title: t('adminDashboard.reviewManagement'),
       desc: t('adminDashboard.reviewManagementDesc'),
       badge: pendingCounts.episodes,
-      show: true,
+      // 后端 /admin/review 仅 admin/superadmin 可访问（AdminLayout 侧栏同步过滤）
+      show: isAdmin,
     },
     {
       to: '/admin/episode-trash',
       icon: 'trash',
       title: t('adminDashboard.episodeTrash'),
       desc: t('adminDashboard.episodeTrashDesc'),
-      show: true,
+      // /admin/episode-trash 同为 ADMIN_UP 路由，创作者不展示该入口
+      show: isAdmin,
     },
     {
       to: '/admin/reports',

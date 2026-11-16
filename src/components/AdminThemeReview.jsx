@@ -1,8 +1,7 @@
-﻿import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useCallback } from 'react';
 import { formatApiError } from '../utils/errorMeta';
+import { useCustomMutation, useList } from '@refinedev/core';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
-import adminApi from '../utils/adminApi';
-import API from '../utils/apiEndpoints';
 import { assetUrl } from '../utils/apiBase';
 import Modal from './Modal';
 import { computeThemeType, themeTypeBadge } from './ThemeEditorModal';
@@ -24,8 +23,6 @@ const AdminThemeReview = () => {
   const { t } = useI18n();
   const navigate = useNavigate();
 
-  const [themes, setThemes] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [tab, setTab] = useState('pending'); // pending | approved | rejected
@@ -34,7 +31,6 @@ const AdminThemeReview = () => {
   const [reviewTarget, setReviewTarget] = useState(null);
   const [reviewAction, setReviewAction] = useState('approve');
   const [reviewNote, setReviewNote] = useState('');
-  const [reviewing, setReviewing] = useState(false);
   const [reviewError, setReviewError] = useState('');
 
   const notify = useCallback((msg) => {
@@ -42,32 +38,27 @@ const AdminThemeReview = () => {
     setTimeout(() => setSuccess(''), 3000);
   }, []);
 
-  const fetchThemes = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await adminApi.get(API.THEMES.ALL);
-      setThemes(res.data || []);
-      setError('');
-    } catch (err) {
-      setError(formatApiError(err, t('adminThemeReview.loadFailed')));
-    } finally {
-      setLoading(false);
-    }
-  }, [t]);
+  const { query: listQuery, result: listResult } = useList({
+    resource: 'themes',
+    pagination: { mode: 'off' },
+  });
 
-  useEffect(() => {
-    if (!admin) return;
-    if (admin.role !== 'superadmin') {
+  const { mutateAsync: reviewTheme, mutation: reviewMutation } = useCustomMutation();
+
+  const themes = listResult.data || [];
+  const loading = listQuery.isLoading;
+  const reviewing = reviewMutation.isPending;
+
+  React.useEffect(() => {
+    if (admin && admin.role !== 'superadmin') {
       navigate('/admin/dashboard', { replace: true });
-      return;
     }
-    fetchThemes();
-  }, [admin, navigate, fetchThemes]);
+  }, [admin, navigate]);
 
   if (!admin) return null;
 
   const filtered = themes.filter((th) => {
-    // 已通过含三类：审核通过上架的系统主题（有 owner 的用户投稿）+ 超管直建
+    // 已通过含三类：审核通过上架的系统主题（有 owner 的用户投稿）+ 站点管理员直建
     // + 历史遗留主题（status 为空，早于审核流程创建，视为已上架）。
     if (tab === 'pending') return th.status === 'pending';
     if (tab === 'approved') return th.status === 'approved' || !th.status;
@@ -88,21 +79,19 @@ const AdminThemeReview = () => {
       setReviewError(t('adminThemeReview.rejectNoteRequired'));
       return;
     }
-    setReviewing(true);
     try {
-      await adminApi.post(API.THEMES.REVIEW(reviewTarget._id), {
-        action: reviewAction,
-        note: reviewNote.trim(),
+      await reviewTheme({
+        url: `/api/themes/${reviewTarget._id}/review`,
+        method: 'post',
+        values: { action: reviewAction, note: reviewNote.trim() },
       });
       notify(reviewAction === 'approve'
         ? t('adminThemeReview.approveSuccess', { name: reviewTarget.name })
         : t('adminThemeReview.rejectSuccess', { name: reviewTarget.name }));
       setReviewTarget(null);
-      fetchThemes();
+      listQuery.refetch();
     } catch (err) {
       setReviewError(formatApiError(err, t('adminThemeReview.reviewFailed')));
-    } finally {
-      setReviewing(false);
     }
   };
 

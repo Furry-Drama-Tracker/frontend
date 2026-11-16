@@ -1,8 +1,8 @@
-﻿import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useCallback } from 'react';
 import { formatApiError } from '../utils/errorMeta';
+import { useCreate, useCustomMutation, useDelete, useList, useUpdate } from '@refinedev/core';
 import { Link, useOutletContext } from 'react-router-dom';
-import adminApi from '../utils/adminApi';
-import API from '../utils/apiEndpoints';
+import { Popconfirm } from '@arco-design/web-react';
 import { assetUrl } from '../utils/apiBase';
 import ThemeEditorModal, { computeThemeType, themeTypeBadge } from './ThemeEditorModal';
 import { useI18n } from '../contexts/I18nContext';
@@ -22,9 +22,7 @@ import { useI18n } from '../contexts/I18nContext';
 const AdminThemes = () => {
   const { admin } = useOutletContext();
   const { t } = useI18n();
-  const [themes, setThemes] = useState([]);
   const [filter, setFilter] = useState('all'); // all | system | personal | pending
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -38,22 +36,18 @@ const AdminThemes = () => {
     setTimeout(() => setSuccess(''), 3000);
   }, []);
 
-  const fetchThemes = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await adminApi.get(API.THEMES.ALL);
-      setThemes(res.data || []);
-      setError('');
-    } catch (err) {
-      setError(formatApiError(err, t('adminThemes.loadFailed')));
-    } finally {
-      setLoading(false);
-    }
-  }, [t]);
+  const { query: listQuery, result: listResult } = useList({
+    resource: 'themes',
+    pagination: { mode: 'off' },
+  });
 
-  useEffect(() => {
-    if (admin) fetchThemes();
-  }, [admin, fetchThemes]);
+  const { mutateAsync: createTheme, mutation: createMutation } = useCreate();
+  const { mutateAsync: updateTheme, mutation: updateMutation } = useUpdate();
+  const { mutateAsync: adminUpdateTheme, mutation: adminUpdateMutation } = useCustomMutation();
+  const { mutateAsync: deleteTheme, mutation: deleteMutation } = useDelete();
+
+  const themes = listResult.data || [];
+  const loading = listQuery.isLoading;
 
   if (!admin) return null;
   const isSuper = admin.role === 'superadmin';
@@ -66,15 +60,14 @@ const AdminThemes = () => {
     setSaving(true);
     try {
       if (editingTheme) {
-        await adminApi.put(API.THEMES.DETAIL(editingTheme._id), payload);
+        await updateTheme({ resource: 'themes', id: editingTheme._id, values: payload });
         notify(t('adminThemes.updateSuccess'));
       } else {
-        // 超管在后台创建的直接是系统主题。
-        await adminApi.post(API.THEMES.LIST.replace('/list', ''), { ...payload, isSystem: isSuper });
+        // 站点管理员在后台创建的直接是系统主题。
+        await createTheme({ resource: 'themes', values: { ...payload, isSystem: isSuper } });
         notify(t('adminThemes.createSuccess'));
       }
       setEditorOpen(false);
-      fetchThemes();
     } catch (err) {
       setError(formatApiError(err, t('adminThemes.saveFailed')));
     } finally {
@@ -83,11 +76,9 @@ const AdminThemes = () => {
   };
 
   const handleDelete = async (theme) => {
-    if (!window.confirm(t('adminThemes.deleteConfirm', { name: theme.name }))) return;
     try {
-      await adminApi.delete(API.THEMES.DETAIL(theme._id));
+      await deleteTheme({ resource: 'themes', id: theme._id });
       notify(t('adminThemes.deleteSuccess'));
-      fetchThemes();
     } catch (err) {
       setError(formatApiError(err, t('adminThemes.deleteFailed')));
     }
@@ -97,9 +88,12 @@ const AdminThemes = () => {
   // 关闭 = 取消默认（站点可以没有任何默认主题）。
   const handleSetDefault = async (theme, wantDefault) => {
     try {
-      await adminApi.put(API.THEMES.ADMIN_UPDATE(theme._id), { isDefault: !!wantDefault });
+      await adminUpdateTheme({
+        url: `/api/themes/${theme._id}/admin`,
+        method: 'put',
+        values: { isDefault: !!wantDefault },
+      });
       notify(wantDefault ? t('adminThemes.defaultSuccess') : t('adminThemes.defaultCleared'));
-      fetchThemes();
     } catch (err) {
       setError(formatApiError(err, t('adminThemes.defaultFailed')));
     }
@@ -107,8 +101,11 @@ const AdminThemes = () => {
 
   const handleToggleEnabled = async (theme) => {
     try {
-      await adminApi.put(API.THEMES.ADMIN_UPDATE(theme._id), { enabled: !theme.enabled });
-      fetchThemes();
+      await adminUpdateTheme({
+        url: `/api/themes/${theme._id}/admin`,
+        method: 'put',
+        values: { enabled: !theme.enabled },
+      });
     } catch (err) {
       setError(formatApiError(err, t('adminThemes.opFailed')));
     }
@@ -116,13 +113,13 @@ const AdminThemes = () => {
 
   const handleToggleSystem = async (theme) => {
     const toSystem = !theme.isSystem;
-    if (!window.confirm(toSystem
-      ? t('adminThemes.toSystemConfirm', { name: theme.name })
-      : t('adminThemes.toPersonalConfirm', { name: theme.name }))) return;
     try {
-      await adminApi.put(API.THEMES.ADMIN_UPDATE(theme._id), { isSystem: toSystem });
+      await adminUpdateTheme({
+        url: `/api/themes/${theme._id}/admin`,
+        method: 'put',
+        values: { isSystem: toSystem },
+      });
       notify(t('adminThemes.classChangeSuccess'));
-      fetchThemes();
     } catch (err) {
       setError(formatApiError(err, t('adminThemes.opFailed')));
     }
@@ -150,6 +147,10 @@ const AdminThemes = () => {
     { key: 'personal', label: t('adminThemes.filterPersonal') },
     { key: 'pending', label: t('adminThemes.filterPending') },
   ];
+
+  const toSystemConfirm = (th) => (!th.isSystem
+    ? t('adminThemes.toSystemConfirm', { name: th.name })
+    : t('adminThemes.toPersonalConfirm', { name: th.name }));
 
   return (
     <div className="admin-panel">
@@ -292,13 +293,26 @@ const AdminThemes = () => {
                         </Link>
                       )}
                       {isSuper && (
-                        <button className="btn btn-secondary" style={{ padding: '5px 10px', fontSize: '12px' }} onClick={() => handleToggleSystem(th)}>
-                          {th.isSystem ? t('adminThemes.toPersonal') : t('adminThemes.toSystem')}
-                        </button>
+                        <Popconfirm
+                          title={toSystemConfirm(th)}
+                          onOk={() => handleToggleSystem(th)}
+                        >
+                          <button className="btn btn-secondary" style={{ padding: '5px 10px', fontSize: '12px' }}>
+                            {th.isSystem ? t('adminThemes.toPersonal') : t('adminThemes.toSystem')}
+                          </button>
+                        </Popconfirm>
                       )}
-                      <button className="btn btn-secondary" style={{ padding: '5px 10px', fontSize: '12px', color: 'var(--destructive-text)', borderColor: 'var(--destructive-border)' }} onClick={() => handleDelete(th)}>
-                        {t('common.delete')}
-                      </button>
+                      <Popconfirm
+                        title={t('adminThemes.deleteConfirm', { name: th.name })}
+                        onOk={() => handleDelete(th)}
+                      >
+                        <button
+                          className="btn btn-secondary"
+                          style={{ padding: '5px 10px', fontSize: '12px', color: 'var(--destructive-text)', borderColor: 'var(--destructive-border)' }}
+                        >
+                          {t('common.delete')}
+                        </button>
+                      </Popconfirm>
                     </div>
                   </div>
                 );

@@ -190,7 +190,7 @@ const AdminEpisodeTrash = () => {
   ];
 
   const queryError = tableQuery.isError
-    ? tableQuery.formatApiError(error, t('adminEpisodeTrash.loadFailed'))
+    ? formatApiError(tableQuery.error, t('adminEpisodeTrash.loadFailed'))
     : '';
 
   return (
@@ -227,7 +227,7 @@ const AdminEpisodeTrash = () => {
         noDataElement={<Empty description={t('adminEpisodeTrash.noItems')} />}
       />
 
-      {items.length > 0 && (
+      {(result.total || 0) > 0 && (
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
           <Pagination
             current={currentPage}

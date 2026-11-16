@@ -1,6 +1,8 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
+import { formatApiError } from '../utils/errorMeta';
+import { useCustomMutation, useList } from '@refinedev/core';
+import { Alert, Button, Popconfirm, Space } from '@arco-design/web-react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGlobe, faLaptop, faMobileScreen, faTabletScreenButton } from '@fortawesome/free-solid-svg-icons';
@@ -8,54 +10,53 @@ import { faChrome, faEdge, faFirefoxBrowser, faSafari } from '@fortawesome/free-
 
 const AdminSessions = () => {
   const { admin } = useOutletContext();
-  const [sessions, setSessions] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [filterAdmin, setFilterAdmin] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [filterAdmin, setFilterAdmin] = useState('');
   const navigate = useNavigate();
-  const { t, lang, locale } = useI18n();
+  const { t, locale } = useI18n();
 
-  useEffect(() => {
-    if (admin.role !== 'superadmin') {
-      navigate('/admin/dashboard', { replace: true });
-      return;
-    }
-    fetchSessions();
-  }, [admin, navigate]);
+  const { query: listQuery, result: listResult } = useList({
+    resource: 'sessions',
+    pagination: { mode: 'off' },
+  });
 
-  const fetchSessions = async () => {
-    setLoading(true);
-    try {
-      const res = await adminApi.get('/api/user-sessions/all');
-      setSessions(res.data.list || res.data);
-    } catch (err) {
-      setError(t('adminSessions.loadFailed'));
-    }
-    setLoading(false);
-  };
+  const { mutateAsync: customMutation, mutation: logoutMutation } = useCustomMutation();
+
+  const allSessions = listResult.data || [];
+  // 筛选按钮需要全量账号列表，这里在本地过滤
+  const sessions = useMemo(
+    () => (filterAdmin ? allSessions.filter(s => s.userId === filterAdmin) : allSessions),
+    [allSessions, filterAdmin],
+  );
+
+  if (admin && admin.role !== 'superadmin') {
+    navigate('/admin/dashboard', { replace: true });
+    return null;
+  }
+  if (!admin) return null;
 
   const handleLogoutSession = async (id) => {
-    if (!window.confirm(t('adminSessions.confirmLogoutDevice'))) return;
+    setError('');
     try {
-      await adminApi.delete(`/api/user-sessions/admin/${id}`);
+      await customMutation({ url: `/api/user-sessions/admin/${id}`, method: 'delete', values: {} });
       setSuccess(t('adminSessions.deviceLoggedOut'));
-      fetchSessions();
+      listQuery.refetch();
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
-      setError(t('adminSessions.operationFailed'));
+      setError(formatApiError(err, t('adminSessions.operationFailed')));
     }
   };
 
   const handleLogoutAllAdmin = async (userId, username) => {
-    if (!window.confirm(t('adminSessions.confirmLogoutAll', { username }))) return;
+    setError('');
     try {
-      await adminApi.delete(`/api/user-sessions/admin/user/${userId}/all`);
+      await customMutation({ url: `/api/user-sessions/admin/user/${userId}/all`, method: 'delete', values: {} });
       setSuccess(t('adminSessions.allDevicesLoggedOut', { username }));
-      fetchSessions();
+      listQuery.refetch();
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
-      setError(t('adminSessions.operationFailed'));
+      setError(formatApiError(err, t('adminSessions.operationFailed')));
     }
   };
 
@@ -89,8 +90,10 @@ const AdminSessions = () => {
     return map[role] || 'var(--text-secondary)';
   };
 
-  const uniqueAdmins = [...new Map(sessions.map(s => [s.userId, { id: s.userId, username: s.username, role: s.userRole }])).values()];
-  const filteredSessions = filterAdmin ? sessions.filter(s => s.userId === filterAdmin) : sessions;
+  const uniqueAdmins = [...new Map(allSessions.map(s => [s.userId, { id: s.userId, username: s.username, role: s.userRole }])).values()];
+  const queryError = listQuery.isError
+    ? formatApiError(listQuery.error, t('adminSessions.loadFailed'))
+    : '';
 
   return (
     <div className="admin-panel">
@@ -99,42 +102,46 @@ const AdminSessions = () => {
           <h1 className="admin-page-title">{t('adminSessions.deviceManagement')}</h1>
         </div>
         <div className="admin-page-actions">
-          <button className="btn btn-md btn-outline" onClick={fetchSessions}>{t('adminSessions.refresh')}</button>
+          <Button onClick={() => listQuery.refetch()}>{t('adminSessions.refresh')}</Button>
         </div>
       </div>
 
-      {error && <div className="error-message" style={{ marginBottom: '16px' }}>{error}</div>}
-      {success && <div style={{ padding: '10px', background: 'var(--success-bg-strong)', border: '1px solid var(--success-border)', borderRadius: '6px', color: 'var(--success-text)', marginBottom: '16px' }}>{success}</div>}
+      {(error || queryError) && (
+        <Alert type="error" content={error || queryError} closable onClose={() => setError('')} style={{ marginBottom: 16 }} />
+      )}
+      {success && (
+        <Alert type="success" content={success} closable onClose={() => setSuccess('')} style={{ marginBottom: 16 }} />
+      )}
 
       <div style={{ marginBottom: '20px', display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
-        <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>{t('adminSessions.filterByAccount')}</span>
+        <span style={{ fontSize: '14px', color: 'var(--color-text-2)' }}>{t('adminSessions.filterByAccount')}</span>
         <button onClick={() => setFilterAdmin('')} style={{
           padding: '6px 14px', borderRadius: '20px', fontSize: '13px', cursor: 'pointer',
           border: '1px solid', transition: 'all 0.2s',
           background: !filterAdmin ? 'var(--primary-bg)' : 'var(--hover-bg)',
-          color: !filterAdmin ? 'var(--primary)' : 'var(--text-secondary)',
-          borderColor: !filterAdmin ? 'var(--primary)' : 'var(--border)'
+          color: !filterAdmin ? 'var(--primary)' : 'var(--color-text-2)',
+          borderColor: !filterAdmin ? 'var(--primary)' : 'var(--color-border-2)'
         }}>{t('adminSessions.all')}</button>
         {uniqueAdmins.map(a => (
           <button key={a.id} onClick={() => setFilterAdmin(a.id)} style={{
             padding: '6px 14px', borderRadius: '20px', fontSize: '13px', cursor: 'pointer',
             border: '1px solid', transition: 'all 0.2s',
             background: filterAdmin === a.id ? 'var(--primary-bg)' : 'var(--hover-bg)',
-            color: filterAdmin === a.id ? 'var(--primary)' : 'var(--text-secondary)',
-            borderColor: filterAdmin === a.id ? 'var(--primary)' : 'var(--border)'
+            color: filterAdmin === a.id ? 'var(--primary)' : 'var(--color-text-2)',
+            borderColor: filterAdmin === a.id ? 'var(--primary)' : 'var(--color-border-2)'
           }}>{a.username} ({getRoleLabel(a.role)})</button>
         ))}
       </div>
 
-      {loading ? (
-        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-secondary)' }}>{t('adminSessions.loading')}</div>
-      ) : filteredSessions.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-secondary)' }}>{t('adminSessions.noLoginRecords')}</div>
+      {listQuery.isLoading ? (
+        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--color-text-2)' }}>{t('adminSessions.loading')}</div>
+      ) : sessions.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--color-text-2)' }}>{t('adminSessions.noLoginRecords')}</div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {filteredSessions.map(session => (
+          {sessions.map(session => (
             <div key={session._id} style={{
-              background: 'var(--card)', borderRadius: '12px', border: '1px solid var(--border)',
+              background: 'var(--card)', borderRadius: '12px', border: '1px solid var(--color-border-2)',
               padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap',
               opacity: session.isActive ? 1 : 0.6, transition: 'opacity 0.2s'
             }}>
@@ -147,7 +154,7 @@ const AdminSessions = () => {
                   <span style={{
                     fontSize: '11px', padding: '2px 8px', borderRadius: '10px',
                     background: 'var(--hover-bg)', color: getRoleColor(session.adminRole),
-                    border: '1px solid var(--border)'
+                    border: '1px solid var(--color-border-2)'
                   }}>{getRoleLabel(session.adminRole)}</span>
                   {session.isActive ? (
                     <span style={{
@@ -158,8 +165,8 @@ const AdminSessions = () => {
                   ) : (
                     <span style={{
                       fontSize: '11px', padding: '2px 8px', borderRadius: '10px',
-                      background: 'var(--hover-bg)', color: 'var(--text-secondary)',
-                      border: '1px solid var(--border)'
+                      background: 'var(--hover-bg)', color: 'var(--color-text-2)',
+                      border: '1px solid var(--color-border-2)'
                     }}>{t('adminSessions.offline')}</span>
                   )}
                   {session.isCurrent && (
@@ -170,48 +177,51 @@ const AdminSessions = () => {
                     }}>{t('adminSessions.currentDevice')}</span>
                   )}
                 </div>
-                <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', fontSize: '13px', color: 'var(--text-secondary)' }}>
+                <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', fontSize: '13px', color: 'var(--color-text-2)' }}>
                   <span>{getBrowserIcon(session.deviceInfo?.browser)} {session.deviceInfo?.browser} {session.deviceInfo?.browserVersion}</span>
                   <span>{session.deviceInfo?.os} {session.deviceInfo?.osVersion}</span>
                   {(session.deviceInfo?.os === 'iOS' || session.deviceInfo?.os === 'iPadOS' || session.deviceInfo?.os === 'macOS') && (
-                    <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontStyle: 'italic' }} title={t('adminSessions.appleVersionNote')}>*</span>
+                    <span style={{ fontSize: '11px', color: 'var(--color-text-3)', fontStyle: 'italic' }} title={t('adminSessions.appleVersionNote')}>*</span>
                   )}
                   {session.deviceInfo?.screenWidth > 0 && (
                     <span>{session.deviceInfo.screenWidth}x{session.deviceInfo.screenHeight}</span>
                   )}
                   {session.ip && <span>IP: {session.ip}</span>}
                 </div>
-                <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', fontSize: '12px', color: 'var(--color-text-2)', marginTop: '4px' }}>
                   <span>{t('adminSessions.loginAt')}: {formatTime(session.loginAt)}</span>
                   {session.isActive && <span>{t('adminSessions.lastActive')}: {formatTime(session.lastActiveAt)}</span>}
                   {!session.isActive && session.logoutAt && <span>{t('adminSessions.offlineAt')}: {formatTime(session.logoutAt)}</span>}
                 </div>
               </div>
-              <div style={{ flexShrink: 0, display: 'flex', gap: '8px' }}>
+              <Space size="small" style={{ flexShrink: 0 }}>
                 {session.isActive && !session.isCurrent && (
-                  <button onClick={() => handleLogoutSession(session._id)} style={{
-                    padding: '6px 14px', borderRadius: '8px', fontSize: '13px',
-                    background: 'var(--destructive-bg)', color: 'var(--destructive-text)',
-                    border: '1px solid var(--destructive-border)', cursor: 'pointer',
-                    transition: 'all 0.2s'
-                  }}>{t('adminSessions.logout')}</button>
+                  <Popconfirm title={t('adminSessions.confirmLogoutDevice')} onOk={() => handleLogoutSession(session._id)}>
+                    <Button
+                      status="danger"
+                      loading={logoutMutation.isPending && logoutMutation.variables?.url?.includes(session._id)}
+                    >
+                      {t('adminSessions.logout')}
+                    </Button>
+                  </Popconfirm>
                 )}
                 {session.isActive && !session.isCurrent && (
-                  <button onClick={() => handleLogoutAllAdmin(session.userId, session.username)} style={{
-                    padding: '6px 14px', borderRadius: '8px', fontSize: '13px',
-                    background: 'var(--hover-bg)', color: 'var(--text-secondary)',
-                    border: '1px solid var(--border)', cursor: 'pointer',
-                    transition: 'all 0.2s'
-                  }}>{t('adminSessions.logoutAll')}</button>
+                  <Popconfirm title={t('adminSessions.confirmLogoutAll', { username: session.username })} onOk={() => handleLogoutAllAdmin(session.userId, session.username)}>
+                    <Button
+                      loading={logoutMutation.isPending && logoutMutation.variables?.url?.includes(session.userId)}
+                    >
+                      {t('adminSessions.logoutAll')}
+                    </Button>
+                  </Popconfirm>
                 )}
-              </div>
+              </Space>
             </div>
           ))}
         </div>
       )}
 
-      {sessions.some(s => s.deviceInfo?.os === 'iOS' || s.deviceInfo?.os === 'iPadOS' || s.deviceInfo?.os === 'macOS') && (
-        <p style={{ fontSize: '11px', color: 'var(--text-tertiary)', marginTop: '12px', fontStyle: 'italic' }}>
+      {allSessions.some(s => s.deviceInfo?.os === 'iOS' || s.deviceInfo?.os === 'iPadOS' || s.deviceInfo?.os === 'macOS') && (
+        <p style={{ fontSize: '11px', color: 'var(--color-text-3)', marginTop: '12px', fontStyle: 'italic' }}>
           * {t('adminSessions.appleVersionNote')}
         </p>
       )}

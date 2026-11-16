@@ -202,7 +202,7 @@ const AdminUsers = () => {
 
   const hasFilters = !!search.trim() || roleFilter !== 'all';
   const queryError = tableQuery.isError
-    ? tableQuery.formatApiError(error, t('adminUsers.operationFailed'))
+    ? formatApiError(tableQuery.error, t('adminUsers.operationFailed'))
     : '';
 
   if (showAddForm) {
@@ -409,7 +409,7 @@ const AdminUsers = () => {
         }
       />
 
-      {users.length > 0 && (
+      {(result.total || 0) > 0 && (
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
           <Pagination
             current={currentPage}
