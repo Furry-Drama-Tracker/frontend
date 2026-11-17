@@ -75,18 +75,29 @@ const AdminReview = () => {
     allTable.tableQuery.refetch();
   };
 
-  const handleApprove = async (id) => {
+  // toEpochMs 把后端 updatedAt（RFC3339 字符串）转为毫秒时间戳；非法输入返回 undefined
+  //（JSON 序列化时剔除，后端对缺省 0 跳过绑定校验）。
+  const toEpochMs = (value) => {
+    const n = new Date(value).getTime();
+    return Number.isFinite(n) ? n : undefined;
+  };
+
+  // handleApprove 携带 expectedUpdatedAt（管理员所看内容的 updatedAt 毫秒值）：
+  // 后端据此做审批内容绑定校验——送审内容在查看后被创作者改写 → 409 REV0007，
+  // 强制重新查看（见 backend ADR-022）。409 后刷新表格让管理员看到新内容。
+  const handleApprove = async (episode) => {
     setError('');
     try {
       await customMutation({
-        url: `/api/review/approve/${id}`,
+        url: `/api/review/approve/${episode._id}`,
         method: 'put',
-        values: { note: reviewNote },
+        values: { note: reviewNote, expectedUpdatedAt: toEpochMs(episode.updatedAt) },
       });
       setReviewNote('');
       refreshTables();
     } catch (err) {
       setError(formatApiError(err, t('adminReview.reviewFailed')));
+      refreshTables();
     }
   };
 
@@ -257,7 +268,7 @@ const AdminReview = () => {
             onChange={setReviewNote}
           />
           <Space size="mini">
-            <Button size="mini" type="primary" onClick={() => handleApprove(episode._id)}>
+            <Button size="mini" type="primary" onClick={() => handleApprove(episode)}>
               {t('adminReview.approve')}
             </Button>
             <Button size="mini" status="danger" onClick={() => handleReject(episode._id)}>
@@ -319,7 +330,7 @@ const AdminReview = () => {
       render: (_, episode) => (
         (episode.reviewStatus === 'pending' || episode.hasPendingChanges) ? (
           <Space size="mini">
-            <Button size="mini" type="primary" onClick={() => handleApprove(episode._id)}>
+            <Button size="mini" type="primary" onClick={() => handleApprove(episode)}>
               {t('adminReview.approve')}
             </Button>
             <Button size="mini" status="danger" onClick={() => handleReject(episode._id)}>

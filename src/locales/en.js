@@ -1269,6 +1269,7 @@ export default {
     linkUrlPlaceholder: 'Link URL, e.g., https://www.bilibili.com/video/...',
     addPlatformLink: '+ Add Platform Link',
     platformHint: 'Supports multiple platforms, e.g., Bilibili, YouTube, Cloud Drive, etc.',
+    linksAdminOnly: 'Watch links are set by admins after review; contact an admin to add or change them (existing links are kept)',
     updateBtn: 'Update',
     addBtn: 'Add',
     cancelEdit: 'Cancel Edit',

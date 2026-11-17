@@ -379,6 +379,10 @@ const AdminEpisodes = () => {
           : (newSingleEpisode.releaseDate ? new Date(newSingleEpisode.releaseDate).toISOString() : null),
       };
       delete submitData.platformLinksList;
+      // 创作者不得提交单集播放链接（后端 403 EPS0039，链接由管理员审核设置，
+      // 见 backend ADR-022）。省略字段 = $set 语义下保持原值：编辑既有带链接的
+      // 单集时，表单预填的旧链接也不会被回传。
+      if (isCreator) delete submitData.platformLinks;
 
       if (editingSingleEpisode) {
         await runCustomMutation({
@@ -764,6 +768,9 @@ const AdminEpisodes = () => {
           </div>
         )}
       </div>
+      {/* 单集播放链接由管理员审核设置（后端 EPS0039）：创作者不展示编辑器，
+          仅提示联系管理员；已设置的链接在提交时保持不变。 */}
+      {!isCreator ? (
       <Form.Item label={t('adminEpisodes.videoUrl')}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {newSingleEpisode.platformLinksList.map((item, index) => (
@@ -812,6 +819,11 @@ const AdminEpisodes = () => {
         </div>
         <p style={{ fontSize: 12, color: 'var(--color-text-2)', marginTop: 6 }}>{t('adminEpisodes.platformHint')}</p>
       </Form.Item>
+      ) : (
+      <Form.Item label={t('adminEpisodes.videoUrl')}>
+        <p style={{ fontSize: 12, color: 'var(--color-text-3)', margin: 0 }}>{t('adminEpisodes.linksAdminOnly')}</p>
+      </Form.Item>
+      )}
       <Space>
         <Button type="primary" htmlType="submit" loading={customMutationState.isPending}>
           {editingSingleEpisode ? t('adminEpisodes.updateBtn') : t('adminEpisodes.addBtn')}

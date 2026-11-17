@@ -1269,6 +1269,7 @@ export default {
     linkUrlPlaceholder: '链接地址，如：https://www.bilibili.com/video/...',
     addPlatformLink: '+ 添加平台链接',
     platformHint: '支持添加多个平台，如：B站、YouTube、网盘等',
+    linksAdminOnly: '单集播放链接由管理员审核后设置；如需添加或修改请联系管理员（已设置的链接会保持不变）',
     updateBtn: '更新',
     addBtn: '添加',
     cancelEdit: '取消编辑',
