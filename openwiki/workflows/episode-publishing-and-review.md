@@ -30,10 +30,10 @@ sources:
     resource: repo://src/hooks/useEpisodes.js
   - id: openwiki-source-56ece19ff58ff888bdcfad24
     resource: repo://src/utils/refineDataProvider.js
-generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
+generated: { by: "zcode", at: "2026-11-17T17:20:17.142Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-16T17:37:19.788Z
+    at: 2026-11-17T17:20:17.142Z
 ---
 
 # 剧集创作、审核与版本流转
@@ -58,8 +58,8 @@ verified:
 ```mermaid
 flowchart TD
     A["admin 对象（AdminLayout 通过 /api/admin/verify 注入 outlet context）"] --> B{"admin.role 是 creator"}
-    B -->|是| C["GET /api/creator/my-episodes（page/limit=100 循环翻页）"]
-    B -->|否| D["GET /api/episodes（page/limit=100 循环翻页）"]
+    B -->|是| C["GET /api/creator/my-episodes（fetchAll limit=200 循环拉全量, refine 客户端分页）"]
+    B -->|否| D["GET /api/episodes（server 分页 page/limit=20, 仅 approved）"]
     C --> E["创作者列表：审核状态列 + 重新提交按钮"]
     D --> F["管理员列表：创建者与授权编辑列 + 删除按钮"]
     G["AdminReview"] --> H["GET /api/review/pending 与 /api/review/all"]
@@ -72,11 +72,11 @@ flowchart TD
 由此得出两条必须同时满足的改动约束：
 
 1. **改读路径要看两处**。creator 走 `/api/creator/my-episodes`（返回自己的剧集，含 `reviewStatus`、`reviewNote`、`hasPendingChanges`、`pendingChanges`），其他角色走 `/api/episodes`（返回公开列表结构 `episodes[]`）。两处响应形状在页面里被同一个兼容表达式吃掉（`Array.isArray(data) ? data : (data.episodes || data.list || [])`），所以后端改动某一侧的包装字段时页面不会报错，只会静默变空。
-2. **改写路径只需改一处，但要知道权限在后端**。新建、编辑、删除都不按角色分支，创建者/授权编辑的判定完全依赖后端；前端只用操作可见性（`.action-link`）表达"创作者不能删"。
+2. **改写路径只需改一处，但要知道权限在后端**。新建、编辑、删除都不按角色分支，创建者/授权编辑的判定完全依赖后端；前端只用操作可见性表达"创作者不能删"——creator 视图根本不渲染删除按钮。单集的播放链接字段更进一步：creator 提交时剔除 `platformLinks`（后端 403 EPS0039）。
 
-`AdminEpisodes` 已改为**循环翻页拉全量**：按 `page` 从 1 递增、`limit=100` 逐页请求，读响应里的 `totalPages` 决定是否继续（上限 100 页，即约 1 万条），全部累加进同一个数组后再做本地过滤——原先「超过 100 条静默缺失后排数据」的坑已被填掉，但 1 万条以上的剧集仍会缺失，且翻页期间没有加载提示。顶部 `AdminSearchInput` 仍在这份全量数组上按 `searchKey` 本地过滤。后台唯一做服务端分页的剧集相关页面仍是回收站（每页 20 条，`total` / `totalPages` 来自响应）。
+`AdminEpisodes` 的分页已随 Refine 迁移分化：creator 视图经 `my-episodes` 资源 fetchAll（provider 按 `limit=200` 循环、读响应 `totalPages`，上限 100 页 ≈ 2 万条）拉全量后由 refine 客户端切片；admin 视图走 `episodes` 资源 server 分页（20 条/页，仅 approved）。顶部 `AdminSearchInput` 在两种视图都渲染（标题候选来自当前已加载的行），搜索词经 `search` 过滤参数分流：creator 视图由 provider 本地过滤，admin 视图交给后端 `search` 参数，且搜索词变化会把页码重置到 1。剧集相关页面里仍做 server 分页的还有回收站（每页 20 条，`total` / `totalPages` 来自响应）。
 
-表格本身已换成源力样式：`.yl-page-header` 标题区、`.table-wrapper` + `<table className="table">`、`.status-tag` 状态样式，行内操作从 `<button>` 改为 `.action-link` span（`role="button"`、`tabIndex=0`、`Enter` 键同样触发），删除类操作用 `.action-link.action-danger` 区分颜色。
+表格本体已是 Arco `Table`（`columns` props 传列、`pagination={false}`、行内操作用 Arco `Button`——`type="text"` + `size="mini"`，删除按钮 `status="danger"` 且仅 admin 视图渲染；空态用 Arco `Empty`），配合项目自有 `admin.css` 的 `.admin-page-header` 头部骨架与 `.admin-panel` 容器——源力时代的 `.table-wrapper` / `.action-link` 行内操作写法已随 Refine+Arco 迁移移除。
 
 ## 审核态的状态机
 
@@ -126,7 +126,7 @@ stateDiagram-v2
 
 ### 单集维护
 
-单集 CRUD 全部内联在 `AdminEpisodes` 里，不走共享 hook：新增 `POST /api/episodes/:id/episodes`、编辑 `PUT /api/episodes/single/:id`、删除 `DELETE /api/episodes/single/:id`（删除前 `window.confirm`）。每次写入后同时刷新单集列表与剧集列表，因为单集操作会改变剧集级计数。表单在「集数」旁新增了「显示序号」（`episodeLabel`，选填、≤40 字符，占位「例如：1（上）、1（番外）」，编辑时读取回退链 `episodeLabelCustom ?? episodeLabel`）；单集列表的序号列按 `episodeLabel || episodeNumber` 渲染，留空显示纯集号。
+单集 CRUD 全部内联在 `AdminEpisodes` 里，不走共享 hook：新增 `POST /api/episodes/:id/episodes`、编辑 `PUT /api/episodes/single/:id`、删除 `DELETE /api/episodes/single/:id`（删除前 `window.confirm`）。每次写入后同时刷新单集列表与剧集列表，因为单集操作会改变剧集级计数。表单在「集数」旁有「显示序号」（`episodeLabel`，**必填**并自动预填「第N集」，空提交被 `episodeLabelRequired` 拦截；编辑时读取回退链 `episodeLabelCustom ?? episodeLabel ?? 预填`），「标题」同样是提交前手动校验的必填项（空标题被 `titleRequired` 拦下——`Form.Item` 的 `required` 只渲染星号、没有 `rules`，挡不住提交）。**单集播放链接是创作者的角色门禁**：表单对 creator 不渲染链接编辑器（只显示 `linksAdminOnly` 提示，引导联系管理员），提交时从请求体剔除 `platformLinks`——后端对创作者提交链接返回 403 EPS0039（链接由管理员审核设置，backend ADR-022），省略字段在 `$set` 语义下保持原值，编辑既有带链接的单集时预填旧链接也不会被回传。单集列表的序号列按 `episodeLabel || episodeNumber` 渲染，留空显示纯集号。
 
 单集提交有一个必须保持的互斥关系：
 
@@ -156,8 +156,9 @@ sequenceDiagram
     participant Ep as 剧集记录
     participant Creator as 创作者
     participant Public as 前台访客
-    Reviewer->>API: PUT /api/review/approve/:id 带 note 可空
+    Reviewer->>API: PUT /api/review/approve/:id 带 note 可空 + expectedUpdatedAt
     Reviewer->>API: PUT /api/review/reject/:id 带 note 必填
+    API->>API: approve 用 expectedUpdatedAt 做内容绑定校验（漂移则 409 REV0007）
     API->>Ep: 写入 reviewStatus 与 reviewNote
     API-->>Creator: 通知 review_result 携带 metadata.status 与 metadata.note
     Note over Ep,Public: 可见集合由后端按 reviewStatus 过滤
@@ -170,9 +171,10 @@ sequenceDiagram
 关键约定：
 
 - **两个端点共用同一个 `note` 字段**，通过时不校验、驳回时前端先拦（`rejectReasonRequired`，只要 `note.trim()` 为空直接报错、不发请求）。因此驳回理由是"前端必填 + 后端落库"的双保险，改字段名要同步三处：`AdminReview` 的入参、`reviewNote` 的展示，以及通知面板对 `metadata.note` 的拼装。
-- **`reviewNote` 是页面级单一状态，不是每行独立**。待审核表格里每一行都渲染同一个受控输入框，绑定同一个 `reviewNote`；在任何一行输入的备注，会被之后点击的任意一行按钮使用。成功路径清空 `reviewNote`，失败路径只设置 `error`（成功后不清理 `error`，旧错误会残留到下一次失败）。
+- **approve 请求体携带乐观并发绑定**。`values` 是 `{ note, expectedUpdatedAt }`，后者由 `toEpochMs(episode.updatedAt)` 转成毫秒值——非法输入返回 `undefined`，JSON 序列化时剔除该字段，后端对缺省跳过校验。送审内容在管理员查看后被创作者改写时，后端回 409 REV0007（审批内容绑定校验，见 backend ADR-022）；前端捕获后写入 `error` **并且失败路径也刷新两个表格**，让审核人看到新内容重新审批。
+- **`reviewNote` 是页面级单一状态，不是每行独立**。待审核表格里每一行都渲染同一个受控输入框，绑定同一个 `reviewNote`；在任何一行输入的备注，会被之后点击的任意一行按钮使用。成功路径清空 `reviewNote`；失败路径设置 `error`，且没有定时器自动清除——红字会一直显示到下一次操作（下次点击开头被 `setError('')` 清掉）。
 - **"所有剧集"页签没有备注输入框**。该页签的拒绝按钮同样要求 `reviewNote.trim()` 非空，所以除非先在"待审核"页签里输入过备注（同一组件状态，切页签不清空），在这个页签点"拒绝"只会得到错误提示。这是当前实现里最容易踩空的一条路径。
-- 审核动作后页面会同时刷新待审队列与全量列表；但 `handleAssignEditor` 只刷新全量列表，`handleRemoveEditor` 也是。
+- 审核动作后页面会同时刷新待审队列与全量列表；`handleAssignEditor` 与 `handleRemoveEditor` 成功后同样走 `refreshTables()` 刷新两者。
 
 ### 待审修改对照
 
@@ -195,7 +197,7 @@ sequenceDiagram
 - 列表 `GET /api/versions/:episodeId`，读 `data.versions`；行内展示 `V{version}`、`createdAt`、`changedBy.username || changedBy.accountId`、`changeSummary`。
 - 点行展开该版本的 `data` 全字段（键值网格），再点收起。
 - 对比模式：依次选中两版，前端**按版本号升序**决定 `v1`/`v2` 后请求 `GET /api/versions/:episodeId/diff/:v1/:v2`，把响应当数组渲染成"字段 / 旧值 / 新值"表格；选中第三版会重置配对。
-- 回滚：`POST /api/versions/:episodeId/rollback/:version`，确认文案明确"当前数据将被覆盖"，成功后 `alert` 并**只重拉版本列表**。
+- 回滚：`POST /api/versions/:episodeId/rollback/:version`，确认走项目自有 `ConfirmModal`（文案声明"当前数据将被覆盖"），成功后显示行内提示条（3 秒自动清除）并**只重拉版本列表**。
 - 关闭采用先播退出动画再通知父组件卸载的写法（`setShow(false)` + `setTimeout(onClose, 300)`），父组件直接卸载会让动画失效。
 
 一个容易忽略的后果：**回滚不会刷新 `AdminEpisodes` 的剧集列表**。弹窗关闭后外层仍是回滚前的行数据，需要重新进入页面或触发一次列表拉取才能看到新值。
@@ -231,19 +233,20 @@ sequenceDiagram
 1. **改读源**：确认 `AdminEpisodes`（`/api/creator/my-episodes` 与 `/api/episodes` 两侧）、`AdminReview`（`/api/review/pending` 与 `/api/review/all`）、`AdminEpisodeTrash`（`/api/episode-trash`）四类响应形状都被覆盖；两边都容忍 `{ list }` / 裸数组，改错一侧不会报错只会空白。
 2. **改审核态取值**：同步 `ReviewStatusBadge` 的 `statusStyles` / `statusLabelKeys`、`AdminReview` 的 `reviewStatus || 'pending'` 默认值、`EpisodeDetail` 的 noindex 判定、通知面板的 `review_result` 分支。
 3. **改驳回备注**：`AdminReview` 的 `note` 入参与必填校验、`reviewNote` 展示、通知 `metadata.note` 三处对齐。
-4. **新增审核写操作**：记得刷新待审队列 + 全量列表（现有 `assign-editor` 只刷后者）；同时考虑是否需要清空页面级 `error`。
-5. **新增可待审字段**：加入 `PENDING_DIFF_FIELDS` 与 `renderPendingValue`，并确认 `handleEditEpisode` 的 `pick` 回填覆盖它。
-6. **改单集字段**：`AdminEpisodes` 的内联实现与 `useEpisodes` hook 是两份互不引用的代码（见下节），任一侧的字段/端点改动都要人工对齐。
-7. **改版本快照结构**：同时检查 `/api/versions/*`（列表 / diff / 回滚）与 `/api/episode-trash/:id/versions`（只读列表）两个消费方。
+4. **新增审核写操作**：记得刷新待审队列 + 全量列表（现有审核动作统一走 `refreshTables()` 同时刷两者）；同时考虑是否需要清空页面级 `error`。改 approve 请求体时注意 `expectedUpdatedAt` 的转换在 `toEpochMs`（非法输入剔除、缺省跳过校验），并保持"409 REV0007 → 写 error + 刷新两个表格"这条失败路径的耦合。
+5. **改单集表单守卫**：`episodeLabel` 与 `title` 的必填都是提交前手动校验（`Form.Item` 的 `required` 没有 `rules` 不会拦截提交）；创作者侧 `platformLinks` 在提交时剔除（EPS0039），新增单集字段若涉及时效性要同步 `isScheduled`/`releaseDate`/`scheduledDate` 互斥关系。
+6. **新增可待审字段**：加入 `PENDING_DIFF_FIELDS` 与 `renderPendingValue`，并确认 `handleEditEpisode` 的 `pick` 回填覆盖它。
+7. **改单集字段**：`AdminEpisodes` 的内联实现与 `useEpisodes` hook 是两份互不引用的代码（见下节），任一侧的字段/端点改动都要人工对齐。
+8. **改版本快照结构**：同时检查 `/api/versions/*`（列表 / diff / 回滚）与 `/api/episode-trash/:id/versions`（只读列表）两个消费方。
 
 ## 已知薄弱点
 
 | 现象 | 位置 | 影响 |
 | --- | --- | --- |
-| 列表 `limit=100` 且无分页 | `AdminEpisodes` | 超过 100 条剧集时列表与搜索静默缺失 |
+| creator 全量拉取有上限 | `AdminEpisodes`（my-episodes fetchAll） | creator 视图按 `limit=200` 循环最多 100 页 ≈ 2 万条，超出部分静默缺失；admin 视图为 server 分页不受影响 |
 | `reviewNote` 为页面级共享状态 | `AdminReview` 待审核表格 | 一行输入的备注会作用于之后点击的任意一行 |
 | "所有剧集"页签没有备注输入框 | `AdminReview` | 在该页签点"拒绝"必被 `rejectReasonRequired` 拦下 |
-| 成功后不清理 `error` | `AdminReview` 的 `handleApprove` / `handleReject` | 上一次失败的红字会残留 |
+| 失败红字无自动清除 | `AdminReview` 的 `handleApprove` / `handleReject` | 失败红字没有定时器清除，会一直显示到下一次操作；approve 失败（含 409 REV0007）现在还会刷新两个表格 |
 | 回滚后不刷新剧集列表 | `EpisodeVersionHistory` → `AdminEpisodes` | 关闭弹窗后行数据仍是回滚前的值 |
 | 无 `draft` 态 | 全链路 | 无法保存"未提交审核"的草稿；新建即进入后端决定的初始审核态 |
 | 前端不发送 `isUpcoming` | `AdminEpisodes` 单集表单 | 转正全靠后端根据 `isScheduled` 翻转推断，前端无法显式表达 |

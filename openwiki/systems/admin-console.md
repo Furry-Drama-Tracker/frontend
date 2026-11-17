@@ -70,10 +70,10 @@ sources:
     resource: repo://src/utils/clearClientData.js
   - id: openwiki-source-56ece19ff58ff888bdcfad24
     resource: repo://src/utils/refineDataProvider.js
-generated: { by: "zcode", at: "2026-11-16T17:37:19.788Z" }
+generated: { by: "zcode", at: "2026-11-17T17:20:17.142Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-16T17:37:19.788Z
+    at: 2026-11-17T17:20:17.142Z
 ---
 
 # 管理后台：布局、角色可见性与待办
@@ -232,9 +232,9 @@ flowchart TD
 | `AdminCreatorProfile` | 创作者编辑自己的展示主页（含待审内容回填） | `/api/creator-profile/my-profile` |
 | `AdminCreatorProfiles` | 超管管理所有创作者主页并审批其修改 | `/api/admin/creator-profiles`、`/:id/approve`、`/:id/reject` |
 
-这一组的分工对应剧集从创作、送审、上架到删除的生命周期；审核状态语义（`pending`/`approved`/`rejected`）通过共享的 `ReviewStatusBadge` 组件统一呈现。剧集审核与版本变更的完整流程见 [剧集发布与审核](../workflows/episode-publishing-and-review.md)。
+这一组的分工对应剧集从创作、送审、上架到删除的生命周期；审核状态语义（`pending`/`approved`/`rejected`）通过共享的 `ReviewStatusBadge` 组件统一呈现。`AdminReview` 的审批请求自 2026-11 起携带**乐观并发绑定**：approve 请求体带上审核人所看内容的 `updatedAt` 毫秒值（`expectedUpdatedAt`，非法输入在序列化时剔除），送审内容在查看后被创作者改写时后端回 409 REV0007，前端失败路径也会刷新表格让审核人看到新内容。剧集审核与版本变更的完整流程见 [剧集发布与审核](../workflows/episode-publishing-and-review.md)。
 
-`AdminEpisodes` 是唯一按角色分裂数据源与列的页面：creator 走 refine 资源 `my-episodes`（`GET /api/creator/my-episodes`，fetchAll `limit=200` 循环拉全量）、其他角色走资源 `episodes`（`GET /api/episodes`，server 分页 `page/limit=20`、`sort=latest`，仅返回 approved），搜索为客户端过滤（creator 视图）或服务端 `search` 参数（admin 视图）；creator 视图把"审核状态"列换入、隐藏"创建者"与"授权编辑"列、没有删除按钮，且仅在 `reviewStatus === 'rejected'` 时出现"重新提交"按钮（`POST /api/episodes/:id/resubmit`）。单集管理表单的「显示序号」字段（`episodeLabel`）改为**必填并自动预填「第N集」**（`formatEpisodeLabel(n)`，空提交被 `episodeLabelRequired` 拦截），编辑读取回退链 `episodeLabelCustom ?? episodeLabel ?? formatEpisodeLabel(episodeNumber)`；单集列表新增**排序序号列**（按当前数组顺序渲染 `index + 1`，与 `episodeLabel` 的显示序号解耦），拖拽排序重排 `episodeNumber` 后按并发 5 批量保存（只提交有变化的行，携带未改动的 `episodeLabel`，因此自定义显示序号不随排序漂移）。剧集标签输入支持中英文逗号混排（`split(/[,，]/)` 后逐项 trim 去空）。删除操作本身是软删除——记录进入回收站，由 `AdminEpisodeTrash` 承接恢复或彻底清除。
+`AdminEpisodes` 是唯一按角色分裂数据源与列的页面：creator 走 refine 资源 `my-episodes`（`GET /api/creator/my-episodes`，fetchAll `limit=200` 循环拉全量）、其他角色走资源 `episodes`（`GET /api/episodes`，server 分页 `page/limit=20`、`sort=latest`，仅返回 approved），搜索为客户端过滤（creator 视图）或服务端 `search` 参数（admin 视图）；creator 视图把"审核状态"列换入、隐藏"创建者"与"授权编辑"列、没有删除按钮，且仅在 `reviewStatus === 'rejected'` 时出现"重新提交"按钮（`POST /api/episodes/:id/resubmit`）。单集管理表单的「显示序号」字段（`episodeLabel`）改为**必填并自动预填「第N集」**（`formatEpisodeLabel(n)`，空提交被 `episodeLabelRequired` 拦截），编辑读取回退链 `episodeLabelCustom ?? episodeLabel ?? formatEpisodeLabel(episodeNumber)`；单集「标题」同样是提交前手动校验的必填项——`Form.Item` 的 `required` 只渲染星号、没有 `rules`，空标题会被 `titleRequired` 在后端 400 之前拦下。创作者的**单集播放链接是角色门禁**：表单对 creator 不渲染链接编辑器（只显示"链接由管理员审核后设置，如需修改联系管理员"提示，`linksAdminOnly`），提交时直接从请求体剔除 `platformLinks`——后端对创作者提交链接返回 403 EPS0039（链接由管理员审核设置，见 backend ADR-022）；省略字段在 `$set` 语义下保持原值，因此编辑既有带链接的单集时，表单预填的旧链接也不会被回传。单集列表新增**排序序号列**（按当前数组顺序渲染 `index + 1`，与 `episodeLabel` 的显示序号解耦），拖拽排序重排 `episodeNumber` 后按并发 5 批量保存（只提交有变化的行，携带未改动的 `episodeLabel`，因此自定义显示序号不随排序漂移）。剧集标签输入支持中英文逗号混排（`split(/[,，]/)` 后逐项 trim 去空）。删除操作本身是软删除——记录进入回收站，由 `AdminEpisodeTrash` 承接恢复或彻底清除。
 
 ### 站点外观与内容
 

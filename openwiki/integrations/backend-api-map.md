@@ -26,6 +26,8 @@ sources:
     resource: repo://src/components/AdminFeedback.jsx
   - id: openwiki-source-11c92b2033df029713925335
     resource: repo://src/components/AdminLayout.jsx
+  - id: openwiki-source-3739c7ad76ebd944dc04aa97
+    resource: repo://src/components/AdminReview.jsx
   - id: openwiki-source-c4a2ade1820d6e35c826fcde
     resource: repo://src/components/AdminSiteContent.jsx
   - id: openwiki-source-90df6398a9bdee1975095452
@@ -92,10 +94,10 @@ sources:
     resource: repo://src/utils/refineDataProvider.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "zcode", at: "2026-11-16T17:37:19.788Z" }
+generated: { by: "zcode", at: "2026-11-17T17:20:17.142Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-16T17:37:19.788Z
+    at: 2026-11-17T17:20:17.142Z
 ---
 
 # 后端契约地图（API 分组与错误语义）
@@ -358,7 +360,7 @@ flowchart LR
 | 待办 | `GET /api/admin/pending-counts` → `{ episodes, friendLinks, themes, feedbacks, reports }` 等徽标计数 |
 | 用户 | `POST /api/admin/register`、`DELETE /api/admin/users/:id`、`PUT /api/admin/role/:id`、`PUT /api/admin/user-admin-access/:id`（迁移页的写操作经 `meta.endpoint` 直达） |
 | 剧集与创作者 | `GET /api/admin/creators`、`POST /api/episodes/upload`、`PUT /api/admin/creator-profiles/:id/approve`、`PUT /api/admin/creator-profiles/:id/reject`、`GET·PUT /api/creator-profile/my-profile`、`GET /api/creator-profile/by-creator/:id` |
-| 审核 | `PUT /api/review/approve/:id`、`PUT /api/review/reject/:id`、`PUT /api/review/assign-editor/:id`、`PUT /api/review/remove-editor/:id`（均带 `{ note }` 或 `{ editorId }`） |
+| 审核 | `PUT /api/review/approve/:id`（体 `{ note, expectedUpdatedAt? }`：后者是审核人所看内容的 `updatedAt` 毫秒值，供后端做审批内容绑定校验，内容被改写时返回 409 REV0007）、`PUT /api/review/reject/:id`（体 `{ note }`）、`PUT /api/review/assign-editor/:id`、`PUT /api/review/remove-editor/:id`（体 `{ editorId }`） |
 | 分类/轮播 | 与"内容读取"一节同一组端点，后台以管理身份调用增删改接口 |
 | 站点内容与邮件 | 见上一节；后台超管专属（非超管被 `navigate('/admin/dashboard')` 挡回） |
 | 公告 | `GET·POST /api/announcements`、`PUT·DELETE /api/announcements/:id`、`POST /api/announcements/:id/send-email`、`POST /api/announcements/:id/send-notification`；用户侧读 `GET /api/announcements/active?channel=banner` 或 `?channel=popup` |

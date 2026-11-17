@@ -40,10 +40,10 @@ sources:
     resource: repo://src/utils/offlineQueue.js
   - id: openwiki-source-581dc5746c844c4ee0b781c7
     resource: repo://vite.config.js
-generated: { by: "zcode", at: "2026-11-11T16:33:24.381Z" }
+generated: { by: "zcode", at: "2026-11-17T17:20:17.142Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-16T17:37:19.788Z
+    at: 2026-11-17T17:20:17.142Z
 ---
 
 # 验证与质量门禁（无测试框架）
@@ -205,7 +205,8 @@ oxc: { drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [
 
 - [ ] **角色闸门在前端只是体验层。** `AdminReview` 只在 `admin.role` 为 `admin` 或 `superadmin` 时拉数据，其他角色 `navigate('/admin/dashboard', { replace: true })`。真正的权限判定在后端——前端通过不代表接口放行；验证时用 creator 账号直接访问 `/admin/review`，期望被弹回仪表盘。
 - [ ] **驳回必须填理由。** 前端在 `note` 为空时直接报错、不发请求；后端是否同样强制需在另一个仓库核对。改文案/改校验时两边都要看。
-- [ ] **通过/驳回后两个列表都要重取。** 处理函数同时刷新 `pending` 与 `all`；只刷新一个会出现"待审核里消失、全部列表里状态没变"的不一致。
+- [ ] **通过/驳回后两个列表都要重取。** 处理函数同时刷新 `pending` 与 `all`，且 approve 的**失败路径也会刷新**（见下一项）；只刷新一个会出现"待审核里消失、全部列表里状态没变"的不一致。
+- [ ] **approve 携带乐观并发绑定。** `PUT /api/review/approve/:id` 的请求体现在带 `expectedUpdatedAt`（审核人所看内容 `updatedAt` 的毫秒值，非法输入在序列化时剔除）；送审内容在查看后被创作者改写时后端回 409 REV0007，前端把错误写进页面并重取两个列表，让审核人看到新内容后重新审批。验证：审核人在待审页停留期间让创作者改同一单集，再点"通过" → 期望红字提示且表格数据更新。
 - [ ] **审核对照表的字段表是显式的。** `PENDING_DIFF_FIELDS` 列了 16 个字段（标题、简介、封面、集数、状态、分类、标签、更新日、首播、`hideCreator`、`customAuthors`、QQ 群等）。**新增可编辑字段而不同步这张表，审核人就会"盲审"**——改动被批准但从未被看见。这是审核流程里最容易被破坏、也最难被发现的不变量。
 - [ ] **前台可见性只能在真实数据上验。** 审核通过后，用无痕窗口以游客身份刷新首页与 `/episode/:id`，期望内容出现；驳回后期望消失，且创作者侧能看到驳回理由（状态徽章见 `ReviewStatusBadge`）。前端不做可见性过滤，全部依赖后端返回值。
 - [ ] **仪表盘徽章不是实时的。** `/api/admin/pending-counts` 只在进入仪表盘时取一次，且失败被 `.catch(() => {})` 吞掉——**"0"既可能是真的没有待办，也可能是请求失败**。验证待办数字时请刷新仪表盘，并确认网络面板里该请求是 200。
