@@ -360,6 +360,11 @@ const AdminEpisodes = () => {
       setError(t('adminEpisodes.episodeLabelRequired'));
       return;
     }
+    // title 必填：Form.Item 的 required 只是星号展示（无 rules），后端 400 前先挡。
+    if (!newSingleEpisode.title.trim()) {
+      setError(t('adminEpisodes.titleRequired'));
+      return;
+    }
     try {
       const episodeId = editingEpisode._id;
       const submitData = {
