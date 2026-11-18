@@ -31,7 +31,7 @@ export const useEpisodes = () => {
       });
       setError('');
     } catch (err) {
-      setError(t('adminEpisodes.fetchEpisodesFailed'));
+      setError(formatApiError(err, t('adminEpisodes.fetchEpisodesFailed')));
       console.error('Error fetching episodes:', err);
     } finally {
       setLoading(false);

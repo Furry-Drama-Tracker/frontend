@@ -4,7 +4,7 @@ import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBoxArchive, faDownload, faFloppyDisk, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
-import { formatApiError } from '../utils/errorMeta';
+import { describeApiError, formatApiError, formatErrorMessage } from '../utils/errorMeta';
 
 const AdminBackup = () => {
   const { admin } = useOutletContext();
@@ -36,7 +36,7 @@ const AdminBackup = () => {
       window.URL.revokeObjectURL(url);
       setMessage(t('adminBackup.exportSuccess'));
     } catch (e) {
-      setMessage(t('adminBackup.exportFailed'));
+      setMessage(formatApiError(e, t('adminBackup.exportFailed')));
     }
     setExporting(false);
   };
@@ -52,7 +52,10 @@ const AdminBackup = () => {
       const res = await adminApi.post('/api/backup/import', { data, overwrite });
       setMessage(t('adminBackup.importSuccess') + JSON.stringify(res.data.results));
     } catch (e) {
-      setMessage(t('adminBackup.importFailed') + formatApiError(e, e.message));
+      // JSON.parse 客户端异常无信封（fallback 取 e.message）；"恢复失败："上下文折进提示文案，
+      // 整体保持统一格式：码: 恢复失败：详情 (参考号)。
+      const { message, code, ref } = describeApiError(e, e.message || '');
+      setMessage(formatErrorMessage(code, ref, `${t('adminBackup.importFailed')}${message}`));
     }
     setImporting(false);
     e.target.value = '';

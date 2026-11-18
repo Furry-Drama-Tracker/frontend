@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useEpisodes } from '../hooks/useEpisodes';
 import { useI18n } from '../contexts/I18nContext';
+import { formatApiError } from '../utils/errorMeta';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 
@@ -98,7 +99,7 @@ const SingleEpisodeManager = ({ episode, onClose }) => {
       await loadSingleEpisodes();
       setError('');
     } catch (err) {
-      setError(t('singleEpisode.deleteFailed'));
+      setError(formatApiError(err, t('singleEpisode.deleteFailed')));
     }
   };
 
@@ -121,7 +122,7 @@ const SingleEpisodeManager = ({ episode, onClose }) => {
       await loadSingleEpisodes();
       setError('');
     } catch (err) {
-      setError(t('singleEpisode.publishFailed'));
+      setError(formatApiError(err, t('singleEpisode.publishFailed')));
     }
   };
 

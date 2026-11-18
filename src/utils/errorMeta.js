@@ -1,12 +1,22 @@
 // 统一错误信封展示工具。
 // 后端 4xx/5xx 响应体字段：{message, error(错误码 XXXYYYY), ref(0-999999999 整数), status}；
 // 契约见 backend/AGENTS.md「错误码与参考号」。展示与复制由前端拼装，message 恒为纯文案。
+// 统一展示格式：<错误码>: <提示文案> (<参考号>)，参考号补零 9 位、三位一组空格分隔，
+// 例："USR0007: 该邮箱已注册 (000 123 456)"。
 
-// formatErrorId 出错编号合一：USR0007 + 123456789 → "USR0007-000123456"；非法输入返回 null。
-export function formatErrorId(code, ref) {
-  if (typeof code !== 'string' || !/^[A-Z]{3}\d{4}$/.test(code)) return null;
+// formatErrorRef 参考号展示：123456789 → "123 456 789"（补零 9 位、三位一组空格分隔）；非法输入返回 null。
+export function formatErrorRef(ref) {
   if (!Number.isInteger(ref) || ref < 0 || ref >= 1e9) return null;
-  return `${code}-${String(ref).padStart(9, '0')}`;
+  return String(ref).padStart(9, '0').match(/.{3}/g).join(' ');
+}
+
+// formatErrorMessage 统一格式拼装："USR0007: 文案 (000 123 456)"。
+// code 非法时仅返回文案；code 合法而 ref 非法时省略括号段（"USR0007: 文案"）。
+export function formatErrorMessage(code, ref, message) {
+  const validCode = typeof code === 'string' && /^[A-Z]{3}\d{4}$/.test(code);
+  if (!validCode) return message;
+  const refText = formatErrorRef(ref);
+  return refText ? `${code}: ${message} (${refText})` : `${code}: ${message}`;
 }
 
 // stripEmbeddedSuffix 剥离旧版后端内嵌的 " [CODE·ref]" / " [CODE-ref]" 后缀（兼容期用）。
@@ -15,20 +25,19 @@ export function stripEmbeddedSuffix(message) {
   return message.replace(/\s*\[[A-Z]{3}\d{4}[·-]\d{1,9}\]\s*$/, '');
 }
 
-// describeApiError 从 axios error 提取 {message, id}：message 优先后端文案（过剥离），
-// 缺省回退 fallback；id = 出错编号（error+ref 非法时为 null）。
+// describeApiError 从 axios error 提取 {message, code, ref}：message 优先后端文案（过剥离），
+// 缺省回退 fallback；code/ref 原样透传，交由 formatErrorMessage 拼装。
 export function describeApiError(err, fallback = '') {
   const data = err?.response?.data;
   let message = typeof data?.message === 'string' ? stripEmbeddedSuffix(data.message) : '';
   if (!message) message = fallback;
-  return { message, id: formatErrorId(data?.error, data?.ref) };
+  return { message, code: data?.error, ref: data?.ref };
 }
 
-// formatApiError 单字符串形态——各组件 catch 的统一出口。
-// \n 在普通 div 中按 CSS 白空格规则折叠为空格分隔，whiteSpace:'pre-line' 时换行。
+// formatApiError 单字符串形态——各组件 catch 的统一出口："USR0007: 文案 (000 123 456)"。
 export function formatApiError(err, fallback = '') {
-  const { message, id } = describeApiError(err, fallback);
-  return id ? `${message}\n${id}` : message;
+  const { message, code, ref } = describeApiError(err, fallback);
+  return formatErrorMessage(code, ref, message);
 }
 
 // copyText 剪贴板写入；writeText 不可用（非安全上下文）时 textarea 兜底。

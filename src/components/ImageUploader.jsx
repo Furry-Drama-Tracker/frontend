@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import adminApi from '../utils/adminApi';
 import { assetUrl } from '../utils/apiBase';
 import { useI18n } from '../contexts/I18nContext';
+import { formatApiError } from '../utils/errorMeta';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faFolderOpen, faRulerCombined, faScissors, faThumbtack, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
@@ -191,7 +192,7 @@ const ImageUploader = ({ value, onChange, label, aspectRatio, outputWidth, outpu
       }
     } catch (err) {
       console.error('Upload failed', err);
-      alert(t('imageUploader.uploadFailedRetry'));
+      alert(formatApiError(err, t('imageUploader.uploadFailedRetry')));
     }
     setUploading(false);
     if (fileInputRef.current) fileInputRef.current.value = '';

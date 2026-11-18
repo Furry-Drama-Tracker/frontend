@@ -27,7 +27,7 @@ const SharedFolder = () => {
         const res = await axios.get(`/api/folders/shared/${shareToken}`);
         setData(res.data);
       } catch (err) {
-        setError(err.response?.status === 404 ? t('share.folderNotFound') : t('common.error'));
+        setError(formatApiError(err, err.response?.status === 404 ? t('share.folderNotFound') : t('common.error')));
       } finally {
         setLoading(false);
       }

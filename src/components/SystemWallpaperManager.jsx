@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useI18n } from '../contexts/I18nContext';
 import API from '../utils/apiEndpoints';
 import { assetUrl } from '../utils/apiBase';
+import { formatApiError } from '../utils/errorMeta';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faImage, faSpinner, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons';
 
@@ -34,8 +35,8 @@ const SystemWallpaperManager = () => {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       await loadWallpapers();
-    } catch {
-      alert(t('adminContent.wallpaperUploadFail'));
+    } catch (e) {
+      alert(formatApiError(e, t('adminContent.wallpaperUploadFail')));
     } finally {
       setUploading(false);
     }

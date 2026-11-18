@@ -497,7 +497,7 @@ const AdminEpisodes = () => {
       singleEpisodeQuery.refetch();
       episodesTable.tableQuery.refetch();
     } catch (err) {
-      setError(t('adminEpisodes.reorderFailed'));
+      setError(formatApiError(err, t('adminEpisodes.reorderFailed')));
       singleEpisodeQuery.refetch();
     }
   };

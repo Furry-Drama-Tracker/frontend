@@ -7,7 +7,7 @@ import { I18nContext, I18nProvider, useI18n } from './contexts/I18nContext';
 import { SiteSettingsProvider, useSiteSettings } from './contexts/SiteSettingsContext';
 import useTranslation from './hooks/useTranslation';
 import { assetUrl } from './utils/apiBase';
-import { stripEmbeddedSuffix, formatErrorId, copyText } from './utils/errorMeta';
+import { stripEmbeddedSuffix, formatErrorMessage, copyText } from './utils/errorMeta';
 import NavBar from './components/NavBar';
 import Modal from './components/Modal';
 import AdminErrorBoundary from './components/AdminErrorBoundary';
@@ -385,7 +385,7 @@ function AppContent() {
   const { t, lang } = useI18n();
   const { settings: siteSettingsData } = useSiteSettings();
   const [showFeedback, setShowFeedback] = useState(false);
-  const [apiError, setApiError] = useState(null); // {message, id}：id=出错编号（码-参考号），可为 null
+  const [apiError, setApiError] = useState(null); // {text, copyable}：text=统一格式错误串「码: 文案 (参考号)」
   const [copiedId, setCopiedId] = useState(false);
   const apiErrorTimer = useRef(null);
   const location = useLocation();
@@ -398,7 +398,8 @@ function AppContent() {
       let msg = typeof d.message === 'string' ? stripEmbeddedSuffix(d.message) : '';
       if (!msg) msg = d.messageKey ? t(d.messageKey) : '';
       if (apiErrorTimer.current) clearTimeout(apiErrorTimer.current);
-      setApiError({ message: msg, id: formatErrorId(d.error, d.ref) });
+      const text = formatErrorMessage(d.error, d.ref, msg);
+      setApiError({ text, copyable: text !== msg });
       apiErrorTimer.current = setTimeout(() => setApiError(null), 10000);
     };
     window.addEventListener('api-error', handleApiError);
@@ -616,7 +617,7 @@ function AppContent() {
           maxWidth: '360px', boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
         }}>
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-            <span style={{ flex: 1, whiteSpace: 'pre-line' }}>{apiError.message}</span>
+            <span style={{ flex: 1, whiteSpace: 'pre-line' }}>{apiError.text}</span>
             <button
               onClick={() => setApiError(null)}
               aria-label={t('common.close')}
@@ -625,12 +626,11 @@ function AppContent() {
               <FontAwesomeIcon icon={faXmark} aria-hidden="true" />
             </button>
           </div>
-          {apiError.id && (
-            <div style={{ marginTop: '6px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', opacity: 0.85 }}>
-              <span style={{ flex: 1, fontFamily: 'monospace' }}>{apiError.id}</span>
+          {apiError.copyable && (
+            <div style={{ marginTop: '6px', display: 'flex', justifyContent: 'flex-end', fontSize: '12px', opacity: 0.85 }}>
               <button
                 onClick={async () => {
-                  if (await copyText(apiError.id)) {
+                  if (await copyText(apiError.text)) {
                     setCopiedId(true);
                     setTimeout(() => setCopiedId(false), 2000);
                   }

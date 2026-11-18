@@ -168,9 +168,9 @@ const Login = ({ login }) => {
       if (data?.needVerification) {
         setNeedVerification(true);
         setVerifyEmail(data.email || formData.identifier);
-        setError(data.message || t('auth.verifyEmailFirst'));
+        setError(formatApiError(error, t('auth.verifyEmailFirst')));
       } else {
-        setError(data?.message || t('auth.loginFailed'));
+        setError(formatApiError(error, t('auth.loginFailed')));
         // 邮箱不存在：后端附带 accountNotFound 标志，展示"去注册"引导。
         setSuggestRegister(!!data?.accountNotFound);
       }

@@ -114,7 +114,7 @@ const AdminAnnouncements = () => {
     try {
       await deleteAnnouncement({ resource: 'announcements', id });
     } catch (e) {
-      showMessage(t('adminAnnouncements.deleteFailed'), true);
+      showMessage(formatApiError(e, t('adminAnnouncements.deleteFailed')), true);
     }
   };
 

@@ -6,6 +6,7 @@ import API from '../utils/apiEndpoints';
 import { apiUrl } from '../utils/apiBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faBox, faCheck, faCircleCheck, faEnvelope, faKey, faMobileScreenButton, faShieldHalved, faTrashCan, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { formatApiError } from '../utils/errorMeta';
 
 const maskEmail = (email) => {
   if (!email) return '';
@@ -32,7 +33,14 @@ const AccountSecurity = ({ user }) => {
         headers: getAuthHeaders(),
         credentials: 'include'
       });
-      if (!res.ok) throw new Error('export failed');
+      if (!res.ok) {
+        // fetch 不走 axios 拦截器：手动透传错误信封（message/error/ref），供 formatApiError 拼装。
+        let body = null;
+        try { body = await res.json(); } catch { /* 非 JSON 响应体，忽略 */ }
+        const err = new Error(body?.message || 'export failed');
+        err.response = { status: res.status, data: body };
+        throw err;
+      }
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -41,7 +49,7 @@ const AccountSecurity = ({ user }) => {
       a.click();
       window.URL.revokeObjectURL(url);
     } catch (e) {
-      setExportError(t('profile.exportDataFailed'));
+      setExportError(formatApiError(e, t('profile.exportDataFailed')));
     }
     setExportLoading(false);
   };

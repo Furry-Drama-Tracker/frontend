@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useI18n } from '../contexts/I18nContext';
+import { formatApiError } from '../utils/errorMeta';
 
 export const useCategories = () => {
   const { t } = useI18n();
@@ -15,7 +16,7 @@ export const useCategories = () => {
       setCategories(res.data.map(c => c.name));
       setError('');
     } catch (err) {
-      setError(t('adminCategories.fetchFailed'));
+      setError(formatApiError(err, t('adminCategories.fetchFailed')));
       console.error('Failed to fetch categories:', err);
     } finally {
       setLoading(false);

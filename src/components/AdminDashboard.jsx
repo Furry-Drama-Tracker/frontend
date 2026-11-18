@@ -5,6 +5,7 @@ import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBullhorn, faChartLine, faClipboardList, faCommentDots, faDatabase, faEnvelope, faFile, faFilm, faGear, faImage, faLink, faListCheck, faMobileScreen, faPalette, faRotate, faTag, faTrash, faTriangleExclamation, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { Card, Button, Tag, Alert, Space } from '@arco-design/web-react';
+import { formatApiError } from '../utils/errorMeta';
 
 const ICONS = {
   episode: faFilm,
@@ -232,9 +233,9 @@ const AdminDashboard = () => {
       const res = await adminApi.post(url, {});
       setStatusError(false);
       setStatusMsg(res.data.message);
-    } catch {
+    } catch (e) {
       setStatusError(true);
-      setStatusMsg(t('adminDashboard.operationFailed'));
+      setStatusMsg(formatApiError(e, t('adminDashboard.operationFailed')));
     }
     clearStatusMsg();
   };
