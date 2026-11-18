@@ -10,11 +10,11 @@ import {
   Modal,
   Popconfirm,
   Space,
-  Table,
   Tag,
 } from '@arco-design/web-react';
 import { useOutletContext } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
+import AdminResponsiveTable from './AdminResponsiveTable';
 
 const AdminCategories = () => {
   const { admin } = useOutletContext();
@@ -165,7 +165,7 @@ const AdminCategories = () => {
         <Alert type="success" content={success} closable onClose={() => setSuccess('')} style={{ marginBottom: 16 }} />
       )}
 
-      <Table
+      <AdminResponsiveTable
         rowKey="_id"
         columns={columns}
         data={categories}

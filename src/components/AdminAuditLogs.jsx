@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { formatApiError } from '../utils/errorMeta';
 import { useTable } from '@refinedev/core';
-import { Alert, Input, Pagination, Space, Table, Tag } from '@arco-design/web-react';
+import { Alert, Input, Pagination, Tag } from '@arco-design/web-react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useI18n } from '../contexts/I18nContext';
+import AdminResponsiveTable from './AdminResponsiveTable';
 
 const PAGE_SIZE = 30;
 
@@ -54,25 +55,23 @@ const AdminAuditLogs = () => {
       )}
 
       <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap' }}>
-        <Space size="small">
-          <Input
-            allowClear
-            placeholder={t('adminAuditLogs.filterActionPlaceholder')}
-            value={filterAction}
-            onChange={(v) => { setFilterAction(v); setCurrentPage(1); }}
-            style={{ width: 220 }}
-          />
-          <Input
-            allowClear
-            placeholder={t('adminAuditLogs.filterAdminPlaceholder')}
-            value={filterAdmin}
-            onChange={(v) => { setFilterAdmin(v); setCurrentPage(1); }}
-            style={{ width: 220 }}
-          />
-        </Space>
+        <Input
+          allowClear
+          placeholder={t('adminAuditLogs.filterActionPlaceholder')}
+          value={filterAction}
+          onChange={(v) => { setFilterAction(v); setCurrentPage(1); }}
+          style={{ flex: '1 1 180px', minWidth: 0 }}
+        />
+        <Input
+          allowClear
+          placeholder={t('adminAuditLogs.filterAdminPlaceholder')}
+          value={filterAdmin}
+          onChange={(v) => { setFilterAdmin(v); setCurrentPage(1); }}
+          style={{ flex: '1 1 180px', minWidth: 0 }}
+        />
       </div>
 
-      <Table
+      <AdminResponsiveTable
         rowKey="_id"
         size="small"
         columns={[

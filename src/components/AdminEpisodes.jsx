@@ -13,9 +13,9 @@ import {
   Pagination,
   Select,
   Space,
-  Table,
   Tag,
 } from '@arco-design/web-react';
+import AdminResponsiveTable from './AdminResponsiveTable';
 import AdminSearchInput from './AdminSearchInput';
 import ImageUploader from './ImageUploader';
 import { useI18n } from '../contexts/I18nContext';
@@ -896,7 +896,7 @@ const AdminEpisodes = () => {
             </div>
           )}
 
-          <Table
+          <AdminResponsiveTable
             rowKey="_id"
             data={singleEpisodes}
             pagination={false}
@@ -1184,7 +1184,7 @@ const AdminEpisodes = () => {
         />
       </div>
 
-      <Table
+      <AdminResponsiveTable
         rowKey="_id"
         columns={columns}
         data={episodes}

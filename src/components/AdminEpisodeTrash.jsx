@@ -9,9 +9,9 @@ import {
   Pagination,
   Popconfirm,
   Space,
-  Table,
   Tag,
 } from '@arco-design/web-react';
+import AdminResponsiveTable from './AdminResponsiveTable';
 import { assetUrl } from '../utils/apiBase';
 import { useI18n } from '../contexts/I18nContext';
 
@@ -217,7 +217,7 @@ const AdminEpisodeTrash = () => {
         />
       )}
 
-      <Table
+      <AdminResponsiveTable
         rowKey="_id"
         columns={columns}
         data={items}
@@ -252,13 +252,14 @@ const AdminEpisodeTrash = () => {
         <p style={{ fontSize: 13, color: 'var(--color-text-3)', marginTop: 0, lineHeight: 1.6 }}>
           {t('adminEpisodeTrash.versionsDesc')}
         </p>
-        <Table
+        <AdminResponsiveTable
           rowKey="_id"
           size="small"
           columns={versionsColumns}
           data={versions}
           loading={versionsQuery.isLoading}
           pagination={false}
+          mobileActions={false}
           noDataElement={<Empty description={t('adminEpisodeTrash.noVersions')} />}
         />
       </Modal>

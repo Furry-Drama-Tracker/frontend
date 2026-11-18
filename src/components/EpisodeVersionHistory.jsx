@@ -5,9 +5,11 @@ import ConfirmModal from './ConfirmModal';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowsLeftRight, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import useMediaQuery from '../hooks/useMediaQuery';
 
 const EpisodeVersionHistory = ({ episodeId, onClose }) => {
   const { t, locale } = useI18n();
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const [versions, setVersions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedVersion, setSelectedVersion] = useState(null);
@@ -180,100 +182,178 @@ const EpisodeVersionHistory = ({ episodeId, onClose }) => {
             )}
 
             {diff && (
-              <div style={{ marginBottom: '16px', overflowX: 'auto' }}>
+              isMobile ? (
+                <div className="admin-mobile-card-list" style={{ marginBottom: 16 }}>
+                  {diff.length === 0 ? (
+                    <div className="empty-message">{t('version.noHistory')}</div>
+                  ) : diff.map((item, idx) => (
+                    <div className="admin-mobile-card" key={idx}>
+                      <div className="admin-mobile-card-title">{item.field}</div>
+                      <div className="admin-mobile-card-fields">
+                        <div className="admin-mobile-card-field">
+                          <span className="admin-mobile-card-field-label">{t('version.oldValue')}</span>
+                          <span className="admin-mobile-card-field-value" style={{ color: 'var(--destructive-text)' }}>
+                            {formatValue(item.oldValue)}
+                          </span>
+                        </div>
+                        <div className="admin-mobile-card-field">
+                          <span className="admin-mobile-card-field-label">{t('version.newValue')}</span>
+                          <span className="admin-mobile-card-field-value" style={{ color: 'var(--success-text)' }}>
+                            {formatValue(item.newValue)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div style={{ marginBottom: '16px', overflowX: 'auto' }}>
+                  <table className="admin-table">
+                    <thead>
+                      <tr>
+                        <th>{t('version.field')}</th>
+                        <th>{t('version.oldValue')}</th>
+                        <th>{t('version.newValue')}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {diff.length === 0 ? (
+                        <tr><td colSpan="3" style={{ textAlign: 'center' }}>{t('version.noHistory')}</td></tr>
+                      ) : (
+                        diff.map((item, idx) => (
+                          <tr key={idx}>
+                            <td style={{ fontWeight: '500' }}>{item.field}</td>
+                            <td style={{ color: 'var(--destructive-text)', maxWidth: '250px', wordBreak: 'break-all', fontSize: '13px' }}>
+                              {formatValue(item.oldValue)}
+                            </td>
+                            <td style={{ color: 'var(--success-text)', maxWidth: '250px', wordBreak: 'break-all', fontSize: '13px' }}>
+                              {formatValue(item.newValue)}
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )
+            )}
+
+            {isMobile ? (
+              <div className="admin-mobile-card-list">
+                {versions.map((v) => (
+                  <div
+                    key={v._id}
+                    className={`admin-mobile-card${selectedVersion?.version === v.version && !compareMode ? ' is-expanded' : ''}`}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleVersionClick(v)}
+                  >
+                    <div className="admin-mobile-card-title">V{v.version}</div>
+                    <div className="admin-mobile-card-fields">
+                      <div className="admin-mobile-card-field">
+                        <span className="admin-mobile-card-field-label">{t('common.date')}</span>
+                        <span className="admin-mobile-card-field-value">{new Date(v.createdAt).toLocaleString(locale)}</span>
+                      </div>
+                      <div className="admin-mobile-card-field">
+                        <span className="admin-mobile-card-field-label">{t('version.changedBy')}</span>
+                        <span className="admin-mobile-card-field-value">
+                          {v.changedBy ? (v.changedBy.username || v.changedBy.accountId) : '-'}
+                        </span>
+                      </div>
+                      <div className="admin-mobile-card-field">
+                        <span className="admin-mobile-card-field-label">{t('version.changeSummary')}</span>
+                        <span className="admin-mobile-card-field-value">{v.changeSummary || '-'}</span>
+                      </div>
+                    </div>
+                    <div className="admin-mobile-card-actions">
+                      <button
+                        className="btn btn-secondary btn-small"
+                        onClick={(e) => { e.stopPropagation(); handleRollback(v); }}
+                        style={{ fontSize: '12px' }}
+                      >
+                        {t('version.rollback')}
+                      </button>
+                    </div>
+                    {selectedVersion?.version === v.version && !compareMode && (
+                      <div className="admin-mobile-card-expanded">
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '8px', fontSize: '13px' }}>
+                          {Object.entries(v.data).map(([key, val]) => (
+                            <div key={key} style={{ padding: '4px 8px', borderBottom: '1px solid var(--border)' }}>
+                              <span style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>{key}:</span>{' '}
+                              <span style={{ wordBreak: 'break-all' }}>{formatValue(val)}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
                 <table className="admin-table">
                   <thead>
                     <tr>
-                      <th>{t('version.field')}</th>
-                      <th>{t('version.oldValue')}</th>
-                      <th>{t('version.newValue')}</th>
+                      <th>{t('version.version')}</th>
+                      <th>{t('common.date')}</th>
+                      <th>{t('version.changedBy')}</th>
+                      <th>{t('version.changeSummary')}</th>
+                      <th>{t('adminEpisodes.actions')}</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {diff.length === 0 ? (
-                      <tr><td colSpan="3" style={{ textAlign: 'center' }}>{t('version.noHistory')}</td></tr>
-                    ) : (
-                      diff.map((item, idx) => (
-                        <tr key={idx}>
-                          <td style={{ fontWeight: '500' }}>{item.field}</td>
-                          <td style={{ color: 'var(--destructive-text)', maxWidth: '250px', wordBreak: 'break-all', fontSize: '13px' }}>
-                            {formatValue(item.oldValue)}
+                    {versions.map((v) => (
+                      <React.Fragment key={v._id}>
+                        <tr
+                          style={{
+                            cursor: 'pointer',
+                            background: (compareV1?.version === v.version || compareV2?.version === v.version)
+                              ? 'var(--primary-bg-subtle)'
+                              : selectedVersion?.version === v.version
+                                ? 'var(--hover-bg)'
+                                : undefined
+                          }}
+                          onClick={() => handleVersionClick(v)}
+                        >
+                          <td style={{ fontWeight: '500' }}>V{v.version}</td>
+                          <td style={{ fontSize: '13px' }}>
+                            {new Date(v.createdAt).toLocaleString(locale)}
                           </td>
-                          <td style={{ color: 'var(--success-text)', maxWidth: '250px', wordBreak: 'break-all', fontSize: '13px' }}>
-                            {formatValue(item.newValue)}
+                          <td style={{ fontSize: '13px' }}>
+                            {v.changedBy ? (v.changedBy.username || v.changedBy.accountId) : '-'}
+                          </td>
+                          <td style={{ fontSize: '13px', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            {v.changeSummary || '-'}
+                          </td>
+                          <td>
+                            <button
+                              className="btn btn-secondary btn-small"
+                              onClick={(e) => { e.stopPropagation(); handleRollback(v); }}
+                              style={{ fontSize: '12px' }}
+                            >
+                              {t('version.rollback')}
+                            </button>
                           </td>
                         </tr>
-                      ))
-                    )}
+                        {selectedVersion?.version === v.version && !compareMode && (
+                          <tr>
+                            <td colSpan="5" style={{ background: 'var(--hover-bg)', padding: '12px' }}>
+                              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '13px' }}>
+                                {Object.entries(v.data).map(([key, val]) => (
+                                  <div key={key} style={{ padding: '4px 8px', borderBottom: '1px solid var(--border)' }}>
+                                    <span style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>{key}:</span>{' '}
+                                    <span style={{ wordBreak: 'break-all' }}>{formatValue(val)}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </td>
+                          </tr>
+                        )}
+                      </React.Fragment>
+                    ))}
                   </tbody>
                 </table>
               </div>
             )}
-
-            <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-              <table className="admin-table">
-                <thead>
-                  <tr>
-                    <th>{t('version.version')}</th>
-                    <th>{t('common.date')}</th>
-                    <th>{t('version.changedBy')}</th>
-                    <th>{t('version.changeSummary')}</th>
-                    <th>{t('adminEpisodes.actions')}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {versions.map((v) => (
-                    <React.Fragment key={v._id}>
-                      <tr
-                        style={{
-                          cursor: 'pointer',
-                          background: (compareV1?.version === v.version || compareV2?.version === v.version)
-                            ? 'var(--primary-bg-subtle)'
-                            : selectedVersion?.version === v.version
-                              ? 'var(--hover-bg)'
-                              : undefined
-                        }}
-                        onClick={() => handleVersionClick(v)}
-                      >
-                        <td style={{ fontWeight: '500' }}>V{v.version}</td>
-                        <td style={{ fontSize: '13px' }}>
-                          {new Date(v.createdAt).toLocaleString(locale)}
-                        </td>
-                        <td style={{ fontSize: '13px' }}>
-                          {v.changedBy ? (v.changedBy.username || v.changedBy.accountId) : '-'}
-                        </td>
-                        <td style={{ fontSize: '13px', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                          {v.changeSummary || '-'}
-                        </td>
-                        <td>
-                          <button
-                            className="btn btn-secondary btn-small"
-                            onClick={(e) => { e.stopPropagation(); handleRollback(v); }}
-                            style={{ fontSize: '12px' }}
-                          >
-                            {t('version.rollback')}
-                          </button>
-                        </td>
-                      </tr>
-                      {selectedVersion?.version === v.version && !compareMode && (
-                        <tr>
-                          <td colSpan="5" style={{ background: 'var(--hover-bg)', padding: '12px' }}>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '13px' }}>
-                              {Object.entries(v.data).map(([key, val]) => (
-                                <div key={key} style={{ padding: '4px 8px', borderBottom: '1px solid var(--border)' }}>
-                                  <span style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>{key}:</span>{' '}
-                                  <span style={{ wordBreak: 'break-all' }}>{formatValue(val)}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </td>
-                        </tr>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </tbody>
-              </table>
-            </div>
           </>
         )}
 

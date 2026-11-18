@@ -137,8 +137,8 @@ const AdminAnalytics = () => {
         border: '1px solid var(--border)', marginBottom: '24px'
       }}>
         <h3 style={{ margin: '0 0 16px 0', fontSize: '16px' }}>{t('analytics.activityHeatmap')}</h3>
-        <div style={{ overflowX: 'auto' }}>
-          <svg width={svgW} height={svgH} style={{ minWidth: svgW }}>
+        <div className="admin-chart-scroll" style={{ overflowX: 'auto' }}>
+          <svg width={svgW} height={svgH} viewBox={`0 0 ${svgW} ${svgH}`} style={{ minWidth: svgW }}>
             {monthLabels.map((ml, i) => (
               <text key={i} x={ml.col * totalCell + 38} y={12} fontSize="11" fill="var(--text-secondary)">{ml.month}</text>
             ))}
@@ -239,7 +239,7 @@ const AdminAnalytics = () => {
           </select>
         </div>
         <p style={{ margin: '0 0 8px 0', fontSize: '12px', color: 'var(--text-secondary)' }}>{t('analytics.selectEpisodes')}</p>
-        <div style={{ overflowX: 'auto' }}>
+        <div className="admin-chart-scroll" style={{ overflowX: 'auto' }}>
           <svg width="100%" viewBox={`0 0 ${chartW} ${chartH}`} style={{ minWidth: chartW }}>
             {Array.from({ length: yTicks + 1 }, (_, i) => {
               const val = Math.round(yStep * i);

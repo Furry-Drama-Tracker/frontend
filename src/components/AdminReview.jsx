@@ -11,10 +11,10 @@ import {
   Pagination,
   Select,
   Space,
-  Table,
   Tabs,
   Tag,
 } from '@arco-design/web-react';
+import AdminResponsiveTable from './AdminResponsiveTable';
 import { assetUrl } from '../utils/apiBase';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -389,7 +389,7 @@ const AdminReview = () => {
 
       {activeTab === 'pending' && (
         <>
-          <Table
+          <AdminResponsiveTable
             rowKey="_id"
             columns={pendingColumns}
             data={pendingEpisodes}
@@ -417,7 +417,7 @@ const AdminReview = () => {
 
       {activeTab === 'all' && (
         <>
-          <Table
+          <AdminResponsiveTable
             rowKey="_id"
             columns={allColumns}
             data={allEpisodes}
@@ -526,12 +526,13 @@ const AdminReview = () => {
                   <strong>{t('adminReview.changeSummaryLabel')}：</strong>
                   {detailEpisode.pendingChangeSummary || t('adminReview.noChangeSummary')}
                 </p>
-                <Table
+                <AdminResponsiveTable
                   rowKey="key"
                   size="small"
                   columns={diffColumns}
                   data={diffRows}
                   pagination={false}
+                  mobileActions={false}
                 />
               </div>
             )}

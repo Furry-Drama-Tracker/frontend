@@ -11,10 +11,10 @@ import {
   Pagination,
   Select,
   Space,
-  Table,
   Tag,
 } from '@arco-design/web-react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import AdminResponsiveTable from './AdminResponsiveTable';
 import AdminSearchInput from './AdminSearchInput';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -397,7 +397,7 @@ const AdminUsers = () => {
         </div>
       </div>
 
-      <Table
+      <AdminResponsiveTable
         rowKey="_id"
         columns={columns}
         data={users}

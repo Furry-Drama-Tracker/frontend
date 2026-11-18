@@ -11,10 +11,10 @@ import {
   InputNumber,
   Pagination,
   Space,
-  Table,
   Tabs,
   Tag,
 } from '@arco-design/web-react';
+import AdminResponsiveTable from './AdminResponsiveTable';
 import { assetUrl } from '../utils/apiBase';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -312,7 +312,7 @@ const AdminFriendLinks = () => {
         ))}
       </Tabs>
 
-      <Table
+      <AdminResponsiveTable
         rowKey="_id"
         columns={columns}
         data={links}

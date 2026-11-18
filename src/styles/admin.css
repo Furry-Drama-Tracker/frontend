@@ -750,6 +750,114 @@ body.admin-light .table-actions {
 }
 
 /* --------------------------------------------------------------------------
+ * Mobile card list (used instead of wide tables on phones/tablets)
+ * ------------------------------------------------------------------------ */
+.admin-mobile-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-mobile-card {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--color-border-2);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.admin-mobile-card.is-expanded {
+  border-color: rgb(var(--primary-3));
+}
+
+.admin-mobile-card-title {
+  min-width: 0;
+  color: var(--color-text-1);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.admin-mobile-card-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.admin-mobile-card-field {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.admin-mobile-card-field-label {
+  flex: 0 0 84px;
+  color: var(--color-text-3);
+}
+
+.admin-mobile-card-field-value {
+  min-width: 0;
+  color: var(--color-text-1);
+  text-align: right;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.admin-mobile-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border-1);
+}
+
+.admin-mobile-card-actions > * {
+  min-width: 0;
+}
+
+.admin-mobile-card-expanded {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--color-border-2);
+}
+
+.admin-mobile-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+@media (max-width: 768px) {
+  .admin-chart-scroll {
+    overflow-x: hidden !important;
+  }
+
+  .admin-chart-scroll svg {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+  }
+}
+
+/* Arco modals must not overflow narrow screens. */
+body.admin-light .arco-modal {
+  max-width: calc(100vw - 24px);
+}
+
+body.admin-light .arco-modal-wrapper {
+  padding: 12px;
+}
+
+/* --------------------------------------------------------------------------
  * Forms
  * ------------------------------------------------------------------------ */
 .admin-app .form-container,
