@@ -565,7 +565,9 @@ const Login = ({ login }) => {
             onClick={handlePasskeyLogin}
             disabled={passkeyLoading}
             style={{
-              width: '100%', padding: '10px', borderRadius: '8px', fontSize: '14px', fontWeight: 600,
+              // padding 13px + 1px 边框 = 主按钮的 14px 无边框，三键同高；
+              // 尺寸类属性（宽/圆角/字号/字重）继承 .form-group button 基础样式
+              padding: '13px',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
               background: 'var(--hover-bg-strong)', border: '1px solid var(--border)',
               color: 'var(--foreground)', cursor: passkeyLoading ? 'wait' : 'pointer',

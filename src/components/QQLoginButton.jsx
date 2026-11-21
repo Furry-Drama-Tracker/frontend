@@ -45,9 +45,10 @@ const QQLoginButton = ({ onError }) => {
       disabled={loading}
       aria-label={t('auth.qqLogin')}
       style={{
-        width: '100%', padding: '10px', borderRadius: '8px', fontSize: '14px', fontWeight: 600,
-        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '9px',
-        background: '#12B7F5', border: 'none', color: '#FFFFFF',
+        // 尺寸类属性（宽/padding/圆角/字号/字重/无边框）继承 .form-group button，
+        // 与主登录、Passkey 按钮同高
+        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+        background: '#12B7F5', color: '#FFFFFF',
         cursor: loading ? 'wait' : 'pointer', opacity: loading ? 0.7 : 1,
       }}
     >
