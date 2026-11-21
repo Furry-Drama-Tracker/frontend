@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useI18n } from '../contexts/I18nContext';
 import Modal from './Modal';
+import CaptchaWidget from './CaptchaWidget';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import { formatApiError } from '../utils/errorMeta';
@@ -13,6 +14,21 @@ const ReportModal = ({ show, onClose, targetType, targetId, targetName }) => {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  // altcha PoW：floating 样式，挂载即自动求解，statechange 回传 payload；
+  // 提交成功后 bump captchaKey 强制重挂载换取新挑战（旧 payload 已消耗语义）。
+  const [altchaPayload, setAltchaPayload] = useState(null);
+  const altchaRef = useRef(null);
+  const [captchaKey, setCaptchaKey] = useState(0);
+
+  useEffect(() => {
+    const el = altchaRef.current;
+    if (!el) return;
+    const handler = (ev) => {
+      if (ev.detail?.payload) setAltchaPayload(ev.detail.payload);
+    };
+    el.addEventListener('statechange', handler);
+    return () => el.removeEventListener('statechange', handler);
+  }, [captchaKey]);
 
   const reasons = [
     { value: 'inappropriate', label: t('report.inappropriate') },
@@ -28,11 +44,15 @@ const ReportModal = ({ show, onClose, targetType, targetId, targetName }) => {
       setError(t('report.selectReason'));
       return;
     }
+    if (!altchaPayload) {
+      setError(t('report.captchaRequired'));
+      return;
+    }
     setSubmitting(true);
     setError('');
     try {
       await axios.post('/api/reports', {
-        targetType, targetId, reason, description
+        targetType, targetId, reason, description, altcha: altchaPayload
       });
       setSuccess(true);
       // 先触发关闭（让成功界面随退出动画优雅淡出），动画结束后再重置表单状态
@@ -42,6 +62,8 @@ const ReportModal = ({ show, onClose, targetType, targetId, targetName }) => {
           setSuccess(false);
           setReason('');
           setDescription('');
+          setAltchaPayload(null);
+          setCaptchaKey((k) => k + 1);
         }, 320);
       }, 1500);
     } catch (err) {
@@ -87,6 +109,7 @@ const ReportModal = ({ show, onClose, targetType, targetId, targetName }) => {
                   color: 'var(--foreground)', fontSize: '14px', resize: 'vertical'
                 }} />
             </div>
+            <CaptchaWidget key={captchaKey} ref={altchaRef} floating="auto" />
             {error && <p style={{ color: 'var(--destructive-text)', fontSize: '14px', marginBottom: '12px' }}>{error}</p>}
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
               <button type="button" onClick={onClose} className="btn btn-secondary">{t('common.cancel')}</button>

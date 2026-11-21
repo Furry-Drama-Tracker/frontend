@@ -570,6 +570,7 @@ export default {
     placeholder: '请输入您的反馈内容...',
     submit: '提交反馈',
     submitFailed: '提交失败',
+    captchaRequired: '请先完成人机验证',
   },
   twoFactor: {
     title: '双因素认证 (2FA)',
@@ -634,6 +635,7 @@ export default {
     willProcess: '我们会尽快处理',
     selectReason: '请选择举报原因',
     submitFailed: '举报失败',
+    captchaRequired: '请先完成人机验证',
     inappropriate: '不当内容',
     copyright: '版权侵权',
     spam: '垃圾信息',
@@ -1181,6 +1183,7 @@ export default {
   },
   adminEpisodes: {
     coverRequired: '请上传或输入封面图片',
+    captchaRequired: '请先完成人机验证',
     titleRequired: '请输入标题',
     descriptionRequired: '请输入描述',
     totalEpisodesRequired: '总集数必须大于0',

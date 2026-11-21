@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useMemo, useState } from 'react';
+﻿import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { formatApiError } from '../utils/errorMeta';
 import { useCreate, useCustomMutation, useDelete, useList, useOne, useTable, useUpdate } from '@refinedev/core';
 import { useOutletContext } from 'react-router-dom';
@@ -18,6 +18,7 @@ import {
 import AdminResponsiveTable from './AdminResponsiveTable';
 import AdminSearchInput from './AdminSearchInput';
 import ImageUploader from './ImageUploader';
+import CaptchaWidget from './CaptchaWidget';
 import { useI18n } from '../contexts/I18nContext';
 import EpisodeVersionHistory from './EpisodeVersionHistory';
 import ReviewStatusBadge from './ReviewStatusBadge';
@@ -72,6 +73,21 @@ const AdminEpisodes = () => {
   const [newSingleEpisode, setNewSingleEpisode] = useState(EMPTY_SINGLE_EPISODE);
   const [error, setError] = useState('');
   const [historyEpisodeId, setHistoryEpisodeId] = useState(null);
+  // altcha PoW：编辑页的更新/单集增改会触发追更邮件广播，后端要求过验证码
+  // （floating 样式，挂载即自动求解）；成功提交后 bump captchaKey 重挂载换新挑战。
+  const [altchaPayload, setAltchaPayload] = useState(null);
+  const altchaRef = useRef(null);
+  const [captchaKey, setCaptchaKey] = useState(0);
+
+  useEffect(() => {
+    const el = altchaRef.current;
+    if (!el) return;
+    const handler = (ev) => {
+      if (ev.detail?.payload) setAltchaPayload(ev.detail.payload);
+    };
+    el.addEventListener('statechange', handler);
+    return () => el.removeEventListener('statechange', handler);
+  }, [captchaKey]);
 
   const isCreator = admin?.role === 'creator';
   const episodesResource = isCreator ? 'my-episodes' : 'episodes';
@@ -296,6 +312,10 @@ const AdminEpisodes = () => {
       setError(t('adminEpisodes.coverRequired'));
       return;
     }
+    if (!altchaPayload) {
+      setError(t('adminEpisodes.captchaRequired'));
+      return;
+    }
     try {
       const episodeData = {
         title: newEpisode.title,
@@ -316,6 +336,7 @@ const AdminEpisodes = () => {
         qqGroupLink: newEpisode.qqGroupLink || '',
         qqGroupNumber: newEpisode.qqGroupNumber || '',
         changeSummary: newEpisode.changeSummary || '',
+        altcha: altchaPayload,
       };
 
       await updateEpisode({
@@ -326,6 +347,8 @@ const AdminEpisodes = () => {
       episodesTable.tableQuery.refetch();
       setEditingEpisode((prev) => (prev ? { ...prev, ...episodeData } : prev));
       setError('');
+      setAltchaPayload(null);
+      setCaptchaKey((k) => k + 1);
     } catch (err) {
       setError(formatApiError(err, t('adminEpisodes.editEpisodeFailed')));
     }
@@ -365,10 +388,15 @@ const AdminEpisodes = () => {
       setError(t('adminEpisodes.titleRequired'));
       return;
     }
+    if (!altchaPayload) {
+      setError(t('adminEpisodes.captchaRequired'));
+      return;
+    }
     try {
       const episodeId = editingEpisode._id;
       const submitData = {
         ...newSingleEpisode,
+        altcha: altchaPayload,
         platformLinks: linksListToObj(newSingleEpisode.platformLinksList),
         scheduledDate: newSingleEpisode.isScheduled && !newSingleEpisode.noScheduledDate && newSingleEpisode.scheduledDate
           ? new Date(newSingleEpisode.scheduledDate).toISOString()
@@ -402,6 +430,8 @@ const AdminEpisodes = () => {
       resetSingleEpisodeForm();
       singleEpisodeQuery.refetch();
       episodesTable.tableQuery.refetch();
+      setAltchaPayload(null);
+      setCaptchaKey((k) => k + 1);
     } catch (err) {
       setError(formatApiError(err, editingSingleEpisode ? t('adminEpisodes.editSingleEpisodeFailed') : t('adminEpisodes.addSingleEpisodeFailed')));
     }
@@ -868,6 +898,9 @@ const AdminEpisodes = () => {
           <Alert type="warning" content={t('adminEpisodes.editingPendingChanges')} style={{ marginBottom: 12 }} />
         )}
         <div className="admin-panel" style={{ marginBottom: 16 }}>{renderEpisodeForm(true)}</div>
+        <div style={{ marginBottom: 16 }}>
+          <CaptchaWidget key={captchaKey} ref={altchaRef} floating="auto" />
+        </div>
         <div className="admin-panel">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
             <h4>{t('adminEpisodes.singleEpisodeManagement')}</h4>

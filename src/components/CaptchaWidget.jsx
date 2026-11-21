@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 import { useI18n } from '../contexts/I18nContext';
 import { apiUrl } from '../utils/apiBase';
 
-const CaptchaWidget = forwardRef(function CaptchaWidget({ challenge, auto = 'onload' }, ref) {
+const CaptchaWidget = forwardRef(function CaptchaWidget({ challenge, auto = 'onload', floating }, ref) {
   const { locale, t } = useI18n();
   const configuration = JSON.stringify({
     hideFooter: true,
@@ -17,6 +17,8 @@ const CaptchaWidget = forwardRef(function CaptchaWidget({ challenge, auto = 'onl
         ref={ref}
         challenge={challenge || apiUrl('/api/auth/captcha')}
         auto={auto}
+        // floating：挑战以浮动气泡呈现，不占表单内联空间（"auto" = 聚焦/提交时弹出）。
+        floating={floating || undefined}
         language={String(locale || 'zh').toLowerCase().startsWith('zh') ? 'zh-CN' : 'en-US'}
         configuration={configuration}
       ></altcha-widget>

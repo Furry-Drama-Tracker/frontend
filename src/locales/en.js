@@ -570,6 +570,7 @@ export default {
     placeholder: 'Enter your feedback...',
     submit: 'Submit feedback',
     submitFailed: 'Submit failed',
+    captchaRequired: 'Please complete the human verification first',
   },
   twoFactor: {
     title: 'Two-Factor Authentication (2FA)',
@@ -634,6 +635,7 @@ export default {
     willProcess: 'We will process it as soon as possible',
     selectReason: 'Please select a reason',
     submitFailed: 'Report failed',
+    captchaRequired: 'Please complete the human verification first',
     inappropriate: 'Inappropriate content',
     copyright: 'Copyright infringement',
     spam: 'Spam',
@@ -1181,6 +1183,7 @@ export default {
   },
   adminEpisodes: {
     coverRequired: 'Please upload or enter cover image',
+    captchaRequired: 'Please complete the human verification first',
     titleRequired: 'Please enter a title',
     descriptionRequired: 'Please enter a description',
     totalEpisodesRequired: 'Total episodes must be greater than 0',
