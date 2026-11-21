@@ -10,14 +10,17 @@ const CaptchaWidget = forwardRef(function CaptchaWidget({ challenge, auto = 'onl
   });
 
   return (
-    <altcha-widget
-      ref={ref}
-      theme="cupcake"
-      challenge={challenge || apiUrl('/api/auth/captcha')}
-      auto={auto}
-      language={String(locale || 'zh').toLowerCase().startsWith('zh') ? 'zh-CN' : 'en-US'}
-      configuration={configuration}
-    ></altcha-widget>
+    // altcha v3 启动时会清空组件自身属性，theme="cupcake" 挂不住样式选择器；
+    // 主题 CSS 的 [data-altcha-theme] 容器选择器 + 变量继承才是稳定生效方式。
+    <div data-altcha-theme="cupcake">
+      <altcha-widget
+        ref={ref}
+        challenge={challenge || apiUrl('/api/auth/captcha')}
+        auto={auto}
+        language={String(locale || 'zh').toLowerCase().startsWith('zh') ? 'zh-CN' : 'en-US'}
+        configuration={configuration}
+      ></altcha-widget>
+    </div>
   );
 });
 

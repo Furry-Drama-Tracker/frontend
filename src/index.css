@@ -4842,13 +4842,9 @@ altcha-widget {
   color-scheme: dark;
 }
 
-/* 宽屏下组件按内容宽居中；窄屏仍撑满表单便于触控 */
-@media (min-width: 769px) {
-  altcha-widget {
-    display: flex;
-    justify-content: center;
-  }
-}
+/* 注意：不要用 flex 居中收缩 altcha-widget——那会把验证框压到内容宽，
+   与表单内其他控件宽度不一致；整框撑满表单（左右对称）即为居中。
+   altcha v3 的 shadow DOM 未暴露内容对齐变量，框内文字行无法外部居中。 */
 
 /* ===== Mobile / tablet polish ===== */
 
