@@ -59,6 +59,7 @@ const Settings = lazy(() => import('./components/Settings'));
 const ResetPassword = lazy(() => import('./components/ResetPassword'));
 const VerifyEmail = lazy(() => import('./components/VerifyEmail'));
 const VerifyEmailChange = lazy(() => import('./components/VerifyEmailChange'));
+const QQCallback = lazy(() => import('./components/QQCallback'));
 const AdminEmailSettings = lazy(() => import('./components/AdminEmailSettings'));
 const AdminAuditLogs = lazy(() => import('./components/AdminAuditLogs'));
 const AdminBackup = lazy(() => import('./components/AdminBackup'));
@@ -584,6 +585,8 @@ function AppContent() {
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/verify-email-change" element={<VerifyEmailChange />} />
+            {/* QQ 互联授权回调：redirect_uri 需指向本页（?code=xxx&state=yyy） */}
+            <Route path="/auth/qq/callback" element={<QQCallback />} />
             <Route path="/shared-folder/:shareToken" element={<SharedFolder />} />
             <Route path="/calendar" element={<UpdateCalendar />} />
             <Route path="/timeline" element={<Timeline />} />

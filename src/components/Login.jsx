@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getDeviceInfo } from '../utils/deviceInfo';
 import { useI18n } from '../contexts/I18nContext';
 import PasswordToggle from './PasswordToggle';
+import QQLoginButton from './QQLoginButton';
 import API from '../utils/apiEndpoints';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faEnvelope, faLock, faFingerprint } from '@fortawesome/free-solid-svg-icons';
@@ -576,6 +577,10 @@ const Login = ({ login }) => {
           </button>
         </div>
       )}
+      {/* 第三方登录：QQ 互联（后端未启用时点击会透出 501 文案） */}
+      <div className="form-group" style={{ marginTop: passkeyAvailable ? '-6px' : undefined }}>
+        <QQLoginButton onError={setError} />
+      </div>
       <div style={{textAlign: 'center', marginTop: '10px', position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px'}}>
         <span onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowForgot(true); setError(''); setSuccessMsg(''); }} style={{color: 'var(--primary)', cursor: 'pointer', fontSize: '14px', padding: '4px 8px', display: 'inline-block', userSelect: 'none'}}>{t('auth.forgotPassword')}</span>
         <div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>

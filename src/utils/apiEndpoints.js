@@ -22,6 +22,10 @@ const API = {
     // Passkey（WebAuthn）登录仪式
     PASSKEY_OPTIONS: '/api/auth/passkey/options',
     PASSKEY_VERIFY: '/api/auth/passkey/verify',
+    // QQ 互联（后端未配置 QQ_APPID/QQ_APPKEY 时 start/callback 返回 501）
+    QQ_STATUS: '/api/auth/qq/status',
+    QQ_START: '/api/auth/qq/start',
+    QQ_CALLBACK: '/api/auth/qq/callback',
   },
   // 2FA（角色化：user 禁开 / creator 可选 / admin+ 强制）
   TWOFACTOR: {
