@@ -6,13 +6,13 @@ const CaptchaWidget = forwardRef(function CaptchaWidget({ challenge, auto = 'onl
   const { locale, t } = useI18n();
   const configuration = JSON.stringify({
     hideFooter: true,
-    hideLogo: true,
     validationMessage: t('auth.captchaRequired'),
   });
 
   return (
     <altcha-widget
       ref={ref}
+      theme="cupcake"
       challenge={challenge || apiUrl('/api/auth/captcha')}
       auto={auto}
       language={String(locale || 'zh').toLowerCase().startsWith('zh') ? 'zh-CN' : 'en-US'}

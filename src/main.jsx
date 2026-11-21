@@ -8,6 +8,8 @@ import './utils/axiosConfig'
 import 'altcha'
 import 'altcha/i18n/zh-cn'
 import 'altcha/i18n/en'
+// ALTCHA 内置 Cupcake 主题（配合 CaptchaWidget 的 theme="cupcake"）
+import 'altcha/themes/cupcake.css'
 
 if ('serviceWorker' in navigator) {
   import('virtual:pwa-register').then(({ registerSW }) => {

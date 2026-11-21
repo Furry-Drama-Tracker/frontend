@@ -4832,6 +4832,24 @@ altcha-widget {
   text-align: left;
 }
 
+/* Cupcake 主题用 light-dark() 取色：跟随站点明暗主题解析
+   （color-scheme 可继承进组件 shadow DOM） */
+[data-theme='light'] altcha-widget {
+  color-scheme: light;
+}
+
+[data-theme='dark'] altcha-widget {
+  color-scheme: dark;
+}
+
+/* 宽屏下组件按内容宽居中；窄屏仍撑满表单便于触控 */
+@media (min-width: 769px) {
+  altcha-widget {
+    display: flex;
+    justify-content: center;
+  }
+}
+
 /* ===== Mobile / tablet polish ===== */
 
 /* Required fields stay neutral until the user has interacted with them. */
