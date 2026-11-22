@@ -1,11 +1,11 @@
 ﻿import React, { useState, useEffect, useLayoutEffect, useMemo } from 'react';
-import { useNavigate, Outlet, useLocation } from 'react-router-dom';
+import { Link, useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { clearClientData } from '../utils/clearClientData';
 import adminApi from '../utils/adminApi';
 import { useI18n } from '../contexts/I18nContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { Layout, Menu, Button, ConfigProvider } from '@arco-design/web-react';
+import { faBars, faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { Layout, Menu, Button, ConfigProvider, Dropdown } from '@arco-design/web-react';
 import { Refine } from '@refinedev/core';
 import zhCN from '@arco-design/web-react/es/locale/zh-CN';
 import enUS from '@arco-design/web-react/es/locale/en-US';
@@ -18,6 +18,7 @@ import authProvider from '../utils/refineAuthProvider';
 import '@arco-design/web-react/es/Layout/style/index.css';
 import '@arco-design/web-react/es/Menu/style/index.css';
 import '@arco-design/web-react/es/Button/style/index.css';
+import '@arco-design/web-react/es/Dropdown/style/index.css';
 import '@arco-design/web-react/es/Card/style/index.css';
 import '@arco-design/web-react/es/Tag/style/index.css';
 import '@arco-design/web-react/es/Alert/style/index.css';
@@ -224,7 +225,7 @@ const AdminLayout = () => {
               aria-expanded={!isCollapsed}
               icon={<FontAwesomeIcon icon={faBars} style={{ fontSize: 16 }} aria-hidden="true" />}
             />
-            <a className="admin-brand" href="/">
+            <Link className="admin-brand" to="/admin/dashboard">
               {siteSettings?.navLogo ? (
                 <img
                   className="admin-brand-mark"
@@ -237,7 +238,7 @@ const AdminLayout = () => {
               )}
               <span className="admin-brand-name">{getLocalizedContent(siteSettings || {}, 'siteName') || t('site.defaultName')}</span>
               <span className="admin-brand-sub">{t('adminLayout.adminBackend')}</span>
-            </a>
+            </Link>
           </div>
 
           <div className="admin-topbar-right">
@@ -246,6 +247,28 @@ const AdminLayout = () => {
             <Button type="primary" className="admin-console-btn" onClick={() => navigate('/admin/dashboard')}>
               {t('adminLayout.consoleHome')}
             </Button>
+            <Dropdown
+              trigger="click"
+              position="br"
+              droplist={(
+                <Menu
+                  onClickMenuItem={(key) => {
+                    if (key === 'site') navigate('/');
+                    else navigate('/admin/dashboard');
+                  }}
+                >
+                  <Menu.Item key="site">{t('adminLayout.websiteHome')}</Menu.Item>
+                  <Menu.Item key="console">{t('adminLayout.consoleHome')}</Menu.Item>
+                </Menu>
+              )}
+            >
+              <Button
+                type="text"
+                className="admin-icon-btn admin-mobile-more"
+                aria-label={t('nav.more')}
+                icon={<FontAwesomeIcon icon={faEllipsis} aria-hidden="true" />}
+              />
+            </Dropdown>
             <Button status="danger" className="admin-logout-btn" onClick={handleLogout}>
               {t('adminLayout.logout')}
             </Button>

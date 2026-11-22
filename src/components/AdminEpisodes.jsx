@@ -22,6 +22,7 @@ import CaptchaWidget from './CaptchaWidget';
 import { useI18n } from '../contexts/I18nContext';
 import EpisodeVersionHistory from './EpisodeVersionHistory';
 import ReviewStatusBadge from './ReviewStatusBadge';
+import useMediaQuery from '../hooks/useMediaQuery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faFilm, faGripVertical } from '@fortawesome/free-solid-svg-icons';
 
@@ -61,6 +62,7 @@ const EMPTY_SINGLE_EPISODE = {
 const AdminEpisodes = () => {
   const { locale, t } = useI18n();
   const { admin } = useOutletContext();
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const [episodesSearch, setEpisodesSearch] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
@@ -499,18 +501,7 @@ const AdminEpisodes = () => {
     setDragOverId(null);
   };
 
-  const handleSingleDrop = async (e, targetId) => {
-    e.preventDefault();
-    const sourceId = dragId || e.dataTransfer.getData('text/plain');
-    setDragId(null);
-    setDragOverId(null);
-    if (!sourceId || sourceId === targetId || !editingEpisode) return;
-    const from = singleEpisodes.findIndex((item) => item._id === sourceId);
-    const to = singleEpisodes.findIndex((item) => item._id === targetId);
-    if (from < 0 || to < 0) return;
-    const reordered = [...singleEpisodes];
-    const [moved] = reordered.splice(from, 1);
-    reordered.splice(to, 0, moved);
+  const persistSingleEpisodeOrder = async (reordered) => {
     const renumbered = reordered.map((item, index) => ({ ...item, episodeNumber: index + 1 }));
     const changed = renumbered.filter((item) => {
       const old = singleEpisodes.find((original) => original._id === item._id);
@@ -530,6 +521,32 @@ const AdminEpisodes = () => {
       setError(formatApiError(err, t('adminEpisodes.reorderFailed')));
       singleEpisodeQuery.refetch();
     }
+  };
+
+  const handleSingleDrop = async (e, targetId) => {
+    e.preventDefault();
+    const sourceId = dragId || e.dataTransfer.getData('text/plain');
+    setDragId(null);
+    setDragOverId(null);
+    if (!sourceId || sourceId === targetId || !editingEpisode) return;
+    const from = singleEpisodes.findIndex((item) => item._id === sourceId);
+    const to = singleEpisodes.findIndex((item) => item._id === targetId);
+    if (from < 0 || to < 0) return;
+    const reordered = [...singleEpisodes];
+    const [moved] = reordered.splice(from, 1);
+    reordered.splice(to, 0, moved);
+    await persistSingleEpisodeOrder(reordered);
+  };
+
+  const moveSingleEpisode = async (id, direction) => {
+    if (!editingEpisode) return;
+    const from = singleEpisodes.findIndex((item) => item._id === id);
+    const to = from + direction;
+    if (from < 0 || to < 0 || to >= singleEpisodes.length) return;
+    const reordered = [...singleEpisodes];
+    const [moved] = reordered.splice(from, 1);
+    reordered.splice(to, 0, moved);
+    await persistSingleEpisodeOrder(reordered);
   };
 
   const handleCloseEditForm = () => {
@@ -1040,9 +1057,29 @@ const AdminEpisodes = () => {
               },
               {
                 title: t('adminEpisodes.actions'),
-                width: 160,
-                render: (_, record) => (
-                  <Space size="mini">
+                width: 200,
+                render: (_, record, index) => (
+                  <Space size="mini" wrap>
+                    {isMobile && (
+                      <>
+                        <Button
+                          size="mini"
+                          type="text"
+                          disabled={index === 0}
+                          onClick={() => moveSingleEpisode(record._id, -1)}
+                        >
+                          {t('adminEpisodes.moveUp')}
+                        </Button>
+                        <Button
+                          size="mini"
+                          type="text"
+                          disabled={index === singleEpisodes.length - 1}
+                          onClick={() => moveSingleEpisode(record._id, 1)}
+                        >
+                          {t('adminEpisodes.moveDown')}
+                        </Button>
+                      </>
+                    )}
                     <Button
                       size="mini"
                       onClick={() => {
@@ -1069,7 +1106,7 @@ const AdminEpisodes = () => {
             ]}
           />
           <p style={{ fontSize: 12, color: 'var(--color-text-3)', marginTop: 8, marginBottom: 0 }}>
-            {t('adminEpisodes.reorderHint')}
+            {isMobile ? t('adminEpisodes.mobileReorderHint') : t('adminEpisodes.reorderHint')}
           </p>
         </div>
       </div>

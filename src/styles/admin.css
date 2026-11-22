@@ -422,6 +422,10 @@ body.admin-light {
   color: var(--color-text-1);
 }
 
+.admin-mobile-more {
+  display: none;
+}
+
 .admin-body {
   min-height: calc(100vh - 56px);
 }
@@ -1470,6 +1474,10 @@ body.admin-light .modal-header h3 {
   .admin-user,
   .admin-console-btn {
     display: none;
+  }
+
+  .admin-mobile-more {
+    display: inline-flex;
   }
 
   .admin-brand-name {
