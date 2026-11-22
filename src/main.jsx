@@ -10,6 +10,12 @@ import 'altcha/i18n/zh-cn'
 import 'altcha/i18n/en'
 // ALTCHA 内置 Cupcake 主题（配合 CaptchaWidget 的 theme="cupcake"）
 import 'altcha/themes/cupcake.css'
+// Argon2id 挑战求解 worker：widget 主构建只内置 SHA/PBKDF2，Argon2id 必须在
+// widget 初始化前手动注册（键名须与后端挑战的 algorithm 字符串完全一致，
+// algorithms.get 为精确匹配）。Argon2id 走 hash-wasm WASM，不依赖 crypto.subtle，
+// 老设备 / 非 HTTPS 上下文也能求解。
+import Argon2idWorker from 'altcha/workers/argon2id?worker'
+globalThis.$altcha.algorithms.set('Argon2id', () => new Argon2idWorker())
 
 if ('serviceWorker' in navigator) {
   import('virtual:pwa-register').then(({ registerSW }) => {
